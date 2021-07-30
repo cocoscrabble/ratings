@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+from dataclasses import dataclass, field
 import datetime
 import itertools
 import math
@@ -174,7 +175,7 @@ class Tournament(object):
 
             # prepares the average rating of the field
             for p in s.getUnratedPlayers():
-                opponentMu = p.getInitRating()
+                opponentMu = p.initRating
                 opponentSum += opponentMu
 
             opponentAverage = opponentSum / float(len(s.getPlayers()))
@@ -194,18 +195,18 @@ class Tournament(object):
                     if unratedOppsPct >= 0.4:
                         try:
                             p.setInitRating(opponentAverage)
-                            preRating = p.getInitRating()
+                            preRating = p.initRating
                         except ValueError:
                             p.setInitRating(manualSeed)
                             print(f'Using manual seed of {manualSeed}')
-                            preRating = p.getInitRating()
+                            preRating = p.initRating
                     else:
-                        preRating = p.getInitRating()
+                        preRating = p.initRating
                     p.calcNewRatingBySpread()   # calculates rating as usual
-                    converged = converged and preRating == p.getNewRating()
-                    p.setInitRating(p.getNewRating())
+                    converged = converged and preRating == p.newRating
+                    p.setInitRating(p.newRating)
                     p.setInitDeviation(MAX_DEVIATION)
-                    print(f'Rating unrated player {p}: {p.getNewRating()}\n')
+                    print(f'Rating unrated player {p}: {p.newRating}\n')
 
                 iterations = iterations + 1
 
@@ -215,7 +216,7 @@ class Tournament(object):
     def outputResults(self, outputFile):  # now accepts 2 input (20161214)
         # handle should be open for writing
         for s in self.sections:
-            outputFile.write('Section {:1}'.format(s.getName()))
+            outputFile.write('Section {:1}'.format(s.name))
             outputFile.write(
                 '{:21} {:10} {:7} {:8} {:8}'.format(
                     'NAME', 'RECORD', 'SPREAD', 'OLD RAT', 'NEW RAT'
@@ -224,16 +225,16 @@ class Tournament(object):
             outputFile.write('\n')
             for p in sorted(
                 s.getPlayers(),
-                key=lambda x: (x.getWins() * 100000) + x.getSpread(),
+                key=lambda x: (x.wins * 100000) + x.spread,
                 reverse=True,
             ):
                 outputFile.write(
                     '{:21} {:10} {:7} {:8} {:8}'.format(
-                        p.getName(),
-                        str(p.getWins()) + '-' + str(p.getLosses()),
-                        p.getSpread(),
-                        p.getInitRating(),
-                        p.getNewRating(),
+                        p.name,
+                        f'{p.wins}-{p.losses}',
+                        p.spread,
+                        p.initRating,
+                        p.newRating,
                     )
                 )
                 outputFile.write('\n')
@@ -241,7 +242,7 @@ class Tournament(object):
         outputFile.write('\n')   # section break
 
         for p in s.getUnratedPlayers():
-            outputFile.write('{:21} is unrated \n'.format(p.getName()))
+            outputFile.write('{:21} is unrated \n'.format(p.name))
         outputFile.write('\n')   # section break
 
         rootDir = '../'
@@ -258,12 +259,8 @@ class Tournament(object):
                 'Name', 'Games', ' Rat', 'Lastplayed', 'New Dev'
             )
         )
-        for p in sorted(
-            self.globalList.getAllPlayers().values(),
-            key=lambda p: (p.getNewRating()),
-            reverse=True,
-        ):
-            if p.getName() in [
+        for p in self.globalList.get_ranked_players():
+            if p.name in [
                 'Yy bye',
                 'A Bye',
                 'B Bye',
@@ -281,18 +278,18 @@ class Tournament(object):
             try:
                 outFile.write(
                     '         {:20}{:5}{:5} {:9}{:6} \n'.format(
-                        p.getName(),
-                        p.getCareerGames(),
-                        p.getNewRating(),
-                        p.getLastPlayed().strftime('%Y%m%d'),
+                        p.name,
+                        p.careerGames,
+                        p.newRating,
+                        p.lastPlayed.strftime('%Y%m%d'),
                         p.newRatingDeviation,
                     )
                 )
             except ValueError:
                 print(
-                    str(p.getName())
+                    str(p.name)
                     + "'s lastPlayed was"
-                    + str(p.getLastPlayed())
+                    + str(p.lastPlayed)
                 )
 
     # inserted p.getNewLastPlayed on 15th Dec
@@ -307,13 +304,9 @@ class Tournament(object):
         with open('removed_people.txt', 'r') as d:
             deceased = [x.rstrip() for x in d.readlines()]
         try:
-            for p in sorted(
-                self.globalList.getAllPlayers().values(),
-                key=lambda p: (p.getNewRating()),
-                reverse=True,
-            ):
+            for p in self.globalList.get_ranked_players():
                 active = (
-                    p.getLastPlayed()
+                    p.lastPlayed
                     > self.tournamentDate - datetime.timedelta(days=731)
                 )
                 if p.name in deceased or not active:
@@ -321,10 +314,10 @@ class Tournament(object):
                 else:
                     outFile.write(
                         '         {:20}{:5}{:5} {:9}{:6} \n'.format(
-                            p.getName(),
-                            p.getCareerGames(),
-                            p.getNewRating(),
-                            p.getLastPlayed().strftime('%Y%m%d'),
+                            p.name,
+                            p.careerGames,
+                            p.newRating,
+                            p.lastPlayed.strftime('%Y%m%d'),
                             p.newRatingDeviation,
                         )
                     )
@@ -359,9 +352,6 @@ class Section(object):
     def getUnratedPlayers(self):
         return [p for p in self.players if p.isUnrated]
 
-    def getName(self):
-        return self.name
-
     def getRoundByNumber(self, number):
         try:
             return self.rounds[number]
@@ -370,14 +360,10 @@ class Section(object):
 
     def getPlayerByNumber(self, number):
         try:
-            return self.players[
-                number - 1
-            ]   # player numbers in the tou file are 1-based
+            # player numbers in the tou file are 1-based
+            return self.players[number - 1]
         except IndexError:
             return None
-
-    def getRounds(self):
-        return self.rounds
 
     def tallyPlayerResults(self):
         for p in self.players:
@@ -385,20 +371,41 @@ class Section(object):
 
 
 class Player(object):
-    def __init__(self, playerName):
-        self.name = playerName
-        self.initRating = 0
-        self.initRatingDeviation = 0.0
-        self.careerGames = 0
+
+    def __init__(
+            self,
+            name,
+            *,
+            initRating = 0,
+            initRatingDeviation = 0.0,
+            careerGames=0,
+            isUnrated=False,
+            lastPlayed=None
+    ):
+        self.name = name
+        self.careerGames = careerGames
+        self.isUnrated = isUnrated
+        self.setInitRating(initRating, initRatingDeviation)
+        self.lastPlayed = lastPlayed or datetime.date(1999, 12, 31)
+
+        # Always initialized to zero when creating the player
         self.wins = 0.0
         self.losses = 0.0
         self.spread = 0
         self.ratingChange = 0
         self.newRating = 0
         self.newRatingDeviation = 0.0
-        self.games = []   # list of Game objects
-        self.lastPlayed = datetime.date(1999, 12, 31)
-        self.isUnrated = False
+        self.games = [] # list of Game objects
+
+    @classmethod
+    def new_unrated(cls, name):
+        return cls(
+                name=name,
+                initRating=1500,
+                initRatingDeviation=MAX_DEVIATION,
+                lastPlayed=datetime.datetime.today(),
+                isUnrated=True
+        )
 
     def __str__(self):
         return self.name
@@ -415,15 +422,6 @@ class Player(object):
                     False, score2 - score1
                 )   # for Ties, the "win" boolean doesn't matter
 
-    def getWins(self):
-        return self.wins
-
-    def getLosses(self):
-        return self.losses
-
-    def getSpread(self):
-        return self.spread
-
     def setInitRating(self, rating, dev=MAX_DEVIATION):
         self.initRating = rating
         self.initRatingDeviation = dev
@@ -439,9 +437,6 @@ class Player(object):
     def setInitDeviation(self, deviation):
         self.initRatingDeviation = deviation
 
-    def setCareerGames(self, games):
-        self.careerGames = games
-
     def setLastPlayed(self, date):
         self.lastPlayed = date
 
@@ -450,12 +445,6 @@ class Player(object):
 
     def getDate(self):
         return self.tournamentDate
-
-    def getInitRating(self):
-        return self.initRating
-
-    def getInitRatingDeviation(self):
-        return self.initRatingDeviation
 
     def getNewRating(self):
         return self.newRating
@@ -468,9 +457,6 @@ class Player(object):
 
     def setUnrated(self, unrated):
         self.isUnrated = unrated
-
-    def getLastPlayed(self):
-        return self.lastPlayed
 
     def addGameResult(self, win, spr):
         if spr == 0:
@@ -566,13 +552,13 @@ class Player(object):
                 opponent = self.getOpponentByGame(g)
                 if opponent == self:
                     continue   # skip byes
-                opponentMu = opponent.getInitRating()
+                opponentMu = opponent.initRating
                 ### Try varying beta based on ratings difference.
                 ## beta is rating points per point of expected spread
                 ## eg, beta = 5, 100 ratings difference = 20 difference in expected spread
                 beta = 5
 
-                opponentSigma = opponent.getInitRatingDeviation()
+                opponentSigma = opponent.initRatingDeviation
                 rho.append(
                     float(((beta ** 2) * (tau ** 2)) + opponentSigma ** 2)
                 )
@@ -707,119 +693,69 @@ class Game(object):
             ]   # If it is a bye and the player was paired with themself, return their score here
 
 
-class PlayerList(object):   # a global ratings list
+class PlayerList(object):
+    """A global ratings list."""
+
     def __init__(self, ratfile):
-        # Load all current players
+        # Load all current players from ratfile
 
-        # maybe we should do this by creating a separate PlayerList object and init it with the ratfile?
-
-        self.allPlayers = (
-            {}
-        )   # in Python a dict is a data structure like a hash in Perl
-        # we'll store all the players in a dict with the name as the key
-        # in practice we should find a better way than loading all players into memory
+        self.players = {}
 
         with open(ratfile) as f:
             next(f)   # skip headings
-
             for row in f:
-                # print(row)
-                nick = row[0:4]
-                state = row[5:8]
-                name = row[
-                    9:29
-                ].strip()  # strip() removes extra spaces, like perl's chomp()
-                careerGames = int(
-                    row[30:34]
-                )   # python makes you explicitly change a string like "345" into an int 345
-                # print("Career Games:" + str(careerGames))
-                rating = int(row[35:39])
+                p = self.read_player(row)
+                self.players[p.name] = p
 
-                # DEVELOPING TOLERANCE FOR HORRIBLY FORMATTED TOU FILES GRRR!
-                logFile = open('log.txt', 'a+')
-                try:
-                    lastPlayed = datetime.date(
-                        int(row[40:44]), int(row[44:46]), int(row[46:48])
-                    )
-
-                    # print(name + " last played: " + str(lastPlayed))
-                except ValueError:
-                    try:
-                        lastPlayed = datetime.date(
-                            int(row[40:44]), int(row[46:48]), int(row[44:46])
-                        )
-                        # lastPlayed = datetime.date.today()
-                        # print("Corrected weird date:" + str(int(row[40:44]))+str(int(row[44:46]))+str(int(row[46:48])))
-                    except ValueError:
-                        print('One last try on' + str(ratfile) + '!')
-                        logFile.write(
-                            'Problem with ratfile' + str(ratfile) + '\n'
-                        )
-
-                        try:
-                            lastPlayed = datetime.date(
-                                int(row[39:43]),
-                                int(row[43:45]),
-                                int(row[45:47]),
-                            )
-                            print('Reading 1 column to the left')
-
-                        except ValueError:
-                            try:
-                                lastPlayed = datetime.date(
-                                    int(row[41:45]),
-                                    int(row[45:47]),
-                                    int(row[47:49]),
-                                )
-                                print('Reading 1 column to the right')
-                            except ValueError:
-                                print('I give up!!!')
-                                lastPlayed = int('20060101')
-
-                try:
-                    ratingDeviation = float(row[49:])
-                except ValueError:
-                    ratingDeviation = MAX_DEVIATION
-
-                self.allPlayers[name] = Player(
-                    name
-                )   # creates a new Player object and runs __init__ with name as the argument
-                self.allPlayers[name].setInitRating(rating, ratingDeviation)
-                self.allPlayers[name].setCareerGames(careerGames)
-                self.allPlayers[name].setLastPlayed(lastPlayed)
-                self.allPlayers[name].setUnrated(False)
-
-            # output what we have to show the file was parsed
-            # note that a dict is unsorted. we can deal with sorting later by converting dict to another data structure
-
-        #  for player in allPlayers.itervalues():
-        #    print("Name: {0}, Initial Rating: {1}, Career Games: {2}, Last Played: {3}".format(player.getName(), player.getInitRating(), player.getCareerGames(), player.getLastPlayed()))
-
-    def addNewPlayer(
-        self,
-        player,
-        initRating=1500,
-        careerGames=0,
-        lastPlayed=datetime.date.today(),
-        ratingDeviation=MAX_DEVIATION,
-        isUnrated=True,
-    ):
-        self.allPlayers[player.getName()] = player
-        player.setInitRating(initRating, ratingDeviation)
-        player.setCareerGames(careerGames)
-        player.setLastPlayed(lastPlayed)
-        player.setUnrated(isUnrated)
-
-    def getPlayerByName(self, name):
+    def read_player(self, row):
+        nick = row[0:4]
+        state = row[5:8]
+        name = row[9:29].strip()
+        careerGames = int(row[30:34])
+        rating = int(row[35:39])
+        lastPlayed = self.read_date(row)
         try:
-            return self.allPlayers[name]
-        except KeyError:
-            return None
+            ratingDeviation = float(row[49:])
+        except (ValueError, IndexError):
+            ratingDeviation = MAX_DEVIATION
+        return Player(
+                name=name,
+                initRating=rating,
+                initRatingDeviation=ratingDeviation
+                careerGames=careerGames,
+                lastPlayed=lastPlayed,
+                unrated=False
+        )
 
-    def getAllPlayers(self):
-        return self.allPlayers
+    def read_date(self, row):
+        # DEVELOPING TOLERANCE FOR HORRIBLY FORMATTED TOU FILES GRRR!
+        last_played = None
+        with open('log.txt', 'a+') as logfile:
+            # Try reading the date in three different places (40, 39, 41)
+            # and two different formats (yyyymmdd and yyyyddmm)
+            for col in (40, 39, 41):
+              for fmt in ('%Y%m%d', '%Y%d%m'):
+                  try:
+                      last_played = datetime.strptime(row[col : col + 8])
+                  except ValueError:
+                      logfile.write(f'Failed parse: {nick} {fmt} @ {col}')
+            if last_played is None:
+                logfile.write('Could not parse last played date\n')
+                logfile.write(row + '\n')
+                last_played = datetime.strptime('20060101', '%Y%m%d')
+        return last_played
+
+    def add_new_player(self, name):
+        self.players[name] = Player.new_unrated(name)
+
+    def get_ranked_players(self):
+        for p in sorted(
+            self.players.values(),
+            key=lambda p: p.newRating,
+            reverse=True,
+        )
 
     def find_or_add_player(self, name):
-        if name not in self.allPlayers:
-            self.addNewPlayer(Player(name))
-        return self.allPlayers[name]
+        if name not in self.players:
+            self.add_new_player(name)
+        return self.players[name]
