@@ -1,9 +1,11 @@
 #!/usr/bin/python
 
 import datetime
-import string
+import itertools
 import math
 import os
+import re
+import string
 import sys
 import time
 
@@ -13,158 +15,148 @@ global MAX_DEVIATION
 MAX_DEVIATION = 150.0
 
 
+class ParserError(Exception):
+    def __init__(self, lineno, line, message):
+        self.line = line
+        self.message = message
+
+
+@dataclass
+class Result:
+    opponent_id: int
+    score: int
+
+
+class TouReader:
+    """Read AUPAIR's .tou file format."""
+
+    def __init__(self, toufile, player_list):
+        self.filename = toufile
+        self.player_list = player_list
+        self.sections = []
+        self.parse(toufile)
+
+    def parse(self, toufile):
+        with open(toufile) as f:
+            lines = f.readlines()
+
+        # Parse the file into our internal data structures.
+        header, *results = lines
+        self.parse_header(header)
+        self.parse_results(results)
+
+        # Calculate each player's wins and spread.
+        for s in self.sections:
+            s.tallyPlayerResults()
+
+    def parse_header(self, header):
+        # First line: *M31.12.1969 Tournament Name
+        date, self.tournament_name = header.split(' ', 1)
+        try:
+            self.tournament_date = datetime.datetime.strptime(date[2:], '%m.%d.%Y')
+        except ValueError:
+            print(f'Cannot parse tournament date: {date} as dd.mm.yyyy')
+            print("Using today's date")
+            self.tournament_date = datetime.date.today()
+
+    def parse_results(self, results):
+        for line in results:
+            if len(line) == 0 || line.startswith(' '):
+                continue
+
+            line = line.strip()
+            if line == '*** END OF FILE ***':
+                break
+            elif line.startswith('*'):
+                # We have begun a new section, designated by "*SectionName"
+                current_section = Section(line[1:])
+                self.sections.append(current_section)
+                continue
+            elif len(line) < 3:
+                # ignore ridiculously short lines
+                continue
+
+            player_name, scores = self.parse_result_line(line)
+            if not player_name:
+                continue   # this is a high word listed at the top of the file
+
+            current_player = self.player_list.find_or_add_player(player_name)
+            current_section.addPlayer(current_player)
+            if not current_player.isUnrated:
+                current_player.adjustInitialDeviation(self.tournament_date)
+            current_player.setLastPlayed(self.tournament_date)
+            self.add_scores_to_section(current_section, scores)
+
+    def parse_result_line(self, line):
+        """Parses result line into (name, [Result])."""
+        # TOU FORMAT:
+        # Mark Nyman           2488  16 2458  +4 2489 +25 2392   2  345  +8  348
+        # Name       (score with prefix) (opponent number) (score with prefix) (opponent number)
+        # Score Prefixes: 1 = Tie, 2 = Win
+        # Opponent Prefixes: + = player went first
+        def parse_int(s):
+            try:
+                return int(s)
+            except ValueError:
+                msg = 'Score field contained a non-digit: {score}'
+                raise ParserError(line, msg)
+
+        parts = line.split(' ')
+        # Read the first n parts with an alphabet in them as the name, and
+        # everything else as the scores.
+        name = list(itertools.takewhile(
+            lambda x: re.search('[a-zA-Z]', x), parts))
+        scores = parts[len(name):]
+        name = ' '.join(name)
+        if len(scores) < 2:
+            # High score line; ignore it
+            return None, None
+
+        player_scores = []
+        for i in range(0, len(scores), 2):
+            score, opp = parts[i], parts[i + 1]
+            score = parse_int(score) % 1000 # ignore the win/tie prefix
+            opp = parse_int(opp) # ignore the + prefix too
+            player_scores.append(Result(opp, score))
+        return name, player_scores
+
+    def add_scores_to_section(self, current_section, scores):
+        for round_number, result in enumerate(scores):
+            # 1. get the nth round. if it doesn't exist, create it.
+            rnd = current_section.getRoundByNumber(round_number)
+            if rnd is None:
+                rnd = Round()
+                current_section.addRound(rnd)
+
+            # 2. Find the opponent
+            try:
+                opponent = current_section.getPlayerByNumber(result.opponent_id)
+            except IndexError:
+                msg = f'Fewer opponents than rounds. Current player: {player_name}'
+                raise ParserError(line, msg)
+
+            # 3. If we know the opponent, we have already parsed their line
+            # and created the game object. If not, create a new game
+            # object. We will match the opponent to the current player
+            # when we parse them
+            game = rnd.getGameByPlayer(opponent)
+            if game is None:
+                game = Game()
+                rnd.addGame(game)
+            game.addPlayerResult(current_player, result.score)
+
+
 class Tournament(object):
     def __init__(self, ratfile, toufile):
         try:
             self.globalList = PlayerList(ratfile)
-            self.sections = []   # empty list of Section objects
-
-            with open(toufile) as f:
-                line1 = f.readline().split(
-                    ' ', 1
-                )  # First line: *M31.12.1969 Tournament Name
-                # We get a list: [ '*M31.12.1969', 'Tournament Name']
-                self.tournamentName = line1[1].strip()
-                try:
-                    self.tournamentDate = datetime.date(
-                        int(line1[0][8:12]),
-                        int(line1[0][5:7]),
-                        int(line1[0][2:4]),
-                    )
-                except ValueError:
-                    print(
-                        'Cannot parse tournament date: {0} {1} {2}'.format(
-                            line1[0][2:4], line1[0][5:7], line1[0][8:12]
-                        )
-                    )
-                    self.tournamentDate = datetime.date.today()
-                restOfFile = f.readlines()
-
-                for line in restOfFile:
-                    if line.strip() == '*** END OF FILE ***':
-                        break
-                    if len(line) == 0:
-                        continue
-                    elif line[0] == ' ':
-                        continue
-                    elif line.strip()[0] == '*':
-                        currentSection = Section(
-                            line[1:]
-                        )   # Create section object
-                        self.addSection(currentSection)
-                        continue
-                    elif (
-                        len(line) == 1 or len(line) == 2
-                    ):   # ignore ridiculously short lines
-                        continue
-                    playerName = ' '.join(
-                        [
-                            word
-                            for word in line.split()
-                            if any(letter in word for letter in string.letters)
-                        ]
-                    )
-                    try:
-                        gameScoreList = [
-                            int(word.replace('+', ''))
-                            for word in line.split()
-                            if any(char in word for char in string.digits)
-                            and '@' not in word
-                        ]
-                    except ValueError:
-                        print(
-                            'Error parsing tou file {0}. Number fields contain non-digits. Current player: {1}'.format(
-                                toufile, playerName
-                            )
-                        )
-
-                    if len(gameScoreList) == 1:
-                        continue   # this is a high word listed at the top of the file
-
-                    if len(gameScoreList) == ValueError:   # continue anyway
-                        continue   # this is a high word listed at the top of the file
-
-                    currentPlayer = self.globalList.getPlayerByName(playerName)
-                    if currentPlayer is None:
-                        #          print("Creating new player {0}".format(playerName))
-                        self.globalList.addNewPlayer(Player(playerName))
-                        currentPlayer = self.globalList.getPlayerByName(
-                            playerName
-                        )
-
-                    currentSection.addPlayer(currentPlayer)
-                    if not currentPlayer.isUnrated:
-                        currentPlayer.adjustInitialDeviation(
-                            self.tournamentDate
-                        )
-                    currentPlayer.setLastPlayed(self.tournamentDate)
-
-                    # TOU FORMAT:
-                    # Mark Nyman           2488  16 2458  +4 2489 +25 2392   2  345  +8  348
-                    # Name       (score with prefix) (opponent number) (score with prefix) (opponent number)
-                    # Score Prefixes: 1 = Tie, 2 = Win
-                    # Opponent Prefixes: + = player went first
-
-                    # gameScoreList will have [ 2488, 16, 2458, 4, etc ]
-                    gameScores = [
-                        i % 1000 for i in gameScoreList[0::2]
-                    ]   # take every second member of the list mod 1000
-                    opponents = gameScoreList[
-                        1::2
-                    ]   # take every odd member of the list
-
-                    # For each score, pair in the list:
-                    # 1. get the nth round. if it doesn't exist, create it.
-                    for roundNumber in range(len(gameScores)):
-                        roundObject = currentSection.getRoundByNumber(
-                            roundNumber
-                        )
-                        if roundObject is None:
-                            roundObject = Round()
-                            currentSection.addRound(roundObject)
-                        # 2. Find the opponent
-                        try:
-                            opponent = currentSection.getPlayerByNumber(
-                                opponents[roundNumber]
-                            )
-                        except IndexError:
-                            print(
-                                'Error reading tou file {0}. Fewer opponents than rounds. Current player: {1}'.format(
-                                    toufile, playerName
-                                )
-                            )
-
-                        # 3. If we know the opponent, we have already parsed their line and created the game object
-                        #    If not, create a new game object. We will match the opponent to the current player when we parse them
-                        gameObject = roundObject.getGameByPlayer(opponent)
-                        if gameObject is None:
-                            gameObject = Game()
-                            roundObject.addGame(gameObject)
-                        gameObject.addPlayerResult(
-                            currentPlayer, gameScores[roundNumber]
-                        )
-            # now that we are done populating our data structures, let's have each player calculate his wins and spread
-            for s in self.sections:
-                s.tallyPlayerResults()
+            reader = TouReader(toufile, globalList)
+            self.sections = reader.sections
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             template = 'An exception of type {0} occured at line {1}. Arguments:\n{2!r}'
-            message = template.format(
-                type(ex).__name__, exc_tb.tb_lineno, ex.args
-            )
+            message = template.format(type(ex).__name__, exc_tb.tb_lineno, ex.args)
             print(message)
-
-    def getName(self):
-        return self.tournamentName
-
-    def getDate(self):
-        return self.tournamentDate
-
-    def getSections(self):
-        return self.sections
-
-    def addSection(self, section):
-        self.sections.append(section)
 
     def calcRatings(self):
         ##### FIRST here -- calculate ratings for unrated players first
@@ -178,13 +170,10 @@ class Tournament(object):
             converged = False
             iterations = 0
             opponentSum = 0.0
-            #      try:
-            #         manualSeed = float(raw_input("Please enter initial rating:"))
-            #      except ValueError:
             manualSeed = 1500.0
 
             # prepares the average rating of the field
-            for p in [dude for dude in s.getPlayers() if not dude.isUnrated]:
+            for p in s.getUnratedPlayers():
                 opponentMu = p.getInitRating()
                 opponentSum += opponentMu
 
@@ -193,21 +182,11 @@ class Tournament(object):
             while not converged and iterations < MAX_ITERATIONS:
                 converged = True   # i.e. when in the loop and 'False' is returned, keep iterating
 
-                for p in [
-                    dude for dude in s.getPlayers() if dude.isUnrated
-                ]:   # for an unrated dude
+                for p in s.getUnratedPlayers():
                     unratedOppsPct = 0.0
                     unratedOpps = 0.0
                     try:
-                        unratedOpps = float(
-                            len(
-                                [
-                                    opp
-                                    for opp in p.getOpponents()
-                                    if opp.isUnrated
-                                ]
-                            )
-                        )
+                        unratedOpps = float(len([opp for opp in p.getOpponents() if opp.isUnrated]))
                         totalOpps = float(len(p.getOpponents()))
                         unratedOppsPct = float(unratedOpps / totalOpps)
                     except ZeroDivisionError:
@@ -218,7 +197,7 @@ class Tournament(object):
                             preRating = p.getInitRating()
                         except ValueError:
                             p.setInitRating(manualSeed)
-                            print(('Using manual seed of' + manualSeed))
+                            print(f'Using manual seed of {manualSeed}')
                             preRating = p.getInitRating()
                     else:
                         preRating = p.getInitRating()
@@ -226,17 +205,11 @@ class Tournament(object):
                     converged = converged and preRating == p.getNewRating()
                     p.setInitRating(p.getNewRating())
                     p.setInitDeviation(MAX_DEVIATION)
-                    print(
-                        'Rating unrated player'
-                        + str(p)
-                        + ': '
-                        + str(p.getNewRating())
-                        + '\n'
-                    )
+                    print(f'Rating unrated player {p}: {p.getNewRating()}\n')
 
                 iterations = iterations + 1
 
-            for p in [dude for dude in s.getPlayers() if not dude.isUnrated]:
+            for p in s.getRatedPlayers():
                 p.calcNewRatingBySpread()
 
     def outputResults(self, outputFile):  # now accepts 2 input (20161214)
@@ -254,7 +227,6 @@ class Tournament(object):
                 key=lambda x: (x.getWins() * 100000) + x.getSpread(),
                 reverse=True,
             ):
-                #          outputFile.write("{:21} {:10} {:7} {:8} {:8} {:8}".format(p.getName(), str(p.getWins()) + "-" + str(p.getLosses()), p.getSpread(), p.getInitRating(), p.getNewRating(), p.getNewRatingDeviation()))
                 outputFile.write(
                     '{:21} {:10} {:7} {:8} {:8}'.format(
                         p.getName(),
@@ -268,7 +240,7 @@ class Tournament(object):
 
         outputFile.write('\n')   # section break
 
-        for p in [dude for dude in s.getPlayers() if dude.isUnrated]:
+        for p in s.getUnratedPlayers():
             outputFile.write('{:21} is unrated \n'.format(p.getName()))
         outputFile.write('\n')   # section break
 
@@ -380,6 +352,12 @@ class Section(object):
 
     def getPlayers(self):
         return self.players
+
+    def getRatedPlayers(self):
+        return [p for p in self.players if not p.isUnrated]
+
+    def getUnratedPlayers(self):
+        return [p for p in self.players if p.isUnrated]
 
     def getName(self):
         return self.name
@@ -840,3 +818,8 @@ class PlayerList(object):   # a global ratings list
 
     def getAllPlayers(self):
         return self.allPlayers
+
+    def find_or_add_player(self, name):
+        if name not in self.allPlayers:
+            self.addNewPlayer(Player(name))
+        return self.allPlayers[name]
