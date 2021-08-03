@@ -20,6 +20,13 @@ class ParserError(Exception):
         self.message = message
 
 
+def show_exception(ex):
+    exc_type, exc_obj, exc_tb = sys.exc_info()
+    template = 'An exception of type {0} occured at line {1}. Arguments:\n{2!r}'
+    message = template.format(type(ex).__name__, exc_tb.tb_lineno, ex.args)
+    print(message)
+
+
 @dataclass
 class Result:
     opponent_id: int
@@ -154,10 +161,7 @@ class Tournament:
             reader = TouReader(toufile, globalList)
             self.sections = reader.sections
         except Exception as ex:
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            template = 'An exception of type {0} occured at line {1}. Arguments:\n{2!r}'
-            message = template.format(type(ex).__name__, exc_tb.tb_lineno, ex.args)
-            print(message)
+            show_exception(ex)
 
     def calcRatings(self):
         ##### FIRST here -- calculate ratings for unrated players first
@@ -321,12 +325,7 @@ class Tournament:
                         )
                     )
         except Exception as ex:
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            template = 'An exception of type {0} occured at line {1}. Arguments:\n{2!r}'
-            message = template.format(
-                type(ex).__name__, exc_tb.tb_lineno, ex.args
-            )
-            print(message)
+            show_exception(ex)
 
 
 class Section:
@@ -493,12 +492,7 @@ class Player:
                     self.initRatingDeviation,
                 )
             )
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            template = 'An exception of type {0} occured at line {1}. Arguments:\n{2!r}'
-            message = template.format(
-                type(ex).__name__, exc_tb.tb_lineno, ex.args
-            )
-            print(message)
+            show_exception(ex)
 
     def calcNewRatingBySpread(self):   # this rates 1 player
         """
@@ -576,12 +570,7 @@ class Player:
                     beta, tau, mu, sigma
                 )
             )
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            template = 'An exception of type {0} occured at line {1}. Arguments:\n{2!r}'
-            message = template.format(
-                type(ex).__name__, exc_tb.tb_lineno, ex.args
-            )
-            print(message)
+            show_exception(ex)
 
         # muPrime = mu + change
         self.newRating = round(muPrime)
