@@ -418,9 +418,8 @@ class Player(object):
             if score1 > score2:
                 self.addGameResult(True, score1 - score2)
             else:
-                self.addGameResult(
-                    False, score2 - score1
-                )   # for Ties, the "win" boolean doesn't matter
+                # for Ties, the "win" boolean doesn't matter
+                self.addGameResult(False, score2 - score1)
 
     def setInitRating(self, rating, dev=MAX_DEVIATION):
         self.initRating = rating
@@ -542,20 +541,20 @@ class Player(object):
             #      else:
             #        tau = 90
 
-            sigma = float(
-                self.initRatingDeviation
-            )   # Deviation is adjusted for inactive time when player is loaded
+            # Deviation is adjusted for inactive time when player is loaded
+            sigma = float(self.initRatingDeviation)
 
-            rho = []   # opponent uncertainty factor
-            nu = []   # performance rating by game
+            rho = []  # opponent uncertainty factor
+            nu = []  # performance rating by game
             for g in self.games:
                 opponent = self.getOpponentByGame(g)
                 if opponent == self:
                     continue   # skip byes
                 opponentMu = opponent.initRating
-                ### Try varying beta based on ratings difference.
-                ## beta is rating points per point of expected spread
-                ## eg, beta = 5, 100 ratings difference = 20 difference in expected spread
+                # Try varying beta based on ratings difference.
+                # beta is rating points per point of expected spread
+                # eg, beta = 5, 100 ratings difference = 20 difference in
+                # expected spread
                 beta = 5
 
                 opponentSigma = opponent.initRatingDeviation
@@ -564,34 +563,22 @@ class Player(object):
                 )
                 gameSpread = g.getResult()[self] - g.getResult()[opponent]
                 nu.append(float(opponentMu + (beta * gameSpread)))
-            #        print("{0} {1} {2}".format(opponentMu, beta, gameSpread))
-            #      print(nu)
-            #      print(rho )
             sum1 = 0.0
             sum2 = 0.0
             for m in range(len(rho)):   # for each item in the rho list
-                sum1 += (
-                    1.0 / rho[m]
-                )   # summation of inverse of uncertainty factors (to find 'effective' deviation)
-                sum2 += (
-                    nu[m] / rho[m]
-                )   # summaton of (INDIVIDUAL perfrat divided by opponent's sigma)
-            #      print("sum1 sum2 {0} {1}".format(sum1,sum2))
-            invsigmaPrime = (
-                1.0 / (sigma ** 2)
-            ) + sum1   # takes invsquare of original dev, add inv of new sum of devs
-            #      print("{0} {1}".format("invsigmaprime", invsigmaPrime))
-            sigmaPrime = (
-                1.0 / invsigmaPrime
-            )   # flips it back to get 'effective sigmaPrime'
-            #      print("mu sigma sigmaprime {0} {1} {2}".format(mu, sigma, sigmaPrime))
-            muPrime = sigmaPrime * (
-                (mu / (sigma ** 2)) + sum2
-            )   # calculate new rating using NEW sigmaPrime
-            #      print("{0} {1} {2} {3} {4} {5}".format(sigmaPrime, mu, sigma, sum2, mu/(sigma**2), muPrime))
+                # summation of inverse of uncertainty factors (to find
+                # 'effective' deviation)
+                sum1 += (1.0 / rho[m])
+                # summation of (INDIVIDUAL perfrat divided by opponent's sigma)
+                sum2 += (nu[m] / rho[m])
+            # take invsquare of original dev, add inv of new sum of devs,
+            # flip it back to get 'effective sigmaPrime'
+            invsigmaPrime = (1.0 / (sigma ** 2)) + sum1
+            sigmaPrime = (1.0 / invsigmaPrime)
+            # calculate new rating using NEW sigmaPrime
+            muPrime = sigmaPrime * ((mu / (sigma ** 2)) + sum2)
 
             delta = muPrime - mu
-            #      print("{0} {1}".format(self.name, delta))
             if self.careerGames < 200:
                 multiplier = 1.0
             elif mu > 2000:
@@ -624,7 +611,7 @@ class Player(object):
             )
             print(message)
 
-        #    muPrime = mu + change
+        # muPrime = mu + change
         self.newRating = int(round(muPrime))
 
         if self.newRating < 300:
@@ -642,9 +629,10 @@ class Round(object):
     def __init__(self):
         self.games = []
 
-    def getGameByPlayer(
-        self, player
-    ):    # Returns a game object if a game w/ that player exists in the round, else returns None
+    def getGameByPlayer(self, player):
+    """Returns a game object if a game w/ that player exists in the round, else
+    returns None
+    """
         for game in self.games:
             if player in game.getPlayers():
                 return game
@@ -688,9 +676,9 @@ class Game(object):
             opponent = [p for p in self.result.keys() if (p != player)][0]
             return self.result[opponent]
         except IndexError:
-            return self.result[
-                player
-            ]   # If it is a bye and the player was paired with themself, return their score here
+            # If it is a bye and the player was paired with themself, return
+            # their score here
+            return self.result[player]
 
 
 class PlayerList(object):
