@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
-from dataclasses import dataclass, field
-import datetime
+from dataclasses import dataclass
+from datetime import datetime
 import itertools
 import math
 import os
@@ -15,7 +15,7 @@ MAX_DEVIATION = 150.0
 
 
 class ParserError(Exception):
-    def __init__(self, lineno, line, message):
+    def __init__(self, line, message):
         self.line = line
         self.message = message
 
@@ -39,6 +39,7 @@ class ParsedResult:
 class ParsedPlayerResults:
     player_name: str
     results: list[ParsedResult]
+
 
 class ParsedSection:
     def __init__(self, name):
@@ -73,11 +74,12 @@ class TouReader:
         # First line: *M31.12.1969 Tournament Name
         date, self.tournament_name = header.split(' ', 1)
         try:
-            self.tournament_date = datetime.datetime.strptime(date[2:], '%m.%d.%Y')
+            date = date[2:]  # strip off the '*M'
+            self.tournament_date = datetime.strptime(date, '%d.%m.%Y')
         except ValueError:
             print(f'Cannot parse tournament date: {date} as dd.mm.yyyy')
             print("Using today's date")
-            self.tournament_date = datetime.date.today()
+            self.tournament_date = datetime.today()
 
     def parse_results(self, results):
         sections = []
@@ -132,7 +134,7 @@ class TouReader:
             # opponent's opponent_score will be the player's score.
             for pr in s.player_results:
                 for i, result in enumerate(pr.results):
-                    opp_gr = section_results[result.opponent_id][i]
+                    opp_gr = section_results[result.opponent_id - 1][i]
                     opp_gr.opp_score = result.score
 
             # 3. Now that we have fully filled in both sides of each
@@ -144,7 +146,7 @@ class TouReader:
 
             # 4. Now write out the fully parsed and populated Section
             section = Section(s.name)
-            sr.players = players
+            section.players = players
             self.sections.append(section)
 
     def player_for_name(self, name):
@@ -165,7 +167,7 @@ class TouReader:
             try:
                 return int(s)
             except ValueError:
-                msg = 'Score field contained a non-digit: {score}'
+                msg = f'Score field contained a non-digit: {s}'
                 raise ParserError(line, msg)
 
         parts = line.split(' ')
@@ -181,7 +183,7 @@ class TouReader:
 
         player_scores = []
         for i in range(0, len(scores), 2):
-            score, opp = parts[i], parts[i + 1]
+            score, opp = scores[i], scores[i + 1]
             score = parse_int(score) % 1000 # ignore the win/tie prefix
             opp = parse_int(opp) # ignore the + prefix too
             player_scores.append(ParsedResult(opp, score))
@@ -228,13 +230,24 @@ class RatingsCalculator:
 
             iterations = iterations + 1
 
-    def _multiplier_for_init_rating(self, mu):
-       if mu > 2000:
-           return 0.5
-       elif mu > 1800:
-           return 0.75
-       else:
-           return 1.0
+    def _player_multiplier(self, player):
+        # Calculate a multiplier based on initial ratings, then adjust it
+        # based on career games.
+        if player.initRating > 2000:
+            multiplier = 0.5
+        elif player.initRating > 1800:
+            multiplier = 0.75
+        else:
+            multiplier = 1.0
+
+        if player.careerGames < 200:
+            multiplier = 1.0
+        elif player.careerGames > 1000:
+            multiplier = 0.5
+        elif player.careerGames > 100:
+            multiplier = min(multiplier, 1.0 - (player.careerGames / 1800))
+
+        return multiplier
 
     def calc_new_rating_for_player(self, player):
         """An implementation of the Norwegian rating system.
@@ -261,7 +274,7 @@ class RatingsCalculator:
         rhos = []  # opponent uncertainty factor
         nus = []  # performance rating by game
         for g in player.games:
-            opponent = player.getOpponentByGame(g)
+            opponent = g.opponent
             if opponent == player:
                 continue   # skip byes
             opponentMu = opponent.initRating
@@ -279,19 +292,8 @@ class RatingsCalculator:
         sigmaPrime = 1.0 / invsigmaPrime
         # calculate new rating using NEW sigmaPrime
         muPrime = sigmaPrime * ((mu / (sigma ** 2)) + sum2)
-
         delta = muPrime - mu
-
-        # Calculate a multiplier based on initial ratings, then adjust it
-        # based on career games.
-        multiplier = self._multiplier_for_init_rating(mu)
-        if player.careerGames < 200:
-            multiplier = 1.0
-        elif player.careerGames > 1000:
-            multiplier = 0.5
-        elif player.careerGames > 100:
-            multiplier = min(multiplier, 1.0 - (player.careerGames / 1800))
-
+        multiplier = self._player_multiplier(player)
         muPrime = mu + (delta * multiplier)
 
         # muPrime = mu + change
@@ -312,11 +314,11 @@ class Tournament:
     """All data for a tournament."""
 
     def __init__(self, ratfile, toufile):
-        try:
-            self.player_list = PlayerList(ratfile)
-            reader = TouReader(toufile, player_list)
-        except Exception as ex:
-            show_exception(ex)
+        self.player_list = PlayerList(ratfile)
+        reader = TouReader(toufile, self.player_list)
+        self.name = reader.tournament_name
+        self.date = reader.tournament_date
+        self.sections = reader.sections
 
     def calcRatings(self):
         rc = RatingsCalculator()
@@ -418,7 +420,7 @@ class Player:
                 name=name,
                 initRating=1500,
                 initRatingDeviation=MAX_DEVIATION,
-                lastPlayed=datetime.datetime.today(),
+                lastPlayed=datetime.today(),
                 isUnrated=True
         )
 
@@ -493,6 +495,9 @@ class Player:
 class RatingsFile:
     """Player rating data file."""
 
+    def __init__(self):
+        self.col_fmt = '{:9}{:20}{:5}{:5} {:9}{:6}\n'
+
     def parse(self, ratfile):
         players = {}
         with open(ratfile) as f:
@@ -503,16 +508,15 @@ class RatingsFile:
         return players
 
     def _header(self):
-        header = 'NICK     {:20}{:5}{:5} {:9}{:6}\n'.format(
-                'Name', 'Games', ' Rat', 'Lastplayed', 'New Dev'
-                )
-        return header
+        return self.col_fmt.format(
+                'NICK', 'Name', 'Games', ' Rat', 'Lastplayed', 'New Dev')
 
     def write(self, ratfile, players):
         with open(ratfile, 'w') as f:
             f.write(self._header())
             for p in players:
-                out = '         {:20}{:5}{:5} {:9}{:6} \n'.format(
+                out = self.col_fmt.format(
+                        '',
                         p.name,
                         p.careerGames,
                         p.newRating,
@@ -538,63 +542,68 @@ class RatingsFile:
                 initRatingDeviation=ratingDeviation,
                 careerGames=careerGames,
                 lastPlayed=lastPlayed,
-                unrated=False
+                isUnrated=False
         )
 
     def _read_date(self, row):
         # DEVELOPING TOLERANCE FOR HORRIBLY FORMATTED TOU FILES GRRR!
-        last_played = None
         with open('log.txt', 'a+') as logfile:
             # Try reading the date in three different places (40, 39, 41)
             # and two different formats (yyyymmdd and yyyyddmm)
             for col in (40, 39, 41):
               for fmt in ('%Y%m%d', '%Y%d%m'):
                   try:
-                      last_played = datetime.strptime(row[col : col + 8])
+                      # Return as soon as we parse a date.
+                      return datetime.strptime(row[col : col + 8], fmt)
                   except ValueError:
-                      logfile.write(f'Failed parse: {nick} {fmt} @ {col}')
-            if last_played is None:
-                logfile.write('Could not parse last played date\n')
-                logfile.write(row + '\n')
-                last_played = datetime.strptime('20060101', '%Y%m%d')
-        return last_played
+                      logfile.write(f'Failed parse: {fmt} @ {col}\n  {row}\n')
+
+            # If we reach here we have not found a date anywhere we've looked.
+            logfile.write(f'Could not parse last played date\n  {row}\n')
+            return datetime.strptime('20060101', '%Y%m%d')
 
 
 class ResultsFile:
 
+    def __init__(self):
+        self.col_fmt = '{:21} {:10} {:7} {:8} {:8} {:8}'
+
+
     def write(self, output_file, tournament):
         with open(output_file, 'w') as f:
+            f.write(f'{tournament.name}\n{tournament.date.date()}\n')
             for s in tournament.sections:
                 self._write_section(f, s)
 
     def _get_sorted_players(self, section):
-        return sorted(s.getPlayers(),
+        return sorted(section.getPlayers(),
                 key=lambda x: (x.wins * 100000) + x.spread,
                 reverse=True)
 
+    def _header(self):
+        return self.col_fmt.format(
+                'NAME', 'RECORD', 'SPREAD', 'OLD RAT', 'NEW RAT', 'NEW DEV')
+
     def _write_section(self, out, section):
-        out.write('Section {:1}'.format(s.name))
-        out.write(
-            '{:21} {:10} {:7} {:8} {:8}'.format(
-                'NAME', 'RECORD', 'SPREAD', 'OLD RAT', 'NEW RAT'
-            )
-        )
+        out.write('Section {:1}\n'.format(section.name))
+        out.write(self._header())
         out.write('\n')
 
         for p in self._get_sorted_players(section):
             out.write(
-                '{:21} {:10} {:7} {:8} {:8}'.format(
+                    self.col_fmt.format(
                     p.name,
                     f'{p.wins}-{p.losses}',
                     p.spread,
                     p.initRating,
                     p.newRating,
+                    p.newRatingDeviation
                 )
             )
             out.write('\n')
         out.write('\n')   # section break
 
-        for p in s.getUnratedPlayers():
+        for p in section.getUnratedPlayers():
             out.write('{:21} is unrated \n'.format(p.name))
         out.write('\n')   # section break
 
@@ -620,3 +629,10 @@ class PlayerList:
         if name not in self.players:
             self.add_new_player(name)
         return self.players[name]
+
+
+if __name__ == '__main__':
+    t = Tournament('testdata/rating.dat', 'testdata/hoodriver.tou')
+    t.calcRatings()
+    t.outputResults('test.RT')
+    t.outputRatfile('test.dat')
