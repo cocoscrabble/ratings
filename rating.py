@@ -4,11 +4,8 @@ from dataclasses import dataclass
 from datetime import datetime
 import itertools
 import math
-import os
 import re
-import string
 import sys
-import time
 
 
 MAX_DEVIATION = 150.0
@@ -16,12 +13,13 @@ MAX_DEVIATION = 150.0
 
 class ParserError(Exception):
     def __init__(self, line, message):
+        super().__init__(message)
         self.line = line
         self.message = message
 
 
 def show_exception(ex):
-    exc_type, exc_obj, exc_tb = sys.exc_info()
+    _, _, exc_tb = sys.exc_info()
     template = (
             'An exception of type {0} occured at line {1}. '
             'Arguments:\n{2!r}')
@@ -122,7 +120,7 @@ class TouReader:
                     try:
                         opponent = players[result.opponent_id - 1]
                     except IndexError:
-                        print(f'Invalid opponent id {opponent_id} for'
+                        print(f'Invalid opponent id {result.opponent_id} for'
                                 f' player {player.name} in section {s.name}')
                         sys.exit(1)
                     gr = GameResult(opponent, result.score, opp_score=None)
@@ -297,10 +295,8 @@ class RatingsCalculator:
         muPrime = mu + (delta * multiplier)
 
         # muPrime = mu + change
-        player.newRating = round(muPrime)
-
-        if player.newRating < 300:
-            player.newRating = 300
+        # Don't set rating lower than 300
+        player.newRating = max(round(muPrime), 300)
 
         # if (player.newRating < 1000): #believes all lousy players can improve :))
         #  sigmaPrime += math.sqrt(1000 - player.newRating)
@@ -345,12 +341,12 @@ class Tournament:
         ]
         RatingsFile().write(out_file, players)
 
-    def outputActiveRatfile(self, outFile):
+    def outputActiveRatfile(self, out_file):
         with open('removed_people.txt', 'r') as d:
             deceased = [x.rstrip() for x in d.readlines()]
         players = []
         for p in self.player_list.get_ranked_players():
-            threshold = self.tournamentDate - datetime.timedelta(days=731)
+            threshold = self.date - datetime.timedelta(days=731)
             active = p.lastPlayed > threshold
             if active and p.name not in deceased:
                 players.append(p)
@@ -470,10 +466,10 @@ class Player:
         """Returns a list of all opponents."""
         return [g.opponent for g in self.games]
 
-    def adjustInitialDeviation(self, tournamentDate):
+    def adjustInitialDeviation(self, tournament_date):
         try:
             c = 10
-            inactiveDays = int((tournamentDate - self.lastPlayed).days)
+            inactiveDays = int((tournament_date - self.lastPlayed).days)
             self.initRatingDeviation = min(
                 math.sqrt(
                     math.pow(self.initRatingDeviation, 2)
@@ -527,8 +523,8 @@ class RatingsFile:
                 f.write(out)
 
     def _read_player(self, row):
-        nick = row[0:4]
-        state = row[5:8]
+        # nick = row[0:4]
+        # state = row[5:8]
         name = row[9:29].strip()
         careerGames = int(row[30:34])
         rating = int(row[35:39])
@@ -552,12 +548,12 @@ class RatingsFile:
             # Try reading the date in three different places (40, 39, 41)
             # and two different formats (yyyymmdd and yyyyddmm)
             for col in (40, 39, 41):
-              for fmt in ('%Y%m%d', '%Y%d%m'):
-                  try:
-                      # Return as soon as we parse a date.
-                      return datetime.strptime(row[col : col + 8], fmt)
-                  except ValueError:
-                      logfile.write(f'Failed parse: {fmt} @ {col}\n  {row}\n')
+                for fmt in ('%Y%m%d', '%Y%d%m'):
+                    try:
+                        # Return as soon as we parse a date.
+                        return datetime.strptime(row[col : col + 8], fmt)
+                    except ValueError:
+                        logfile.write(f'Failed parse: {fmt} @ {col}\n  {row}\n')
 
             # If we reach here we have not found a date anywhere we've looked.
             logfile.write(f'Could not parse last played date\n  {row}\n')
