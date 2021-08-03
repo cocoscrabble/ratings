@@ -597,7 +597,7 @@ class Player:
             print('ERROR: sigmaPrime {0}'.format(sigmaPrime))
 
 
-class Round(object):
+class Round:
     def __init__(self):
         self.games = []
 
@@ -617,7 +617,7 @@ class Round(object):
         return self.games
 
 
-class Game(object):
+class Game:
     def __init__(self):
         # s1 and s2 are integers
         # r is a boolean -- is this a rated game?
@@ -653,27 +653,25 @@ class Game(object):
             return self.result[player]
 
 
-class PlayerList(object):
-    """A global ratings list."""
+class RatingsFile:
+    """Player rating data file."""
 
-    def __init__(self, ratfile):
-        # Load all current players from ratfile
-
-        self.players = {}
-
+    def parse(self, ratfile):
+        players = {}
         with open(ratfile) as f:
             next(f)   # skip headings
             for row in f:
-                p = self.read_player(row)
-                self.players[p.name] = p
+                p = self._read_player(row)
+                players[p.name] = p
+        return players
 
-    def read_player(self, row):
+    def _read_player(self, row):
         nick = row[0:4]
         state = row[5:8]
         name = row[9:29].strip()
         careerGames = int(row[30:34])
         rating = int(row[35:39])
-        lastPlayed = self.read_date(row)
+        lastPlayed = self._read_date(row)
         try:
             ratingDeviation = float(row[49:])
         except (ValueError, IndexError):
@@ -687,7 +685,7 @@ class PlayerList(object):
                 unrated=False
         )
 
-    def read_date(self, row):
+    def _read_date(self, row):
         # DEVELOPING TOLERANCE FOR HORRIBLY FORMATTED TOU FILES GRRR!
         last_played = None
         with open('log.txt', 'a+') as logfile:
@@ -704,6 +702,14 @@ class PlayerList(object):
                 logfile.write(row + '\n')
                 last_played = datetime.strptime('20060101', '%Y%m%d')
         return last_played
+
+
+class PlayerList:
+    """A global ratings list."""
+
+    def __init__(self, ratfile):
+        # Load all current players from ratfile
+        self.players = RatingsFile().parse(ratfile)
 
     def add_new_player(self, name):
         self.players[name] = Player.new_unrated(name)
