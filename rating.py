@@ -53,17 +53,17 @@ class ParsedSection:
 class TouReader:
     """Read AUPAIR's .tou file format."""
 
-    def __init__(self, toufile, player_list):
-        self.filename = toufile
+    def __init__(self, player_list):
         self.player_list = player_list
         self.sections = []
-        # Populates player_list with game results
-        self.parse(toufile)
 
     def parse(self, toufile):
+        """Populates self.player_list with game results."""
         with open(toufile) as f:
             lines = f.readlines()
+            self.parse_lines(lines)
 
+    def parse_lines(self, lines):
         # Parse the file into our internal data structures.
         header, *results = lines
         self.parse_header(header)
@@ -315,7 +315,8 @@ class Tournament:
 
     def __init__(self, ratfile, toufile):
         self.player_list = PlayerList(ratfile)
-        reader = TouReader(toufile, self.player_list)
+        reader = TouReader(self.player_list)
+        reader.parse(toufile)
         self.name = reader.tournament_name
         self.date = reader.tournament_date
         self.sections = reader.sections
@@ -403,7 +404,7 @@ class Player:
         self.careerGames = careerGames
         self.isUnrated = isUnrated
         self.setInitRating(initRating, initRatingDeviation)
-        self.lastPlayed = lastPlayed or datetime.date(1999, 12, 31)
+        self.lastPlayed = lastPlayed or datetime(1999, 12, 31)
 
         # Always initialized to zero when creating the player
         self.wins = 0.0
@@ -611,9 +612,12 @@ class ResultsFile:
 class PlayerList:
     """A global ratings list."""
 
-    def __init__(self, ratfile):
-        # Load all current players from ratfile
-        self.players = RatingsFile().parse(ratfile)
+    def __init__(self, ratfile=None):
+        if ratfile:
+            # Load all current players from ratfile
+            self.players = RatingsFile().parse(ratfile)
+        else:
+            self.players = {}
 
     def add_new_player(self, name):
         self.players[name] = Player.new_unrated(name)
