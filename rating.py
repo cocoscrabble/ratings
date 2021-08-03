@@ -10,9 +10,7 @@ import string
 import sys
 import time
 
-global tournamentDate
-tournamentDate = 20200101
-global MAX_DEVIATION
+
 MAX_DEVIATION = 150.0
 
 
@@ -85,7 +83,7 @@ class TouReader:
             current_section.addPlayer(current_player)
             if not current_player.isUnrated:
                 current_player.adjustInitialDeviation(self.tournament_date)
-            current_player.setLastPlayed(self.tournament_date)
+            current_player.lastPlayed = self.tournament_date
             self.add_scores_to_section(current_section, scores)
 
     def parse_result_line(self, line):
@@ -147,7 +145,9 @@ class TouReader:
             game.addPlayerResult(current_player, result.score)
 
 
-class Tournament(object):
+class Tournament:
+    """All data for a tournament."""
+
     def __init__(self, ratfile, toufile):
         try:
             self.globalList = PlayerList(ratfile)
@@ -178,7 +178,7 @@ class Tournament(object):
                 opponentMu = p.initRating
                 opponentSum += opponentMu
 
-            opponentAverage = opponentSum / float(len(s.getPlayers()))
+            opponentAverage = opponentSum / len(s.getPlayers())
 
             while not converged and iterations < MAX_ITERATIONS:
                 converged = True   # i.e. when in the loop and 'False' is returned, keep iterating
@@ -187,9 +187,9 @@ class Tournament(object):
                     unratedOppsPct = 0.0
                     unratedOpps = 0.0
                     try:
-                        unratedOpps = float(len([opp for opp in p.getOpponents() if opp.isUnrated]))
-                        totalOpps = float(len(p.getOpponents()))
-                        unratedOppsPct = float(unratedOpps / totalOpps)
+                        unratedOpps = len(opp for opp in p.getOpponents() if opp.isUnrated)
+                        totalOpps = len(p.getOpponents())
+                        unratedOppsPct = unratedOpps / totalOpps
                     except ZeroDivisionError:
                         unratedOppsPct = 0.0
                     if unratedOppsPct >= 0.4:
@@ -204,8 +204,7 @@ class Tournament(object):
                         preRating = p.initRating
                     p.calcNewRatingBySpread()   # calculates rating as usual
                     converged = converged and preRating == p.newRating
-                    p.setInitRating(p.newRating)
-                    p.setInitDeviation(MAX_DEVIATION)
+                    p.setInitRating(p.newRating, MAX_DEVIATION)
                     print(f'Rating unrated player {p}: {p.newRating}\n')
 
                 iterations = iterations + 1
@@ -330,7 +329,9 @@ class Tournament(object):
             print(message)
 
 
-class Section(object):
+class Section:
+    """One section of a tournament."""
+
     def __init__(self, name):
         self.players = []   # List of Player objects
         self.rounds = []   # list of Round objects
@@ -370,7 +371,8 @@ class Section(object):
             p.tallyResults()
 
 
-class Player(object):
+class Player:
+    """Data for a single player."""
 
     def __init__(
             self,
@@ -433,30 +435,6 @@ class Player(object):
         self.newRating = rating
         self.newRatingDeviation = dev
 
-    def setInitDeviation(self, deviation):
-        self.initRatingDeviation = deviation
-
-    def setLastPlayed(self, date):
-        self.lastPlayed = date
-
-    def getName(self):
-        return self.name
-
-    def getDate(self):
-        return self.tournamentDate
-
-    def getNewRating(self):
-        return self.newRating
-
-    def getNewRatingDeviation(self):
-        return self.newRatingDeviation
-
-    def getCareerGames(self):
-        return self.careerGames
-
-    def setUnrated(self, unrated):
-        self.isUnrated = unrated
-
     def addGameResult(self, win, spr):
         if spr == 0:
             self.wins += 0.5
@@ -492,9 +470,8 @@ class Player(object):
             return self
 
     def getOpponents(self):
-        return [
-            self.getOpponentByGame(g) for g in self.games
-        ]   # returns a list of all opponents
+        """Returns a list of all opponents."""
+        return [self.getOpponentByGame(g) for g in self.games]
 
     def adjustInitialDeviation(self, tournamentDate):
         try:
@@ -542,7 +519,7 @@ class Player(object):
             #        tau = 90
 
             # Deviation is adjusted for inactive time when player is loaded
-            sigma = float(self.initRatingDeviation)
+            sigma = self.initRatingDeviation
 
             rho = []  # opponent uncertainty factor
             nu = []  # performance rating by game
@@ -555,14 +532,11 @@ class Player(object):
                 # beta is rating points per point of expected spread
                 # eg, beta = 5, 100 ratings difference = 20 difference in
                 # expected spread
-                beta = 5
-
+                beta = 5.0
                 opponentSigma = opponent.initRatingDeviation
-                rho.append(
-                    float(((beta ** 2) * (tau ** 2)) + opponentSigma ** 2)
-                )
+                rho.append((beta ** 2) * (tau ** 2) + opponentSigma ** 2)
                 gameSpread = g.getResult()[self] - g.getResult()[opponent]
-                nu.append(float(opponentMu + (beta * gameSpread)))
+                nu.append(opponentMu + (beta * gameSpread))
             sum1 = 0.0
             sum2 = 0.0
             for m in range(len(rho)):   # for each item in the rho list
@@ -574,7 +548,7 @@ class Player(object):
             # take invsquare of original dev, add inv of new sum of devs,
             # flip it back to get 'effective sigmaPrime'
             invsigmaPrime = (1.0 / (sigma ** 2)) + sum1
-            sigmaPrime = (1.0 / invsigmaPrime)
+            sigmaPrime = 1.0 / invsigmaPrime
             # calculate new rating using NEW sigmaPrime
             muPrime = sigmaPrime * ((mu / (sigma ** 2)) + sum2)
 
@@ -591,9 +565,7 @@ class Player(object):
             if self.careerGames > 1000:
                 multiplier = 0.5
             elif self.careerGames > 100:
-                multiplier = min(
-                    multiplier, 1.0 - (float(self.careerGames) / 1800)
-                )
+                multiplier = min(multiplier, 1.0 - (self.careerGames / 1800))
 
             muPrime = mu + (delta * multiplier)
 
@@ -612,7 +584,7 @@ class Player(object):
             print(message)
 
         # muPrime = mu + change
-        self.newRating = int(round(muPrime))
+        self.newRating = round(muPrime)
 
         if self.newRating < 300:
             self.newRating = 300
