@@ -22,7 +22,9 @@ class ParserError(Exception):
 
 def show_exception(ex):
     exc_type, exc_obj, exc_tb = sys.exc_info()
-    template = 'An exception of type {0} occured at line {1}. Arguments:\n{2!r}'
+    template = (
+            'An exception of type {0} occured at line {1}. '
+            'Arguments:\n{2!r}')
     message = template.format(type(ex).__name__, exc_tb.tb_lineno, ex.args)
     print(message)
 
@@ -129,10 +131,7 @@ class TouReader:
     def add_scores_to_section(self, current_section, scores):
         for round_number, result in enumerate(scores):
             # 1. get the nth round. if it doesn't exist, create it.
-            rnd = current_section.getRoundByNumber(round_number)
-            if rnd is None:
-                rnd = Round()
-                current_section.addRound(rnd)
+            rnd = current_section.getOrAddRound(round_number)
 
             # 2. Find the opponent
             try:
@@ -152,6 +151,135 @@ class TouReader:
             game.addPlayerResult(current_player, result.score)
 
 
+class RatingsCalculator:
+    """Class to organise ratings calculation code in one place."""
+
+    def calc_initial_ratings(self, section):
+        """Rate all unrated players in a section."""
+
+        # Set pre-tournament rating to 1500 and deviation to 400 to start
+        # Rerun the "calculate ratings for unrated players" part repeatedly,
+        #   using the previously calculated rating as their initial rating
+        #   until the output rating for these players equals the input rating
+
+        # criteria for ratings convergence
+        MAX_ITERATIONS = 50
+        EPSILON = 0.0001
+
+        opponent_sum = sum(p.initRating for p in section.getRatedPlayers())
+        opponent_avg = opponent_sum / len(section.getPlayers())
+
+        converged = False
+        iterations = 0
+        while not converged and iterations < MAX_ITERATIONS:
+            # converged is set to false in the loop below if any player's
+            # rating changes in this iteration.
+            converged = True
+
+            for p in section.getUnratedPlayers():
+                unrated_opps = [o for o in p.getOpponents() if o.isUnrated]
+                if unrated_opps:
+                    unrated_opps_pct = len(unrated_opps) / len(p.getOpponents())
+                else:
+                    unrated_opps_pct = 0.0
+
+                if unrated_opps_pct >= 0.4:
+                    pre_rating = opponent_avg
+                else:
+                    pre_rating = p.initRating
+
+                p.calcNewRatingBySpread()   # calculates rating as usual
+                converged = converged and (
+                        abs(pre_rating - p.newRating) < EPSILON)
+                p.setInitRating(p.newRating)
+                print(f'Rating unrated player {p}: {p.newRating}\n')
+
+            iterations = iterations + 1
+
+    def _multiplier_for_init_rating(self, mu):
+       if mu > 2000:
+           return 0.5
+       elif mu > 1800:
+           return 0.75
+       else:
+           return 1.0
+
+    def calc_new_rating_for_player(self, player):
+        """An implementation of the Norwegian rating system.
+
+        Rates a single player based on spread.
+        """
+
+        # tau is a tuning parameter to get as accurate results as
+        # possible, and should be set up front. The value here is from
+        # Taral Seierstad's rating system for Norwegian scrabble.
+        tau = 90
+
+        # beta is rating points per point of expected spread
+        # eg, beta = 5, 100 ratings difference = 20 difference in
+        # expected spread.
+        # (Should we try varying beta based on ratings difference?)
+        beta = 5.0
+
+        mu = player.initRating
+
+        # Deviation is adjusted for inactive time when player is loaded
+        sigma = player.initRatingDeviation
+
+        rho = []  # opponent uncertainty factor
+        nu = []  # performance rating by game
+        for g in player.games:
+            opponent = player.getOpponentByGame(g)
+            if opponent == player:
+                continue   # skip byes
+            opponentMu = opponent.initRating
+            opponentSigma = opponent.initRatingDeviation
+            rho.append((beta ** 2) * (tau ** 2) + opponentSigma ** 2)
+            gameSpread = g.getResult()[player] - g.getResult()[opponent]
+            nu.append(opponentMu + (beta * gameSpread))
+        sum1 = 0.0
+        sum2 = 0.0
+        for m in range(len(rho)):   # for each item in the rho list
+            # summation of inverse of uncertainty factors (to find
+            # 'effective' deviation)
+            sum1 += (1.0 / rho[m])
+            # summation of (INDIVIDUAL perfrat divided by opponent's sigma)
+            sum2 += (nu[m] / rho[m])
+        # take invsquare of original dev, add inv of new sum of devs,
+        # flip it back to get 'effective sigmaPrime'
+        invsigmaPrime = (1.0 / (sigma ** 2)) + sum1
+        sigmaPrime = 1.0 / invsigmaPrime
+        # calculate new rating using NEW sigmaPrime
+        muPrime = sigmaPrime * ((mu / (sigma ** 2)) + sum2)
+
+        delta = muPrime - mu
+
+        # Calculate a multiplier based on initial ratings, then adjust it
+        # based on career games.
+        multiplier = self._multiplier_for_init_rating(mu)
+        if player.careerGames < 200:
+            multiplier = 1.0
+        elif player.careerGames > 1000:
+            multiplier = 0.5
+        elif player.careerGames > 100:
+            multiplier = min(multiplier, 1.0 - (player.careerGames / 1800))
+
+        muPrime = mu + (delta * multiplier)
+
+        # muPrime = mu + change
+        player.newRating = round(muPrime)
+
+        if player.newRating < 300:
+            player.newRating = 300
+
+        # if (player.newRating < 1000): #believes all lousy players can improve :))
+        #  sigmaPrime += math.sqrt(1000 - player.newRating)
+        try:
+            player.newRatingDeviation = round(math.sqrt(sigmaPrime), 2)
+        except ValueError:
+            print('ERROR: sigmaPrime {0}'.format(sigmaPrime))
+
+
 class Tournament:
     """All data for a tournament."""
 
@@ -165,56 +293,14 @@ class Tournament:
 
     def calcRatings(self):
         ##### FIRST here -- calculate ratings for unrated players first
-        #####   Set their pre-tournament rating to 1500 and deviation to 400 to start
-        #####   Rerun the "calculate ratings for unrated players" part repeatedly,
-        #####     using the previously calculated rating as their initial rating
-        #####     until the output rating for these players equals the input rating
         #####   THEN for rated players only:
-        MAX_ITERATIONS = 50
+        rc = RatingsCalculator()
         for s in self.sections:
-            converged = False
-            iterations = 0
-            opponentSum = 0.0
-            manualSeed = 1500.0
-
-            # prepares the average rating of the field
-            for p in s.getUnratedPlayers():
-                opponentMu = p.initRating
-                opponentSum += opponentMu
-
-            opponentAverage = opponentSum / len(s.getPlayers())
-
-            while not converged and iterations < MAX_ITERATIONS:
-                converged = True   # i.e. when in the loop and 'False' is returned, keep iterating
-
-                for p in s.getUnratedPlayers():
-                    unratedOppsPct = 0.0
-                    unratedOpps = 0.0
-                    try:
-                        unratedOpps = len(opp for opp in p.getOpponents() if opp.isUnrated)
-                        totalOpps = len(p.getOpponents())
-                        unratedOppsPct = unratedOpps / totalOpps
-                    except ZeroDivisionError:
-                        unratedOppsPct = 0.0
-                    if unratedOppsPct >= 0.4:
-                        try:
-                            p.setInitRating(opponentAverage)
-                            preRating = p.initRating
-                        except ValueError:
-                            p.setInitRating(manualSeed)
-                            print(f'Using manual seed of {manualSeed}')
-                            preRating = p.initRating
-                    else:
-                        preRating = p.initRating
-                    p.calcNewRatingBySpread()   # calculates rating as usual
-                    converged = converged and preRating == p.newRating
-                    p.setInitRating(p.newRating, MAX_DEVIATION)
-                    print(f'Rating unrated player {p}: {p.newRating}\n')
-
-                iterations = iterations + 1
-
+            # Calculate initial ratings for unrated players
+            rc.calc_initial_ratings(s)
+            # Calculate new ratings for rated players
             for p in s.getRatedPlayers():
-                p.calcNewRatingBySpread()
+                rc.calc_new_rating_for_player(p)
 
     def outputResults(self, outputFile):  # now accepts 2 input (20161214)
         # handle should be open for writing
@@ -352,11 +438,13 @@ class Section:
     def getUnratedPlayers(self):
         return [p for p in self.players if p.isUnrated]
 
-    def getRoundByNumber(self, number):
+    def getOrAddRound(self, number):
         try:
             return self.rounds[number]
         except IndexError:
-            return None
+            rnd = Round()
+            self.addRound(rnd)
+            return rnd
 
     def getPlayerByNumber(self, number):
         try:
@@ -500,9 +588,6 @@ class Player:
         """
         try:
             mu = self.initRating
-            #      print(self.name)
-            #      print(self.initRating)
-
             #      tau = 70.0 + (float(self.careerGames)/100.0)
             tau = 90
             #      if mu > 2000:
@@ -602,15 +687,12 @@ class Round:
     def addGame(self, game):
         self.games.append(game)
 
-    def getGames(self):
-        return self.games
-
 
 class Game:
     def __init__(self):
         # s1 and s2 are integers
         # r is a boolean -- is this a rated game?
-        self.result = {}   # dict with { PlayerObject: score }
+        self.result = {}   # dict with { Player: score }
         self.rated = True
 
     def addPlayerResult(self, player, score):
@@ -704,7 +786,7 @@ class PlayerList:
         self.players[name] = Player.new_unrated(name)
 
     def get_ranked_players(self):
-        for p in sorted(
+        return sorted(
             self.players.values(),
             key=lambda p: p.newRating,
             reverse=True,
