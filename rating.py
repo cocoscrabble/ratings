@@ -17,6 +17,8 @@ class ParserError(Exception):
         self.line = line
         self.message = message
 
+    def __str__(self):
+        return f'{self.message}\n{self.line}'
 
 def show_exception(ex):
     _, _, exc_tb = sys.exc_info()
@@ -59,7 +61,10 @@ class TouReader:
         """Populates self.player_list with game results."""
         with open(toufile) as f:
             lines = f.readlines()
-            self.parse_lines(lines)
+            try:
+                self.parse_lines(lines)
+            except ParserError as e:
+                print(e)
 
     def parse_lines(self, lines):
         # Parse the file into our internal data structures.
@@ -70,7 +75,7 @@ class TouReader:
 
     def parse_header(self, header):
         # First line: *M31.12.1969 Tournament Name
-        date, self.tournament_name = header.split(' ', 1)
+        date, self.tournament_name = header.split(maxsplit=1)
         try:
             date = date[2:]  # strip off the '*M'
             self.tournament_date = datetime.strptime(date, '%d.%m.%Y')
@@ -168,7 +173,7 @@ class TouReader:
                 msg = f'Score field contained a non-digit: {s}'
                 raise ParserError(line, msg)
 
-        parts = line.split(' ')
+        parts = line.split()
         # Read the first n parts with an alphabet in them as the name, and
         # everything else as the scores.
         name = list(itertools.takewhile(
@@ -224,7 +229,7 @@ class RatingsCalculator:
                 self.calc_new_rating_for_player(p)  # calculates rating as usual
                 converged = converged and (abs(pre_rating - p.newRating) < EPS)
                 p.setInitRating(p.newRating)
-                print(f'Rating unrated player {p}: {p.newRating}\n')
+                print(f'Rating unrated player {p}: {p.newRating}')
 
             iterations = iterations + 1
 
@@ -632,7 +637,7 @@ class PlayerList:
 
 
 if __name__ == '__main__':
-    t = Tournament('testdata/rating.dat', 'testdata/hoodriver.tou')
+    t = Tournament(None, 'testdata/isropn20.tou')
     t.calcRatings()
     t.outputResults('test.RT')
     t.outputRatfile('test.dat')
