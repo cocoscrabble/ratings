@@ -3,9 +3,14 @@
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 import itertools
+import logging
 import math
 import re
 import sys
+
+
+# Set up log file
+logging.basicConfig(filename='ratings.log', encoding='utf-8', level=logging.DEBUG)
 
 
 MAX_DEVIATION = 150.0
@@ -229,7 +234,7 @@ class RatingsCalculator:
                 self.calc_new_rating_for_player(p)  # calculates rating as usual
                 converged = converged and (abs(pre_rating - p.new_rating) < EPS)
                 p.set_init_rating(p.new_rating)
-                print(f'Rating unrated player {p}: {p.new_rating}')
+                logging.debug(f'Rating unrated player {p}: {p.new_rating}')
 
             iterations = iterations + 1
 
@@ -559,20 +564,19 @@ class RatingsFile:
 
     def _read_date(self, row):
         # DEVELOPING TOLERANCE FOR HORRIBLY FORMATTED TOU FILES GRRR!
-        with open('log.txt', 'a+') as logfile:
-            # Try reading the date in three different places (40, 39, 41)
-            # and two different formats (yyyymmdd and yyyyddmm)
-            for col in (40, 39, 41):
-                for fmt in ('%Y%m%d', '%Y%d%m'):
-                    try:
-                        # Return as soon as we parse a date.
-                        return datetime.strptime(row[col : col + 8], fmt)
-                    except ValueError:
-                        logfile.write(f'Failed parse: {fmt} @ {col}\n  {row}\n')
+        # Try reading the date in three different places (40, 39, 41)
+        # and two different formats (yyyymmdd and yyyyddmm)
+        for col in (40, 39, 41):
+            for fmt in ('%Y%m%d', '%Y%d%m'):
+                try:
+                    # Return as soon as we parse a date.
+                    return datetime.strptime(row[col : col + 8], fmt)
+                except ValueError:
+                    logging.debug(f'Failed parse: {fmt} @ {col}\n  {row}\n')
 
-            # If we reach here we have not found a date anywhere we've looked.
-            logfile.write(f'Could not parse last played date\n  {row}\n')
-            return datetime.strptime('20060101', '%Y%m%d')
+        # If we reach here we have not found a date anywhere we've looked.
+        logging.debug(f'Could not parse last played date\n  {row}\n')
+        return datetime.strptime('20060101', '%Y%m%d')
 
 
 class ResultsFile:
