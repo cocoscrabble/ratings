@@ -219,7 +219,7 @@ class RatingsCalculator:
         rated_opponent_sum = sum(p.init_rating for p in section.get_rated_players())
         rated_opponent_avg = rated_opponent_sum / len(section.get_players())
         if rated_opponent_avg < 300:
-            logging.debug("Rated opponent avg = %f; setting to manual seed",
+            logging.debug("Rated player avg = %f; setting to manual seed",
                 rated_opponent_avg)
             rated_opponent_avg = MANUAL_SEED
 
@@ -281,6 +281,7 @@ class RatingsCalculator:
         beta = 5.0
 
         mu = player.init_rating
+        logging.debug('rating %s: initial = %d', player.name, mu)
 
         # Deviation is adjusted for inactive time when player is loaded
         sigma = player.init_rating_deviation
