@@ -376,6 +376,13 @@ class Section:
     def getUnratedPlayers(self):
         return [p for p in self.players if p.isUnrated]
 
+    def show(self):
+        for p in self.players:
+            print(f'Player: {p.name}')
+            for i, g in enumerate(p.games):
+                print(f'{i + 1:>2d}  {g}')
+
+
 
 @dataclass
 class GameResult:
@@ -386,6 +393,9 @@ class GameResult:
     @property
     def spread(self):
         return self.score - self.opp_score
+
+    def __str__(self):
+        return f'{self.opponent.name:<24s} {self.score:3d} - {self.opp_score:3d}'
 
 
 class Player:
