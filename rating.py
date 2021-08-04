@@ -145,7 +145,7 @@ class TouReader:
             # Player and then update the player's results fields.
             for sr, player in zip(section_results, players):
                 player.games = sr
-                player.tallyResults()
+                player.tally_results()
 
             # 4. Now write out the fully parsed and populated Section
             section = Section(s.name)
@@ -154,9 +154,9 @@ class TouReader:
 
     def player_for_name(self, name):
         player = self.player_list.find_or_add_player(name)
-        if not player.isUnrated:
-            player.adjustInitialDeviation(self.tournament_date)
-        player.lastPlayed = self.tournament_date
+        if not player.is_unrated:
+            player.adjust_initial_deviation(self.tournament_date)
+        player.last_played = self.tournament_date
         return player
 
     def parse_result_line(self, line):
@@ -208,8 +208,8 @@ class RatingsCalculator:
         MAX_ITERATIONS = 50
         EPS = 0.0001
 
-        opponent_sum = sum(p.initRating for p in section.getRatedPlayers())
-        opponent_avg = opponent_sum / len(section.getPlayers())
+        opponent_sum = sum(p.init_rating for p in section.get_rated_players())
+        opponent_avg = opponent_sum / len(section.get_players())
 
         converged = False
         iterations = 0
@@ -218,37 +218,37 @@ class RatingsCalculator:
             # rating changes in this iteration.
             converged = True
 
-            for p in section.getUnratedPlayers():
-                unrated_opps = [o for o in p.getOpponents() if o.isUnrated]
+            for p in section.get_unrated_players():
+                unrated_opps = [o for o in p.get_opponents() if o.is_unrated]
                 if unrated_opps:
-                    unrated_opps_pct = len(unrated_opps) / len(p.getOpponents())
+                    unrated_opps_pct = len(unrated_opps) / len(p.get_opponents())
                     if unrated_opps_pct >= 0.4:
-                        p.setInitRating(opponent_avg)
+                        p.set_init_rating(opponent_avg)
 
-                pre_rating = p.initRating
+                pre_rating = p.init_rating
                 self.calc_new_rating_for_player(p)  # calculates rating as usual
-                converged = converged and (abs(pre_rating - p.newRating) < EPS)
-                p.setInitRating(p.newRating)
-                print(f'Rating unrated player {p}: {p.newRating}')
+                converged = converged and (abs(pre_rating - p.new_rating) < EPS)
+                p.set_init_rating(p.new_rating)
+                print(f'Rating unrated player {p}: {p.new_rating}')
 
             iterations = iterations + 1
 
     def _player_multiplier(self, player):
         # Calculate a multiplier based on initial ratings, then adjust it
         # based on career games.
-        if player.initRating > 2000:
+        if player.init_rating > 2000:
             multiplier = 0.5
-        elif player.initRating > 1800:
+        elif player.init_rating > 1800:
             multiplier = 0.75
         else:
             multiplier = 1.0
 
-        if player.careerGames < 200:
+        if player.career_games < 200:
             multiplier = 1.0
-        elif player.careerGames > 1000:
+        elif player.career_games > 1000:
             multiplier = 0.5
-        elif player.careerGames > 100:
-            multiplier = min(multiplier, 1.0 - (player.careerGames / 1800))
+        elif player.career_games > 100:
+            multiplier = min(multiplier, 1.0 - (player.career_games / 1800))
 
         return multiplier
 
@@ -269,10 +269,10 @@ class RatingsCalculator:
         # (Should we try varying beta based on ratings difference?)
         beta = 5.0
 
-        mu = player.initRating
+        mu = player.init_rating
 
         # Deviation is adjusted for inactive time when player is loaded
-        sigma = player.initRatingDeviation
+        sigma = player.init_rating_deviation
 
         rhos = []  # opponent uncertainty factor
         nus = []  # performance rating by game
@@ -280,10 +280,10 @@ class RatingsCalculator:
             opponent = g.opponent
             if opponent == player:
                 continue   # skip byes
-            opponentMu = opponent.initRating
-            opponentSigma = opponent.initRatingDeviation
-            rhos.append((beta ** 2) * (tau ** 2) + opponentSigma ** 2)
-            nus.append(opponentMu + (beta * g.spread))
+            opponent_mu = opponent.init_rating
+            opponent_sigma = opponent.init_rating_deviation
+            rhos.append((beta ** 2) * (tau ** 2) + opponent_sigma ** 2)
+            nus.append(opponent_mu + (beta * g.spread))
         # sum of inverse of uncertainty factors (to find 'effective'
         # deviation)
         sum1 = sum(1 / rho for rho in rhos)
@@ -291,24 +291,24 @@ class RatingsCalculator:
         sum2 = sum(nu / rho for nu, rho in zip(nus, rhos))
         # take invsquare of original dev, add inv of new sum of devs,
         # flip it back to get 'effective sigmaPrime'
-        invsigmaPrime = (1.0 / (sigma ** 2)) + sum1
-        sigmaPrime = 1.0 / invsigmaPrime
+        invsigma_prime = (1.0 / (sigma ** 2)) + sum1
+        sigma_prime = 1.0 / invsigma_prime
         # calculate new rating using NEW sigmaPrime
-        muPrime = sigmaPrime * ((mu / (sigma ** 2)) + sum2)
-        delta = muPrime - mu
+        mu_prime = sigma_prime * ((mu / (sigma ** 2)) + sum2)
+        delta = mu_prime - mu
         multiplier = self._player_multiplier(player)
-        muPrime = mu + (delta * multiplier)
+        mu_prime = mu + (delta * multiplier)
 
         # muPrime = mu + change
         # Don't set rating lower than 300
-        player.newRating = max(round(muPrime), 300)
+        player.new_rating = max(round(mu_prime), 300)
 
-        # if (player.newRating < 1000): #believes all lousy players can improve :))
-        #  sigmaPrime += math.sqrt(1000 - player.newRating)
+        # if (player.new_rating < 1000): #believes all lousy players can improve :))
+        #  sigmaPrime += math.sqrt(1000 - player.new_rating)
         try:
-            player.newRatingDeviation = round(math.sqrt(sigmaPrime), 2)
+            player.new_rating_deviation = round(math.sqrt(sigma_prime), 2)
         except ValueError:
-            print('ERROR: sigmaPrime {0}'.format(sigmaPrime))
+            print('ERROR: sigmaPrime {0}'.format(sigma_prime))
 
 
 class Tournament:
@@ -322,19 +322,19 @@ class Tournament:
         self.date = reader.tournament_date
         self.sections = reader.sections
 
-    def calcRatings(self):
+    def calc_ratings(self):
         rc = RatingsCalculator()
         for s in self.sections:
             # FIRST: Calculate initial ratings for all unrated players
             rc.calc_initial_ratings(s)
             # THEN: Calculate new ratings for rated players
-            for p in s.getRatedPlayers():
+            for p in s.get_rated_players():
                 rc.calc_new_rating_for_player(p)
 
-    def outputResults(self, outputFile):  # now accepts 2 input (20161214)
-        ResultsFile().write(outputFile, self)
+    def output_results(self, output_file):  # now accepts 2 input (20161214)
+        ResultsFile().write(output_file, self)
 
-    def outputRatfile(self, out_file):
+    def output_ratfile(self, out_file):
         byes = {
             'Yy bye', 'A Bye', 'B Bye', 'ZZ Bye', 'Zz Bye', 'Zy bye',
             'Bye One', 'Bye Two', 'Bye Three', 'Bye Four', 'Y Bye',
@@ -346,13 +346,13 @@ class Tournament:
         ]
         RatingsFile().write(out_file, players)
 
-    def outputActiveRatfile(self, out_file):
+    def output_active_ratfile(self, out_file):
         with open('removed_people.txt', 'r') as d:
             deceased = [x.rstrip() for x in d.readlines()]
         players = []
         for p in self.player_list.get_ranked_players():
             threshold = self.date - timedelta(days=731)
-            active = p.lastPlayed > threshold
+            active = p.last_played > threshold
             if active and p.name not in deceased:
                 players.append(p)
 
@@ -367,14 +367,14 @@ class Section:
         self.highgame = {}   # should be dict containing Player, Round, Score
         self.name = name
 
-    def getPlayers(self):
+    def get_players(self):
         return self.players
 
-    def getRatedPlayers(self):
-        return [p for p in self.players if not p.isUnrated]
+    def get_rated_players(self):
+        return [p for p in self.players if not p.is_unrated]
 
-    def getUnratedPlayers(self):
-        return [p for p in self.players if p.isUnrated]
+    def get_unrated_players(self):
+        return [p for p in self.players if p.is_unrated]
 
     def show(self):
         for p in self.players:
@@ -405,58 +405,58 @@ class Player:
             self,
             name,
             *,
-            initRating = 0,
-            initRatingDeviation = 0.0,
-            careerGames=0,
-            isUnrated=False,
-            lastPlayed=None
+            init_rating = 0,
+            init_rating_deviation = 0.0,
+            career_games = 0,
+            is_unrated = False,
+            last_played = None
     ):
         self.name = name
-        self.careerGames = careerGames
-        self.isUnrated = isUnrated
-        self.setInitRating(initRating, initRatingDeviation)
-        self.lastPlayed = lastPlayed or datetime(1999, 12, 31)
+        self.career_games = career_games
+        self.is_unrated = is_unrated
+        self.set_init_rating(init_rating, init_rating_deviation)
+        self.last_played = last_played or datetime(1999, 12, 31)
 
         # Always initialized to zero when creating the player
         self.wins = 0.0
         self.losses = 0.0
         self.spread = 0
-        self.ratingChange = 0
-        self.newRating = 0
-        self.newRatingDeviation = 0.0
+        self.rating_change = 0
+        self.new_rating = 0
+        self.new_rating_deviation = 0.0
         self.games = [] # list of Game objects
 
     @classmethod
     def new_unrated(cls, name):
         return cls(
                 name=name,
-                initRating=1500,
-                initRatingDeviation=MAX_DEVIATION,
-                lastPlayed=datetime.today(),
-                isUnrated=True
+                init_rating=1500,
+                init_rating_deviation=MAX_DEVIATION,
+                last_played=datetime.today(),
+                is_unrated=True
         )
 
     def __str__(self):
         return self.name
 
-    def tallyResults(self):
-        self.updateCareerGames()
+    def tally_results(self):
+        self.update_career_games()
         for g in self.games:
-            self.addGameResult(g.spread)
+            self.add_game_result(g.spread)
 
-    def setInitRating(self, rating, dev=MAX_DEVIATION):
-        self.initRating = rating
-        self.initRatingDeviation = dev
+    def set_init_rating(self, rating, dev=MAX_DEVIATION):
+        self.init_rating = rating
+        self.init_rating_deviation = dev
 
-        if self.initRatingDeviation == 0:
-            self.initRatingDeviation = MAX_DEVIATION
+        if self.init_rating_deviation == 0:
+            self.init_rating_deviation = MAX_DEVIATION
         else:
-            self.initRatingDeviation = dev
+            self.init_rating_deviation = dev
 
-        self.newRating = rating
-        self.newRatingDeviation = dev
+        self.new_rating = rating
+        self.new_rating_deviation = dev
 
-    def addGameResult(self, spr):
+    def add_game_result(self, spr):
         self.spread += spr
         if spr == 0:
             self.wins += 0.5
@@ -466,29 +466,29 @@ class Player:
         else:
             self.losses += 1
 
-    def updateCareerGames(self):
+    def update_career_games(self):
         for game in self.games:
             if game.opponent != self and game.opponent != 'Zz Bye':
-                self.careerGames += 1
+                self.career_games += 1
 
-    def getScoreByRound(self, r):
+    def get_score_by_round(self, r):
         return self.games[r].score
 
-    def getOpponentByRound(self, r):
+    def get_opponent_by_round(self, r):
         return self.games[r].opponent
 
-    def getOpponents(self):
+    def get_opponents(self):
         """Returns a list of all opponents."""
         return [g.opponent for g in self.games]
 
-    def adjustInitialDeviation(self, tournament_date):
+    def adjust_initial_deviation(self, tournament_date):
         try:
             c = 10
-            inactiveDays = int((tournament_date - self.lastPlayed).days)
-            self.initRatingDeviation = min(
+            inactive_days = int((tournament_date - self.last_played).days)
+            self.init_rating_deviation = min(
                 math.sqrt(
-                    math.pow(self.initRatingDeviation, 2)
-                    + (math.pow(c, 2) * inactiveDays)
+                    math.pow(self.init_rating_deviation, 2)
+                    + (math.pow(c, 2) * inactive_days)
                 ),
                 MAX_DEVIATION,
             )
@@ -496,9 +496,9 @@ class Player:
             print(
                 'DEBUG {0} {1} {2} {3}'.format(
                     self.name,
-                    self.lastPlayed,
-                    inactiveDays,
-                    self.initRatingDeviation,
+                    self.last_played,
+                    inactive_days,
+                    self.init_rating_deviation,
                 )
             )
             show_exception(ex)
@@ -521,7 +521,7 @@ class RatingsFile:
 
     def _header(self):
         return self.col_fmt.format(
-                'NICK', 'Name', 'Games', ' Rat', 'Lastplayed', 'New Dev')
+                'NICK', 'Name', 'Games', ' Rat', 'last_played', 'New Dev')
 
     def write(self, ratfile, players):
         with open(ratfile, 'w') as f:
@@ -530,10 +530,10 @@ class RatingsFile:
                 out = self.col_fmt.format(
                         '',
                         p.name,
-                        p.careerGames,
-                        p.newRating,
-                        p.lastPlayed.strftime('%Y%m%d'),
-                        p.newRatingDeviation,
+                        p.career_games,
+                        p.new_rating,
+                        p.last_played.strftime('%Y%m%d'),
+                        p.new_rating_deviation,
                         )
                 f.write(out)
 
@@ -541,20 +541,20 @@ class RatingsFile:
         # nick = row[0:4]
         # state = row[5:8]
         name = row[9:29].strip()
-        careerGames = int(row[30:34])
+        career_games = int(row[30:34])
         rating = int(row[35:39])
-        lastPlayed = self._read_date(row)
+        last_played = self._read_date(row)
         try:
-            ratingDeviation = float(row[49:])
+            rating_deviation = float(row[49:])
         except (ValueError, IndexError):
-            ratingDeviation = MAX_DEVIATION
+            rating_deviation = MAX_DEVIATION
         return Player(
                 name=name,
-                initRating=rating,
-                initRatingDeviation=ratingDeviation,
-                careerGames=careerGames,
-                lastPlayed=lastPlayed,
-                isUnrated=False
+                init_rating=rating,
+                init_rating_deviation=rating_deviation,
+                career_games=career_games,
+                last_played=last_played,
+                is_unrated=False
         )
 
     def _read_date(self, row):
@@ -588,7 +588,7 @@ class ResultsFile:
                 self._write_section(f, s)
 
     def _get_sorted_players(self, section):
-        return sorted(section.getPlayers(),
+        return sorted(section.get_players(),
                 key=lambda x: (x.wins * 100000) + x.spread,
                 reverse=True)
 
@@ -607,15 +607,15 @@ class ResultsFile:
                     p.name,
                     f'{p.wins}-{p.losses}',
                     p.spread,
-                    p.initRating,
-                    p.newRating,
-                    p.newRatingDeviation
+                    p.init_rating,
+                    p.new_rating,
+                    p.new_rating_deviation
                 )
             )
             out.write('\n')
         out.write('\n')   # section break
 
-        for p in section.getUnratedPlayers():
+        for p in section.get_unrated_players():
             out.write('{:21} is unrated \n'.format(p.name))
         out.write('\n')   # section break
 
@@ -636,7 +636,7 @@ class PlayerList:
     def get_ranked_players(self):
         return sorted(
             self.players.values(),
-            key=lambda p: p.newRating,
+            key=lambda p: p.new_rating,
             reverse=True,
         )
 
@@ -648,6 +648,6 @@ class PlayerList:
 
 if __name__ == '__main__':
     t = Tournament(None, 'testdata/isropn20.tou')
-    t.calcRatings()
-    t.outputResults('test.RT')
-    t.outputRatfile('test.dat')
+    t.calc_ratings()
+    t.output_results('test.RT')
+    t.output_ratfile('test.dat')
