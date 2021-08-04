@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timedelta
 import itertools
 import math
 import re
@@ -346,7 +346,7 @@ class Tournament:
             deceased = [x.rstrip() for x in d.readlines()]
         players = []
         for p in self.player_list.get_ranked_players():
-            threshold = self.date - datetime.timedelta(days=731)
+            threshold = self.date - timedelta(days=731)
             active = p.lastPlayed > threshold
             if active and p.name not in deceased:
                 players.append(p)
