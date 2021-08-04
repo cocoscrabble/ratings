@@ -10,7 +10,7 @@ import sys
 
 
 # Set up log file
-logging.basicConfig(filename='ratings.log', encoding='utf-8', level=logging.DEBUG)
+logging.basicConfig(filename='coco_ratings.log', encoding='utf-8', level=logging.DEBUG)
 
 
 MAX_DEVIATION = 150.0
@@ -213,8 +213,15 @@ class RatingsCalculator:
         MAX_ITERATIONS = 50
         EPS = 0.0001
 
-        opponent_sum = sum(p.init_rating for p in section.get_rated_players())
-        opponent_avg = opponent_sum / len(section.get_players())
+        # Manual seed
+        MANUAL_SEED = 1500
+
+        rated_opponent_sum = sum(p.init_rating for p in section.get_rated_players())
+        rated_opponent_avg = rated_opponent_sum / len(section.get_players())
+        if rated_opponent_avg < 300:
+            logging.debug("Rated opponent avg = %f; setting to manual seed",
+                rated_opponent_avg)
+            rated_opponent_avg = MANUAL_SEED
 
         converged = False
         iterations = 0
@@ -228,8 +235,7 @@ class RatingsCalculator:
                 if unrated_opps:
                     unrated_opps_pct = len(unrated_opps) / len(p.get_opponents())
                     if unrated_opps_pct >= 0.4:
-                        p.set_init_rating(opponent_avg)
-
+                        p.set_init_rating(rated_opponent_avg)
                 pre_rating = p.init_rating
                 self.calc_new_rating_for_player(p)  # calculates rating as usual
                 converged = converged and (abs(pre_rating - p.new_rating) < EPS)
@@ -306,6 +312,7 @@ class RatingsCalculator:
 
         # muPrime = mu + change
         # Don't set rating lower than 300
+        logging.debug(f'Rating {player.name}: {player.init_rating} -> {mu_prime}')
         player.new_rating = max(round(mu_prime), 300)
 
         # if (player.new_rating < 1000): #believes all lousy players can improve :))
