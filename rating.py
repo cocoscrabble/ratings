@@ -1,5 +1,8 @@
 #!/usr/bin/python
 
+import argparse
+import collections
+import csv
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 import itertools
@@ -25,14 +28,21 @@ class ParserError(Exception):
     def __str__(self):
         return f'{self.message}\n{self.line}'
 
-def show_exception(ex):
-    _, _, exc_tb = sys.exc_info()
-    template = (
-            'An exception of type {0} occured at line {1}. '
-            'Arguments:\n{2!r}')
-    message = template.format(type(ex).__name__, exc_tb.tb_lineno, ex.args)
-    print(message)
 
+def show_exception(ex):
+    raise Exception from ex
+
+
+def parse_int(s, line='', field='Score'):
+    try:
+        return int(s)
+    except ValueError:
+        msg = f'{field} field contained a non-digit: {s}'
+        raise ParserError(line, msg)
+
+
+# -----------------------------------------------------
+# Result file
 
 @dataclass
 class ParsedResult:
@@ -55,16 +65,27 @@ class ParsedSection:
         self.player_results.append(entry)
 
 
-class TouReader:
-    """Read AUPAIR's .tou file format."""
+class ResultsReader:
+    """Read a results file into Player and Section data."""
 
     def __init__(self, player_list):
         self.player_list = player_list
         self.sections = []
 
-    def parse(self, toufile):
+    def player_for_name(self, name):
+        player = self.player_list.find_or_add_player(name)
+        if not player.is_unrated:
+            player.adjust_initial_deviation(self.tournament_date)
+        player.last_played = self.tournament_date
+        return player
+
+
+class TouReader(ResultsReader):
+    """Read AUPAIR's .tou file format."""
+
+    def parse(self, file):
         """Populates self.player_list with game results."""
-        with open(toufile) as f:
+        with open(file) as f:
             lines = f.readlines()
             try:
                 self.parse_lines(lines)
@@ -157,13 +178,6 @@ class TouReader:
             section.players = players
             self.sections.append(section)
 
-    def player_for_name(self, name):
-        player = self.player_list.find_or_add_player(name)
-        if not player.is_unrated:
-            player.adjust_initial_deviation(self.tournament_date)
-        player.last_played = self.tournament_date
-        return player
-
     def parse_result_line(self, line):
         """Parses result line into (name, [ParsedResult])."""
         # TOU FORMAT:
@@ -171,13 +185,6 @@ class TouReader:
         # Name       (score with prefix) (opponent number) (score with prefix) (opponent number)
         # Score Prefixes: 1 = Tie, 2 = Win
         # Opponent Prefixes: + = player went first
-        def parse_int(s):
-            try:
-                return int(s)
-            except ValueError:
-                msg = f'Score field contained a non-digit: {s}'
-                raise ParserError(line, msg)
-
         parts = line.split()
         # Read the first n parts with an alphabet in them as the name, and
         # everything else as the scores.
@@ -192,11 +199,226 @@ class TouReader:
         player_scores = []
         for i in range(0, len(scores), 2):
             score, opp = scores[i], scores[i + 1]
-            score = parse_int(score) % 1000 # ignore the win/tie prefix
-            opp = parse_int(opp) # ignore the + prefix too
+            score = parse_int(score, line) % 1000 # ignore the win/tie prefix
+            opp = parse_int(opp, line) # ignore the + prefix too
             player_scores.append(ParsedResult(opp, score))
         return ParsedPlayerResults(name, player_scores)
 
+
+class ResultCSVReader(ResultsReader):
+    """Read a csv exported from google sheets."""
+
+    def __init__(self, player_list, name, date):
+        super().__init__(player_list)
+        self.results = collections.defaultdict(list)
+        self.tournament_date = date
+        self.tournament_name = name
+
+    def parse(self, file):
+        """Populates self.player_list with game results."""
+        with open(file) as f:
+            reader = csv.reader(f)
+            # skip the header
+            next(reader)
+            for row in reader:
+                self.parse_row(row)
+
+        for name, games in self.results.items():
+            player = self.player_for_name(name)
+            player.games = games
+            player.tally_results()
+
+        section = Section('main')
+        section.players = [self.player_for_name(name) for name in self.results]
+        self.sections.append(section)
+
+    def parse_row(self, row):
+        _time, round, winner, win_score, opp, opp_score = row
+        p1 = self.player_for_name(winner)
+        p2 = self.player_for_name(opp)
+        win_score = parse_int(win_score, row)
+        opp_score = parse_int(opp_score, row)
+        g1 = GameResult(opponent=p2, score=win_score, opp_score=opp_score)
+        g2 = GameResult(opponent=p1, score=opp_score, opp_score=win_score)
+        self.results[winner].append(g1)
+        self.results[opp].append(g2)
+
+
+class ResultWriter:
+    """Write out tournament results."""
+
+    def headers(self):
+        return [
+                'Name', 'Record', 'Spread',
+                'Old Rating', 'New Rating', 'New Deviation'
+        ]
+
+    def get_sorted_players(self, section):
+        return sorted(section.get_players(),
+                key=lambda x: (x.wins * 100000) + x.spread,
+                reverse=True)
+
+    def row(self, p):
+        return [
+                p.name, f'{p.wins}-{p.losses}', p.spread,
+                p.init_rating, p.new_rating, p.new_rating_deviation
+        ]
+
+
+class TabularResultWriter(ResultWriter):
+    """Write out the results in tabular format."""
+
+    def __init__(self):
+        self.col_fmt = '{:21} {:10} {:7} {:8} {:8} {:8}\n'
+
+    def write(self, output_file, tournament):
+        with open(output_file, 'w') as f:
+            f.write(f'{tournament.name}\n{tournament.date.date()}\n')
+            for s in tournament.sections:
+                self._write_section(f, s)
+
+    def _write_section(self, out, section):
+        out.write('Section {:1}\n'.format(section.name))
+        header = self.col_fmt.format(*self.headers())
+        out.write(header)
+
+        for p in self.get_sorted_players(section):
+            out.write(self.col_fmt.format(*self.row(p)))
+        out.write('\n')   # section break
+
+        for p in section.get_unrated_players():
+            out.write('{:21} is unrated \n'.format(p.name))
+        out.write('\n')   # section break
+
+
+class CSVResultWriter(ResultWriter):
+    """Write out results in .csv format."""
+
+    def write(self, output_file, tournament):
+        with open(output_file, 'w') as f:
+            writer = csv.writer(f)
+            for s in tournament.sections:
+                self._write_section(writer, s)
+
+    def _write_section(self, out, section):
+        out.writerow(self.headers())
+        for p in self.get_sorted_players(section):
+            out.writerow(self.row(p))
+        for p in section.get_unrated_players():
+            out.writerow(["Unrated:", p.name])
+
+
+# -----------------------------------------------------
+# Ratings file
+
+class RTFileReader:
+    """Reads the .RT format."""
+
+    def parse(self, ratfile):
+        players = {}
+        with open(ratfile) as f:
+            next(f)   # skip headings
+            for row in f:
+                p = self._read_player(row)
+                players[p.name] = p
+        return players
+
+    def _read_player(self, row):
+        # nick = row[0:4]
+        # state = row[5:8]
+        name = row[9:29].strip()
+        career_games = int(row[30:34])
+        rating = int(row[35:39])
+        last_played = self._read_date(row)
+        try:
+            rating_deviation = float(row[49:])
+        except (ValueError, IndexError):
+            rating_deviation = MAX_DEVIATION
+        return Player(
+                name=name,
+                init_rating=rating,
+                init_rating_deviation=rating_deviation,
+                career_games=career_games,
+                last_played=last_played,
+                is_unrated=False
+        )
+
+    def _read_date(self, row):
+        # DEVELOPING TOLERANCE FOR HORRIBLY FORMATTED TOU FILES GRRR!
+        # Try reading the date in three different places (40, 39, 41)
+        # and two different formats (yyyymmdd and yyyyddmm)
+        for col in (40, 39, 41):
+            for fmt in ('%Y%m%d', '%Y%d%m'):
+                try:
+                    # Return as soon as we parse a date.
+                    return datetime.strptime(row[col : col + 8], fmt)
+                except ValueError:
+                    logging.debug(f'Failed parse: {fmt} @ {col}\n  {row}\n')
+
+        # If we reach here we have not found a date anywhere we've looked.
+        logging.debug(f'Could not parse last played date\n  {row}\n')
+        return datetime.strptime('20060101', '%Y%m%d')
+
+
+class RTFileWriter:
+    """Writes the .RT format."""
+
+    def __init__(self):
+        self.col_fmt = '{:9}{:20}{:5}{:5} {:9}{:6}\n'
+
+    def _header(self):
+        return self.col_fmt.format(
+                'Nick', 'Name', 'Games', ' Rat', 'last_played', 'New Dev')
+
+    def write(self, file, players):
+        with open(file, 'w') as f:
+            f.write(self._header())
+            for p in players:
+                out = self.col_fmt.format(
+                        '',
+                        p.name,
+                        p.career_games,
+                        p.new_rating,
+                        p.last_played.strftime('%Y%m%d'),
+                        p.new_rating_deviation,
+                )
+                f.write(out)
+
+
+class CSVRatingsFileReader:
+    """Read ratings in csv format.
+
+    CSV format exported from COCO google sheets:
+        name, rating, email
+    """
+
+    def parse(self, file):
+        players = {}
+        with open(file) as f:
+            reader = csv.reader(f)
+            next(reader)
+            for row in reader:
+                p = self.parse_row(row)
+                players[p.name] = p
+        return players
+
+    def parse_row(self, row):
+        name, rating, _email = row
+        career_games = 0
+        rating = parse_int(rating, row, field='Rating')
+        rating_deviation = MAX_DEVIATION
+        is_unrated = rating == 0
+        return Player(
+                name=name,
+                init_rating=rating,
+                init_rating_deviation=rating_deviation,
+                career_games=career_games,
+                is_unrated=is_unrated
+        )
+
+
+# -----------------------------------------------------
+# Ratings calculations
 
 class RatingsCalculator:
     """Class to organise ratings calculation code in one place."""
@@ -324,16 +546,33 @@ class RatingsCalculator:
             print('ERROR: sigmaPrime {0}'.format(sigma_prime))
 
 
+# -----------------------------------------------------
+# Internal data structures
+
 class Tournament:
     """All data for a tournament."""
 
-    def __init__(self, ratfile, toufile):
-        self.player_list = PlayerList(ratfile)
-        reader = TouReader(self.player_list)
-        reader.parse(toufile)
-        self.name = reader.tournament_name
-        self.date = reader.tournament_date
-        self.sections = reader.sections
+    def __init__(self, ratings_file, result_file, name=None, date=None):
+        self.player_list = PlayerList(ratings_file)
+        self.parse_results_file(result_file, name, date)
+
+    def parse_results_file(self, file, name, date):
+        if file.endswith('.csv'):
+            # .csv file needs name and date as args for now
+            reader = ResultCSVReader(self.player_list, name, date)
+            reader.parse(file)
+            self.sections = reader.sections
+            self.name = name
+            self.date = date
+        elif file.endswith('.tou'):
+            # .tou file contains the name and date
+            reader = TouReader(self.player_list)
+            reader.parse(file)
+            self.sections = reader.sections
+            self.name = reader.tournament_name
+            self.date = reader.tournament_date
+        else:
+            raise ValueError(f'No reader for {file}')
 
     def calc_ratings(self):
         rc = RatingsCalculator()
@@ -343,9 +582,6 @@ class Tournament:
             # THEN: Calculate new ratings for rated players
             for p in s.get_rated_players():
                 rc.calc_new_rating_for_player(p)
-
-    def output_results(self, output_file):  # now accepts 2 input (20161214)
-        ResultsFile().write(output_file, self)
 
     def output_ratfile(self, out_file):
         byes = {
@@ -357,7 +593,7 @@ class Tournament:
             p for p in self.player_list.get_ranked_players()
             if p.name not in byes
         ]
-        RatingsFile().write(out_file, players)
+        RTFileWriter().write(out_file, players)
 
     def output_active_ratfile(self, out_file):
         with open('removed_people.txt', 'r') as d:
@@ -369,7 +605,7 @@ class Tournament:
             if active and p.name not in deceased:
                 players.append(p)
 
-        RatingsFile().write(out_file, players)
+        RTFileWriter().write(out_file, players)
 
 
 class Section:
@@ -394,7 +630,6 @@ class Section:
             print(f'Player: {p.name}')
             for i, g in enumerate(p.games):
                 print(f'{i + 1:>2d}  {g}')
-
 
 
 @dataclass
@@ -506,139 +741,22 @@ class Player:
                 MAX_DEVIATION,
             )
         except Exception as ex:
-            print(
-                'DEBUG {0} {1} {2} {3}'.format(
-                    self.name,
-                    self.last_played,
-                    inactive_days,
-                    self.init_rating_deviation,
-                )
-            )
             show_exception(ex)
-
-
-class RatingsFile:
-    """Player rating data file."""
-
-    def __init__(self):
-        self.col_fmt = '{:9}{:20}{:5}{:5} {:9}{:6}\n'
-
-    def parse(self, ratfile):
-        players = {}
-        with open(ratfile) as f:
-            next(f)   # skip headings
-            for row in f:
-                p = self._read_player(row)
-                players[p.name] = p
-        return players
-
-    def _header(self):
-        return self.col_fmt.format(
-                'NICK', 'Name', 'Games', ' Rat', 'last_played', 'New Dev')
-
-    def write(self, ratfile, players):
-        with open(ratfile, 'w') as f:
-            f.write(self._header())
-            for p in players:
-                out = self.col_fmt.format(
-                        '',
-                        p.name,
-                        p.career_games,
-                        p.new_rating,
-                        p.last_played.strftime('%Y%m%d'),
-                        p.new_rating_deviation,
-                        )
-                f.write(out)
-
-    def _read_player(self, row):
-        # nick = row[0:4]
-        # state = row[5:8]
-        name = row[9:29].strip()
-        career_games = int(row[30:34])
-        rating = int(row[35:39])
-        last_played = self._read_date(row)
-        try:
-            rating_deviation = float(row[49:])
-        except (ValueError, IndexError):
-            rating_deviation = MAX_DEVIATION
-        return Player(
-                name=name,
-                init_rating=rating,
-                init_rating_deviation=rating_deviation,
-                career_games=career_games,
-                last_played=last_played,
-                is_unrated=False
-        )
-
-    def _read_date(self, row):
-        # DEVELOPING TOLERANCE FOR HORRIBLY FORMATTED TOU FILES GRRR!
-        # Try reading the date in three different places (40, 39, 41)
-        # and two different formats (yyyymmdd and yyyyddmm)
-        for col in (40, 39, 41):
-            for fmt in ('%Y%m%d', '%Y%d%m'):
-                try:
-                    # Return as soon as we parse a date.
-                    return datetime.strptime(row[col : col + 8], fmt)
-                except ValueError:
-                    logging.debug(f'Failed parse: {fmt} @ {col}\n  {row}\n')
-
-        # If we reach here we have not found a date anywhere we've looked.
-        logging.debug(f'Could not parse last played date\n  {row}\n')
-        return datetime.strptime('20060101', '%Y%m%d')
-
-
-class ResultsFile:
-
-    def __init__(self):
-        self.col_fmt = '{:21} {:10} {:7} {:8} {:8} {:8}'
-
-
-    def write(self, output_file, tournament):
-        with open(output_file, 'w') as f:
-            f.write(f'{tournament.name}\n{tournament.date.date()}\n')
-            for s in tournament.sections:
-                self._write_section(f, s)
-
-    def _get_sorted_players(self, section):
-        return sorted(section.get_players(),
-                key=lambda x: (x.wins * 100000) + x.spread,
-                reverse=True)
-
-    def _header(self):
-        return self.col_fmt.format(
-                'NAME', 'RECORD', 'SPREAD', 'OLD RAT', 'NEW RAT', 'NEW DEV')
-
-    def _write_section(self, out, section):
-        out.write('Section {:1}\n'.format(section.name))
-        out.write(self._header())
-        out.write('\n')
-
-        for p in self._get_sorted_players(section):
-            out.write(
-                    self.col_fmt.format(
-                    p.name,
-                    f'{p.wins}-{p.losses}',
-                    p.spread,
-                    p.init_rating,
-                    p.new_rating,
-                    p.new_rating_deviation
-                )
-            )
-            out.write('\n')
-        out.write('\n')   # section break
-
-        for p in section.get_unrated_players():
-            out.write('{:21} is unrated \n'.format(p.name))
-        out.write('\n')   # section break
 
 
 class PlayerList:
     """A global ratings list."""
 
     def __init__(self, ratfile=None):
+        self.parse_ratfile(ratfile)
+
+    def parse_ratfile(self, ratfile):
         if ratfile:
             # Load all current players from ratfile
-            self.players = RatingsFile().parse(ratfile)
+            if ratfile.endswith('.csv'):
+                self.players = CSVRatingsFileReader().parse(ratfile)
+            else:
+                self.players = RTFileReader().parse(ratfile)
         else:
             self.players = {}
 
@@ -658,8 +776,25 @@ class PlayerList:
         return self.players[name]
 
 
+def make_arg_parser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+            '--name', type=str, default='', help='Tournament name')
+    parser.add_argument(
+            '--date', type=str, default='', help='Tournament date (yyyy-mm-dd)')
+    parser.add_argument(
+            '--rating-file', type=str, help='Ratings file')
+    parser.add_argument(
+            '--result-file', type=str, help='Results file')
+    return parser
+
+
 if __name__ == '__main__':
-    t = Tournament(None, 'testdata/isropn20.tou')
+    parser = make_arg_parser()
+    args = parser.parse_args()
+    date = datetime.strptime(args.date, '%Y-%m-%d')
+    t = Tournament(args.rating_file, args.result_file, args.name, date)
     t.calc_ratings()
-    t.output_results('test.RT')
+    TabularResultWriter().write('test.RT', t)
+    CSVResultWriter().write('test.csv', t)
     t.output_ratfile('test.dat')
