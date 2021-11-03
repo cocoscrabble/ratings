@@ -298,7 +298,7 @@ class CSVResultWriter(ResultWriter):
     """Write out results in .csv format."""
 
     def write(self, output_file, tournament):
-        with open(output_file, 'w') as f:
+        with open(output_file, 'w', newline='') as f:
             writer = csv.writer(f)
             for s in tournament.sections:
                 self._write_section(writer, s)
