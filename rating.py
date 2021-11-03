@@ -10,6 +10,9 @@ import logging
 import math
 import re
 import sys
+import textwrap
+import tkinter as tk
+from tkinter import ttk, filedialog
 
 
 # Set up log file
@@ -776,6 +779,9 @@ class PlayerList:
         return self.players[name]
 
 
+# -----------------------------------------------------
+# CLI
+
 def make_arg_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -789,7 +795,7 @@ def make_arg_parser():
     return parser
 
 
-if __name__ == '__main__':
+def run_cli():
     parser = make_arg_parser()
     args = parser.parse_args()
     date = datetime.strptime(args.date, '%Y-%m-%d')
@@ -799,3 +805,142 @@ if __name__ == '__main__':
     TabularResultWriter().write('output.txt', t)
     CSVResultWriter().write('output.csv', t)
     t.output_ratfile('output.RT')
+
+
+# -----------------------------------------------------
+# GUI
+
+class File():
+    def __init__(self, parent, name, status, save_as=False):
+        self.name = name
+        self.status = status
+        self.save_as = save_as
+        self.label = ttk.Label(parent, text=f"{name}:")
+        self.file = None
+        self.file_label = ttk.Label(parent, text='')
+        b = 'Save as' if self.save_as else 'Open'
+        self.button = ttk.Button(parent, text=b)
+        self.button['command'] = self.select_file
+        self.set_file_label()
+
+    def set_file_label(self):
+        if self.file:
+            text = self.file
+            style="BW.TLabel"
+        else:
+            text = "[No file selected]"
+            style="GW.TLabel"
+        self.file_label.configure(text=text, style=style)
+
+    def select_file(self):
+        filetypes = (
+            ('csv files', '*.csv'),
+            ('All files', '*.*')
+        )
+        if self.save_as:
+            filename = tk.filedialog.asksaveasfilename(
+                title=f'Save new ratings',
+                filetypes=filetypes)
+        else:
+            filename = tk.filedialog.askopenfilename(
+                title=f'Open {self.name} file',
+                filetypes=filetypes)
+        self.file = filename
+        self.set_file_label()
+        self.status.set_status(f"Set {self.name} file")
+
+
+class FilesWidget(ttk.Frame):
+    def __init__(self, container, status):
+        super().__init__(container)
+        self.files = {}
+        self.status = status
+        self._init_widgets()
+
+    def get_files(self):
+        return [self.files[x].file
+                for x in ('Ratings', 'Results', 'New results')]
+
+    def _add_file(self, name, row, save_as=False):
+        f = File(self, name, self.status, save_as)
+        self.files[name] = f
+        opts = {'padx': 5, 'pady': 1, 'ipady': 5}
+        f.label.grid(column=0, row=row, sticky=tk.W, **opts)
+        f.file_label.grid(column=1, row=row, sticky=tk.EW, **opts)
+        f.button.grid(column=2, row=row, sticky=tk.W, **opts)
+
+    def _init_widgets(self):
+        self._add_file('Ratings', 0)
+        self._add_file('Results', 1)
+        self._add_file('New results', 2, save_as=True)
+        self.grid(padx=10, pady=0, sticky=tk.NSEW)
+
+
+class App(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("COCO Ratings Calculator")
+        self.geometry("800x600")
+        self.init_style()
+        self.frame = ttk.Frame(self)
+        self._init_widgets()
+
+    def _init_widgets(self):
+        label = self._instructions()
+        self.output = ttk.Label(self.frame)
+        self.files = FilesWidget(self.frame, status=self)
+        button = ttk.Button(self.frame, text="Calculate new ratings")
+        button['command'] = self.calculate_ratings
+        # layout widgets
+        label.grid(row=0)
+        self.files.grid(row=1, pady=10, sticky=tk.EW)
+        button.grid(row=2, pady=20)
+        self.output.grid(row=3, pady=20, columnspan=3)
+        self.frame.grid()
+
+    def _instructions(self):
+        text = textwrap.dedent("""
+        Instructions:
+
+        * Export a ratings file and a results file from a spreadsheet in CSV format
+        * Load both files into the fields below.
+        * Select a file to save the new ratings to.
+        * Click "Calculate Ratings"
+        """)
+        ret = tk.Text(self.frame, width=80, height=8)
+        ret.insert('end', text)
+        ret.config(state='disabled')
+        return ret
+
+    def init_style(self):
+        style = ttk.Style()
+        style.configure("BW.TLabel", foreground="black", background="white")
+        style.configure("GW.TLabel", foreground="grey", background="white")
+        return style
+
+    def set_status(self, text):
+        self.output.configure(text=text)
+
+    def calculate_ratings(self):
+        rating_file, result_file, outfile = self.files.get_files()
+        if not (rating_file and result_file and outfile):
+            self.set_status("Some filenames are not set")
+            return
+        name = "Tournament name"
+        tdate = datetime.today()
+        t = Tournament(rating_file, result_file, name, tdate)
+        t.calc_ratings()
+        CSVResultWriter().write(outfile, t)
+        self.set_status(f"Wrote new ratings to {outfile}")
+
+
+def run_gui():
+    w = App()
+    w.mainloop()
+
+
+if __name__ == '__main__':
+    if len(sys.argv) > 1:
+        run_cli()
+    else:
+        run_gui()
