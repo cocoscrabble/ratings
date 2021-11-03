@@ -865,9 +865,9 @@ class FilesWidget(ttk.Frame):
         f = File(self, name, self.status, save_as)
         self.files[name] = f
         opts = {'padx': 5, 'pady': 1, 'ipady': 5}
-        f.label.grid(column=0, row=row, sticky=tk.W, **opts)
+        f.label.grid(column=0, row=row, sticky=tk.EW, **opts)
         f.file_label.grid(column=1, row=row, sticky=tk.EW, **opts)
-        f.button.grid(column=2, row=row, sticky=tk.W, **opts)
+        f.button.grid(column=2, row=row, sticky=tk.EW, **opts)
 
     def _init_widgets(self):
         self._add_file('Ratings', 0)
@@ -880,7 +880,7 @@ class App(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("COCO Ratings Calculator")
-        self.geometry("800x600")
+        self.geometry("1200x800")
         self.init_style()
         self.frame = ttk.Frame(self)
         self._init_widgets()
@@ -894,9 +894,10 @@ class App(tk.Tk):
         # layout widgets
         label.grid(row=0)
         self.files.grid(row=1, pady=10, sticky=tk.EW)
+        self.files.grid_columnconfigure(1, weight=1)
         button.grid(row=2, pady=20)
         self.output.grid(row=3, pady=20, columnspan=3)
-        self.frame.grid()
+        self.frame.grid(ipadx=10, padx=2, pady=2, sticky=tk.NSEW)
 
     def _instructions(self):
         text = textwrap.dedent("""
@@ -906,8 +907,14 @@ class App(tk.Tk):
         * Load both files into the fields below.
         * Select a file to save the new ratings to.
         * Click "Calculate Ratings"
+
+        Expected csv columns:
+          rating: Name, Rating
+          results: Submitted On, Round, Winner, Score, Opponent, Score
+
+        Keep the csv header row, the script skips the first row.
         """)
-        ret = tk.Text(self.frame, width=80, height=8)
+        ret = tk.Text(self.frame, width=80, height=14)
         ret.insert('end', text)
         ret.config(state='disabled')
         return ret
