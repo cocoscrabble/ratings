@@ -406,7 +406,7 @@ class CSVRatingsFileReader:
         return players
 
     def parse_row(self, row):
-        name, rating, _email = row
+        name, rating, *_rest = row
         career_games = 0
         rating = parse_int(rating, row, field='Rating')
         rating_deviation = MAX_DEVIATION
