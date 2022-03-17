@@ -814,7 +814,7 @@ def run_cli():
     t.calc_ratings()
     print("Writing results to output.txt and output.csv")
     TabularResultWriter().write_file('output.txt', t)
-    CSVResultWriter().write('output.csv', t)
+    CSVResultWriter().write_file('output.csv', t)
     t.output_ratfile('output.RT')
 
 
