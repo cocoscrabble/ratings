@@ -219,8 +219,9 @@ class ResultCSVReader(ResultsReader):
 
     def parse(self, file):
         """Populates self.player_list with game results."""
+        sep = '\t' if file.endswith(".tsv") else ','
         with open(file) as f:
-            reader = csv.reader(f)
+            reader = csv.reader(f, delimiter=sep)
             # skip the header
             next(reader)
             for row in reader:
@@ -236,7 +237,7 @@ class ResultCSVReader(ResultsReader):
         self.sections.append(section)
 
     def parse_row(self, row):
-        _time, round, winner, win_score, opp, opp_score = row
+        _time, round, winner, win_score, opp, opp_score, *rest = row
         p1 = self.player_for_name(winner)
         p2 = self.player_for_name(opp)
         win_score = parse_int(win_score, row)
@@ -272,13 +273,16 @@ class TabularResultWriter(ResultWriter):
     """Write out the results in tabular format."""
 
     def __init__(self):
-        self.col_fmt = '{:21} {:10} {:7} {:8} {:8} {:8}\n'
+        self.col_fmt = '{:28} {:10} {:7} {:8} {:8} {:8}\n'
 
-    def write(self, output_file, tournament):
+    def write_file(self, output_file, tournament):
         with open(output_file, 'w') as f:
-            f.write(f'{tournament.name}\n{tournament.date.date()}\n')
-            for s in tournament.sections:
-                self._write_section(f, s)
+            self.write(f, tournament)
+
+    def write(self, f, tournament):
+      f.write(f'{tournament.name}\n{tournament.date.date()}\n')
+      for s in tournament.sections:
+          self._write_section(f, s)
 
     def _write_section(self, out, section):
         out.write('Section {:1}\n'.format(section.name))
@@ -297,11 +301,14 @@ class TabularResultWriter(ResultWriter):
 class CSVResultWriter(ResultWriter):
     """Write out results in .csv format."""
 
-    def write(self, output_file, tournament):
+    def write_file(self, output_file, tournament):
         with open(output_file, 'w', newline='') as f:
-            writer = csv.writer(f)
-            for s in tournament.sections:
-                self._write_section(writer, s)
+            self.write(f, tournament)
+
+    def write(self, f, tournament):
+      writer = csv.writer(f)
+      for s in tournament.sections:
+          self._write_section(writer, s)
 
     def _write_section(self, out, section):
         out.writerow(self.headers())
@@ -367,25 +374,28 @@ class RTFileWriter:
     """Writes the .RT format."""
 
     def __init__(self):
-        self.col_fmt = '{:9}{:20}{:5}{:5} {:9}{:6}\n'
+        self.col_fmt = '{:9}{:28}{:5}{:5} {:9}{:6}\n'
 
     def _header(self):
         return self.col_fmt.format(
                 'Nick', 'Name', 'Games', ' Rat', 'last_played', 'New Dev')
 
-    def write(self, file, players):
+    def write_file(self, file, players):
         with open(file, 'w') as f:
-            f.write(self._header())
-            for p in players:
-                out = self.col_fmt.format(
-                        '',
-                        p.name,
-                        p.career_games,
-                        p.new_rating,
-                        p.last_played.strftime('%Y%m%d'),
-                        p.new_rating_deviation,
-                )
-                f.write(out)
+            self.write(f, players)
+
+    def write(self, f, players):
+        f.write(self._header())
+        for p in players:
+            out = self.col_fmt.format(
+                    '-',
+                    p.name,
+                    p.career_games,
+                    p.new_rating,
+                    p.last_played.strftime('%Y%m%d'),
+                    p.new_rating_deviation,
+            )
+            f.write(out)
 
 
 class CSVRatingsFileReader:
@@ -397,8 +407,9 @@ class CSVRatingsFileReader:
 
     def parse(self, file):
         players = {}
+        sep = '\t' if file.endswith(".tsv") else ','
         with open(file) as f:
-            reader = csv.reader(f)
+            reader = csv.reader(f, delimiter=sep)
             next(reader)
             for row in reader:
                 p = self.parse_row(row)
@@ -560,7 +571,7 @@ class Tournament:
         self.parse_results_file(result_file, name, date)
 
     def parse_results_file(self, file, name, date):
-        if file.endswith('.csv'):
+        if file.endswith('.csv') or file.endswith('.tsv'):
             # .csv file needs name and date as args for now
             reader = ResultCSVReader(self.player_list, name, date)
             reader.parse(file)
@@ -596,7 +607,7 @@ class Tournament:
             p for p in self.player_list.get_ranked_players()
             if p.name not in byes
         ]
-        RTFileWriter().write(out_file, players)
+        RTFileWriter().write_file(out_file, players)
 
     def output_active_ratfile(self, out_file):
         with open('removed_people.txt', 'r') as d:
@@ -608,7 +619,7 @@ class Tournament:
             if active and p.name not in deceased:
                 players.append(p)
 
-        RTFileWriter().write(out_file, players)
+        RTFileWriter().write_file(out_file, players)
 
 
 class Section:
@@ -756,7 +767,7 @@ class PlayerList:
     def parse_ratfile(self, ratfile):
         if ratfile:
             # Load all current players from ratfile
-            if ratfile.endswith('.csv'):
+            if ratfile.endswith('.csv') or ratfile.endswith('.tsv'):
                 self.players = CSVRatingsFileReader().parse(ratfile)
             else:
                 self.players = RTFileReader().parse(ratfile)
@@ -802,7 +813,7 @@ def run_cli():
     t = Tournament(args.rating_file, args.result_file, args.name, date)
     t.calc_ratings()
     print("Writing results to output.txt and output.csv")
-    TabularResultWriter().write('output.txt', t)
+    TabularResultWriter().write_file('output.txt', t)
     CSVResultWriter().write('output.csv', t)
     t.output_ratfile('output.RT')
 
@@ -937,7 +948,7 @@ class App(tk.Tk):
         tdate = datetime.today()
         t = Tournament(rating_file, result_file, name, tdate)
         t.calc_ratings()
-        CSVResultWriter().write(outfile, t)
+        CSVResultWriter().write_file(outfile, t)
         self.set_status(f"Wrote new ratings to {outfile}")
 
 
