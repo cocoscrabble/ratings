@@ -20,6 +20,7 @@ logging.basicConfig(filename='coco_ratings.log', encoding='utf-8', level=logging
 
 
 MAX_DEVIATION = 150.0
+UNRATED_INIT_RATING = 1500
 
 
 class ParserError(Exception):
@@ -692,7 +693,7 @@ class Player:
     def new_unrated(cls, name):
         return cls(
                 name=name,
-                init_rating=1500,
+                init_rating=UNRATED_INIT_RATING,
                 init_rating_deviation=MAX_DEVIATION,
                 last_played=datetime.today(),
                 is_unrated=True
@@ -707,7 +708,14 @@ class Player:
             self.add_game_result(g.spread)
 
     def set_init_rating(self, rating, dev=MAX_DEVIATION):
-        self.init_rating = rating
+        # The initial rating should never be < 100, if it is we have probably
+        # encountered a fake value for an unrated player.
+        if rating < 100:
+            self.init_rating = UNRATED_INIT_RATING
+            self.is_unrated = True
+        else:
+            self.init_rating = rating
+
         self.init_rating_deviation = dev
 
         if self.init_rating_deviation == 0:
