@@ -9,6 +9,9 @@ from datetime import datetime
 import glob
 import os
 from io import StringIO
+import textwrap
+import tkinter as tk
+from tkinter import ttk, filedialog
 
 import rating
 from rating import Tournament, CSVResultWriter, TabularResultWriter
@@ -49,18 +52,24 @@ class PlayerDB:
                 self.players[p.name] = Player.from_tournament_player(p)
 
 
-def adjust_tournament(playerdb, tournament):
-    for s in tournament.sections:
-        for p in s.get_players():
-            if p.name not in playerdb.players:
-                continue
-            dbp = playerdb.players[p.name]
-            if p.init_rating != dbp.rating:
-                print(f"Adjusting: {p.name} : {p.init_rating} -> {dbp.rating}")
-            p.init_rating = dbp.rating
-            p.init_rating_deviation = dbp.deviation
-            p.career_games = dbp.games
+    def adjust_tournament(self, tournament):
+        for s in tournament.sections:
+            for p in s.get_players():
+                if p.name not in self.players:
+                    continue
+                dbp = self.players[p.name]
+                # if p.init_rating != dbp.rating:
+                #     print(f"Adjusting: {p.name} : {p.init_rating} -> {dbp.rating}")
+                p.init_rating = dbp.rating
+                p.init_rating_deviation = dbp.deviation
+                p.career_games = dbp.games
 
+    def process_one_tournament(self, rat_file, res_file, name, date):
+        t = Tournament(rat_file, res_file, name, date)
+        self.adjust_tournament(t)
+        t.calc_ratings()
+        self.update(t)
+        return t
 
 
 def show_file(f):
@@ -69,7 +78,7 @@ def show_file(f):
         print(line.strip())
 
 
-def main():
+def process_all_results(rating_file, result_file, name, tdate):
     d = os.path.join(os.path.dirname(__file__), "results")
     results = glob.glob(f"{d}/*results.?sv")
     ratings = glob.glob(f"{d}/*ratings.?sv")
@@ -81,22 +90,37 @@ def main():
         date = datetime.strptime(date, '%Y-%m-%d')
         res = hres[prefix]
         rat = hrat[prefix]
-        t = Tournament(rat, res, prefix, date)
-        adjust_tournament(playerdb, t)
-        t.calc_ratings()
-        playerdb.update(t)
-        res_out = StringIO('')
-        TabularResultWriter().write(res_out, t)
-        show_file(res_out)
-        print("-------------------------")
+        t = playerdb.process_one_tournament(rat, res, prefix, date)
+    # Now process the new tournament
+    t = playerdb.process_one_tournament(rating_file, result_file, name, tdate)
+    res_out = StringIO('')
+    TabularResultWriter().write(res_out, t)
+    show_file(res_out)
+    print("-------------------------")
+    return t
         
         
-        
+# -----------------------------------------------------
+# GUI
 
-
+class App(rating.App):
+    def calculate_ratings(self):
+        rating_file, result_file, outfile = self.files.get_files()
+        if not (rating_file and result_file and outfile):
+            self.set_status("Some filenames are not set")
+            return
+        name = "Tournament name"
+        tdate = datetime.today()
+        t = process_all_results(rating_file, result_file, name, tdate)
+        CSVResultWriter().write_file(outfile, t)
+        self.set_status(f"Wrote new ratings to {outfile}")
+        print(f"Wrote new ratings to {outfile}")
     
+
+def run_gui():
+    w = App()
+    w.mainloop()
 
 
 if __name__ == '__main__':
-    main()
-
+    run_gui()

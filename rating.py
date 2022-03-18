@@ -853,7 +853,7 @@ class File():
 
     def select_file(self):
         filetypes = (
-            ('csv files', '*.csv'),
+            ('csv files', '*.?sv'),
             ('All files', '*.*')
         )
         if self.save_as:
