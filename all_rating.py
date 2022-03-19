@@ -4,14 +4,14 @@ Carries forward ratings and std deviation for repeat players. This is a stopgap
 measure until we put an actual database in place.
 """
 
+import csv
 from dataclasses import dataclass
 from datetime import datetime
 import glob
 import os
 from io import StringIO
-import textwrap
+import sys
 import tkinter as tk
-from tkinter import ttk, filedialog
 
 import rating
 from rating import Tournament, CSVResultWriter, TabularResultWriter
@@ -40,6 +40,30 @@ class Player:
         return cls(p.name, p.new_rating, p.new_rating_deviation, p.career_games)
 
 
+class CSVRatingsFileWriter:
+    """Write ratings in csv format.
+
+    CSV format:
+        name, rating, rating deviation
+    """
+    def headers(self):
+        return ['Name', 'Rating', 'Deviation', 'Games played']
+
+    def row(self, p):
+        return [p.name, p.rating, p.deviation, p.games]
+
+    def write_file(self, output_file, players):
+        players = sorted(players, key=lambda p: -p.rating)
+        with open(output_file, 'w', newline='') as f:
+            self.write(f, players)
+
+    def write(self, f, players):
+        writer = csv.writer(f)
+        writer.writerow(self.headers())
+        for p in players:
+            writer.writerow(self.row(p))
+
+
 class PlayerDB:
     """Player database."""
 
@@ -62,7 +86,7 @@ class PlayerDB:
                 #     print(f"Adjusting: {p.name} : {p.init_rating} -> {dbp.rating}")
                 p.init_rating = dbp.rating
                 p.init_rating_deviation = dbp.deviation
-                p.career_games = dbp.games
+                p.career_games += dbp.games
 
     def process_one_tournament(self, rat_file, res_file, name, date):
         t = Tournament(rat_file, res_file, name, date)
@@ -78,7 +102,7 @@ def show_file(f):
         print(line.strip())
 
 
-def process_all_results(rating_file, result_file, name, tdate):
+def process_old_results():
     d = os.path.join(os.path.dirname(__file__), "results")
     results = glob.glob(f"{d}/*results.?sv")
     ratings = glob.glob(f"{d}/*ratings.?sv")
@@ -91,6 +115,11 @@ def process_all_results(rating_file, result_file, name, tdate):
         res = hres[prefix]
         rat = hrat[prefix]
         t = playerdb.process_one_tournament(rat, res, prefix, date)
+    return playerdb
+
+
+def process_all_results(rating_file, result_file, name, tdate):
+    playerdb = process_old_results()
     # Now process the new tournament
     t = playerdb.process_one_tournament(rating_file, result_file, name, tdate)
     res_out = StringIO('')
@@ -98,6 +127,13 @@ def process_all_results(rating_file, result_file, name, tdate):
     show_file(res_out)
     print("-------------------------")
     return t
+
+
+def write_current_ratings(filename):
+    playerdb = process_old_results()
+    ps = playerdb.players.values()
+    CSVRatingsFileWriter().write_file(filename, ps)
+    print(f"Wrote current ratings to {filename}")
         
         
 # -----------------------------------------------------
@@ -123,4 +159,8 @@ def run_gui():
 
 
 if __name__ == '__main__':
-    run_gui()
+    if len(sys.argv) > 1:
+        filename = sys.argv[1]
+        write_current_ratings(filename)
+    else:
+        run_gui()
