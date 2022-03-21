@@ -126,7 +126,7 @@ def process_all_results(rating_file, result_file, name, tdate):
     TabularResultWriter().write(res_out, t)
     show_file(res_out)
     print("-------------------------")
-    return t
+    return playerdb, t
 
 
 def write_current_ratings(filename):
@@ -147,10 +147,16 @@ class App(rating.App):
             return
         name = "Tournament name"
         tdate = datetime.today()
-        t = process_all_results(rating_file, result_file, name, tdate)
+        playerdb, t = process_all_results(rating_file, result_file, name, tdate)
         CSVResultWriter().write_file(outfile, t)
         self.set_status(f"Wrote new ratings to {outfile}")
-        print(f"Wrote new ratings to {outfile}")
+        print(f"Wrote tournament ratings to {outfile}")
+        # Also write out the complete rating list
+        filename = "complete-ratings-list.csv"
+        ps = playerdb.players.values()
+        CSVRatingsFileWriter().write_file(filename, ps)
+        print(f"Wrote all current ratings to {filename}")
+
     
 
 def run_gui():
