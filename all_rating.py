@@ -118,11 +118,11 @@ def process_old_results():
         res = hres[prefix]
         rat = hrat[prefix]
         t = playerdb.process_one_tournament(rat, res, prefix, date)
-    return playerdb
+    return playerdb, t
 
 
 def process_all_results(rating_file, result_file, name, tdate):
-    playerdb = process_old_results()
+    playerdb, _ = process_old_results()
     # Now process the new tournament
     t = playerdb.process_one_tournament(rating_file, result_file, name, tdate)
     res_out = StringIO('')
@@ -133,12 +133,30 @@ def process_all_results(rating_file, result_file, name, tdate):
 
 
 def write_current_ratings(filename):
-    playerdb = process_old_results()
+    playerdb, t = process_old_results()
+    write_latest_ratings(filename, playerdb, t)
+
+
+def write_latest_ratings(outfile, playerdb, t):
+    # Display the most recent tournament
+    print("-------------------------")
+    print(f"Ratings adjustment for most recent tournament")
+    res_out = StringIO('')
+    TabularResultWriter().write(res_out, t)
+    show_file(res_out)
+    print("-------------------------")
+    CSVResultWriter().write_file(outfile, t)
+    # Also write out the complete rating list
+    write_complete_ratings(playerdb)
+
+
+def write_complete_ratings(playerdb):
+    filename = "complete-ratings-list.csv"
     ps = playerdb.players.values()
     CSVRatingsFileWriter().write_file(filename, ps)
-    print(f"Wrote current ratings to {filename}")
-        
-        
+    print(f"Wrote all current ratings to {filename}")
+
+
 # -----------------------------------------------------
 # GUI
 
@@ -155,12 +173,8 @@ class App(rating.App):
         self.set_status(f"Wrote new ratings to {outfile}")
         print(f"Wrote tournament ratings to {outfile}")
         # Also write out the complete rating list
-        filename = "complete-ratings-list.csv"
-        ps = playerdb.players.values()
-        CSVRatingsFileWriter().write_file(filename, ps)
-        print(f"Wrote all current ratings to {filename}")
+        write_complete_ratings(playerdb)
 
-    
 
 def run_gui():
     w = App()
