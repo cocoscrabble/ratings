@@ -518,7 +518,7 @@ class RatingsCalculator:
         beta = 5.0
 
         mu = player.init_rating
-        logging.debug('rating %s: initial = %d', player.name, mu)
+        logging.debug('rating %s: initial = %d, multiplier = %f', player.name, mu, self._player_multiplier(player))
 
         # Deviation is adjusted for inactive time when player is loaded
         sigma = player.init_rating_deviation
@@ -531,8 +531,12 @@ class RatingsCalculator:
                 continue   # skip byes
             opponent_mu = opponent.init_rating
             opponent_sigma = opponent.init_rating_deviation
-            rhos.append((beta ** 2) * (tau ** 2) + opponent_sigma ** 2)
-            nus.append(opponent_mu + (beta * g.spread))
+            g_rho = (beta ** 2) * (tau ** 2) + opponent_sigma ** 2
+            g_nu = opponent_mu + (beta * g.spread)
+            logging.debug("  opp %s (μ=%.2f σ=%.2f) -> (ρ=%.2f ν=%.2f)",
+                          opponent.name, opponent_mu, opponent_sigma, g_rho, g_nu)
+            rhos.append(g_rho)
+            nus.append(g_nu)
         # sum of inverse of uncertainty factors (to find 'effective'
         # deviation)
         sum1 = sum(1 / rho for rho in rhos)
@@ -547,6 +551,15 @@ class RatingsCalculator:
         delta = mu_prime - mu
         multiplier = self._player_multiplier(player)
         mu_prime = mu + (delta * multiplier)
+
+        # Debug per-game rating change
+        logging.debug("Per game rating changes for %s", player.name)
+        base = sigma_prime * (mu / (sigma ** 2))
+        logging.debug("  base from opp ratings: %.2f", base)
+        for game, g_rho, g_nu in zip(player.games, rhos, nus):
+            g_mu = sigma_prime * (g_nu / g_rho)
+            base += g_mu
+            logging.debug("  %20s (%4d): \t Δ %.2f \t Σ %.2f", game.opponent.name, game.spread, g_mu, base)
 
         # muPrime = mu + change
         # Don't set rating lower than 300
@@ -590,6 +603,7 @@ class Tournament:
             raise ValueError(f'No reader for {file}')
 
     def calc_ratings(self):
+        logging.debug("--------------Calculating ratings for %s", self.name)
         rc = RatingsCalculator()
         for s in self.sections:
             # FIRST: Calculate initial ratings for all unrated players
