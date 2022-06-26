@@ -980,6 +980,13 @@ def run_gui():
 
 
 if __name__ == '__main__':
+    # DO NOT run the standalone rating script, always run all_rating
+    print()
+    print("Run `python all_rating.py` to rate a new tournament.")
+    print()
+    sys.exit(0)
+
+    # Comment out the above lines to run the standalone script.
     if len(sys.argv) > 1:
         run_cli()
     else:
