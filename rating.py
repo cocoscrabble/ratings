@@ -105,7 +105,7 @@ class TouReader(ResultsReader):
 
     def parse_header(self, header):
         # First line: *M31.12.1969 Tournament Name
-        date, self.tournament_name = header.split(maxsplit=1)
+        date, self.tournament_name = header.rstrip().split(maxsplit=1)
         try:
             date = date[2:]  # strip off the '*M'
             self.tournament_date = datetime.strptime(date, '%d.%m.%Y')
@@ -151,14 +151,15 @@ class TouReader(ResultsReader):
             section_results = []
             for pr, player in zip(s.player_results, players):
                 game_results = []
-                for result in pr.results:
+                for i, result in enumerate(pr.results):
                     try:
                         opponent = players[result.opponent_id - 1]
                     except IndexError:
                         print(f'Invalid opponent id {result.opponent_id} for'
                                 f' player {player.name} in section {s.name}')
                         sys.exit(1)
-                    gr = GameResult(opponent, result.score, opp_score=None)
+                    round = i + 1
+                    gr = GameResult(round, opponent, result.score, opp_score=None)
                     game_results.append(gr)
                 section_results.append(game_results)
 
@@ -243,8 +244,8 @@ class ResultCSVReader(ResultsReader):
         p2 = self.player_for_name(opp)
         win_score = parse_int(win_score, row)
         opp_score = parse_int(opp_score, row)
-        g1 = GameResult(opponent=p2, score=win_score, opp_score=opp_score)
-        g2 = GameResult(opponent=p1, score=opp_score, opp_score=win_score)
+        g1 = GameResult(round=round, opponent=p2, score=win_score, opp_score=opp_score)
+        g2 = GameResult(round=round, opponent=p1, score=opp_score, opp_score=win_score)
         self.results[winner].append(g1)
         self.results[opp].append(g2)
 
@@ -317,6 +318,39 @@ class CSVResultWriter(ResultWriter):
             out.writerow(self.row(p))
         for p in section.get_unrated_players():
             out.writerow(["Unrated:", p.name])
+
+
+class TouResultWriter(ResultWriter):
+    """Write out the tournament in .TOU format."""
+
+    def write_file(self, output_file, tournament):
+        with open(output_file, 'w') as f:
+            self.write(f, tournament)
+
+    def write(self, f, tournament):
+      f.write(f'*M{tournament.date.strftime("%d.%m.%Y")} {tournament.name}\n')
+      for s in tournament.sections:
+          self._write_section(f, s)
+      f.write('*** END OF FILE ***\n')
+
+    def _write_section(self, out, section):
+        out.write(f'*{section.name}\n')
+        players = self.get_sorted_players(section)
+        numbers = {}
+        for i, p in enumerate(players):
+            numbers[p.name] = i + 1
+
+        for p in players:
+            row = [p.name]
+            for g in sorted(p.games, key=lambda x: x.round):
+                row.append(self._format_game(g, numbers))
+            out.write(' '.join(row))
+            out.write('\n')
+
+    def _format_game(self, g, numbers):
+        prefix = {'W': '2', 'L': '', 'T': '1'}[g.outcome]
+        opp = numbers[g.opponent.name]
+        return f'{prefix}{g.score} {opp}'
 
 
 # -----------------------------------------------------
@@ -664,6 +698,7 @@ class Section:
 
 @dataclass
 class GameResult:
+    round: int
     opponent: 'Player'
     score: int
     opp_score: int
@@ -674,6 +709,15 @@ class GameResult:
 
     def __str__(self):
         return f'{self.opponent.name:<24s} {self.score:3d} - {self.opp_score:3d}'
+
+    @property
+    def outcome(self):
+        if self.score > self.opp_score:
+            return 'W'
+        if self.score == self.opp_score:
+            return 'T'
+        if self.score < self.opp_score:
+            return 'L'
 
 
 class Player:

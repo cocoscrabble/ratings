@@ -16,9 +16,9 @@ class TestRatings(unittest.TestCase):
             (400, 300), (200, 450), (500, 450), (300, 300),
             (600, 300), (350, 500), (250, 400), (350, 300)
         ]
-        for (a, b) in results:
-            alice.games.append(GameResult(becky, a, b))
-            becky.games.append(GameResult(alice, b, a))
+        for i, (a, b) in enumerate(results):
+            alice.games.append(GameResult(i + 1, becky, a, b))
+            becky.games.append(GameResult(i + 1, alice, b, a))
         section = Section('a')
         section.players = [alice, becky]
         for p in section.players:
