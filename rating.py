@@ -527,7 +527,8 @@ class RatingsCalculator:
         nus = []  # performance rating by game
         for g in player.games:
             opponent = g.opponent
-            if opponent == player:
+            if opponent == player or g.opp_score == 0:
+                logging.debug("  skipping game against bye")
                 continue   # skip byes
             opponent_mu = opponent.init_rating
             opponent_sigma = opponent.init_rating_deviation
@@ -616,7 +617,7 @@ class Tournament:
         byes = {
             'Yy bye', 'A Bye', 'B Bye', 'ZZ Bye', 'Zz Bye', 'Zy bye',
             'Bye One', 'Bye Two', 'Bye Three', 'Bye Four', 'Y Bye',
-            'Z Bye',
+            'Z Bye', 'Bye'
             }
         players = [
             p for p in self.player_list.get_ranked_players()
