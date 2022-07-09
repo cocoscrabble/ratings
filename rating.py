@@ -561,8 +561,8 @@ class RatingsCalculator:
         nus = []  # performance rating by game
         for g in player.games:
             opponent = g.opponent
-            if opponent == player or g.opp_score == 0:
-                logging.debug("  skipping game against bye")
+            if opponent == player or g.opp_score == 0 or g.score == 0:
+                logging.debug("  skipping bye / forfeit")
                 continue   # skip byes
             opponent_mu = opponent.init_rating
             opponent_sigma = opponent.init_rating_deviation
