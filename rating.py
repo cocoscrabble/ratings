@@ -335,22 +335,46 @@ class TouResultWriter(ResultWriter):
 
     def _write_section(self, out, section):
         out.write(f'*{section.name}\n')
+        out.write(f'{0:39}\n')
         players = self.get_sorted_players(section)
+        last_round = max(int(g.round) for p in players for g in p.games)
+
         numbers = {}
         for i, p in enumerate(players):
             numbers[p.name] = i + 1
 
         for p in players:
-            row = [p.name]
-            for g in sorted(p.games, key=lambda x: x.round):
-                row.append(self._format_game(g, numbers))
+            if p.name.lower() == "bye":
+                continue
+            row = [self._format_name(p.name)]
+            games = {g.round: g for g in p.games}
+            for round in range(last_round):
+                g = games.get(str(round + 1))
+                if g:
+                    row.append(self._format_game(p, g, numbers))
+                else:
+                    # No result for round
+                    row.append(self._format("0", 0, numbers[p.name]))
+
             out.write(' '.join(row))
             out.write('\n')
 
-    def _format_game(self, g, numbers):
-        prefix = {'W': '2', 'L': '', 'T': '1'}[g.outcome]
-        opp = numbers[g.opponent.name]
-        return f'{prefix}{g.score} {opp}'
+    def _format_name(self, name):
+        # special-case cbb
+        if name.lower().startswith("conrad bassett"):
+            name = "Conrad Bassett"
+        return f"{name:20}"
+
+    def _format_game(self, p, g, numbers):
+        prefix = {'W': '2', 'L': ' ', 'T': '1'}[g.outcome]
+        if g.opponent.name.lower() == "bye":
+            opp = numbers[p.name]
+        else:
+            opp = numbers[g.opponent.name]
+        return self._format(prefix, g.score, opp)
+
+    def _format(self, prefix, score, opp):
+        return f'{prefix}{score:0>3}{opp:>4}'
 
 
 # -----------------------------------------------------
