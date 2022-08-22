@@ -1000,13 +1000,18 @@ class App(tk.Tk):
         label = self._instructions()
         self.output = ttk.Label(self.frame)
         self.files = FilesWidget(self.frame, status=self)
-        button = ttk.Button(self.frame, text="Calculate new ratings")
-        button['command'] = self.calculate_ratings
+        buttonbox = ttk.Frame(self.frame)
+        button1 = ttk.Button(buttonbox, text="Calculate new ratings")
+        button1['command'] = self.calculate_ratings
+        button2 = ttk.Button(buttonbox, text="Recalculate latest tournament")
+        button2['command'] = self.recalculate_ratings
         # layout widgets
         label.grid(row=0)
         self.files.grid(row=1, pady=10, sticky=tk.EW)
         self.files.grid_columnconfigure(1, weight=1)
-        button.grid(row=2, pady=20)
+        button1.grid(row=0, column=0, padx=10, pady=10)
+        button2.grid(row=0, column=1, padx=10, pady=10)
+        buttonbox.grid(row=2, pady=20)
         self.output.grid(row=3, pady=20, columnspan=3)
         self.frame.grid(ipadx=10, padx=2, pady=2, sticky=tk.NSEW)
 
@@ -1050,6 +1055,10 @@ class App(tk.Tk):
         t.calc_ratings()
         CSVResultWriter().write_file(outfile, t)
         self.set_status(f"Wrote new ratings to {outfile}")
+
+    def recalculate_ratings(self):
+        # implemented in all_ratings.py
+        pass
 
 
 def run_gui():

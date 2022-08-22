@@ -184,6 +184,14 @@ class App(rating.App):
         # Also write out the complete rating list
         write_complete_ratings(playerdb)
 
+    def recalculate_ratings(self):
+        outfile = "latest_ratings.txt"
+        name = "Tournament name"
+        tdate = datetime.today()
+        write_current_ratings(outfile)
+        self.set_status(f"Wrote ratings to {outfile}")
+        print(f"Wrote tournament ratings to {outfile}")
+
 
 def run_gui():
     w = App()
