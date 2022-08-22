@@ -583,6 +583,7 @@ class RatingsCalculator:
 
         rhos = []  # opponent uncertainty factor
         nus = []  # performance rating by game
+        games = []  # games considered for rating
         for g in player.games:
             opponent = g.opponent
             if opponent == player or g.opp_score == 0 or g.score == 0:
@@ -596,6 +597,7 @@ class RatingsCalculator:
                           opponent.name, opponent_mu, opponent_sigma, g_rho, g_nu)
             rhos.append(g_rho)
             nus.append(g_nu)
+            games.append(g)
         # sum of inverse of uncertainty factors (to find 'effective'
         # deviation)
         sum1 = sum(1 / rho for rho in rhos)
@@ -614,11 +616,18 @@ class RatingsCalculator:
         # Debug per-game rating change
         logging.debug("Per game rating changes for %s", player.name)
         base = sigma_prime * (mu / (sigma ** 2))
-        logging.debug("  base from opp ratings: %.2f", base)
-        for game, g_rho, g_nu in zip(player.games, rhos, nus):
+        n_games = len(games)
+        base_delta = (player.init_rating - base) / n_games if n_games else 0
+        logging.debug("  base from opp ratings: %.2f (%d games, baseline Δ = %.2f)",
+                      base, n_games, base_delta)
+        sum_d = 0
+        for game, g_rho, g_nu in zip(games, rhos, nus):
             g_mu = sigma_prime * (g_nu / g_rho)
             base += g_mu
-            logging.debug("  %20s (%4d): \t Δ %.2f \t Σ %.2f", game.opponent.name, game.spread, g_mu, base)
+            d = g_mu - base_delta
+            sum_d += d
+            logging.debug("  %20s (%4d): \t Δ %6.2f \t Σ %6.2f \t d %6.2f \t Σd %6.2f \t ",
+                          game.opponent.name, game.spread, g_mu, base, d, sum_d)
 
         # muPrime = mu + change
         # Don't set rating lower than 300
