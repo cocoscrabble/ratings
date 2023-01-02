@@ -104,6 +104,7 @@ class PlayerDB:
                 p.init_rating = dbp.rating
                 p.init_rating_deviation = dbp.deviation
                 p.career_games += dbp.games
+                p.is_unrated = False
 
     def process_one_tournament(self, rat_file, res_file, name, date):
         t = Tournament(rat_file, res_file, name, date)
