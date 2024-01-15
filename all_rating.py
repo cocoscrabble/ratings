@@ -70,7 +70,8 @@ ALL = [
     ("nacc2023-d2p", "2023-11-13"),
     ("nacc2023-afterword", "2023-11-14"),
     ("palmsprings-dec2023", "2023-12-10"),
-    
+    ("nola-open-2024),
+    ("nola-lite-2024),    
 ]
 
 
