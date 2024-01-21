@@ -72,7 +72,7 @@ ALL = [
     ("palmsprings-dec2023", "2023-12-10"),
     ("nola-open-2024", "2024-01-15"),
     ("nola-lite-2024", "2024-01-16"),
-    ("portland_pub-jan2024", "2024-01-20"),
+    ("portland-pub-jan2024", "2024-01-20"),
     
 ]
 
