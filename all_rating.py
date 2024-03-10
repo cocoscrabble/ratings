@@ -84,10 +84,11 @@ class Player:
     rating: float
     deviation: float
     games: int
+    last_played: datetime
 
     @classmethod
     def from_tournament_player(cls, p):
-        return cls(p.name, p.new_rating, p.new_rating_deviation, p.career_games)
+        return cls(p.name, p.new_rating, p.new_rating_deviation, p.career_games, p.last_played)    
 
 
 class CSVRatingsFileWriter:
@@ -138,6 +139,9 @@ class PlayerDB:
                 p.init_rating_deviation = dbp.deviation
                 p.career_games += dbp.games
                 p.is_unrated = False
+                p.last_played = dbp.last_played
+                p.adjust_initial_deviation(tournament.date)
+                p.last_played = tournament.date
 
     def process_one_tournament(self, rat_file, res_file, name, date):
         t = Tournament(rat_file, res_file, name, date)
