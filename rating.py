@@ -631,13 +631,18 @@ class RatingsCalculator:
 
         # muPrime = mu + change
         # Don't set rating lower than 300
-        logging.debug(f'Rating {player.name}: {player.init_rating} -> {mu_prime}')
+        logging.info("Rated %s: %f -> %f",
+                     player.name, player.init_rating, mu_prime)
         player.new_rating = max(round(mu_prime), 300)
 
         # if (player.new_rating < 1000): #believes all lousy players can improve :))
         #  sigmaPrime += math.sqrt(1000 - player.new_rating)
         try:
             player.new_rating_deviation = round(math.sqrt(sigma_prime), 2)
+            logging.info(
+                "New deviation for %s: %f -> %f",
+                player.name, player.init_rating_deviation,
+                player.new_rating_deviation)
         except ValueError:
             print('ERROR: sigmaPrime {0}'.format(sigma_prime))
 
@@ -847,13 +852,13 @@ class Player:
         try:
             c = 10
             inactive_days = int((tournament_date - self.last_played).days)
-            self.init_rating_deviation = min(
-                math.sqrt(
-                    math.pow(self.init_rating_deviation, 2)
-                    + (math.pow(c, 2) * inactive_days)
-                ),
-                MAX_DEVIATION,
-            )
+            init = self.init_rating_deviation
+            new = math.sqrt((init * init) + (c * c * inactive_days))
+            self.init_rating_deviation = min(new, MAX_DEVIATION)
+            if abs(init - self.init_rating_deviation) > 1e-5:
+                logging.info(
+                    "Adjusted rating deviation for %s: %f -> %f",
+                    self.name, init, self.init_rating_deviation)
         except Exception as ex:
             show_exception(ex)
 

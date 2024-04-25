@@ -4,6 +4,7 @@ Carries forward ratings and std deviation for repeat players. This is a stopgap
 measure until we put an actual database in place.
 """
 
+from collections import defaultdict
 import csv
 from dataclasses import dataclass
 from datetime import datetime
@@ -91,7 +92,24 @@ class Player:
 
     @classmethod
     def from_tournament_player(cls, p):
-        return cls(p.name, p.new_rating, p.new_rating_deviation, p.career_games, p.last_played)    
+        return cls(p.name, p.new_rating, p.new_rating_deviation, p.career_games, p.last_played)
+
+
+@dataclass
+class PlayerReport:
+    name: str
+    old_rating: float
+    new_rating: float
+    old_deviation: float
+    new_deviation: float
+    games: int
+
+    @classmethod
+    def from_tournament_player(cls, p):
+        return cls(p.name, p.init_rating, p.new_rating,
+                   round(p.init_rating_deviation, 2),
+                   round(p.new_rating_deviation, 2),
+                   p.career_games)
 
 
 class CSVRatingsFileWriter:
@@ -123,11 +141,13 @@ class PlayerDB:
 
     def __init__(self):
         self.players = {}
+        self.report = defaultdict(dict)
 
     def update(self, tournament):
         for s in tournament.sections:
             for p in s.get_players():
                 self.players[p.name] = Player.from_tournament_player(p)
+                self.report[p.name][tournament.name] = PlayerReport.from_tournament_player(p)
 
 
     def adjust_tournament(self, tournament):
@@ -192,6 +212,23 @@ def write_current_ratings(filename):
     write_latest_ratings(filename, playerdb, t)
 
 
+def write_report(filename, playerdb):
+    fields = ('old_rating', 'new_rating', 'old_deviation', 'new_deviation', 'games')
+    with open(filename, 'w') as f:
+        writer = csv.writer(f)
+        header = [None, None] + [name for name, _ in ALL]
+        writer.writerow(header)
+        for p, rep in sorted(playerdb.report.items()):
+            for x in fields:
+                out = [p, x]
+                for name, _ in ALL:
+                    pl = rep.get(name)
+                    entry = pl and getattr(pl, x)
+                    out.append(entry)
+                print(out)
+                writer.writerow(out)
+
+
 def write_latest_ratings(outfile, playerdb, t):
     # Display the most recent tournament
     print("-------------------------")
@@ -203,6 +240,7 @@ def write_latest_ratings(outfile, playerdb, t):
     CSVResultWriter().write_file(outfile, t)
     # Also write out the complete rating list
     write_complete_ratings(playerdb)
+    write_report(outfile + '.report.csv', playerdb)
 
 
 def write_complete_ratings(playerdb):
