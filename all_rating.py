@@ -79,6 +79,8 @@ ALL = [
     ("austin-atx2024", "2024-04-08"),
     ("portland-pub-apr132024", "2024-04-13"),
     ("portland-pub-apr142024", "2024-04-14"),
+    ("portland-pub-apr142024", "2024-04-14"),
+    ("championscup-2024", "2024-04-14"),
 ]
 
 
