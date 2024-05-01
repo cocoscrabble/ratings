@@ -17,6 +17,7 @@ import tkinter as tk
 import rating
 from rating import Tournament, CSVResultWriter, TabularResultWriter
 
+
 # List of tournaments in chronological order. We aren't using the exact dates,
 # they just need to be increasing.
 ALL = [
@@ -82,6 +83,10 @@ ALL = [
     ("portland-pub-apr142024", "2024-04-14"),
     ("championscup-2024", "2024-04-14"),
 ]
+
+
+# Used in simulations
+_BETA = 5
 
 
 @dataclass
@@ -171,7 +176,7 @@ class PlayerDB:
     def process_one_tournament(self, rat_file, res_file, name, date):
         t = Tournament(rat_file, res_file, name, date)
         self.adjust_tournament(t)
-        t.calc_ratings()
+        t.calc_ratings(_BETA)
         self.update(t)
         return t
 
@@ -227,7 +232,6 @@ def write_report(filename, playerdb):
                     pl = rep.get(name)
                     entry = pl and getattr(pl, x)
                     out.append(entry)
-                print(out)
                 writer.writerow(out)
 
 
@@ -242,7 +246,6 @@ def write_latest_ratings(outfile, playerdb, t):
     CSVResultWriter().write_file(outfile, t)
     # Also write out the complete rating list
     write_complete_ratings(playerdb)
-    write_report(outfile + '.report.csv', playerdb)
 
 
 def write_complete_ratings(playerdb):
@@ -250,6 +253,11 @@ def write_complete_ratings(playerdb):
     ps = playerdb.players.values()
     CSVRatingsFileWriter().write_file(filename, ps)
     print(f"Wrote all current ratings to {filename}")
+
+
+def write_sim_report(filename):
+    playerdb, t = process_old_results()
+    write_report(filename, playerdb)
 
 
 # -----------------------------------------------------
@@ -277,6 +285,45 @@ class App(rating.App):
         write_current_ratings(outfile)
         self.set_status(f"Wrote ratings to {outfile}")
         print(f"Wrote tournament ratings to {outfile}")
+
+
+class ReportApp(rating.App):
+    def calculate_ratings(self):
+        rating_file, result_file, outfile = self.files.get_files()
+        if not (rating_file and result_file and outfile):
+            self.set_status("Some filenames are not set")
+            return
+        name = "Tournament name"
+        tdate = datetime.today()
+        playerdb, t = process_all_results(rating_file, result_file, name, tdate)
+        CSVResultWriter().write_file(outfile, t)
+        self.set_status(f"Wrote new ratings to {outfile}")
+        print(f"Wrote tournament ratings to {outfile}")
+        # Also write out the complete rating list
+        write_complete_ratings(playerdb)
+
+    def recalculate_ratings(self):
+        outfile = "latest_ratings.txt"
+        name = "Tournament name"
+        tdate = datetime.today()
+        write_current_ratings(outfile)
+        self.set_status(f"Wrote ratings to {outfile}")
+        print(f"Wrote tournament ratings to {outfile}")
+
+
+class SimulationApp(rating.SimulationApp):
+    def run_simulation(self):
+        try:
+            beta = int(self.beta_input.get())
+        except ValueError:
+            beta = 5
+        global _BETA
+        _BETA = beta
+        filename = f"run-with-beta-{beta}-report.csv"
+        write_sim_report(filename)
+        self.set_status(f"Wrote simulation report to {filename}")
+        print(f"Wrote simulation report to {filename}")
+
 
 
 def run_gui():

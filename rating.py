@@ -496,6 +496,18 @@ class CSVRatingsFileReader:
 class RatingsCalculator:
     """Class to organise ratings calculation code in one place."""
 
+    def __init__(self, beta=5):
+        # tau is a tuning parameter to get as accurate results as
+        # possible, and should be set up front. The value here is from
+        # Taral Seierstad's rating system for Norwegian scrabble.
+        self.tau = 90
+
+        # beta is rating points per point of expected spread
+        # eg, beta = 5, 100 ratings difference = 20 difference in
+        # expected spread.
+        # (Should we try varying beta based on ratings difference?)
+        self.beta = beta
+
     def calc_initial_ratings(self, section):
         """Rate all unrated players in a section."""
 
@@ -564,16 +576,8 @@ class RatingsCalculator:
         Rates a single player based on spread.
         """
 
-        # tau is a tuning parameter to get as accurate results as
-        # possible, and should be set up front. The value here is from
-        # Taral Seierstad's rating system for Norwegian scrabble.
-        tau = 90
-
-        # beta is rating points per point of expected spread
-        # eg, beta = 5, 100 ratings difference = 20 difference in
-        # expected spread.
-        # (Should we try varying beta based on ratings difference?)
-        beta = 5.0
+        tau = self.tau
+        beta = self.beta
 
         mu = player.init_rating
         logging.debug('rating %s: initial = %d, multiplier = %f', player.name, mu, self._player_multiplier(player))
@@ -675,9 +679,9 @@ class Tournament:
         else:
             raise ValueError(f'No reader for {file}')
 
-    def calc_ratings(self):
+    def calc_ratings(self, beta=5):
         logging.debug("--------------Calculating ratings for %s", self.name)
-        rc = RatingsCalculator()
+        rc = RatingsCalculator(beta)
         for s in self.sections:
             # FIRST: Calculate initial ratings for all unrated players
             rc.calc_initial_ratings(s)
@@ -1064,6 +1068,71 @@ class App(tk.Tk):
     def recalculate_ratings(self):
         # implemented in all_ratings.py
         pass
+
+
+class SimulationApp(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("COCO Ratings Simulator")
+        self.geometry("1200x800")
+        self.init_style()
+        self.frame = ttk.Frame(self)
+        self._init_widgets()
+
+    def _init_widgets(self):
+        label = self._instructions()
+        self.output = ttk.Label(self.frame)
+        self.beta_input = tk.StringVar()
+        self.entry = ttk.Entry(self.frame, textvariable=self.beta_input)
+        buttonbox = ttk.Frame(self.frame)
+        button1 = ttk.Button(buttonbox, text="Run simulation")
+        button1['command'] = self.run_simulation
+        button2 = ttk.Button(buttonbox, text="Quit")
+        button2['command'] = self.quit
+        # layout widgets
+        label.grid(row=0)
+        self.entry.grid(row=1, pady=10, sticky=tk.EW)
+        button1.grid(row=0, column=0, padx=10, pady=10)
+        button2.grid(row=0, column=1, padx=10, pady=10)
+        buttonbox.grid(row=2, pady=20)
+        self.output.grid(row=3, pady=20, columnspan=3)
+        self.frame.grid(ipadx=10, padx=2, pady=2, sticky=tk.NSEW)
+
+    def _instructions(self):
+        text = textwrap.dedent("""
+        Instructions:
+
+        * Pick a value for beta (default = 5)
+        * Click on "Run Simulation"
+
+        beta is rating points difference per point of expected spread
+        e.g. if beta = 5, 100 ratings difference = 20 difference in
+        expected spread.
+
+        The result will be written to a csv file which can be imported into
+        a spreadsheet.
+        """)
+        ret = tk.Text(self.frame, width=80, height=14)
+        ret.insert('end', text)
+        ret.config(state='disabled')
+        return ret
+
+    def init_style(self):
+        style = ttk.Style()
+        style.configure("BW.TLabel", foreground="black", background="white")
+        style.configure("GW.TLabel", foreground="grey", background="white")
+        return style
+
+    def set_status(self, text):
+        self.output.configure(text=text)
+
+    def quit(self):
+        sys.exit(0)
+
+    def run_simulation(self):
+        # implemented in all_ratings.py
+        pass
+
 
 
 def run_gui():
