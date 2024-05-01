@@ -1083,7 +1083,9 @@ class SimulationApp(tk.Tk):
         label = self._instructions()
         self.output = ttk.Label(self.frame)
         self.beta_input = tk.StringVar()
-        self.entry = ttk.Entry(self.frame, textvariable=self.beta_input)
+        inputbox = ttk.Frame(self.frame)
+        beta_label = ttk.Label(inputbox, text="beta = ")
+        self.entry = ttk.Entry(inputbox, textvariable=self.beta_input)
         buttonbox = ttk.Frame(self.frame)
         button1 = ttk.Button(buttonbox, text="Run simulation")
         button1['command'] = self.run_simulation
@@ -1091,7 +1093,9 @@ class SimulationApp(tk.Tk):
         button2['command'] = self.quit
         # layout widgets
         label.grid(row=0)
-        self.entry.grid(row=1, pady=10, sticky=tk.EW)
+        beta_label.grid(row=0, column=0)
+        self.entry.grid(row=0, column=1, columnspan=2)
+        inputbox.grid(row=1, pady=10, sticky=tk.EW)
         button1.grid(row=0, column=0, padx=10, pady=10)
         button2.grid(row=0, column=1, padx=10, pady=10)
         buttonbox.grid(row=2, pady=20)
@@ -1106,8 +1110,11 @@ class SimulationApp(tk.Tk):
         * Click on "Run Simulation"
 
         beta is rating points difference per point of expected spread
-        e.g. if beta = 5, 100 ratings difference = 20 difference in
-        expected spread.
+        If, for instance, beta = 5, it means that if a player is rated 100
+        points above another player, the spread in games played between the two
+        players should on average be 100 / 5 = 20 points in favour of the first
+        player. i.e. the lower beta is, the more the higher-rated player is
+        expected to win by.
 
         The result will be written to a csv file which can be imported into
         a spreadsheet.
