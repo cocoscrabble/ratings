@@ -311,18 +311,21 @@ class ReportApp(rating.App):
         print(f"Wrote tournament ratings to {outfile}")
 
 
+def run_simulation(beta=5):
+    global _BETA
+    _BETA = beta
+    filename = f"run-with-beta-{beta}-report.csv"
+    write_sim_report(filename)
+    print(f"Wrote simulation report to {filename}")
+
 class SimulationApp(rating.SimulationApp):
     def run_simulation(self):
         try:
             beta = int(self.beta_input.get())
         except ValueError:
             beta = 5
-        global _BETA
-        _BETA = beta
-        filename = f"run-with-beta-{beta}-report.csv"
-        write_sim_report(filename)
+        run_simulation(beta)
         self.set_status(f"Wrote simulation report to {filename}")
-        print(f"Wrote simulation report to {filename}")
 
 
 
