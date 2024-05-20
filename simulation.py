@@ -22,6 +22,8 @@ def run_gui():
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         beta = float(sys.argv[1])
-        all_rating.run_simulation(beta)
+        pdb = all_rating.run_simulation(beta)
+        filename = f"complete-ratings-beta-{beta}.csv"
+        all_rating.write_complete_ratings(pdb, filename)
     else:
         run_gui()

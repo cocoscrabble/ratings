@@ -248,8 +248,9 @@ def write_latest_ratings(outfile, playerdb, t):
     write_complete_ratings(playerdb)
 
 
-def write_complete_ratings(playerdb):
-    filename = "complete-ratings-list.csv"
+def write_complete_ratings(playerdb, filename=None):
+    if not filename:
+        filename = "complete-ratings-list.csv"
     ps = playerdb.players.values()
     CSVRatingsFileWriter().write_file(filename, ps)
     print(f"Wrote all current ratings to {filename}")
@@ -258,6 +259,7 @@ def write_complete_ratings(playerdb):
 def write_sim_report(filename):
     playerdb, t = process_old_results()
     write_report(filename, playerdb)
+    return playerdb
 
 
 # -----------------------------------------------------
@@ -315,8 +317,10 @@ def run_simulation(beta=5):
     global _BETA
     _BETA = beta
     filename = f"run-with-beta-{beta}-report.csv"
-    write_sim_report(filename)
+    pdb = write_sim_report(filename)
     print(f"Wrote simulation report to {filename}")
+    return pdb
+
 
 class SimulationApp(rating.SimulationApp):
     def run_simulation(self):
