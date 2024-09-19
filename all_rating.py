@@ -200,7 +200,7 @@ def show_file(f):
         print(line.strip())
 
 
-def process_old_results():
+def process_old_results(display_progress=True):
     d = os.path.join(os.path.dirname(__file__), "results")
     results = glob.glob(f"{d}/*results.?sv")
     ratings = glob.glob(f"{d}/*ratings.?sv")
@@ -208,7 +208,8 @@ def process_old_results():
     hrat = {os.path.basename(f)[:-12]: f for f in ratings}
     playerdb = PlayerDB()
     for prefix, date in ALL:
-        print(f"Reading {prefix}")
+        if display_progress:
+            print(f"Reading {prefix}")
         date = datetime.strptime(date, '%Y-%m-%d')
         res = hres[prefix]
         rat = hrat[prefix]
