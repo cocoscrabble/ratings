@@ -99,6 +99,7 @@ ALL = [
     ("seattle-oct272024", "2024-10-27"),
     ("columbia-2024", "2024-11-02"),
     ("portlandpub-nov2024", "2024-11-03"),
+    ("portlandpub-dec2024", "2024-12-07"),
     
 ]
 
