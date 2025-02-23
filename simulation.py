@@ -19,7 +19,7 @@ def run_gui():
     w.mainloop()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     if len(sys.argv) > 1:
         beta = float(sys.argv[1])
         pdb = all_rating.run_simulation(beta)

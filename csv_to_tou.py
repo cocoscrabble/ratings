@@ -16,20 +16,19 @@ class FilesWidget(ttk.Frame):
         self._init_widgets()
 
     def get_files(self):
-        return [self.files[x].file
-                for x in ('CSV Results File', 'TOU File')]
+        return [self.files[x].file for x in ("CSV Results File", "TOU File")]
 
     def _add_file(self, name, row, save_as=False):
         f = File(self, name, self.status, save_as)
         self.files[name] = f
-        opts = {'padx': 5, 'pady': 1, 'ipady': 5}
+        opts = {"padx": 5, "pady": 1, "ipady": 5}
         f.label.grid(column=0, row=row, sticky=tk.EW, **opts)
         f.file_label.grid(column=1, row=row, sticky=tk.EW, **opts)
         f.button.grid(column=2, row=row, sticky=tk.EW, **opts)
 
     def _init_widgets(self):
-        self._add_file('CSV Results File', 0)
-        self._add_file('TOU File', 1, save_as=True)
+        self._add_file("CSV Results File", 0)
+        self._add_file("TOU File", 1, save_as=True)
         self.grid(padx=10, pady=0, sticky=tk.NSEW)
 
 
@@ -47,7 +46,7 @@ class App(tk.Tk):
         self.output = ttk.Label(self.frame)
         self.files = FilesWidget(self.frame, status=self)
         button = ttk.Button(self.frame, text="Convert")
-        button['command'] = self.convert
+        button["command"] = self.convert
         # layout widgets
         label.grid(row=0)
         self.files.grid(row=1, pady=10, sticky=tk.EW)
@@ -70,8 +69,8 @@ class App(tk.Tk):
         Keep the csv header row, the script skips the first row.
         """)
         ret = tk.Text(self.frame, width=80, height=14)
-        ret.insert('end', text)
-        ret.config(state='disabled')
+        ret.insert("end", text)
+        ret.config(state="disabled")
         return ret
 
     def init_style(self):
@@ -115,9 +114,9 @@ def run_cli():
 
     _, infile, outfile = sys.argv
     convert_csv(infile, outfile)
-    
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     if len(sys.argv) > 1:
         run_cli()
     else:

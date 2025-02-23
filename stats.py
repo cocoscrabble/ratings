@@ -12,14 +12,11 @@ class Statistics:
         self.db = playerdb
 
     def histogram(self, interval):
-        bins = [
-            interval * (p.rating // interval)
-            for p in self.db.players.values()
-        ]
+        bins = [interval * (p.rating // interval) for p in self.db.players.values()]
         return Counter(bins)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     print("Calculating ratings...")
     db, _ = process_old_results(display_progress=False)
     interval = 100

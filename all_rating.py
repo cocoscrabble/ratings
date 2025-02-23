@@ -104,8 +104,7 @@ ALL = [
     ("vancouver-dec2024", "2024-12-15"),
     ("nola-lite-2025", "2025-01-19"),
     ("nola-open-2025", "2025-01-20"),
-    ("hood-river-2025", "2025-02-17"),    
-    
+    ("hood-river-2025", "2025-02-17"),
 ]
 
 
@@ -123,7 +122,9 @@ class Player:
 
     @classmethod
     def from_tournament_player(cls, p):
-        return cls(p.name, p.new_rating, p.new_rating_deviation, p.career_games, p.last_played)
+        return cls(
+            p.name, p.new_rating, p.new_rating_deviation, p.career_games, p.last_played
+        )
 
 
 @dataclass
@@ -137,10 +138,14 @@ class PlayerReport:
 
     @classmethod
     def from_tournament_player(cls, p):
-        return cls(p.name, p.init_rating, p.new_rating,
-                   round(p.init_rating_deviation, 2),
-                   round(p.new_rating_deviation, 2),
-                   p.career_games)
+        return cls(
+            p.name,
+            p.init_rating,
+            p.new_rating,
+            round(p.init_rating_deviation, 2),
+            round(p.new_rating_deviation, 2),
+            p.career_games,
+        )
 
 
 class CSVRatingsFileWriter:
@@ -149,15 +154,16 @@ class CSVRatingsFileWriter:
     CSV format:
         name, rating, rating deviation
     """
+
     def headers(self):
-        return ['Name', 'Rating', 'Deviation', 'Games played']
+        return ["Name", "Rating", "Deviation", "Games played"]
 
     def row(self, p):
         return [p.name, p.rating, p.deviation, p.games]
 
     def write_file(self, output_file, players):
         players = sorted(players, key=lambda p: -p.rating)
-        with open(output_file, 'w', newline='') as f:
+        with open(output_file, "w", newline="") as f:
             self.write(f, players)
 
     def write(self, f, players):
@@ -178,8 +184,9 @@ class PlayerDB:
         for s in tournament.sections:
             for p in s.get_players():
                 self.players[p.name] = Player.from_tournament_player(p)
-                self.report[p.name][tournament.name] = PlayerReport.from_tournament_player(p)
-
+                self.report[p.name][tournament.name] = (
+                    PlayerReport.from_tournament_player(p)
+                )
 
     def adjust_tournament(self, tournament):
         for s in tournament.sections:
@@ -221,7 +228,7 @@ def process_old_results(display_progress=True):
     for prefix, date in ALL:
         if display_progress:
             print(f"Reading {prefix}")
-        date = datetime.strptime(date, '%Y-%m-%d')
+        date = datetime.strptime(date, "%Y-%m-%d")
         res = hres[prefix]
         rat = hrat[prefix]
         t = playerdb.process_one_tournament(rat, res, prefix, date)
@@ -232,7 +239,7 @@ def process_all_results(rating_file, result_file, name, tdate):
     playerdb, _ = process_old_results()
     # Now process the new tournament
     t = playerdb.process_one_tournament(rating_file, result_file, name, tdate)
-    res_out = StringIO('')
+    res_out = StringIO("")
     TabularResultWriter().write(res_out, t)
     show_file(res_out)
     print("-------------------------")
@@ -245,8 +252,8 @@ def write_current_ratings(filename):
 
 
 def write_report(filename, playerdb):
-    fields = ('old_rating', 'new_rating', 'old_deviation', 'new_deviation', 'games')
-    with open(filename, 'w') as f:
+    fields = ("old_rating", "new_rating", "old_deviation", "new_deviation", "games")
+    with open(filename, "w") as f:
         writer = csv.writer(f)
         header = [None, None] + [name for name, _ in ALL]
         writer.writerow(header)
@@ -264,7 +271,7 @@ def write_latest_ratings(outfile, playerdb, t):
     # Display the most recent tournament
     print("-------------------------")
     print(f"Ratings adjustment for most recent tournament")
-    res_out = StringIO('')
+    res_out = StringIO("")
     TabularResultWriter().write(res_out, t)
     show_file(res_out)
     print("-------------------------")
@@ -289,6 +296,7 @@ def write_sim_report(filename):
 
 # -----------------------------------------------------
 # GUI
+
 
 class App(rating.App):
     def calculate_ratings(self):
@@ -357,13 +365,12 @@ class SimulationApp(rating.SimulationApp):
         self.set_status(f"Wrote simulation report to {filename}")
 
 
-
 def run_gui():
     w = App()
     w.mainloop()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     if len(sys.argv) > 1:
         filename = sys.argv[1]
         write_current_ratings(filename)

@@ -22,27 +22,24 @@ class ResultWriter:
         self.tournament = None
 
     def headers(self):
-        return [
-                'Name', 'Tournament', 'Old Rating', 'New Rating'
-        ]
+        return ["Name", "Tournament", "Old Rating", "New Rating"]
 
     def get_sorted_players(self, section):
-        return sorted(section.get_players(),
-                key=lambda x: (x.wins * 100000) + x.spread,
-                reverse=True)
+        return sorted(
+            section.get_players(),
+            key=lambda x: (x.wins * 100000) + x.spread,
+            reverse=True,
+        )
 
     def row(self, p):
-        return [
-                p.name, f'{self.tournament.name}',
-                p.init_rating, p.new_rating
-        ]
+        return [p.name, f"{self.tournament.name}", p.init_rating, p.new_rating]
 
 
 class CSVResultWriter(ResultWriter):
     """Write out results in .csv format."""
 
     def write_file(self, output_file, tournament):
-        with open(output_file, 'w', newline='') as f:
+        with open(output_file, "w", newline="") as f:
             self.write(f, tournament)
 
     def write(self, f, tournament):
@@ -65,11 +62,11 @@ def process_results(f):
     playerdb = all_rating.PlayerDB()
     for prefix, date in all_rating.ALL:
         print(f"Reading {prefix}")
-        date = datetime.strptime(date, '%Y-%m-%d')
+        date = datetime.strptime(date, "%Y-%m-%d")
         res = hres[prefix]
         rat = hrat[prefix]
         t = playerdb.process_one_tournament(rat, res, prefix, date)
-        res_out = StringIO('')
+        res_out = StringIO("")
         TabularResultWriter().write(res_out, t)
         CSVResultWriter().write(f, t)
         all_rating.show_file(res_out)
@@ -77,6 +74,6 @@ def process_results(f):
     return playerdb, t
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     with open("out.csv", "w") as f:
         process_results(f)

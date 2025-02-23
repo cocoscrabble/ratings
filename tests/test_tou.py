@@ -15,8 +15,8 @@ Obelix 2400 3 2300 2 200 +1
 
 """
 
-class TestParser(unittest.TestCase):
 
+class TestParser(unittest.TestCase):
     def test_basic(self):
         player_list = rating.PlayerList()
         toufile = TOUFILE.split("\n")
@@ -36,5 +36,5 @@ class TestParser(unittest.TestCase):
         self.assertEqual(p1.losses, 0.5)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

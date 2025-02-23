@@ -16,7 +16,7 @@ from tkinter import ttk, filedialog
 
 
 # Set up log file
-logging.basicConfig(filename='coco_ratings.log', encoding='utf-8', level=logging.DEBUG)
+logging.basicConfig(filename="coco_ratings.log", encoding="utf-8", level=logging.DEBUG)
 
 
 MAX_DEVIATION = 150.0
@@ -30,23 +30,24 @@ class ParserError(Exception):
         self.message = message
 
     def __str__(self):
-        return f'{self.message}\n{self.line}'
+        return f"{self.message}\n{self.line}"
 
 
 def show_exception(ex):
     raise Exception from ex
 
 
-def parse_int(s, line='', field='Score'):
+def parse_int(s, line="", field="Score"):
     try:
         return int(s)
     except ValueError:
-        msg = f'{field} field contained a non-digit: {s}'
+        msg = f"{field} field contained a non-digit: {s}"
         raise ParserError(line, msg)
 
 
 # -----------------------------------------------------
 # Result file
+
 
 @dataclass
 class ParsedResult:
@@ -108,22 +109,22 @@ class TouReader(ResultsReader):
         date, self.tournament_name = header.rstrip().split(maxsplit=1)
         try:
             date = date[2:]  # strip off the '*M'
-            self.tournament_date = datetime.strptime(date, '%d.%m.%Y')
+            self.tournament_date = datetime.strptime(date, "%d.%m.%Y")
         except ValueError:
-            print(f'Cannot parse tournament date: {date} as dd.mm.yyyy')
+            print(f"Cannot parse tournament date: {date} as dd.mm.yyyy")
             print("Using today's date")
             self.tournament_date = datetime.today()
 
     def parse_results(self, results):
         sections = []
         for line in results:
-            if len(line) == 0 or line.startswith(' '):
+            if len(line) == 0 or line.startswith(" "):
                 continue
 
             line = line.strip()
-            if line == '*** END OF FILE ***':
+            if line == "*** END OF FILE ***":
                 break
-            elif line.startswith('*'):
+            elif line.startswith("*"):
                 # We have begun a new section, designated by "*SectionName"
                 sections.append(ParsedSection(line[1:]))
                 continue
@@ -133,17 +134,14 @@ class TouReader(ResultsReader):
 
             player_results = self.parse_result_line(line)
             if not player_results:
-                continue   # this is a high word listed at the top of the file
+                continue  # this is a high word listed at the top of the file
             sections[-1].add_player_results(player_results)
         return sections
 
     def process_sections(self):
         for s in self.parsed_sections:
             # Collect all the players in the section
-            players = [
-                    self.player_for_name(pr.player_name)
-                    for pr in s.player_results
-            ]
+            players = [self.player_for_name(pr.player_name) for pr in s.player_results]
 
             # 1. Create a (players x rounds) matrix of GameResults,
             # filling in opponent and player_score, and leaving
@@ -155,8 +153,10 @@ class TouReader(ResultsReader):
                     try:
                         opponent = players[result.opponent_id - 1]
                     except IndexError:
-                        print(f'Invalid opponent id {result.opponent_id} for'
-                                f' player {player.name} in section {s.name}')
+                        print(
+                            f"Invalid opponent id {result.opponent_id} for"
+                            f" player {player.name} in section {s.name}"
+                        )
                         sys.exit(1)
                     round = i + 1
                     gr = GameResult(round, opponent, result.score, opp_score=None)
@@ -193,10 +193,9 @@ class TouReader(ResultsReader):
         parts = line.split()
         # Read the first n parts with an alphabet in them as the name, and
         # everything else as the scores.
-        name = list(itertools.takewhile(
-            lambda x: re.search('[a-zA-Z]', x), parts))
-        scores = parts[len(name):]
-        name = ' '.join(name)
+        name = list(itertools.takewhile(lambda x: re.search("[a-zA-Z]", x), parts))
+        scores = parts[len(name) :]
+        name = " ".join(name)
         if len(scores) < 2:
             # High score line; ignore it
             return None
@@ -204,8 +203,8 @@ class TouReader(ResultsReader):
         player_scores = []
         for i in range(0, len(scores), 2):
             score, opp = scores[i], scores[i + 1]
-            score = parse_int(score, line) % 1000 # ignore the win/tie prefix
-            opp = parse_int(opp, line) # ignore the + prefix too
+            score = parse_int(score, line) % 1000  # ignore the win/tie prefix
+            opp = parse_int(opp, line)  # ignore the + prefix too
             player_scores.append(ParsedResult(opp, score))
         return ParsedPlayerResults(name, player_scores)
 
@@ -221,7 +220,7 @@ class ResultCSVReader(ResultsReader):
 
     def parse(self, file):
         """Populates self.player_list with game results."""
-        sep = '\t' if file.endswith(".tsv") else ','
+        sep = "\t" if file.endswith(".tsv") else ","
         with open(file) as f:
             reader = csv.reader(f, delimiter=sep)
             # skip the header
@@ -234,7 +233,7 @@ class ResultCSVReader(ResultsReader):
             player.games = games
             player.tally_results()
 
-        section = Section('main')
+        section = Section("main")
         section.players = [self.player_for_name(name) for name in self.results]
         self.sections.append(section)
 
@@ -254,20 +253,23 @@ class ResultWriter:
     """Write out tournament results."""
 
     def headers(self):
-        return [
-                'Name', 'Record', 'Spread',
-                'Old Rating', 'New Rating', 'New Deviation'
-        ]
+        return ["Name", "Record", "Spread", "Old Rating", "New Rating", "New Deviation"]
 
     def get_sorted_players(self, section):
-        return sorted(section.get_players(),
-                key=lambda x: (x.wins * 100000) + x.spread,
-                reverse=True)
+        return sorted(
+            section.get_players(),
+            key=lambda x: (x.wins * 100000) + x.spread,
+            reverse=True,
+        )
 
     def row(self, p):
         return [
-                p.name, f'{p.wins}-{p.losses}', p.spread,
-                p.init_rating, p.new_rating, p.new_rating_deviation
+            p.name,
+            f"{p.wins}-{p.losses}",
+            p.spread,
+            p.init_rating,
+            p.new_rating,
+            p.new_rating_deviation,
         ]
 
 
@@ -275,42 +277,42 @@ class TabularResultWriter(ResultWriter):
     """Write out the results in tabular format."""
 
     def __init__(self):
-        self.col_fmt = '{:28} {:10} {:7} {:8} {:8} {:8}\n'
+        self.col_fmt = "{:28} {:10} {:7} {:8} {:8} {:8}\n"
 
     def write_file(self, output_file, tournament):
-        with open(output_file, 'w') as f:
+        with open(output_file, "w") as f:
             self.write(f, tournament)
 
     def write(self, f, tournament):
-      f.write(f'{tournament.name}\n{tournament.date.date()}\n')
-      for s in tournament.sections:
-          self._write_section(f, s)
+        f.write(f"{tournament.name}\n{tournament.date.date()}\n")
+        for s in tournament.sections:
+            self._write_section(f, s)
 
     def _write_section(self, out, section):
-        out.write('Section {:1}\n'.format(section.name))
+        out.write("Section {:1}\n".format(section.name))
         header = self.col_fmt.format(*self.headers())
         out.write(header)
 
         for p in self.get_sorted_players(section):
             out.write(self.col_fmt.format(*self.row(p)))
-        out.write('\n')   # section break
+        out.write("\n")  # section break
 
         for p in section.get_unrated_players():
-            out.write('{:21} is unrated \n'.format(p.name))
-        out.write('\n')   # section break
+            out.write("{:21} is unrated \n".format(p.name))
+        out.write("\n")  # section break
 
 
 class CSVResultWriter(ResultWriter):
     """Write out results in .csv format."""
 
     def write_file(self, output_file, tournament):
-        with open(output_file, 'w', newline='') as f:
+        with open(output_file, "w", newline="") as f:
             self.write(f, tournament)
 
     def write(self, f, tournament):
-      writer = csv.writer(f)
-      for s in tournament.sections:
-          self._write_section(writer, s)
+        writer = csv.writer(f)
+        for s in tournament.sections:
+            self._write_section(writer, s)
 
     def _write_section(self, out, section):
         out.writerow(self.headers())
@@ -324,18 +326,18 @@ class TouResultWriter(ResultWriter):
     """Write out the tournament in .TOU format."""
 
     def write_file(self, output_file, tournament):
-        with open(output_file, 'w') as f:
+        with open(output_file, "w") as f:
             self.write(f, tournament)
 
     def write(self, f, tournament):
-      f.write(f'*M{tournament.date.strftime("%d.%m.%Y")} {tournament.name}\n')
-      for s in tournament.sections:
-          self._write_section(f, s)
-      f.write('*** END OF FILE ***\n')
+        f.write(f"*M{tournament.date.strftime('%d.%m.%Y')} {tournament.name}\n")
+        for s in tournament.sections:
+            self._write_section(f, s)
+        f.write("*** END OF FILE ***\n")
 
     def _write_section(self, out, section):
-        out.write(f'*{section.name}\n')
-        out.write(f'{0:39}\n')
+        out.write(f"*{section.name}\n")
+        out.write(f"{0:39}\n")
         players = self.get_sorted_players(section)
         last_round = max(int(g.round) for p in players for g in p.games)
 
@@ -356,8 +358,8 @@ class TouResultWriter(ResultWriter):
                     # No result for round
                     row.append(self._format("0", 0, numbers[p.name]))
 
-            out.write(' '.join(row))
-            out.write('\n')
+            out.write(" ".join(row))
+            out.write("\n")
 
     def _format_name(self, name):
         # special-case cbb
@@ -366,7 +368,7 @@ class TouResultWriter(ResultWriter):
         return f"{name:20}"
 
     def _format_game(self, p, g, numbers):
-        prefix = {'W': '2', 'L': ' ', 'T': '1'}[g.outcome]
+        prefix = {"W": "2", "L": " ", "T": "1"}[g.outcome]
         if g.opponent.name.lower() == "bye":
             opp = numbers[p.name]
         else:
@@ -374,11 +376,12 @@ class TouResultWriter(ResultWriter):
         return self._format(prefix, g.score, opp)
 
     def _format(self, prefix, score, opp):
-        return f'{prefix}{score:0>3}{opp:>4}'
+        return f"{prefix}{score:0>3}{opp:>4}"
 
 
 # -----------------------------------------------------
 # Ratings file
+
 
 class RTFileReader:
     """Reads the .RT format."""
@@ -386,7 +389,7 @@ class RTFileReader:
     def parse(self, ratfile):
         players = {}
         with open(ratfile) as f:
-            next(f)   # skip headings
+            next(f)  # skip headings
             for row in f:
                 p = self._read_player(row)
                 players[p.name] = p
@@ -404,12 +407,12 @@ class RTFileReader:
         except (ValueError, IndexError):
             rating_deviation = MAX_DEVIATION
         return Player(
-                name=name,
-                init_rating=rating,
-                init_rating_deviation=rating_deviation,
-                career_games=career_games,
-                last_played=last_played,
-                is_unrated=False
+            name=name,
+            init_rating=rating,
+            init_rating_deviation=rating_deviation,
+            career_games=career_games,
+            last_played=last_played,
+            is_unrated=False,
         )
 
     def _read_date(self, row):
@@ -417,42 +420,43 @@ class RTFileReader:
         # Try reading the date in three different places (40, 39, 41)
         # and two different formats (yyyymmdd and yyyyddmm)
         for col in (40, 39, 41):
-            for fmt in ('%Y%m%d', '%Y%d%m'):
+            for fmt in ("%Y%m%d", "%Y%d%m"):
                 try:
                     # Return as soon as we parse a date.
                     return datetime.strptime(row[col : col + 8], fmt)
                 except ValueError:
-                    logging.debug(f'Failed parse: {fmt} @ {col}\n  {row}\n')
+                    logging.debug(f"Failed parse: {fmt} @ {col}\n  {row}\n")
 
         # If we reach here we have not found a date anywhere we've looked.
-        logging.debug(f'Could not parse last played date\n  {row}\n')
-        return datetime.strptime('20060101', '%Y%m%d')
+        logging.debug(f"Could not parse last played date\n  {row}\n")
+        return datetime.strptime("20060101", "%Y%m%d")
 
 
 class RTFileWriter:
     """Writes the .RT format."""
 
     def __init__(self):
-        self.col_fmt = '{:9}{:28}{:5}{:5} {:9}{:6}\n'
+        self.col_fmt = "{:9}{:28}{:5}{:5} {:9}{:6}\n"
 
     def _header(self):
         return self.col_fmt.format(
-                'Nick', 'Name', 'Games', ' Rat', 'last_played', 'New Dev')
+            "Nick", "Name", "Games", " Rat", "last_played", "New Dev"
+        )
 
     def write_file(self, file, players):
-        with open(file, 'w') as f:
+        with open(file, "w") as f:
             self.write(f, players)
 
     def write(self, f, players):
         f.write(self._header())
         for p in players:
             out = self.col_fmt.format(
-                    '-',
-                    p.name,
-                    p.career_games,
-                    p.new_rating,
-                    p.last_played.strftime('%Y%m%d'),
-                    p.new_rating_deviation,
+                "-",
+                p.name,
+                p.career_games,
+                p.new_rating,
+                p.last_played.strftime("%Y%m%d"),
+                p.new_rating_deviation,
             )
             f.write(out)
 
@@ -466,7 +470,7 @@ class CSVRatingsFileReader:
 
     def parse(self, file):
         players = {}
-        sep = '\t' if file.endswith(".tsv") else ','
+        sep = "\t" if file.endswith(".tsv") else ","
         with open(file) as f:
             reader = csv.reader(f, delimiter=sep)
             next(reader)
@@ -478,20 +482,21 @@ class CSVRatingsFileReader:
     def parse_row(self, row):
         name, rating, *_rest = row
         career_games = 0
-        rating = parse_int(rating, row, field='Rating')
+        rating = parse_int(rating, row, field="Rating")
         rating_deviation = MAX_DEVIATION
         is_unrated = rating == 0
         return Player(
-                name=name,
-                init_rating=rating,
-                init_rating_deviation=rating_deviation,
-                career_games=career_games,
-                is_unrated=is_unrated
+            name=name,
+            init_rating=rating,
+            init_rating_deviation=rating_deviation,
+            career_games=career_games,
+            is_unrated=is_unrated,
         )
 
 
 # -----------------------------------------------------
 # Ratings calculations
+
 
 class RatingsCalculator:
     """Class to organise ratings calculation code in one place."""
@@ -526,8 +531,9 @@ class RatingsCalculator:
         rated_opponent_sum = sum(p.init_rating for p in section.get_rated_players())
         rated_opponent_avg = rated_opponent_sum / len(section.get_players())
         if rated_opponent_avg < 300:
-            logging.debug("Rated player avg = %f; setting to manual seed",
-                rated_opponent_avg)
+            logging.debug(
+                "Rated player avg = %f; setting to manual seed", rated_opponent_avg
+            )
             rated_opponent_avg = MANUAL_SEED
 
         converged = False
@@ -547,7 +553,7 @@ class RatingsCalculator:
                 self.calc_new_rating_for_player(p)  # calculates rating as usual
                 converged = converged and (abs(pre_rating - p.new_rating) < EPS)
                 p.set_init_rating(p.new_rating)
-                logging.debug(f'Rating unrated player {p}: {p.new_rating}')
+                logging.debug(f"Rating unrated player {p}: {p.new_rating}")
 
             iterations = iterations + 1
 
@@ -580,7 +586,12 @@ class RatingsCalculator:
         beta = self.beta
 
         mu = player.init_rating
-        logging.debug('rating %s: initial = %d, multiplier = %f', player.name, mu, self._player_multiplier(player))
+        logging.debug(
+            "rating %s: initial = %d, multiplier = %f",
+            player.name,
+            mu,
+            self._player_multiplier(player),
+        )
 
         # Deviation is adjusted for inactive time when player is loaded
         sigma = player.init_rating_deviation
@@ -592,13 +603,19 @@ class RatingsCalculator:
             opponent = g.opponent
             if opponent == player or g.opp_score == 0 or g.score == 0:
                 logging.debug("  skipping bye / forfeit")
-                continue   # skip byes
+                continue  # skip byes
             opponent_mu = opponent.init_rating
             opponent_sigma = opponent.init_rating_deviation
-            g_rho = (beta ** 2) * (tau ** 2) + opponent_sigma ** 2
+            g_rho = (beta**2) * (tau**2) + opponent_sigma**2
             g_nu = opponent_mu + (beta * g.spread)
-            logging.debug("  opp %s (μ=%.2f σ=%.2f) -> (ρ=%.2f ν=%.2f)",
-                          opponent.name, opponent_mu, opponent_sigma, g_rho, g_nu)
+            logging.debug(
+                "  opp %s (μ=%.2f σ=%.2f) -> (ρ=%.2f ν=%.2f)",
+                opponent.name,
+                opponent_mu,
+                opponent_sigma,
+                g_rho,
+                g_nu,
+            )
             rhos.append(g_rho)
             nus.append(g_nu)
             games.append(g)
@@ -609,34 +626,44 @@ class RatingsCalculator:
         sum2 = sum(nu / rho for nu, rho in zip(nus, rhos))
         # take invsquare of original dev, add inv of new sum of devs,
         # flip it back to get 'effective sigmaPrime'
-        invsigma_prime = (1.0 / (sigma ** 2)) + sum1
+        invsigma_prime = (1.0 / (sigma**2)) + sum1
         sigma_prime = 1.0 / invsigma_prime
         # calculate new rating using NEW sigmaPrime
-        mu_prime = sigma_prime * ((mu / (sigma ** 2)) + sum2)
+        mu_prime = sigma_prime * ((mu / (sigma**2)) + sum2)
         delta = mu_prime - mu
         multiplier = self._player_multiplier(player)
         mu_prime = mu + (delta * multiplier)
 
         # Debug per-game rating change
         logging.debug("Per game rating changes for %s", player.name)
-        base = sigma_prime * (mu / (sigma ** 2))
+        base = sigma_prime * (mu / (sigma**2))
         n_games = len(games)
         base_delta = (player.init_rating - base) / n_games if n_games else 0
-        logging.debug("  base from opp ratings: %.2f (%d games, baseline Δ = %.2f)",
-                      base, n_games, base_delta)
+        logging.debug(
+            "  base from opp ratings: %.2f (%d games, baseline Δ = %.2f)",
+            base,
+            n_games,
+            base_delta,
+        )
         sum_d = 0
         for game, g_rho, g_nu in zip(games, rhos, nus):
             g_mu = sigma_prime * (g_nu / g_rho)
             base += g_mu
             d = g_mu - base_delta
             sum_d += d
-            logging.debug("  %20s (%4d): \t Δ %6.2f \t Σ %6.2f \t d %6.2f \t Σd %6.2f \t ",
-                          game.opponent.name, game.spread, g_mu, base, d, sum_d)
+            logging.debug(
+                "  %20s (%4d): \t Δ %6.2f \t Σ %6.2f \t d %6.2f \t Σd %6.2f \t ",
+                game.opponent.name,
+                game.spread,
+                g_mu,
+                base,
+                d,
+                sum_d,
+            )
 
         # muPrime = mu + change
         # Don't set rating lower than 300
-        logging.info("Rated %s: %f -> %f",
-                     player.name, player.init_rating, mu_prime)
+        logging.info("Rated %s: %f -> %f", player.name, player.init_rating, mu_prime)
         player.new_rating = max(round(mu_prime), 300)
 
         # if (player.new_rating < 1000): #believes all lousy players can improve :))
@@ -645,14 +672,17 @@ class RatingsCalculator:
             player.new_rating_deviation = round(math.sqrt(sigma_prime), 2)
             logging.info(
                 "New deviation for %s: %f -> %f",
-                player.name, player.init_rating_deviation,
-                player.new_rating_deviation)
+                player.name,
+                player.init_rating_deviation,
+                player.new_rating_deviation,
+            )
         except ValueError:
-            print('ERROR: sigmaPrime {0}'.format(sigma_prime))
+            print("ERROR: sigmaPrime {0}".format(sigma_prime))
 
 
 # -----------------------------------------------------
 # Internal data structures
+
 
 class Tournament:
     """All data for a tournament."""
@@ -662,14 +692,14 @@ class Tournament:
         self.parse_results_file(result_file, name, date)
 
     def parse_results_file(self, file, name, date):
-        if file.endswith('.csv') or file.endswith('.tsv'):
+        if file.endswith(".csv") or file.endswith(".tsv"):
             # .csv file needs name and date as args for now
             reader = ResultCSVReader(self.player_list, name, date)
             reader.parse(file)
             self.sections = reader.sections
             self.name = name
             self.date = date
-        elif file.endswith('.tou'):
+        elif file.endswith(".tou"):
             # .tou file contains the name and date
             reader = TouReader(self.player_list)
             reader.parse(file)
@@ -677,7 +707,7 @@ class Tournament:
             self.name = reader.tournament_name
             self.date = reader.tournament_date
         else:
-            raise ValueError(f'No reader for {file}')
+            raise ValueError(f"No reader for {file}")
 
     def calc_ratings(self, beta=5):
         logging.debug("--------------Calculating ratings for %s", self.name)
@@ -691,18 +721,27 @@ class Tournament:
 
     def output_ratfile(self, out_file):
         byes = {
-            'Yy bye', 'A Bye', 'B Bye', 'ZZ Bye', 'Zz Bye', 'Zy bye',
-            'Bye One', 'Bye Two', 'Bye Three', 'Bye Four', 'Y Bye',
-            'Z Bye', 'Bye'
-            }
+            "Yy bye",
+            "A Bye",
+            "B Bye",
+            "ZZ Bye",
+            "Zz Bye",
+            "Zy bye",
+            "Bye One",
+            "Bye Two",
+            "Bye Three",
+            "Bye Four",
+            "Y Bye",
+            "Z Bye",
+            "Bye",
+        }
         players = [
-            p for p in self.player_list.get_ranked_players()
-            if p.name not in byes
+            p for p in self.player_list.get_ranked_players() if p.name not in byes
         ]
         RTFileWriter().write_file(out_file, players)
 
     def output_active_ratfile(self, out_file):
-        with open('removed_people.txt', 'r') as d:
+        with open("removed_people.txt", "r") as d:
             deceased = [x.rstrip() for x in d.readlines()]
         players = []
         for p in self.player_list.get_ranked_players():
@@ -718,8 +757,8 @@ class Section:
     """One section of a tournament."""
 
     def __init__(self, name):
-        self.players = []   # List of Player objects
-        self.highgame = {}   # should be dict containing Player, Round, Score
+        self.players = []  # List of Player objects
+        self.highgame = {}  # should be dict containing Player, Round, Score
         self.name = name
 
     def get_players(self):
@@ -733,15 +772,15 @@ class Section:
 
     def show(self):
         for p in self.players:
-            print(f'Player: {p.name}')
+            print(f"Player: {p.name}")
             for i, g in enumerate(p.games):
-                print(f'{i + 1:>2d}  {g}')
+                print(f"{i + 1:>2d}  {g}")
 
 
 @dataclass
 class GameResult:
     round: int
-    opponent: 'Player'
+    opponent: "Player"
     score: int
     opp_score: int
 
@@ -750,30 +789,30 @@ class GameResult:
         return self.score - self.opp_score
 
     def __str__(self):
-        return f'{self.opponent.name:<24s} {self.score:3d} - {self.opp_score:3d}'
+        return f"{self.opponent.name:<24s} {self.score:3d} - {self.opp_score:3d}"
 
     @property
     def outcome(self):
         if self.score > self.opp_score:
-            return 'W'
+            return "W"
         if self.score == self.opp_score:
-            return 'T'
+            return "T"
         if self.score < self.opp_score:
-            return 'L'
+            return "L"
 
 
 class Player:
     """Data for a single player."""
 
     def __init__(
-            self,
-            name,
-            *,
-            init_rating = 0,
-            init_rating_deviation = 0.0,
-            career_games = 0,
-            is_unrated = False,
-            last_played = None
+        self,
+        name,
+        *,
+        init_rating=0,
+        init_rating_deviation=0.0,
+        career_games=0,
+        is_unrated=False,
+        last_played=None,
     ):
         self.name = name
         self.career_games = career_games
@@ -788,16 +827,16 @@ class Player:
         self.rating_change = 0
         self.new_rating = 0
         self.new_rating_deviation = 0.0
-        self.games = [] # list of Game objects
+        self.games = []  # list of Game objects
 
     @classmethod
     def new_unrated(cls, name):
         return cls(
-                name=name,
-                init_rating=UNRATED_INIT_RATING,
-                init_rating_deviation=MAX_DEVIATION,
-                last_played=datetime.today(),
-                is_unrated=True
+            name=name,
+            init_rating=UNRATED_INIT_RATING,
+            init_rating_deviation=MAX_DEVIATION,
+            last_played=datetime.today(),
+            is_unrated=True,
         )
 
     def __str__(self):
@@ -839,7 +878,7 @@ class Player:
 
     def update_career_games(self):
         for game in self.games:
-            if game.opponent != self and game.opponent != 'Zz Bye':
+            if game.opponent != self and game.opponent != "Zz Bye":
                 self.career_games += 1
 
     def get_score_by_round(self, r):
@@ -862,7 +901,10 @@ class Player:
             if abs(init - self.init_rating_deviation) > 1e-5:
                 logging.info(
                     "Adjusted rating deviation for %s: %f -> %f",
-                    self.name, init, self.init_rating_deviation)
+                    self.name,
+                    init,
+                    self.init_rating_deviation,
+                )
         except Exception as ex:
             show_exception(ex)
 
@@ -876,7 +918,7 @@ class PlayerList:
     def parse_ratfile(self, ratfile):
         if ratfile:
             # Load all current players from ratfile
-            if ratfile.endswith('.csv') or ratfile.endswith('.tsv'):
+            if ratfile.endswith(".csv") or ratfile.endswith(".tsv"):
                 self.players = CSVRatingsFileReader().parse(ratfile)
             else:
                 self.players = RTFileReader().parse(ratfile)
@@ -902,69 +944,66 @@ class PlayerList:
 # -----------------------------------------------------
 # CLI
 
+
 def make_arg_parser():
     parser = argparse.ArgumentParser()
+    parser.add_argument("--name", type=str, default="", help="Tournament name")
     parser.add_argument(
-            '--name', type=str, default='', help='Tournament name')
-    parser.add_argument(
-            '--date', type=str, default='', help='Tournament date (yyyy-mm-dd)')
-    parser.add_argument(
-            '--rating-file', type=str, help='Ratings file')
-    parser.add_argument(
-            '--result-file', type=str, help='Results file')
+        "--date", type=str, default="", help="Tournament date (yyyy-mm-dd)"
+    )
+    parser.add_argument("--rating-file", type=str, help="Ratings file")
+    parser.add_argument("--result-file", type=str, help="Results file")
     return parser
 
 
 def run_cli():
     parser = make_arg_parser()
     args = parser.parse_args()
-    date = datetime.strptime(args.date, '%Y-%m-%d')
+    date = datetime.strptime(args.date, "%Y-%m-%d")
     t = Tournament(args.rating_file, args.result_file, args.name, date)
     t.calc_ratings()
     print("Writing results to output.txt and output.csv")
-    TabularResultWriter().write_file('output.txt', t)
-    CSVResultWriter().write_file('output.csv', t)
-    t.output_ratfile('output.RT')
+    TabularResultWriter().write_file("output.txt", t)
+    CSVResultWriter().write_file("output.csv", t)
+    t.output_ratfile("output.RT")
 
 
 # -----------------------------------------------------
 # GUI
 
-class File():
+
+class File:
     def __init__(self, parent, name, status, save_as=False):
         self.name = name
         self.status = status
         self.save_as = save_as
         self.label = ttk.Label(parent, text=f"{name}:")
         self.file = None
-        self.file_label = ttk.Label(parent, text='')
-        b = 'Save as' if self.save_as else 'Open'
+        self.file_label = ttk.Label(parent, text="")
+        b = "Save as" if self.save_as else "Open"
         self.button = ttk.Button(parent, text=b)
-        self.button['command'] = self.select_file
+        self.button["command"] = self.select_file
         self.set_file_label()
 
     def set_file_label(self):
         if self.file:
             text = self.file
-            style="BW.TLabel"
+            style = "BW.TLabel"
         else:
             text = "[No file selected]"
-            style="GW.TLabel"
+            style = "GW.TLabel"
         self.file_label.configure(text=text, style=style)
 
     def select_file(self):
-        filetypes = (
-            ('csv files', '*.?sv'),
-            ('All files', '*.*')
-        )
+        filetypes = (("csv files", "*.?sv"), ("All files", "*.*"))
         if self.save_as:
             filename = tk.filedialog.asksaveasfilename(
-                title=f'Save new ratings',
-                filetypes=filetypes)
+                title=f"Save new ratings", filetypes=filetypes
+            )
         else:
             filename = tk.filedialog.askopenfilename(
-                title=f'Open {self.name} file',
-                filetypes=filetypes)
+                title=f"Open {self.name} file", filetypes=filetypes
+            )
         self.file = filename
         self.set_file_label()
         self.status.set_status(f"Set {self.name} file")
@@ -978,21 +1017,20 @@ class FilesWidget(ttk.Frame):
         self._init_widgets()
 
     def get_files(self):
-        return [self.files[x].file
-                for x in ('Ratings', 'Results', 'New results')]
+        return [self.files[x].file for x in ("Ratings", "Results", "New results")]
 
     def _add_file(self, name, row, save_as=False):
         f = File(self, name, self.status, save_as)
         self.files[name] = f
-        opts = {'padx': 5, 'pady': 1, 'ipady': 5}
+        opts = {"padx": 5, "pady": 1, "ipady": 5}
         f.label.grid(column=0, row=row, sticky=tk.EW, **opts)
         f.file_label.grid(column=1, row=row, sticky=tk.EW, **opts)
         f.button.grid(column=2, row=row, sticky=tk.EW, **opts)
 
     def _init_widgets(self):
-        self._add_file('Ratings', 0)
-        self._add_file('Results', 1)
-        self._add_file('New results', 2, save_as=True)
+        self._add_file("Ratings", 0)
+        self._add_file("Results", 1)
+        self._add_file("New results", 2, save_as=True)
         self.grid(padx=10, pady=0, sticky=tk.NSEW)
 
 
@@ -1011,9 +1049,9 @@ class App(tk.Tk):
         self.files = FilesWidget(self.frame, status=self)
         buttonbox = ttk.Frame(self.frame)
         button1 = ttk.Button(buttonbox, text="Calculate new ratings")
-        button1['command'] = self.calculate_ratings
+        button1["command"] = self.calculate_ratings
         button2 = ttk.Button(buttonbox, text="Recalculate latest tournament")
-        button2['command'] = self.recalculate_ratings
+        button2["command"] = self.recalculate_ratings
         # layout widgets
         label.grid(row=0)
         self.files.grid(row=1, pady=10, sticky=tk.EW)
@@ -1040,8 +1078,8 @@ class App(tk.Tk):
         Keep the csv header row, the script skips the first row.
         """)
         ret = tk.Text(self.frame, width=80, height=14)
-        ret.insert('end', text)
-        ret.config(state='disabled')
+        ret.insert("end", text)
+        ret.config(state="disabled")
         return ret
 
     def init_style(self):
@@ -1088,9 +1126,9 @@ class SimulationApp(tk.Tk):
         self.entry = ttk.Entry(inputbox, textvariable=self.beta_input)
         buttonbox = ttk.Frame(self.frame)
         button1 = ttk.Button(buttonbox, text="Run simulation")
-        button1['command'] = self.run_simulation
+        button1["command"] = self.run_simulation
         button2 = ttk.Button(buttonbox, text="Quit")
-        button2['command'] = self.quit
+        button2["command"] = self.quit
         # layout widgets
         label.grid(row=0)
         beta_label.grid(row=0, column=0)
@@ -1120,8 +1158,8 @@ class SimulationApp(tk.Tk):
         a spreadsheet.
         """)
         ret = tk.Text(self.frame, width=80, height=14)
-        ret.insert('end', text)
-        ret.config(state='disabled')
+        ret.insert("end", text)
+        ret.config(state="disabled")
         return ret
 
     def init_style(self):
@@ -1141,13 +1179,12 @@ class SimulationApp(tk.Tk):
         pass
 
 
-
 def run_gui():
     w = App()
     w.mainloop()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # DO NOT run the standalone rating script, always run all_rating
     print()
     print("Run `python all_rating.py` to rate a new tournament.")
