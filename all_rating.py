@@ -109,6 +109,7 @@ ALL = [
     ("providence-05apr2025", "2025-04-05"),
     ("portland-pub-12apr2025", "2025-04-12"),
     ("portland-pub-13apr2025", "2025-04-13"),
+    ("championscup-2025", "2025-04-20"),
 ]
 
 
