@@ -124,6 +124,7 @@ ALL = [
     ("pdxwords-eb-2025", "2025-08-29"),
     ("slingerlands-series1-2025", "2025-08-30"),
     ("slingerlands-series2-2025", "2025-08-31"),
+    ("pdxwords-2025", "2025-09-01"),
 ]
 
 
