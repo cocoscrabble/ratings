@@ -126,6 +126,7 @@ ALL = [
     ("slingerlands-series2-2025", "2025-08-31"),
     ("pdxwords-2025", "2025-09-01"),
     ("charlottesville-2025", "2025-10-04"),
+    ("seattle-oct252025", "2025-10-25"),
 ]
 
 
