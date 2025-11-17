@@ -14,6 +14,7 @@ from io import StringIO
 import sys
 import tkinter as tk
 
+from players import PlayerDB
 import rating
 from rating import Tournament, CSVResultWriter, TabularResultWriter
 from tournaments import TournamentDB
@@ -41,6 +42,7 @@ class Player:
 @dataclass
 class PlayerReport:
     name: str
+    coco_id: str
     old_rating: float
     new_rating: float
     old_deviation: float
@@ -48,9 +50,15 @@ class PlayerReport:
     games: int
 
     @classmethod
-    def from_tournament_player(cls, p):
+    def from_tournament_player(cls, p, playerdb):
+        try:
+            coco_id = playerdb.get_id(p.name)
+        except KeyError:
+            print(f"MISSING NAME: {p.name}")
+            coco_id = "9999"
         return cls(
             p.name,
+            coco_id,
             p.init_rating,
             p.new_rating,
             round(p.init_rating_deviation, 2),
@@ -84,10 +92,11 @@ class CSVRatingsFileWriter:
             writer.writerow(self.row(p))
 
 
-class PlayerDB:
-    """Player database."""
+class RatingsDB:
+    """Ratings database."""
 
-    def __init__(self):
+    def __init__(self, playerdb):
+        self.playerdb = playerdb
         self.players = {}
         self.report = defaultdict(dict)
 
@@ -96,7 +105,7 @@ class PlayerDB:
             for p in s.get_players():
                 self.players[p.name] = Player.from_tournament_player(p)
                 self.report[p.name][tournament.name] = (
-                    PlayerReport.from_tournament_player(p)
+                    PlayerReport.from_tournament_player(p, self.playerdb)
                 )
 
     def adjust_tournament(self, tournament):
@@ -129,14 +138,15 @@ def show_file(f):
         print(line.strip())
 
 
-def process_old_results(display_progress=True):
+def process_old_results(display_progress=False):
     d = os.path.join(os.path.dirname(__file__), "results")
     results = glob.glob(f"{d}/*results.?sv")
     ratings = glob.glob(f"{d}/*ratings.?sv")
     hres = {os.path.basename(f)[:-12]: f for f in results}
     hrat = {os.path.basename(f)[:-12]: f for f in ratings}
-    playerdb = PlayerDB()
+    playerdb = PlayerDB.read_csv()
     tournamentdb = TournamentDB.read_csv()
+    ratingsdb = RatingsDB(playerdb)
     for t in tournamentdb.tournaments:
         prefix, date = t.filename, t.date
         if not prefix:
@@ -147,33 +157,33 @@ def process_old_results(display_progress=True):
         date = datetime.strptime(date, "%Y-%m-%d")
         res = hres[prefix]
         rat = hrat[prefix]
-        t = playerdb.process_one_tournament(rat, res, prefix, date)
-    return playerdb, t
+        t = ratingsdb.process_one_tournament(rat, res, prefix, date)
+    return ratingsdb, t
 
 
 def process_all_results(rating_file, result_file, name, tdate):
-    playerdb, _ = process_old_results()
+    ratingsdb, _ = process_old_results()
     # Now process the new tournament
-    t = playerdb.process_one_tournament(rating_file, result_file, name, tdate)
+    t = ratingsdb.process_one_tournament(rating_file, result_file, name, tdate)
     res_out = StringIO("")
     TabularResultWriter().write(res_out, t)
     show_file(res_out)
     print("-------------------------")
-    return playerdb, t
+    return ratingsdb, t
 
 
 def write_current_ratings(filename):
-    playerdb, t = process_old_results()
-    write_latest_ratings(filename, playerdb, t)
+    ratingsdb, t = process_old_results()
+    write_latest_ratings(filename, ratingsdb, t)
 
 
-def write_report(filename, playerdb):
+def write_report(filename, ratingsdb):
     fields = ("old_rating", "new_rating", "old_deviation", "new_deviation", "games")
     with open(filename, "w") as f:
         writer = csv.writer(f)
         header = [None, None] + [name for name, _ in ALL]
         writer.writerow(header)
-        for p, rep in sorted(playerdb.report.items()):
+        for p, rep in sorted(ratingsdb.report.items()):
             for x in fields:
                 out = [p, x]
                 for name, _ in ALL:
@@ -183,7 +193,7 @@ def write_report(filename, playerdb):
                 writer.writerow(out)
 
 
-def write_latest_ratings(outfile, playerdb, t):
+def write_latest_ratings(outfile, ratingsdb, t):
     # Display the most recent tournament
     print("-------------------------")
     print(f"Ratings adjustment for most recent tournament")
@@ -193,21 +203,21 @@ def write_latest_ratings(outfile, playerdb, t):
     print("-------------------------")
     CSVResultWriter().write_file(outfile, t)
     # Also write out the complete rating list
-    write_complete_ratings(playerdb)
+    write_complete_ratings(ratingsdb)
 
 
-def write_complete_ratings(playerdb, filename=None):
+def write_complete_ratings(ratingsdb, filename=None):
     if not filename:
         filename = "complete-ratings-list.csv"
-    ps = playerdb.players.values()
+    ps = ratingsdb.players.values()
     CSVRatingsFileWriter().write_file(filename, ps)
     print(f"Wrote all current ratings to {filename}")
 
 
 def write_sim_report(filename):
-    playerdb, t = process_old_results()
-    write_report(filename, playerdb)
-    return playerdb
+    ratingsdb, t = process_old_results()
+    write_report(filename, ratingsdb)
+    return ratingsdb
 
 
 # -----------------------------------------------------
@@ -222,12 +232,12 @@ class App(rating.App):
             return
         name = "Tournament name"
         tdate = datetime.today()
-        playerdb, t = process_all_results(rating_file, result_file, name, tdate)
+        ratingsdb, t = process_all_results(rating_file, result_file, name, tdate)
         CSVResultWriter().write_file(outfile, t)
         self.set_status(f"Wrote new ratings to {outfile}")
         print(f"Wrote tournament ratings to {outfile}")
         # Also write out the complete rating list
-        write_complete_ratings(playerdb)
+        write_complete_ratings(ratingsdb)
 
     def recalculate_ratings(self):
         outfile = "latest_ratings.txt"
@@ -246,12 +256,12 @@ class ReportApp(rating.App):
             return
         name = "Tournament name"
         tdate = datetime.today()
-        playerdb, t = process_all_results(rating_file, result_file, name, tdate)
+        ratingsdb, t = process_all_results(rating_file, result_file, name, tdate)
         CSVResultWriter().write_file(outfile, t)
         self.set_status(f"Wrote new ratings to {outfile}")
         print(f"Wrote tournament ratings to {outfile}")
         # Also write out the complete rating list
-        write_complete_ratings(playerdb)
+        write_complete_ratings(ratingsdb)
 
     def recalculate_ratings(self):
         outfile = "latest_ratings.txt"
