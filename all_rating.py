@@ -249,6 +249,10 @@ def process_old_results(display_progress=True):
     hres = {os.path.basename(f)[:-12]: f for f in results}
     hrat = {os.path.basename(f)[:-12]: f for f in ratings}
     playerdb = PlayerDB()
+    player_devs = {}
+    num_inc = 0
+    num_dec = 0
+    num_same = 0
     for prefix, date in ALL:
         if display_progress:
             print(f"Reading {prefix}")
@@ -256,6 +260,19 @@ def process_old_results(display_progress=True):
         res = hres[prefix]
         rat = hrat[prefix]
         t = playerdb.process_one_tournament(rat, res, prefix, date)
+        for p in playerdb.players:
+            player = playerdb.players[p]
+            curr_dev = player.deviation
+            if player.name in player_devs:
+                prev_dev = player_devs[player.name]
+                if curr_dev > prev_dev:
+                    num_inc += 1
+                elif curr_dev < prev_dev:
+                    num_dec += 1
+                else:
+                    num_same += 1
+            player_devs[player.name] = curr_dev
+    print("Increases: {}\nDecreases: {}\nUnchanged: {}\n".format(num_inc, num_dec, num_same))
     return playerdb, t
 
 
