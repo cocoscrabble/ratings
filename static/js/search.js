@@ -154,13 +154,10 @@
   });
 
   findBtn.addEventListener("click", () => {
-    if (selectedPlayer) {
-      showDetail(selectedPlayer);
-    } else if (input.value.trim()) {
-      // Trigger a fresh search and show first result
-      fetchResults(input.value.trim()).then(() => {
-        if (results.length > 0) selectPlayer(0);
-      });
+    const q = input.value.trim();
+    if (q) {
+      // Navigate to the full search results page
+      window.location.href = `/search/?q=${encodeURIComponent(q)}`;
     }
   });
 })();
