@@ -1,3 +1,45 @@
 {% extends "players/manage_base.html" %}
+
 {% block title %}Import Current Ratings — CocoDB Admin{% endblock %}
-{% block content %}<p>Import current ratings — coming soon.</p>{% endblock %}
+
+{% block content %}
+<div class="manage-actions">
+  <h1>Import Current Ratings</h1>
+</div>
+
+<p style="color:var(--text-muted);margin-bottom:8px;">
+  Upload the organisation's standard ratings export. The date will be set to today automatically.
+</p>
+<p style="color:var(--text-muted);margin-bottom:24px;">
+  Expected columns: <code style="background:var(--surface);padding:2px 6px;border-radius:3px;">Name, Number, Rating</code>
+</p>
+
+<form method="post" enctype="multipart/form-data" class="manage-form" style="max-width:520px;">
+  {% csrf_token %}
+  <div>
+    <label>CSV File</label>
+    <input type="file" name="csv_file" accept=".csv">
+  </div>
+  <button type="submit" class="coco-button">Import</button>
+  <a href="{% url 'manage_import' %}" style="margin-left:16px;">Other import formats</a>
+</form>
+
+{% if summary %}
+<div class="import-summary">
+  <h3>{{ summary.mode }} — Import complete</h3>
+  {% for line in summary.lines %}
+  <p>{{ line }}</p>
+  {% endfor %}
+  {% if summary.errors %}
+  <div class="import-errors">
+    <p><strong>{{ summary.errors|length }} row(s) with errors:</strong></p>
+    <ul style="margin-top:6px;padding-left:20px;">
+      {% for err in summary.errors %}
+      <li>{{ err }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+</div>
+{% endif %}
+{% endblock %}

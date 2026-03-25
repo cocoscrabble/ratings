@@ -1,3 +1,60 @@
 {% extends "players/manage_base.html" %}
-{% block title %}Import — CocoDB Admin{% endblock %}
-{% block content %}<p>CSV import — coming soon.</p>{% endblock %}
+
+{% block title %}Import CSV — CocoDB Admin{% endblock %}
+
+{% block content %}
+<div class="manage-actions">
+  <h1>Import CSV</h1>
+  <a href="{% url 'manage_import_current' %}" class="coco-button">Import Current Ratings</a>
+</div>
+
+<p style="color:var(--text-muted);margin-bottom:24px;">
+  Import players and/or ratings from a CSV file. Choose the format that matches your file.
+</p>
+
+<form method="post" enctype="multipart/form-data" class="manage-form" style="max-width:520px;">
+  {% csrf_token %}
+
+  <div>
+    <label>Format</label>
+    <select name="mode">
+      <option value="players">Players only — columns: player_number, name</option>
+      <option value="ratings">Ratings only — columns: player_number, rating, date</option>
+      <option value="combined">Combined — columns: player_number, name, rating, date</option>
+    </select>
+  </div>
+
+  <div>
+    <label>CSV File</label>
+    <input type="file" name="csv_file" accept=".csv">
+  </div>
+
+  <div style="margin-bottom:16px;">
+    <label style="display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0;">
+      <input type="checkbox" name="update">
+      Update existing player names (instead of skipping)
+    </label>
+  </div>
+
+  <button type="submit" class="coco-button">Import</button>
+</form>
+
+{% if summary %}
+<div class="import-summary">
+  <h3>{{ summary.mode }} — Import complete</h3>
+  {% for line in summary.lines %}
+  <p>{{ line }}</p>
+  {% endfor %}
+  {% if summary.errors %}
+  <div class="import-errors">
+    <p><strong>{{ summary.errors|length }} row(s) with errors:</strong></p>
+    <ul style="margin-top:6px;padding-left:20px;">
+      {% for err in summary.errors %}
+      <li>{{ err }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+</div>
+{% endif %}
+{% endblock %}

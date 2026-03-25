@@ -207,9 +207,80 @@ def manage_rating_edit(request, pk):
 
 @login_required
 def manage_import(request):
-    return render(request, "players/manage_import.html", {})
+    from django.contrib import messages
+
+    from players.management.commands.import_csv import (
+        import_combined_rows,
+        import_players_rows,
+        import_ratings_rows,
+        read_csv_rows_from_bytes,
+    )
+
+    summary = None
+    if request.method == "POST":
+        mode = request.POST.get("mode", "players")
+        uploaded = request.FILES.get("csv_file")
+        if not uploaded:
+            messages.error(request, "Please select a file to upload.")
+        else:
+            rows = read_csv_rows_from_bytes(uploaded.read())
+            update = "update" in request.POST
+
+            if mode == "players":
+                imp, skp, errors = import_players_rows(rows, update=update)
+                summary = {
+                    "mode": "Players",
+                    "lines": [f"{imp} imported, {skp} skipped"],
+                    "errors": errors,
+                }
+            elif mode == "ratings":
+                imp, skp, errors = import_ratings_rows(rows)
+                summary = {
+                    "mode": "Ratings",
+                    "lines": [f"{imp} imported, {skp} skipped"],
+                    "errors": errors,
+                }
+            elif mode == "combined":
+                pi, ps, ri, rs, errors = import_combined_rows(rows, update=update)
+                summary = {
+                    "mode": "Combined",
+                    "lines": [
+                        f"Players: {pi} imported, {ps} skipped",
+                        f"Ratings: {ri} imported, {rs} skipped",
+                    ],
+                    "errors": errors,
+                }
+
+    return render(request, "players/manage_import.html", {"summary": summary})
 
 
 @login_required
 def manage_import_current(request):
-    return render(request, "players/manage_import_current.html", {})
+    import datetime
+
+    from django.contrib import messages
+
+    from players.management.commands.import_csv import (
+        import_current_rows,
+        read_csv_rows_from_bytes,
+    )
+
+    summary = None
+    if request.method == "POST":
+        uploaded = request.FILES.get("csv_file")
+        if not uploaded:
+            messages.error(request, "Please select a file to upload.")
+        else:
+            rows = read_csv_rows_from_bytes(uploaded.read())
+            pi, ps, ri, rs, errors = import_current_rows(rows)
+            today = datetime.date.today()
+            summary = {
+                "mode": f"Current Ratings ({today})",
+                "lines": [
+                    f"Players: {pi} imported, {ps} updated",
+                    f"Ratings: {ri} imported, {rs} skipped (already existed for today)",
+                ],
+                "errors": errors,
+            }
+
+    return render(request, "players/manage_import_current.html", {"summary": summary})
