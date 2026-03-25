@@ -11,9 +11,16 @@
   const noJsList = document.getElementById("results-list");
   if (noJsList) noJsList.hidden = true;
 
-  // Convert the form to not submit on Enter (we handle it ourselves)
+  // Block form submit only when the dropdown is handling Enter key;
+  // allow normal submit when the Find Player button is clicked.
   const form = document.getElementById("search-form");
-  form.addEventListener("submit", (e) => e.preventDefault());
+  let blockNextSubmit = false;
+  form.addEventListener("submit", (e) => {
+    if (blockNextSubmit) {
+      e.preventDefault();
+      blockNextSubmit = false;
+    }
+  });
 
   // --- Dropdown state ---
   let dropdown = null;
@@ -141,8 +148,10 @@
       e.preventDefault();
       highlightItem(Math.max(selectedIndex - 1, 0));
     } else if (e.key === "Enter") {
-      e.preventDefault();
-      if (selectedIndex >= 0) selectPlayer(selectedIndex);
+      if (selectedIndex >= 0) {
+        blockNextSubmit = true;
+        selectPlayer(selectedIndex);
+      }
     } else if (e.key === "Escape") {
       closeDropdown();
     }
@@ -153,11 +162,5 @@
     if (!dropdown.contains(e.target) && e.target !== input) closeDropdown();
   });
 
-  findBtn.addEventListener("click", () => {
-    const q = input.value.trim();
-    if (q) {
-      // Navigate to the full search results page
-      window.location.href = `/search/?q=${encodeURIComponent(q)}`;
-    }
-  });
+  // "Find Player" button submits the form natively — no handler needed.
 })();
