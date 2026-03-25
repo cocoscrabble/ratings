@@ -30,17 +30,33 @@ def _with_current_rating(qs):
 
 
 def _search_players(query):
-    """Return a queryset of players matching query, using trigram on Postgres
-    and icontains on other backends (e.g. SQLite in local dev)."""
+    """Search players by name. On Postgres, combines substring matches with
+    trigram fuzzy matches so short queries and typos both work well.
+    Falls back to icontains on SQLite."""
     if not query:
         return Player.objects.none()
     if connection.vendor == "postgresql":
-        from django.contrib.postgres.search import TrigramSimilarity
+        from django.contrib.postgres.search import TrigramWordSimilarity
 
+        # Exact substring matches (always reliable)
+        exact = set(
+            Player.objects.filter(name__icontains=query).values_list("pk", flat=True)[
+                :20
+            ]
+        )
+        # Fuzzy matches via trigram word similarity
+        fuzzy = set(
+            Player.objects.annotate(similarity=TrigramWordSimilarity(query, "name"))
+            .filter(similarity__gte=0.15)
+            .values_list("pk", flat=True)[:20]
+        )
+        combined_pks = exact | fuzzy
+        if not combined_pks:
+            return _with_current_rating(Player.objects.none())
         qs = (
-            Player.objects.annotate(similarity=TrigramSimilarity("name", query))
-            .filter(similarity__gte=0.2)
-            .order_by("-similarity")[:20]
+            Player.objects.filter(pk__in=combined_pks)
+            .annotate(similarity=TrigramWordSimilarity(query, "name"))
+            .order_by("-similarity", "name")[:20]
         )
     else:
         qs = Player.objects.filter(name__icontains=query).order_by("name")[:20]
