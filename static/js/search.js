@@ -166,5 +166,28 @@
     if (!dropdown.contains(e.target) && e.target !== input) closeDropdown();
   });
 
+  // --- Server-rendered results list: intercept clicks ---
+  if (noJsList) {
+    noJsList.addEventListener("click", (e) => {
+      const link = e.target.closest("a");
+      if (!link) return;
+      e.preventDefault();
+      // Extract player PK from the link's ?player=<pk> param
+      const url = new URL(link.href, window.location.origin);
+      const pk = url.searchParams.get("player");
+      if (!pk) return;
+      // Fetch player detail and show it
+      fetch(`/player/${pk}/`, { headers: { Accept: "application/json" } })
+        .then((res) => (res.ok ? res.json() : null))
+        .then((player) => {
+          if (!player) return;
+          noJsList.hidden = true;
+          if (serverDetail) serverDetail.hidden = true;
+          input.value = player.name;
+          showDetail(player);
+        });
+    });
+  }
+
   // "Find Player" button submits the form natively — no handler needed.
 })();
