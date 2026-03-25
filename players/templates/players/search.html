@@ -7,7 +7,7 @@
 <div class="search-container">
   <h1>Player Search</h1>
 
-  <form method="get" action="/search/" id="search-form">
+  <form method="get" action="{% url 'search_api' %}" id="search-form">
     <div class="search-row">
       <input
         type="text"
@@ -27,7 +27,7 @@
   <ul class="results-list" id="results-list">
     {% for player in players %}
     <li>
-      <a href="/?q={{ query }}&player={{ player.pk }}">{{ player.name }}</a>
+      <a href="/?q={{ query|urlencode }}&player={{ player.pk }}">{{ player.name }}</a>
     </li>
     {% endfor %}
   </ul>
