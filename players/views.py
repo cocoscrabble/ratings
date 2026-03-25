@@ -3,7 +3,7 @@ from django.db import connection
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
-from .models import Player
+from .models import Player, Rating
 
 
 # ---------------------------------------------------------------------------
@@ -94,8 +94,10 @@ def player_detail(request, pk):
 
 
 # ---------------------------------------------------------------------------
-# Manage views (login required) — stubs, expanded in later commits
+# Manage views (login required)
 # ---------------------------------------------------------------------------
+
+MANAGE_PAGE_SIZE = 50
 
 
 @login_required
@@ -105,12 +107,102 @@ def manage_redirect(request):
 
 @login_required
 def manage_players(request):
-    return render(request, "players/manage_players.html", {})
+    from django.core.paginator import Paginator
+
+    qs = Player.objects.all()
+    query = request.GET.get("q", "").strip()
+    if query:
+        qs = qs.filter(name__icontains=query)
+    paginator = Paginator(qs, MANAGE_PAGE_SIZE)
+    page = paginator.get_page(request.GET.get("page"))
+    return render(
+        request,
+        "players/manage_players.html",
+        {"page_obj": page, "query": query},
+    )
+
+
+@login_required
+def manage_player_add(request):
+    from .forms import PlayerForm
+
+    form = PlayerForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        from django.contrib import messages
+
+        messages.success(request, "Player added.")
+        return redirect("manage_players")
+    return render(request, "players/manage_player_form.html", {"form": form, "action": "Add"})
+
+
+@login_required
+def manage_player_edit(request, pk):
+    from django.contrib import messages
+
+    from .forms import PlayerForm
+
+    player = get_object_or_404(Player, pk=pk)
+    form = PlayerForm(request.POST or None, instance=player)
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Player updated.")
+        return redirect("manage_players")
+    return render(
+        request,
+        "players/manage_player_form.html",
+        {"form": form, "action": "Edit", "player": player},
+    )
 
 
 @login_required
 def manage_ratings(request):
-    return render(request, "players/manage_ratings.html", {})
+    from django.core.paginator import Paginator
+
+    qs = Rating.objects.select_related("player").all()
+    query = request.GET.get("q", "").strip()
+    if query:
+        qs = qs.filter(player__name__icontains=query)
+    paginator = Paginator(qs, MANAGE_PAGE_SIZE)
+    page = paginator.get_page(request.GET.get("page"))
+    return render(
+        request,
+        "players/manage_ratings.html",
+        {"page_obj": page, "query": query},
+    )
+
+
+@login_required
+def manage_rating_add(request):
+    from django.contrib import messages
+
+    from .forms import RatingForm
+
+    form = RatingForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Rating added.")
+        return redirect("manage_ratings")
+    return render(request, "players/manage_rating_form.html", {"form": form, "action": "Add"})
+
+
+@login_required
+def manage_rating_edit(request, pk):
+    from django.contrib import messages
+
+    from .forms import RatingForm
+
+    rating = get_object_or_404(Rating, pk=pk)
+    form = RatingForm(request.POST or None, instance=rating)
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Rating updated.")
+        return redirect("manage_ratings")
+    return render(
+        request,
+        "players/manage_rating_form.html",
+        {"form": form, "action": "Edit", "rating": rating},
+    )
 
 
 @login_required

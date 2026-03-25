@@ -1,3 +1,49 @@
 {% extends "players/manage_base.html" %}
+
 {% block title %}Players — CocoDB Admin{% endblock %}
-{% block content %}<p>Players list — coming soon.</p>{% endblock %}
+
+{% block content %}
+<div class="manage-actions">
+  <h1>Players</h1>
+  <form method="get" style="display:flex;gap:8px;">
+    <input type="text" name="q" value="{{ query }}" placeholder="Search by name…" class="search-input" style="width:220px;">
+    <button type="submit" class="coco-button">Search</button>
+  </form>
+  <a href="{% url 'manage_player_add' %}" class="coco-button">+ Add Player</a>
+</div>
+
+<table class="manage-table">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Current Rating</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for player in page_obj %}
+    <tr>
+      <td>{{ player.player_number }}</td>
+      <td>{{ player.name }}</td>
+      <td>{% with cr=player.current_rating %}{% if cr %}{{ cr.rating }}{% else %}—{% endif %}{% endwith %}</td>
+      <td><a href="{% url 'manage_player_edit' player.pk %}">Edit</a></td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4">No players found.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if page_obj.has_other_pages %}
+<div class="pagination">
+  {% if page_obj.has_previous %}
+  <a href="?page={{ page_obj.previous_page_number }}&q={{ query }}">&laquo; Prev</a>
+  {% endif %}
+  <span class="current">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+  {% if page_obj.has_next %}
+  <a href="?page={{ page_obj.next_page_number }}&q={{ query }}">Next &raquo;</a>
+  {% endif %}
+</div>
+{% endif %}
+{% endblock %}
