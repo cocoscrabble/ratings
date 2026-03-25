@@ -26,7 +26,7 @@
     <tr>
       <td>{{ player.player_number }}</td>
       <td>{{ player.name }}</td>
-      <td>{% with cr=player.current_rating %}{% if cr %}{{ cr.rating }}{% else %}—{% endif %}{% endwith %}</td>
+      <td>{% if player.latest_rating is not None %}{{ player.latest_rating }}{% else %}—{% endif %}</td>
       <td><a href="{% url 'manage_player_edit' player.pk %}">Edit</a></td>
     </tr>
     {% empty %}

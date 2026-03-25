@@ -1,14 +1,29 @@
+import datetime
+
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.db import connection
+from django.db.models import DateField, IntegerField, OuterRef, Subquery
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
+from .forms import PlayerForm, RatingForm
 from .models import Player, Rating
 
 
 # ---------------------------------------------------------------------------
-# Search helpers
+# Query helpers
 # ---------------------------------------------------------------------------
+
+
+def _with_current_rating(qs):
+    """Annotate a Player queryset with latest rating fields in a single query."""
+    latest = Rating.objects.filter(player=OuterRef("pk")).order_by("-date")
+    return qs.annotate(
+        latest_rating=Subquery(latest.values("rating")[:1], output_field=IntegerField()),
+        latest_rating_date=Subquery(latest.values("date")[:1], output_field=DateField()),
+    )
 
 
 def _search_players(query):
@@ -19,23 +34,35 @@ def _search_players(query):
     if connection.vendor == "postgresql":
         from django.contrib.postgres.search import TrigramSimilarity
 
-        return (
+        qs = (
             Player.objects.annotate(similarity=TrigramSimilarity("name", query))
             .filter(similarity__gte=0.2)
             .order_by("-similarity")[:20]
         )
-    return Player.objects.filter(name__icontains=query).order_by("name")[:20]
+    else:
+        qs = Player.objects.filter(name__icontains=query).order_by("name")[:20]
+    return _with_current_rating(qs)
 
 
 def _player_data(player):
-    """Serialise a player + current rating to a dict."""
-    cr = player.current_rating
+    """Serialise a player + current rating to a dict.
+
+    Works with both annotated querysets (latest_rating/latest_rating_date)
+    and plain Player instances (falls back to current_rating property).
+    """
+    if hasattr(player, "latest_rating"):
+        rating = player.latest_rating
+        date = player.latest_rating_date
+    else:
+        cr = player.current_rating
+        rating = cr.rating if cr else None
+        date = cr.date if cr else None
     return {
         "id": player.pk,
         "player_number": player.player_number,
         "name": player.name,
-        "current_rating": cr.rating if cr else None,
-        "rating_date": cr.date.isoformat() if cr else None,
+        "current_rating": rating,
+        "rating_date": date.isoformat() if date else None,
     }
 
 
@@ -107,9 +134,7 @@ def manage_redirect(request):
 
 @login_required
 def manage_players(request):
-    from django.core.paginator import Paginator
-
-    qs = Player.objects.all()
+    qs = _with_current_rating(Player.objects.all())
     query = request.GET.get("q", "").strip()
     if query:
         qs = qs.filter(name__icontains=query)
@@ -124,13 +149,9 @@ def manage_players(request):
 
 @login_required
 def manage_player_add(request):
-    from .forms import PlayerForm
-
     form = PlayerForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
         form.save()
-        from django.contrib import messages
-
         messages.success(request, "Player added.")
         return redirect("manage_players")
     return render(request, "players/manage_player_form.html", {"form": form, "action": "Add"})
@@ -138,10 +159,6 @@ def manage_player_add(request):
 
 @login_required
 def manage_player_edit(request, pk):
-    from django.contrib import messages
-
-    from .forms import PlayerForm
-
     player = get_object_or_404(Player, pk=pk)
     form = PlayerForm(request.POST or None, instance=player)
     if request.method == "POST" and form.is_valid():
@@ -157,8 +174,6 @@ def manage_player_edit(request, pk):
 
 @login_required
 def manage_ratings(request):
-    from django.core.paginator import Paginator
-
     qs = Rating.objects.select_related("player").all()
     query = request.GET.get("q", "").strip()
     if query:
@@ -174,10 +189,6 @@ def manage_ratings(request):
 
 @login_required
 def manage_rating_add(request):
-    from django.contrib import messages
-
-    from .forms import RatingForm
-
     form = RatingForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
         form.save()
@@ -188,10 +199,6 @@ def manage_rating_add(request):
 
 @login_required
 def manage_rating_edit(request, pk):
-    from django.contrib import messages
-
-    from .forms import RatingForm
-
     rating = get_object_or_404(Rating, pk=pk)
     form = RatingForm(request.POST or None, instance=rating)
     if request.method == "POST" and form.is_valid():
@@ -207,8 +214,6 @@ def manage_rating_edit(request, pk):
 
 @login_required
 def manage_import(request):
-    from django.contrib import messages
-
     from players.management.commands.import_csv import (
         import_combined_rows,
         import_players_rows,
@@ -250,16 +255,14 @@ def manage_import(request):
                     ],
                     "errors": errors,
                 }
+            else:
+                messages.error(request, f"Unknown import mode: {mode}")
 
     return render(request, "players/manage_import.html", {"summary": summary})
 
 
 @login_required
 def manage_import_current(request):
-    import datetime
-
-    from django.contrib import messages
-
     from players.management.commands.import_csv import (
         import_current_rows,
         read_csv_rows_from_bytes,
