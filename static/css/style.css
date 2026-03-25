@@ -1,6 +1,6 @@
 /* -------------------------------------------------------------------------
-   CocoDB — styles matching cocoscrabble.org design language
-   Dark background, white text, gold accent buttons.
+   CocoDB — light theme
+   White page background, #cdbaba top bar.
    ------------------------------------------------------------------------- */
 
 *, *::before, *::after {
@@ -10,13 +10,14 @@
 }
 
 :root {
-  --bg: #111111;
-  --surface: #1e1e1e;
-  --border: #333333;
-  --text: #f0f0f0;
-  --text-muted: #999999;
-  --gold: #c8a84b;
-  --gold-hover: #b8983b;
+  --bg: #ffffff;
+  --surface: #f5f0f0;
+  --border: #ddd0d0;
+  --text: #1a1a1a;
+  --text-muted: #6a6a7a;
+  --accent: #531882;
+  --accent-hover: #421568;
+  --header-bg: #cdbaba;
   --font: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
@@ -30,7 +31,7 @@ body {
 }
 
 a {
-  color: var(--gold);
+  color: var(--accent);
   text-decoration: none;
 }
 
@@ -40,12 +41,12 @@ a:hover {
 
 /* --- Header --- */
 .site-header {
-  background: #000;
+  background: var(--header-bg);
   padding: 16px 32px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid #b8a3a3;
 }
 
 .logo-link {
@@ -111,18 +112,18 @@ a:hover {
 }
 
 .search-input:focus {
-  border-color: var(--gold);
+  border-color: var(--accent);
 }
 
 .search-input::placeholder {
   color: var(--text-muted);
 }
 
-/* --- Button (matches cocoscrabble.org gold action style) --- */
+/* --- Button --- */
 .coco-button {
   padding: 12px 24px;
-  background: var(--gold);
-  color: #000;
+  background: var(--accent);
+  color: #fff;
   border: none;
   border-radius: 4px;
   font-size: 15px;
@@ -135,7 +136,7 @@ a:hover {
 }
 
 .coco-button:hover {
-  background: var(--gold-hover);
+  background: var(--accent-hover);
 }
 
 /* --- Dropdown --- */
@@ -299,7 +300,7 @@ a:hover {
 
 .manage-form input:focus,
 .manage-form select:focus {
-  border-color: var(--gold);
+  border-color: var(--accent);
 }
 
 /* --- Login page --- */
@@ -330,7 +331,7 @@ a:hover {
 }
 
 .login-container input:focus {
-  border-color: var(--gold);
+  border-color: var(--accent);
 }
 
 /* --- Messages --- */
@@ -346,10 +347,10 @@ a:hover {
   font-size: 14px;
 }
 
-.message-success { background: #1a3a1a; border: 1px solid #2d6b2d; color: #7ecb7e; }
-.message-error   { background: #3a1a1a; border: 1px solid #6b2d2d; color: #cb7e7e; }
-.message-warning { background: #3a2e1a; border: 1px solid #6b582d; color: #cba97e; }
-.message-info    { background: #1a2a3a; border: 1px solid #2d4a6b; color: #7eaccb; }
+.message-success { background: #edf7ed; border: 1px solid #a3d4a3; color: #2d6b2d; }
+.message-error   { background: #fdf0f0; border: 1px solid #e0a0a0; color: #8b2020; }
+.message-warning { background: #fdf7ed; border: 1px solid #e0c87a; color: #7a5500; }
+.message-info    { background: #edf3fd; border: 1px solid #a0bce0; color: #1a3a6b; }
 
 /* --- Import summary --- */
 .import-summary {
@@ -368,7 +369,7 @@ a:hover {
 
 .import-errors {
   margin-top: 10px;
-  color: #cb7e7e;
+  color: #8b2020;
 }
 
 /* --- Pagination --- */
@@ -394,8 +395,8 @@ a:hover {
 
 .pagination .current {
   padding: 6px 12px;
-  background: var(--gold);
-  color: #000;
+  background: var(--accent);
+  color: #fff;
   border-radius: 4px;
   font-weight: 600;
 }
