@@ -12,8 +12,8 @@ RUN uv sync --no-dev --no-install-project
 # Copy source
 COPY . .
 
-# Collect static files
-RUN uv run manage.py collectstatic --noinput
+# Collect static files (SECRET_KEY only needed to satisfy Django startup)
+RUN SECRET_KEY=build-placeholder uv run manage.py collectstatic --noinput
 
 EXPOSE 8000
 
