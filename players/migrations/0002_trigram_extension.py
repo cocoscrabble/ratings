@@ -1,4 +1,4 @@
-from django.db import migrations, models
+from django.db import migrations
 
 
 class SafeTrigramExtension(migrations.RunSQL):
@@ -36,7 +36,10 @@ class Migration(migrations.Migration):
             reverse_sql=migrations.RunSQL.noop,
         ),
         SafeGistIndex(
-            sql="CREATE INDEX IF NOT EXISTS players_player_name_trgm ON players_player USING GIST (name gist_trgm_ops)",
+            sql=(
+                "CREATE INDEX IF NOT EXISTS players_player_name_trgm "
+                "ON players_player USING GIST (name gist_trgm_ops)"
+            ),
             reverse_sql="DROP INDEX IF EXISTS players_player_name_trgm",
         ),
     ]

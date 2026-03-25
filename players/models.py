@@ -34,7 +34,9 @@ class Rating(models.Model):
     class Meta:
         ordering = ["-date"]
         constraints = [
-            models.UniqueConstraint(fields=["player", "date"], name="unique_player_date")
+            models.UniqueConstraint(
+                fields=["player", "date"], name="unique_player_date"
+            )
         ]
 
     def __str__(self):

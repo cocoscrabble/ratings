@@ -5,7 +5,7 @@ Usage:
     uv run manage.py import_csv --players players.csv
     uv run manage.py import_csv --ratings ratings.csv
     uv run manage.py import_csv --combined combined.csv
-    uv run manage.py import_csv --current players.csv   # Name/Number/Rating, date=today
+    uv run manage.py import_csv --current players.csv
 
 Flags:
     --update   Update existing player names instead of skipping duplicates.
@@ -29,9 +29,18 @@ def _parse_player_number(raw):
     return val
 
 
-# ---------------------------------------------------------------------------
-# Row-level import functions — return (imported, skipped, errors) counts
-# ---------------------------------------------------------------------------
+def _col(row, *names):
+    """Return the first non-empty value found for the given column names."""
+    for name in names:
+        val = row.get(name, "")
+        if val:
+            return val
+    return ""
+
+
+# -------------------------------------------------------------------
+# Row-level import functions
+# -------------------------------------------------------------------
 
 
 def import_players_rows(rows, update=False):
@@ -39,8 +48,8 @@ def import_players_rows(rows, update=False):
     errors = []
     for i, row in enumerate(rows, start=2):
         try:
-            number = _parse_player_number(row.get("player_number") or row.get("Number", ""))
-            name = (row.get("name") or row.get("Name", "")).strip()
+            number = _parse_player_number(_col(row, "player_number", "Number"))
+            name = _col(row, "name", "Name").strip()
             if not name:
                 raise ValueError("Name is empty")
             player, created = Player.objects.get_or_create(
@@ -67,14 +76,14 @@ def import_ratings_rows(rows):
     errors = []
     for i, row in enumerate(rows, start=2):
         try:
-            number = _parse_player_number(row.get("player_number") or row.get("Number", ""))
-            rating_val = int((row.get("rating") or row.get("Rating", "")).strip())
-            date_str = (row.get("date") or row.get("Date", "")).strip()
+            number = _parse_player_number(_col(row, "player_number", "Number"))
+            rating_val = int(_col(row, "rating", "Rating").strip())
+            date_str = _col(row, "date", "Date").strip()
             date = datetime.date.fromisoformat(date_str)
             try:
                 player = Player.objects.get(player_number=number)
             except Player.DoesNotExist:
-                errors.append(f"Row {i}: player #{number} not found — skipped")
+                errors.append(f"Row {i}: player #{number} not found")
                 skipped += 1
                 continue
             _, created = Rating.objects.get_or_create(
@@ -84,7 +93,7 @@ def import_ratings_rows(rows):
                 imported += 1
             else:
                 skipped += 1
-                errors.append(f"Row {i}: duplicate rating for #{number} on {date} — skipped")
+                errors.append(f"Row {i}: duplicate rating for #{number} on {date}")
         except (ValueError, KeyError) as exc:
             errors.append(f"Row {i}: {exc}")
     return imported, skipped, errors
@@ -96,10 +105,10 @@ def import_combined_rows(rows, update=False):
     errors = []
     for i, row in enumerate(rows, start=2):
         try:
-            number = _parse_player_number(row.get("player_number") or row.get("Number", ""))
-            name = (row.get("name") or row.get("Name", "")).strip()
-            rating_val = int((row.get("rating") or row.get("Rating", "")).strip())
-            date_str = (row.get("date") or row.get("Date", "")).strip()
+            number = _parse_player_number(_col(row, "player_number", "Number"))
+            name = _col(row, "name", "Name").strip()
+            rating_val = int(_col(row, "rating", "Rating").strip())
+            date_str = _col(row, "date", "Date").strip()
             date = datetime.date.fromisoformat(date_str)
 
             player, created = Player.objects.get_or_create(
@@ -120,7 +129,7 @@ def import_combined_rows(rows, update=False):
                 r_imported += 1
             else:
                 r_skipped += 1
-                errors.append(f"Row {i}: duplicate rating for #{number} on {date} — skipped")
+                errors.append(f"Row {i}: duplicate rating for #{number} on {date}")
         except (ValueError, KeyError, IntegrityError) as exc:
             errors.append(f"Row {i}: {exc}")
     return p_imported, p_skipped, r_imported, r_skipped, errors
@@ -136,9 +145,9 @@ def import_current_rows(rows, update=True):
     errors = []
     for i, row in enumerate(rows, start=2):
         try:
-            number = _parse_player_number(row.get("Number") or row.get("player_number", ""))
-            name = (row.get("Name") or row.get("name", "")).strip()
-            rating_val = int((row.get("Rating") or row.get("rating", "")).strip())
+            number = _parse_player_number(_col(row, "Number", "player_number"))
+            name = _col(row, "Name", "name").strip()
+            rating_val = int(_col(row, "Rating", "rating").strip())
             if not name:
                 raise ValueError("Name is empty")
 
@@ -161,7 +170,7 @@ def import_current_rows(rows, update=True):
             else:
                 r_skipped += 1
                 errors.append(
-                    f"Row {i}: rating for #{number} on {today} already exists — skipped"
+                    f"Row {i}: rating for #{number} on {today} already exists"
                 )
         except (ValueError, KeyError, IntegrityError) as exc:
             errors.append(f"Row {i}: {exc}")
@@ -178,9 +187,9 @@ def read_csv_rows_from_bytes(data):
     return list(csv.DictReader(io.StringIO(text)))
 
 
-# ---------------------------------------------------------------------------
+# -------------------------------------------------------------------
 # Management command
-# ---------------------------------------------------------------------------
+# -------------------------------------------------------------------
 
 
 class Command(BaseCommand):
@@ -188,9 +197,15 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         group = parser.add_mutually_exclusive_group(required=True)
-        group.add_argument("--players", metavar="FILE", help="CSV with player_number,name columns")
         group.add_argument(
-            "--ratings", metavar="FILE", help="CSV with player_number,rating,date columns"
+            "--players",
+            metavar="FILE",
+            help="CSV with player_number,name columns",
+        )
+        group.add_argument(
+            "--ratings",
+            metavar="FILE",
+            help="CSV with player_number,rating,date columns",
         )
         group.add_argument(
             "--combined",
@@ -200,7 +215,7 @@ class Command(BaseCommand):
         group.add_argument(
             "--current",
             metavar="FILE",
-            help="CSV with Name,Number,Rating columns; date set to today",
+            help="CSV with Name,Number,Rating; date set to today",
         )
         parser.add_argument(
             "--update",
@@ -231,7 +246,8 @@ class Command(BaseCommand):
             pi, ps, ri, rs, errors = import_combined_rows(rows, update=update)
             self.stdout.write(
                 f"Players: {pi} imported, {ps} skipped  |  "
-                f"Ratings: {ri} imported, {rs} skipped  |  {len(errors)} errors"
+                f"Ratings: {ri} imported, {rs} skipped  |  "
+                f"{len(errors)} errors"
             )
 
         elif options["current"]:
@@ -241,7 +257,8 @@ class Command(BaseCommand):
             self.stdout.write(
                 f"Current ratings ({today}): "
                 f"Players {pi} imported/{ps} skipped  |  "
-                f"Ratings {ri} imported/{rs} skipped  |  {len(errors)} errors"
+                f"Ratings {ri} imported/{rs} skipped  |  "
+                f"{len(errors)} errors"
             )
 
         for err in errors:

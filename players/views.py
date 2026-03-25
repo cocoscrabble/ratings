@@ -11,7 +11,6 @@ from django.shortcuts import get_object_or_404, redirect, render
 from .forms import PlayerForm, RatingForm
 from .models import Player, Rating
 
-
 # ---------------------------------------------------------------------------
 # Query helpers
 # ---------------------------------------------------------------------------
@@ -21,8 +20,12 @@ def _with_current_rating(qs):
     """Annotate a Player queryset with latest rating fields in a single query."""
     latest = Rating.objects.filter(player=OuterRef("pk")).order_by("-date")
     return qs.annotate(
-        latest_rating=Subquery(latest.values("rating")[:1], output_field=IntegerField()),
-        latest_rating_date=Subquery(latest.values("date")[:1], output_field=DateField()),
+        latest_rating=Subquery(
+            latest.values("rating")[:1], output_field=IntegerField()
+        ),
+        latest_rating_date=Subquery(
+            latest.values("date")[:1], output_field=DateField()
+        ),
     )
 
 
@@ -154,7 +157,9 @@ def manage_player_add(request):
         form.save()
         messages.success(request, "Player added.")
         return redirect("manage_players")
-    return render(request, "players/manage_player_form.html", {"form": form, "action": "Add"})
+    return render(
+        request, "players/manage_player_form.html", {"form": form, "action": "Add"}
+    )
 
 
 @login_required
@@ -194,7 +199,9 @@ def manage_rating_add(request):
         form.save()
         messages.success(request, "Rating added.")
         return redirect("manage_ratings")
-    return render(request, "players/manage_rating_form.html", {"form": form, "action": "Add"})
+    return render(
+        request, "players/manage_rating_form.html", {"form": form, "action": "Add"}
+    )
 
 
 @login_required
