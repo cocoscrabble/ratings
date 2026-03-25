@@ -37,7 +37,9 @@
 
   {# No-JS: selected player details #}
   {% if selected %}
+  <div id="server-player-detail">
   {% include "players/player_detail_fragment.html" with player=selected %}
+  </div>
   {% endif %}
 
   {# JS: populated dynamically #}

@@ -9,6 +9,7 @@
 
   // Hide the server-rendered results list once the user starts a new search
   const noJsList = document.getElementById("results-list");
+  const serverDetail = document.getElementById("server-player-detail");
 
   // Block form submit only when the dropdown is handling Enter key;
   // allow normal submit when the Find Player button is clicked.
@@ -92,6 +93,7 @@
     input.value = player.name;
     closeDropdown();
     if (noJsList) noJsList.hidden = true;
+    if (serverDetail) serverDetail.hidden = true;
     showDetail(player);
   }
 
