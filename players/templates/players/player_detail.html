@@ -1,0 +1,10 @@
+{% extends "players/base.html" %}
+
+{% block title %}{{ player.name }} — CocoDB{% endblock %}
+
+{% block content %}
+<div class="search-container">
+  <p><a href="/">&larr; Back to search</a></p>
+  {% include "players/player_detail_fragment.html" %}
+</div>
+{% endblock %}

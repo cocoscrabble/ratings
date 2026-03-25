@@ -1,0 +1,45 @@
+{% extends "players/base.html" %}
+
+{% block title %}Player Search — CocoDB{% endblock %}
+
+{% block content %}
+<div class="search-container">
+  <h1>Player Search</h1>
+
+  <form method="get" action="/search/" id="search-form">
+    <div class="search-row">
+      <input
+        type="text"
+        name="q"
+        id="search-input"
+        value="{{ query }}"
+        placeholder="Type a player name…"
+        autocomplete="off"
+        class="search-input"
+      >
+      <button type="submit" class="coco-button" id="find-btn">Find Player</button>
+    </div>
+  </form>
+
+  {# No-JS: list of matching players #}
+  {% if players %}
+  <ul class="results-list" id="results-list">
+    {% for player in players %}
+    <li>
+      <a href="/?q={{ query }}&player={{ player.pk }}">{{ player.name }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  {# No-JS: selected player details #}
+  {% if selected %}
+  {% include "players/player_detail_fragment.html" with player=selected %}
+  {% endif %}
+
+  {# JS: populated dynamically #}
+  <div id="player-detail" class="player-detail" hidden></div>
+</div>
+
+<script src="/static/js/search.js" defer></script>
+{% endblock %}

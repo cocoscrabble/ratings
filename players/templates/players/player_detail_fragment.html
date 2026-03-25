@@ -1,0 +1,26 @@
+<div class="player-detail">
+  <h2>{{ player.name }}</h2>
+  <table class="detail-table">
+    <tr>
+      <th>Player Number</th>
+      <td>#{{ player.player_number }}</td>
+    </tr>
+    {% with cr=player.current_rating %}
+    {% if cr %}
+    <tr>
+      <th>Current Rating</th>
+      <td>{{ cr.rating }}</td>
+    </tr>
+    <tr>
+      <th>Rating Date</th>
+      <td>{{ cr.date }}</td>
+    </tr>
+    {% else %}
+    <tr>
+      <th>Current Rating</th>
+      <td>No rating recorded</td>
+    </tr>
+    {% endif %}
+    {% endwith %}
+  </table>
+</div>
