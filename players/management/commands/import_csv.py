@@ -210,6 +210,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         update = options["update"]
+        errors = []
 
         if options["players"]:
             rows = read_csv_rows(options["players"])
