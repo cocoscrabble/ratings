@@ -7,9 +7,8 @@
 
   if (!input) return;
 
-  // Hide the no-JS results list if JS is available
+  // Hide the server-rendered results list once the user starts a new search
   const noJsList = document.getElementById("results-list");
-  if (noJsList) noJsList.hidden = true;
 
   // Block form submit only when the dropdown is handling Enter key;
   // allow normal submit when the Find Player button is clicked.
@@ -134,6 +133,8 @@
 
   // --- Event listeners ---
   input.addEventListener("input", () => {
+    // Once the user starts a new search, hide server-rendered results
+    if (noJsList) noJsList.hidden = true;
     debounce(() => fetchResults(input.value.trim()), 300);
   });
 
