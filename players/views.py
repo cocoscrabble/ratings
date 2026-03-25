@@ -110,7 +110,11 @@ def search_page(request):
     return render(
         request,
         "players/search.html",
-        {"query": query, "players": players, "selected": selected},
+        {
+            "query": query,
+            "players": players if not selected else [],
+            "selected": selected,
+        },
     )
 
 
