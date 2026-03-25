@@ -91,6 +91,7 @@
     selectedPlayer = player;
     input.value = player.name;
     closeDropdown();
+    if (noJsList) noJsList.hidden = true;
     showDetail(player);
   }
 
