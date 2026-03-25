@@ -33,7 +33,8 @@
     const el = document.createElement("ul");
     el.className = "search-dropdown";
     el.setAttribute("role", "listbox");
-    input.parentNode.insertBefore(el, input.nextSibling);
+    const wrap = document.getElementById("search-input-wrap");
+    wrap.appendChild(el);
     return el;
   }
 

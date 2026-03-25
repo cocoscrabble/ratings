@@ -9,15 +9,17 @@
 
   <form method="get" action="{% url 'search_api' %}" id="search-form">
     <div class="search-row">
-      <input
-        type="text"
-        name="q"
-        id="search-input"
-        value="{{ query }}"
-        placeholder="Type a player name…"
-        autocomplete="off"
-        class="search-input"
-      >
+      <div class="search-input-wrap" id="search-input-wrap">
+        <input
+          type="text"
+          name="q"
+          id="search-input"
+          value="{{ query }}"
+          placeholder="Type a player name…"
+          autocomplete="off"
+          class="search-input"
+        >
+      </div>
       <button type="submit" class="coco-button" id="find-btn">Find Player</button>
     </div>
   </form>
