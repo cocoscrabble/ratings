@@ -29,12 +29,37 @@ def _with_current_rating(qs):
     )
 
 
+def _name_prefix_matches(query):
+    """Return players where query is an exact prefix of any word in their name.
+
+    Uses a regex that matches the query at the start of the full name or after
+    a space (i.e. start of first name or last name).
+    """
+    from django.db.models import Q
+
+    return Player.objects.filter(
+        Q(name__istartswith=query) | Q(name__iregex=r"\s" + query)
+    )
+
+
 def _search_players(query):
     """Search players by name. On Postgres, combines substring matches with
     trigram fuzzy matches so short queries and typos both work well.
-    Falls back to icontains on SQLite."""
+    Falls back to icontains on SQLite.
+
+    If the query is longer than 4 characters and is an exact prefix of any
+    player's first or last name, only those prefix matches are returned
+    (filtering out fuzzy-only hits).
+    """
     if not query:
         return Player.objects.none()
+
+    # For longer queries, prefer exact name-prefix matches if any exist
+    if len(query) > 4:
+        prefix_qs = _name_prefix_matches(query).order_by("name")[:20]
+        if prefix_qs.exists():
+            return _with_current_rating(prefix_qs)
+
     if connection.vendor == "postgresql":
         from django.contrib.postgres.search import TrigramWordSimilarity
 
