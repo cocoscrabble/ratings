@@ -142,6 +142,7 @@ ALL = [
     ("portland-pub-18apr2026", "2026-04-18"),
     ("portland-pub-19apr2026", "2026-04-19"),
     ("vancouver-may2026", "2026-05-17"),
+    ("seattle-jul2026", "2026-07-05"),   
 ]
 
 
