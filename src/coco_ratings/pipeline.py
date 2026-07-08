@@ -147,18 +147,21 @@ def process_old_results(display_progress=False):
     playerdb = PlayerDB.read_csv()
     tournamentdb = TournamentDB.read_csv()
     ratingsdb = RatingsDB(playerdb)
-    for t in tournamentdb.tournaments:
-        prefix, date = t.filename, t.date
+    latest = None
+    for entry in tournamentdb.tournaments:
+        prefix, date = entry.filename, entry.date
         if not prefix:
-            print(f"!! No results file for {t.fancy_name}")
+            print(f"!! No results file for {entry.fancy_name}")
             continue
         if display_progress:
             print(f"Reading {prefix}")
         date = datetime.strptime(date, "%Y-%m-%d")
         res = hres[prefix]
         rat = hrat[prefix]
-        t = ratingsdb.process_one_tournament(rat, res, prefix, date)
-    return ratingsdb, t
+        latest = ratingsdb.process_one_tournament(rat, res, prefix, date)
+    if latest is None:
+        raise RuntimeError("No tournaments with result files were processed")
+    return ratingsdb, latest
 
 
 def process_all_results(rating_file, result_file, name, tdate):
@@ -218,7 +221,7 @@ def write_complete_ratings(ratingsdb, filename=None):
 
 
 def write_sim_report(filename):
-    ratingsdb, t = process_old_results()
+    ratingsdb, _ = process_old_results()
     write_report(filename, ratingsdb)
     return ratingsdb
 

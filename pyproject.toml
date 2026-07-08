@@ -22,3 +22,9 @@ where = ["src"]
 [tool.ruff]
 # Keep in sync with the code's existing style.
 line-length = 88
+
+[tool.pyright]
+# The package lives under src/ and is installed editable into .venv.
+extraPaths = ["src"]
+venvPath = "."
+venv = ".venv"
