@@ -19,7 +19,8 @@ uv.lock
 src/coco_ratings/       # the importable package
     types.py            # data model: Player, Section, GameResult, constants
     io.py               # file readers/writers (CSV/TSV, .tou, .RT) + parsing
-    rating.py           # engine (RatingsCalculator), Tournament, PlayerList, GUI
+    rating.py           # engine (RatingsCalculator), Tournament, PlayerList, CLI
+    gui.py              # Tk front-ends (App, SimulationApp, File widgets)
     pipeline.py         # full-history replay/orchestrator (was all_rating.py)
     players.py          # PlayerDB   (name <-> CoCo id)
     tournaments.py      # TournamentDB (chronological driver)
@@ -72,8 +73,8 @@ The core insight: a player's new rating depends on their opponents' *current*
 ratings, so ratings are always recomputed by replaying the entire tournament
 history in chronological order. There is no persisted rating state between runs.
 
-The single-tournament code is split into three layers with an acyclic
-dependency graph (`types` ← `io` ← `rating`):
+The single-tournament code is split into layers with an acyclic dependency
+graph (`types` ← `io` ← `rating` ← `gui`):
 
 **`types.py`** — the pure data model: `Player`, `Section`, `GameResult`, and the
 `MAX_DEVIATION` / `UNRATED_INIT_RATING` constants. No dependency on `io` or
@@ -95,7 +96,12 @@ classes selected by file extension:
 
 **`rating.py`** — the engine (imports `types` + `io`). Everything funnels
 through the `Tournament` class, which wires a `PlayerList` (loaded via `io`
-readers) to the parsed result sections and drives rating.
+readers) to the parsed result sections and drives rating. Also holds the
+headless CLI (`run_cli`); its `__main__` is a stub that refuses to run.
+
+**`gui.py`** — the Tk front-ends (`App`, `SimulationApp`, `File`/`FilesWidget`),
+at the top of the stack. `pipeline` subclasses `App`/`SimulationApp` to wire in
+the full-history replay; nothing in the engine imports `gui`.
 
 `RatingsCalculator` holds the actual math. Two-phase per section: iteratively
 solve for unrated players' seed ratings until convergence

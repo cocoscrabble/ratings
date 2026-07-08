@@ -13,7 +13,7 @@ import os
 from io import StringIO
 import sys
 
-from coco_ratings import rating
+from coco_ratings import gui
 from coco_ratings.io import CSVResultWriter, TabularResultWriter
 from coco_ratings.paths import RESULTS_DIR
 from coco_ratings.players import PlayerDB
@@ -231,7 +231,7 @@ def write_sim_report(filename):
 # GUI
 
 
-class App(rating.App):
+class App(gui.App):
     def calculate_ratings(self):
         rating_file, result_file, outfile = self.files.get_files()
         if not (rating_file and result_file and outfile):
@@ -253,7 +253,7 @@ class App(rating.App):
         print(f"Wrote tournament ratings to {outfile}")
 
 
-class ReportApp(rating.App):
+class ReportApp(gui.App):
     def calculate_ratings(self):
         rating_file, result_file, outfile = self.files.get_files()
         if not (rating_file and result_file and outfile):
@@ -284,7 +284,7 @@ def run_simulation(beta: float = 5):
     return pdb
 
 
-class SimulationApp(rating.SimulationApp):
+class SimulationApp(gui.SimulationApp):
     def run_simulation(self):
         try:
             beta = int(self.beta_input.get())
