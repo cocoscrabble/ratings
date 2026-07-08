@@ -7,10 +7,11 @@ results/. This extends the engine's golden-master guarantee across the DB layer.
 
 from django.core.management import call_command
 from django.test import TestCase
+from django.urls import reverse
 
 from coco_ratings.pipeline import process_old_results
 
-from ratings.models import CurrentRating, Player, TournamentResult
+from ratings.models import CurrentRating, Player, Tournament, TournamentResult
 
 
 class BuildDbTest(TestCase):
@@ -47,3 +48,35 @@ class BuildDbTest(TestCase):
     def test_build_db_is_idempotent(self):
         call_command("build_db", verbosity=0)
         self.assertEqual(CurrentRating.objects.count(), len(self.ratingsdb.players))
+
+
+class ViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        call_command("build_db", verbosity=0)
+
+    def test_ratings_list(self):
+        resp = self.client.get(reverse("ratings_list"))
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "Dave Wiegand")
+
+    def test_player_detail(self):
+        player = Player.objects.get(name="Dave Wiegand")
+        resp = self.client.get(reverse("player_detail", args=[player.pk]))
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "Tournament history")
+
+    def test_tournament_list(self):
+        resp = self.client.get(reverse("tournament_list"))
+        self.assertEqual(resp.status_code, 200)
+
+    def test_tournament_detail(self):
+        t = Tournament.objects.first()
+        assert t is not None
+        resp = self.client.get(reverse("tournament_detail", args=[t.filename]))
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "Spread")
+
+    def test_unknown_player_404(self):
+        resp = self.client.get(reverse("player_detail", args=[999999]))
+        self.assertEqual(resp.status_code, 404)

@@ -1,0 +1,25 @@
+{% extends "ratings/base.html" %}
+{% block title %}Ratings — CoCo{% endblock %}
+{% block content %}
+<h1>Current ratings</h1>
+<p class="summary">{{ ratings|length }} rated players.</p>
+<table>
+  <thead>
+    <tr>
+      <th class="num">#</th><th>Player</th>
+      <th class="num">Rating</th><th class="num">Dev</th><th class="num">Games</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in ratings %}
+    <tr>
+      <td class="num">{{ forloop.counter }}</td>
+      <td><a href="{% url 'player_detail' r.player.pk %}">{{ r.player.name }}</a></td>
+      <td class="num">{{ r.rating }}</td>
+      <td class="num">{{ r.deviation|floatformat:2 }}</td>
+      <td class="num">{{ r.career_games }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

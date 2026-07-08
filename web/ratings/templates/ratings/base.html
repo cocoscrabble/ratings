@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}CoCo Ratings{% endblock %}</title>
+  <style>
+    :root { --fg: #1a1a1a; --muted: #666; --line: #e2e2e2; --accent: #1b5e9c; --pos: #1a7f37; --neg: #b3261e; }
+    * { box-sizing: border-box; }
+    body { font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+           color: var(--fg); margin: 0; background: #fafafa; }
+    header { border-bottom: 1px solid var(--line); background: #fff; }
+    nav { max-width: 900px; margin: 0 auto; padding: 12px 20px; display: flex; gap: 20px; }
+    nav a { color: var(--accent); text-decoration: none; font-weight: 600; }
+    nav a:hover { text-decoration: underline; }
+    main { max-width: 900px; margin: 0 auto; padding: 24px 20px 60px; }
+    h1 { font-size: 1.5rem; margin: 0 0 4px; }
+    h2 { font-size: 1.1rem; margin: 28px 0 8px; }
+    .summary { color: var(--muted); margin: 0 0 20px; }
+    table { border-collapse: collapse; width: 100%; background: #fff;
+            border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+    th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); }
+    th { background: #f4f4f4; font-size: .8rem; text-transform: uppercase;
+         letter-spacing: .03em; color: var(--muted); }
+    tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: #f7fbff; }
+    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .pos { color: var(--pos); }
+    .neg { color: var(--neg); }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="{% url 'ratings_list' %}">Ratings</a>
+      <a href="{% url 'tournament_list' %}">Tournaments</a>
+    </nav>
+  </header>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

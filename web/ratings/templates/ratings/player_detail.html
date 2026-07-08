@@ -1,0 +1,36 @@
+{% extends "ratings/base.html" %}
+{% block title %}{{ player.name }} — CoCo Ratings{% endblock %}
+{% block content %}
+<h1>{{ player.name }}</h1>
+{% if current %}
+<p class="summary">
+  Rating <strong>{{ current.rating }}</strong>
+  · deviation {{ current.deviation|floatformat:2 }}
+  · {{ current.career_games }} career games
+  · last played {{ current.last_played }}
+</p>
+{% endif %}
+
+<h2>Tournament history</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Date</th><th>Tournament</th><th>Record</th>
+      <th class="num">Spread</th><th class="num">Old</th><th class="num">New</th><th class="num">&Delta;</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in results %}
+    <tr>
+      <td>{{ r.tournament.date }}</td>
+      <td><a href="{% url 'tournament_detail' r.tournament.filename %}">{{ r.tournament }}</a></td>
+      <td>{{ r.record }}</td>
+      <td class="num">{{ r.spread|stringformat:"+d" }}</td>
+      <td class="num">{{ r.old_rating }}</td>
+      <td class="num">{{ r.new_rating }}</td>
+      <td class="num {% if r.rating_change >= 0 %}pos{% else %}neg{% endif %}">{{ r.rating_change|stringformat:"+d" }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

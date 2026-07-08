@@ -1,0 +1,30 @@
+{% extends "ratings/base.html" %}
+{% block title %}{{ tournament }} — CoCo Ratings{% endblock %}
+{% block content %}
+<h1>{{ tournament }}</h1>
+<p class="summary">
+  {{ tournament.date }}{% if tournament.city %} · {{ tournament.city }}{% endif %}
+  {% if tournament.division %} · {{ tournament.division }}{% endif %}
+</p>
+<table>
+  <thead>
+    <tr>
+      <th class="num">#</th><th>Player</th><th>Record</th>
+      <th class="num">Spread</th><th class="num">Old</th><th class="num">New</th><th class="num">&Delta;</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in results %}
+    <tr>
+      <td class="num">{{ forloop.counter }}</td>
+      <td><a href="{% url 'player_detail' r.player.pk %}">{{ r.player.name }}</a></td>
+      <td>{{ r.record }}</td>
+      <td class="num">{{ r.spread|stringformat:"+d" }}</td>
+      <td class="num">{{ r.old_rating }}</td>
+      <td class="num">{{ r.new_rating }}</td>
+      <td class="num {% if r.rating_change >= 0 %}pos{% else %}neg{% endif %}">{{ r.rating_change|stringformat:"+d" }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

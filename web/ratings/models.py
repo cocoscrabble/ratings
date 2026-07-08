@@ -81,5 +81,18 @@ class TournamentResult(models.Model):
             )
         ]
 
+    @property
+    def rating_change(self):
+        return self.new_rating - self.old_rating
+
+    @property
+    def record(self):
+        """Win-loss record, e.g. "6-1" or "3.5-3.5" (ties count as half)."""
+
+        def fmt(x):
+            return str(int(x)) if x == int(x) else str(x)
+
+        return f"{fmt(self.wins)}-{fmt(self.losses)}"
+
     def __str__(self):
         return f"{self.player.name} @ {self.tournament.filename}"

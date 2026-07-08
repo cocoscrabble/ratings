@@ -1,0 +1,20 @@
+{% extends "ratings/base.html" %}
+{% block title %}Tournaments — CoCo Ratings{% endblock %}
+{% block content %}
+<h1>Tournaments</h1>
+<p class="summary">{{ tournaments|length }} tournaments.</p>
+<table>
+  <thead>
+    <tr><th>Date</th><th>Tournament</th><th>City</th></tr>
+  </thead>
+  <tbody>
+    {% for t in tournaments %}
+    <tr>
+      <td>{{ t.date }}</td>
+      <td><a href="{% url 'tournament_detail' t.filename %}">{{ t }}</a></td>
+      <td>{{ t.city }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

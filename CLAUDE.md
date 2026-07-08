@@ -60,7 +60,8 @@ uv run ruff check .
 uv sync --extra web                    # install Django (+ gunicorn)
 uv run python web/manage.py migrate    # apply schema
 uv run python web/manage.py build_db   # rebuild the DB from results/ (source of truth)
-uv run python web/manage.py test ratings   # DB-layer golden check (DB == engine)
+uv run python web/manage.py test ratings   # DB-layer + view tests
+uv run python web/manage.py runserver  # browse the read-only site locally
 
 # Rate the full history and write the current combined ratings list to a file
 uv run coco-rate <output.txt>          # console script -> cli.main
@@ -175,6 +176,12 @@ migrations.
   asserts every row equals the engine's output. Runs via `manage.py test`
   (separate from the engine's `python -m unittest` suite, which does not pick it
   up — `web/` is not a `unittest`-discoverable package).
+- Read-only site (`web/ratings/views.py` + `urls.py` + `templates/ratings/`):
+  ratings list (`/`), per-player history (`/player/<id>/`), tournament index
+  (`/tournaments/`) and standings (`/tournament/<filename>/`). Views query
+  through `TournamentResult.objects` (not reverse `.results` accessors) so
+  django-types stays happy. Register-free browsing is also available at
+  `/admin/`.
 - Django is an optional `web` extra (`uv sync --extra web`); the `coco_ratings`
   engine itself stays dependency-free. SQLite path is `COCO_DB_PATH`-overridable
   for a persistent volume in deployment.
