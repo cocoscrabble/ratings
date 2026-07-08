@@ -21,7 +21,8 @@ src/coco_ratings/       # the importable package
     io.py               # file readers/writers (CSV/TSV, .tou, .RT) + parsing
     rating.py           # engine (RatingsCalculator), Tournament, PlayerList, CLI
     gui.py              # Tk front-ends (App, SimulationApp, File widgets)
-    pipeline.py         # full-history replay/orchestrator (was all_rating.py)
+    ratingsdb.py        # RatingsDB (carry-forward replay), Player/PlayerReport records
+    pipeline.py         # thin orchestration: process_*/write_* over RatingsDB
     cli.py              # `coco-rate` entry point (main); __main__.py delegates here
     players.py          # PlayerDB   (name <-> CoCo id)
     tournaments.py      # TournamentDB (chronological driver)
@@ -111,13 +112,18 @@ Key tunables: `beta` (rating points per point of expected spread, default 5) and
 `tau`. `_player_multiplier` damps rating changes for established/high-rated
 players. Rating deviation grows with inactivity (`adjust_initial_deviation`).
 
-**`pipeline.py`** — the orchestrator that replays history. `RatingsDB` walks
-every tournament in date order, and before rating each one, `adjust_tournament`
-overwrites each returning player's `init_rating`/`deviation`/`career_games` with
-their carried-forward values from prior tournaments. It produces the combined
-current ratings list (`complete-ratings-list.csv`) and a per-tournament report,
-and holds the GUI subclasses (`App`, subclassing `gui.App`) that wire the replay
-into the GUI.
+**`ratingsdb.py`** — `RatingsDB`, the carry-forward engine. It rates one
+tournament at a time; `adjust_tournament` overwrites each returning player's
+`init_rating`/`deviation`/`career_games` with their carried-forward values from
+prior tournaments before rating. `beta` (the rating-system tuning parameter,
+which simulations vary) is a constructor arg, threaded in from the caller. Also
+holds the `Player`/`PlayerReport` snapshot records and `CSVRatingsFileWriter`.
+
+**`pipeline.py`** — thin orchestration over `RatingsDB`. `process_old_results`
+walks every tournament in date order (via `TournamentDB`) to build the current
+`RatingsDB`; the `write_*` helpers emit the combined ratings list
+(`complete-ratings-list.csv`) and the per-tournament report. Also holds the GUI
+subclasses (`App`, subclassing `gui.App`) that wire the replay into the GUI.
 
 **`cli.py`** — the `coco-rate` entry point. `main()` dispatches: an argument
 writes the combined ratings list to that file; no argument launches the GUI.
