@@ -3,7 +3,7 @@ import sys
 import textwrap
 
 import tkinter as tk
-from tkinter import ttk, filedialog
+from tkinter import ttk
 
 from coco_ratings.rating import File, Tournament, TouResultWriter
 

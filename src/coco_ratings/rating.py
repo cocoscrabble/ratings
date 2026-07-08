@@ -12,7 +12,7 @@ import re
 import sys
 import textwrap
 import tkinter as tk
-from tkinter import ttk, filedialog
+from tkinter import ttk
 
 
 # Set up log file
@@ -998,7 +998,7 @@ class File:
         filetypes = (("csv files", "*.?sv"), ("All files", "*.*"))
         if self.save_as:
             filename = tk.filedialog.asksaveasfilename(
-                title=f"Save new ratings", filetypes=filetypes
+                title="Save new ratings", filetypes=filetypes
             )
         else:
             filename = tk.filedialog.askopenfilename(

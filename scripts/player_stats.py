@@ -1,6 +1,5 @@
 """Player statistics."""
 
-from collections import Counter
 from dataclasses import dataclass
 from datetime import datetime
 

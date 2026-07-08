@@ -12,7 +12,6 @@ import glob
 import os
 from io import StringIO
 import sys
-import tkinter as tk
 
 from coco_ratings import rating
 from coco_ratings.paths import RESULTS_DIR
@@ -180,14 +179,17 @@ def write_current_ratings(filename):
 
 def write_report(filename, ratingsdb):
     fields = ("old_rating", "new_rating", "old_deviation", "new_deviation", "games")
+    # One column per tournament, in chronological order. TournamentDB filenames
+    # are the same keys the report is indexed by (see RatingsDB.update).
+    tournaments = [t.filename for t in TournamentDB.read_csv().tournaments if t.filename]
     with open(filename, "w") as f:
         writer = csv.writer(f)
-        header = [None, None] + [name for name, _ in ALL]
+        header = [None, None] + tournaments
         writer.writerow(header)
         for p, rep in sorted(ratingsdb.report.items()):
             for x in fields:
                 out = [p, x]
-                for name, _ in ALL:
+                for name in tournaments:
                     pl = rep.get(name)
                     entry = pl and getattr(pl, x)
                     out.append(entry)
@@ -197,7 +199,7 @@ def write_report(filename, ratingsdb):
 def write_latest_ratings(outfile, ratingsdb, t):
     # Display the most recent tournament
     print("-------------------------")
-    print(f"Ratings adjustment for most recent tournament")
+    print("Ratings adjustment for most recent tournament")
     res_out = StringIO("")
     TabularResultWriter().write(res_out, t)
     show_file(res_out)
@@ -242,8 +244,6 @@ class App(rating.App):
 
     def recalculate_ratings(self):
         outfile = "latest_ratings.txt"
-        name = "Tournament name"
-        tdate = datetime.today()
         write_current_ratings(outfile)
         self.set_status(f"Wrote ratings to {outfile}")
         print(f"Wrote tournament ratings to {outfile}")
@@ -266,8 +266,6 @@ class ReportApp(rating.App):
 
     def recalculate_ratings(self):
         outfile = "latest_ratings.txt"
-        name = "Tournament name"
-        tdate = datetime.today()
         write_current_ratings(outfile)
         self.set_status(f"Wrote ratings to {outfile}")
         print(f"Wrote tournament ratings to {outfile}")
@@ -289,7 +287,7 @@ class SimulationApp(rating.SimulationApp):
         except ValueError:
             beta = 5
         run_simulation(beta)
-        self.set_status(f"Wrote simulation report to {filename}")
+        self.set_status(f"Wrote simulation report to run-with-beta-{beta}-report.csv")
 
 
 def run_gui():
