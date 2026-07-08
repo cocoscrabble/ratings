@@ -21,10 +21,9 @@ class FilesWidget(ttk.Frame):
     def _add_file(self, name, row, save_as=False):
         f = File(self, name, self.status, save_as)
         self.files[name] = f
-        opts = {"padx": 5, "pady": 1, "ipady": 5}
-        f.label.grid(column=0, row=row, sticky=tk.EW, **opts)
-        f.file_label.grid(column=1, row=row, sticky=tk.EW, **opts)
-        f.button.grid(column=2, row=row, sticky=tk.EW, **opts)
+        f.label.grid(column=0, row=row, sticky=tk.EW, padx=5, pady=1, ipady=5)
+        f.file_label.grid(column=1, row=row, sticky=tk.EW, padx=5, pady=1, ipady=5)
+        f.button.grid(column=2, row=row, sticky=tk.EW, padx=5, pady=1, ipady=5)
 
     def _init_widgets(self):
         self._add_file("CSV Results File", 0)

@@ -12,7 +12,7 @@ import re
 import sys
 import textwrap
 import tkinter as tk
-from tkinter import ttk
+from tkinter import filedialog, ttk
 
 
 # Set up log file
@@ -72,6 +72,9 @@ class ParsedSection:
 
 class ResultsReader:
     """Read a results file into Player and Section data."""
+
+    # Set by each subclass before player_for_name() is called.
+    tournament_date: datetime
 
     def __init__(self, player_list):
         self.player_list = player_list
@@ -159,7 +162,8 @@ class TouReader(ResultsReader):
                         )
                         sys.exit(1)
                     round = i + 1
-                    gr = GameResult(round, opponent, result.score, opp_score=None)
+                    # opp_score is filled in from the opponent's half-result below.
+                    gr = GameResult(round, opponent, result.score, opp_score=None)  # type: ignore[arg-type]
                     game_results.append(gr)
                 section_results.append(game_results)
 
@@ -501,7 +505,7 @@ class CSVRatingsFileReader:
 class RatingsCalculator:
     """Class to organise ratings calculation code in one place."""
 
-    def __init__(self, beta=5):
+    def __init__(self, beta: float = 5):
         # tau is a tuning parameter to get as accurate results as
         # possible, and should be set up front. The value here is from
         # Taral Seierstad's rating system for Norwegian scrabble.
@@ -709,7 +713,7 @@ class Tournament:
         else:
             raise ValueError(f"No reader for {file}")
 
-    def calc_ratings(self, beta=5):
+    def calc_ratings(self, beta: float = 5):
         logging.debug("--------------Calculating ratings for %s", self.name)
         rc = RatingsCalculator(beta)
         for s in self.sections:
@@ -997,11 +1001,11 @@ class File:
     def select_file(self):
         filetypes = (("csv files", "*.?sv"), ("All files", "*.*"))
         if self.save_as:
-            filename = tk.filedialog.asksaveasfilename(
+            filename = filedialog.asksaveasfilename(
                 title="Save new ratings", filetypes=filetypes
             )
         else:
-            filename = tk.filedialog.askopenfilename(
+            filename = filedialog.askopenfilename(
                 title=f"Open {self.name} file", filetypes=filetypes
             )
         self.file = filename
@@ -1022,10 +1026,9 @@ class FilesWidget(ttk.Frame):
     def _add_file(self, name, row, save_as=False):
         f = File(self, name, self.status, save_as)
         self.files[name] = f
-        opts = {"padx": 5, "pady": 1, "ipady": 5}
-        f.label.grid(column=0, row=row, sticky=tk.EW, **opts)
-        f.file_label.grid(column=1, row=row, sticky=tk.EW, **opts)
-        f.button.grid(column=2, row=row, sticky=tk.EW, **opts)
+        f.label.grid(column=0, row=row, sticky=tk.EW, padx=5, pady=1, ipady=5)
+        f.file_label.grid(column=1, row=row, sticky=tk.EW, padx=5, pady=1, ipady=5)
+        f.button.grid(column=2, row=row, sticky=tk.EW, padx=5, pady=1, ipady=5)
 
     def _init_widgets(self):
         self._add_file("Ratings", 0)

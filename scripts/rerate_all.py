@@ -1,26 +1,25 @@
 #!/usr/bin/python
 
 # Run as
-#   python rerate_all.py
+#   python scripts/rerate_all.py
+#
+# Replays every tournament in chronological order and writes a per-tournament
+# "old rating -> new rating" history for every player to out.csv.
 
 import csv
 from datetime import datetime
 import glob
-from io import StringIO
 import os
+from io import StringIO
 
-from coco_ratings import pipeline as all_rating
+from coco_ratings import pipeline
+from coco_ratings.paths import RESULTS_DIR
 from coco_ratings.rating import TabularResultWriter
+from coco_ratings.tournaments import TournamentDB
 
 
-class ResultWriter:
-    """Write out tournament results."""
-
-    def __init__(self):
-        self.tournament = None
-
-    def headers(self):
-        return ["Name", "Tournament", "Old Rating", "New Rating"]
+class CSVResultWriter:
+    """Write per-tournament (name, tournament, old rating, new rating) rows."""
 
     def get_sorted_players(self, section):
         return sorted(
@@ -29,47 +28,42 @@ class ResultWriter:
             reverse=True,
         )
 
-    def row(self, p):
-        return [p.name, f"{self.tournament.name}", p.init_rating, p.new_rating]
-
-
-class CSVResultWriter(ResultWriter):
-    """Write out results in .csv format."""
-
-    def write_file(self, output_file, tournament):
-        with open(output_file, "w", newline="") as f:
-            self.write(f, tournament)
+    def row(self, p, tournament_name):
+        return [p.name, tournament_name, p.init_rating, p.new_rating]
 
     def write(self, f, tournament):
-        self.tournament = tournament
         writer = csv.writer(f)
         for s in tournament.sections:
-            self._write_section(writer, s)
-
-    def _write_section(self, out, section):
-        for p in self.get_sorted_players(section):
-            out.writerow(self.row(p))
+            for p in self.get_sorted_players(s):
+                writer.writerow(self.row(p, tournament.name))
 
 
 def process_results(f):
-    d = os.path.join(os.path.dirname(__file__), "results")
+    d = str(RESULTS_DIR)
     results = glob.glob(f"{d}/*results.?sv")
     ratings = glob.glob(f"{d}/*ratings.?sv")
-    hres = {os.path.basename(f)[:-12]: f for f in results}
-    hrat = {os.path.basename(f)[:-12]: f for f in ratings}
-    playerdb = all_rating.PlayerDB()
-    for prefix, date in all_rating.ALL:
+    hres = {os.path.basename(x)[:-12]: x for x in results}
+    hrat = {os.path.basename(x)[:-12]: x for x in ratings}
+    playerdb = pipeline.PlayerDB.read_csv()
+    tournamentdb = TournamentDB.read_csv()
+    ratingsdb = pipeline.RatingsDB(playerdb)
+    writer = CSVResultWriter()
+    latest = None
+    for entry in tournamentdb.tournaments:
+        prefix, date = entry.filename, entry.date
+        if not prefix:
+            print(f"!! No results file for {entry.fancy_name}")
+            continue
         print(f"Reading {prefix}")
         date = datetime.strptime(date, "%Y-%m-%d")
-        res = hres[prefix]
-        rat = hrat[prefix]
-        t = playerdb.process_one_tournament(rat, res, prefix, date)
+        t = ratingsdb.process_one_tournament(hrat[prefix], hres[prefix], prefix, date)
         res_out = StringIO("")
         TabularResultWriter().write(res_out, t)
-        CSVResultWriter().write(f, t)
-        all_rating.show_file(res_out)
+        writer.write(f, t)
+        pipeline.show_file(res_out)
+        latest = t
         print("-------------------------")
-    return playerdb, t
+    return ratingsdb, latest
 
 
 if __name__ == "__main__":

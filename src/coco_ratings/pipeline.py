@@ -274,7 +274,7 @@ class ReportApp(rating.App):
         print(f"Wrote tournament ratings to {outfile}")
 
 
-def run_simulation(beta=5):
+def run_simulation(beta: float = 5):
     global _BETA
     _BETA = beta
     filename = f"run-with-beta-{beta}-report.csv"
