@@ -15,7 +15,7 @@ from coco_ratings.rating import Tournament
 
 
 @dataclass
-class Player:
+class PlayerRecord:
     name: str
     rating: float
     deviation: float
@@ -95,7 +95,7 @@ class RatingsDB:
     def update(self, tournament):
         for s in tournament.sections:
             for p in s.get_players():
-                self.players[p.name] = Player.from_tournament_player(p)
+                self.players[p.name] = PlayerRecord.from_tournament_player(p)
                 self.report[p.name][tournament.name] = (
                     PlayerReport.from_tournament_player(p, self.playerdb)
                 )

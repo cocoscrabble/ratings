@@ -21,7 +21,7 @@ src/coco_ratings/       # the importable package
     io.py               # file readers/writers (CSV/TSV, .tou, .RT) + parsing
     rating.py           # engine (RatingsCalculator), Tournament, PlayerList, CLI
     gui.py              # Tk front-ends (App, SimulationApp, File widgets)
-    ratingsdb.py        # RatingsDB (carry-forward replay), Player/PlayerReport records
+    ratingsdb.py        # RatingsDB (carry-forward replay), PlayerRecord/PlayerReport
     reports.py          # pure output writers (tabular/CSV rating reports)
     pipeline.py         # thin orchestration: process_* drivers over RatingsDB
     cli.py              # `coco-rate` entry point (main); __main__.py delegates here
@@ -118,7 +118,7 @@ tournament at a time; `adjust_tournament` overwrites each returning player's
 `init_rating`/`deviation`/`career_games` with their carried-forward values from
 prior tournaments before rating. `beta` (the rating-system tuning parameter,
 which simulations vary) is a constructor arg, threaded in from the caller. Also
-holds the `Player`/`PlayerReport` snapshot records and `CSVRatingsFileWriter`.
+holds the `PlayerRecord`/`PlayerReport` snapshot records and `CSVRatingsFileWriter`.
 
 **`reports.py`** — pure output writers. Given an already-computed `RatingsDB`
 (and optionally the latest tournament), they render the combined ratings list
