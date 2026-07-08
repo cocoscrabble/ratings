@@ -14,7 +14,7 @@ DBFILE = PLAYERS_CSV
 
 
 @dataclass
-class Player:
+class PlayerEntry:
     name: str
     coco_id: str
 
@@ -34,7 +34,7 @@ class PlayerDB:
         return cls(rows)
 
     def __init__(self, data: list[list[str]]):
-        entries = [Player(*row) for row in data]
+        entries = [PlayerEntry(*row) for row in data]
         self.name_to_id = {}
         self.id_to_name = {}
         for p in entries:

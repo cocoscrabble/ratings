@@ -14,7 +14,7 @@ DBFILE = TOURNAMENTS_CSV
 
 
 @dataclass
-class Tournament:
+class TournamentEntry:
     fancy_name: str
     division: str
     city: str
@@ -58,7 +58,7 @@ class TournamentDB:
         return cls(rows)
 
     def __init__(self, data: list[list[str]]):
-        entries = [Tournament(*row) for row in data]
+        entries = [TournamentEntry(*row) for row in data]
         self.tournaments = sorted(entries, key=lambda x: (x.date, x.filename))
 
 
