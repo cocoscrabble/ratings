@@ -7,6 +7,10 @@ __pycache__/
 build/
 dist/
 
+# Django (SQLite projection is rebuilt from results/; collected static)
+web/db.sqlite3
+web/staticfiles/
+
 # Generated run artifacts (rating outputs, logs, simulation reports)
 coco_ratings.log
 complete-ratings-list.csv

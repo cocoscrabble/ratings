@@ -38,6 +38,9 @@ class PlayerReport:
     old_deviation: float
     new_deviation: float
     games: int
+    wins: float
+    losses: float
+    spread: int
 
     @classmethod
     def from_tournament_player(cls, p, playerdb):
@@ -54,6 +57,9 @@ class PlayerReport:
             round(p.init_rating_deviation, 2),
             round(p.new_rating_deviation, 2),
             p.career_games,
+            p.wins,
+            p.losses,
+            p.spread,
         )
 
 

@@ -11,10 +11,19 @@ requires-python = ">=3.10"
 dependencies = []
 
 [dependency-groups]
-dev = ["ruff>=0.10"]
+dev = [
+    "django-types>=0.24.0",
+    "ruff>=0.10",
+]
 
 [project.scripts]
 coco-rate = "coco_ratings.cli:main"
+
+[project.optional-dependencies]
+web = [
+    "django>=5.0",
+    "gunicorn>=26.0.0",
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -24,7 +33,7 @@ where = ["src"]
 line-length = 88
 
 [tool.pyright]
-# The package lives under src/ and is installed editable into .venv.
-extraPaths = ["src"]
+# coco_ratings lives under src/ (editable-installed); the Django app under web/.
+extraPaths = ["src", "web"]
 venvPath = "."
 venv = ".venv"

@@ -28,6 +28,10 @@ src/coco_ratings/       # the importable package
     players.py          # PlayerDB   (name <-> CoCo id)
     tournaments.py      # TournamentDB (chronological driver)
     paths.py            # anchors data/ and results/ to the project root
+web/                    # Django app: SQLite projection of the ratings (see below)
+    manage.py
+    cocoweb/            # Django project (settings, urls, wsgi)
+    ratings/            # app: models + build_db command + admin + tests
 scripts/                # standalone / experimental scripts (not core)
 tests/                  # unittest suite, incl. golden-master test
 data/  results/  docs/  testdata/   # kept at repo root
@@ -51,6 +55,12 @@ UPDATE_GOLDEN=1 uv run python -m unittest tests.test_golden
 
 # Lint (config in pyproject.toml [tool.ruff])
 uv run ruff check .
+
+# Web/DB layer (Django, optional 'web' extra)
+uv sync --extra web                    # install Django (+ gunicorn)
+uv run python web/manage.py migrate    # apply schema
+uv run python web/manage.py build_db   # rebuild the DB from results/ (source of truth)
+uv run python web/manage.py test ratings   # DB-layer golden check (DB == engine)
 
 # Rate the full history and write the current combined ratings list to a file
 uv run coco-rate <output.txt>          # console script -> cli.main
@@ -143,6 +153,31 @@ writes the combined ratings list to that file; no argument launches the GUI.
 **`paths.py`** — resolves `data/` and `results/` relative to the project root
 (via `__file__`), so the pipeline works from any working directory. If you move
 the package depth, fix `PROJECT_ROOT = parents[2]` here.
+
+### Database projection (`web/`)
+
+A Django app that mirrors the ratings into SQLite. **Key principle: the DB is a
+rebuildable projection of `results/`, never a second source of truth.** Because
+the engine already recomputes everything deterministically, "update the DB" just
+means "rebuild it" — so there is no drift and no data migration, only schema
+migrations.
+
+- Models (`web/ratings/models.py`): `Player` (identity anchor; keyed by `name`
+  since `coco_id` is a non-unique `"9999"` placeholder), `Tournament`,
+  `CurrentRating` (1:1 with `Player`), `TournamentResult` (per player-tournament,
+  incl. record + spread). `CurrentRating`/`TournamentResult` are pure
+  projections.
+- `build_db` (`web/ratings/management/commands/build_db.py`): runs
+  `process_old_results`, then in **one transaction** upserts `Player` identity and
+  truncates+rebuilds the projections — idempotent, so it's safe to run on every
+  deploy; a failed run leaves the old DB intact.
+- `web/ratings/tests.py` is the DB-layer golden check: it builds the DB and
+  asserts every row equals the engine's output. Runs via `manage.py test`
+  (separate from the engine's `python -m unittest` suite, which does not pick it
+  up — `web/` is not a `unittest`-discoverable package).
+- Django is an optional `web` extra (`uv sync --extra web`); the `coco_ratings`
+  engine itself stays dependency-free. SQLite path is `COCO_DB_PATH`-overridable
+  for a persistent volume in deployment.
 
 **`results/`** — the historical corpus. Each tournament is a pair of files:
 `<prefix>-results.{csv,tsv}` and `<prefix>-ratings.{csv,tsv}`. The `<prefix>`
