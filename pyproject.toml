@@ -14,7 +14,7 @@ dependencies = []
 dev = ["ruff>=0.10"]
 
 [project.scripts]
-coco-rate = "coco_ratings.pipeline:main"
+coco-rate = "coco_ratings.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

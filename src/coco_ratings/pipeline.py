@@ -11,7 +11,6 @@ from datetime import datetime
 import glob
 import os
 from io import StringIO
-import sys
 
 from coco_ratings import gui
 from coco_ratings.io import CSVResultWriter, TabularResultWriter
@@ -294,18 +293,3 @@ class SimulationApp(gui.SimulationApp):
         self.set_status(f"Wrote simulation report to run-with-beta-{beta}-report.csv")
 
 
-def run_gui():
-    w = App()
-    w.mainloop()
-
-
-def main(argv=None):
-    argv = sys.argv[1:] if argv is None else argv
-    if argv:
-        write_current_ratings(argv[0])
-    else:
-        run_gui()
-
-
-if __name__ == "__main__":
-    main()

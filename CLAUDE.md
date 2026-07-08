@@ -22,6 +22,7 @@ src/coco_ratings/       # the importable package
     rating.py           # engine (RatingsCalculator), Tournament, PlayerList, CLI
     gui.py              # Tk front-ends (App, SimulationApp, File widgets)
     pipeline.py         # full-history replay/orchestrator (was all_rating.py)
+    cli.py              # `coco-rate` entry point (main); __main__.py delegates here
     players.py          # PlayerDB   (name <-> CoCo id)
     tournaments.py      # TournamentDB (chronological driver)
     paths.py            # anchors data/ and results/ to the project root
@@ -50,8 +51,8 @@ UPDATE_GOLDEN=1 uv run python -m unittest tests.test_golden
 uv run ruff check .
 
 # Rate the full history and write the current combined ratings list to a file
-uv run coco-rate <output.txt>          # console script -> pipeline.main
-# equivalently: uv run python -m coco_ratings.pipeline <output.txt>
+uv run coco-rate <output.txt>          # console script -> cli.main
+# equivalently: uv run python -m coco_ratings <output.txt>
 
 # Launch the Tk GUI (no argument)
 uv run coco-rate
@@ -115,8 +116,12 @@ every tournament in date order, and before rating each one, `adjust_tournament`
 overwrites each returning player's `init_rating`/`deviation`/`career_games` with
 their carried-forward values from prior tournaments. It produces the combined
 current ratings list (`complete-ratings-list.csv`) and a per-tournament report,
-and hosts the GUI (`App`, subclassing `rating.App`). `main()` is the console
-entry point.
+and holds the GUI subclasses (`App`, subclassing `gui.App`) that wire the replay
+into the GUI.
+
+**`cli.py`** — the `coco-rate` entry point. `main()` dispatches: an argument
+writes the combined ratings list to that file; no argument launches the GUI.
+`__main__.py` just delegates here so `python -m coco_ratings` works too.
 
 **`players.py` / `tournaments.py`** — thin CSV-backed lookup tables in `data/`.
 `PlayerDB` (`data/players.csv`) maps player name ↔ CoCo id. `TournamentDB`
