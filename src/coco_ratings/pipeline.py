@@ -14,10 +14,11 @@ from io import StringIO
 import sys
 import tkinter as tk
 
-from players import PlayerDB
-import rating
-from rating import Tournament, CSVResultWriter, TabularResultWriter
-from tournaments import TournamentDB
+from coco_ratings import rating
+from coco_ratings.paths import RESULTS_DIR
+from coco_ratings.players import PlayerDB
+from coco_ratings.rating import Tournament, CSVResultWriter, TabularResultWriter
+from coco_ratings.tournaments import TournamentDB
 
 
 # Used in simulations
@@ -139,7 +140,7 @@ def show_file(f):
 
 
 def process_old_results(display_progress=False):
-    d = os.path.join(os.path.dirname(__file__), "results")
+    d = str(RESULTS_DIR)
     results = glob.glob(f"{d}/*results.?sv")
     ratings = glob.glob(f"{d}/*ratings.?sv")
     hres = {os.path.basename(f)[:-12]: f for f in results}
@@ -296,9 +297,13 @@ def run_gui():
     w.mainloop()
 
 
-if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        filename = sys.argv[1]
-        write_current_ratings(filename)
+def main(argv=None):
+    argv = sys.argv[1:] if argv is None else argv
+    if argv:
+        write_current_ratings(argv[0])
     else:
         run_gui()
+
+
+if __name__ == "__main__":
+    main()

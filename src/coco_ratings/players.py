@@ -6,9 +6,11 @@ Currently maintained in a CSV file.
 import csv
 from dataclasses import dataclass
 
+from coco_ratings.paths import PLAYERS_CSV
+
 
 # Exported as csv from google doc
-DBFILE = "data/players.csv"
+DBFILE = PLAYERS_CSV
 
 
 @dataclass

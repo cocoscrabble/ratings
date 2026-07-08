@@ -2,7 +2,7 @@
 
 from collections import Counter
 
-from all_rating import process_old_results
+from coco_ratings.pipeline import process_old_results
 
 
 class Statistics:

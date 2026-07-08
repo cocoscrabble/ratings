@@ -11,7 +11,7 @@
 
 import sys
 
-import all_rating
+from coco_ratings import pipeline as all_rating
 
 
 def run_gui():

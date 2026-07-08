@@ -1,8 +1,3 @@
-"""Test context. See https://docs.python-guide.org/writing/structure/"""
+"""Test context: exposes the package under test to the test modules."""
 
-import os
-import sys
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-import rating
+from coco_ratings import rating  # noqa: F401

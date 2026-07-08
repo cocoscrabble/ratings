@@ -22,7 +22,7 @@ environments.
 import os
 import unittest
 
-import all_rating
+from coco_ratings import pipeline as all_rating
 
 # process_old_results() reads data/players.csv and data/tournaments.csv via
 # paths relative to the current working directory, so the test must run from the

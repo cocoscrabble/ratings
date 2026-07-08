@@ -10,9 +10,9 @@ from io import StringIO
 import os
 import sys
 
-import all_rating
-import rating
-from rating import Tournament, TabularResultWriter
+from coco_ratings import pipeline as all_rating
+from coco_ratings import rating
+from coco_ratings.rating import Tournament, TabularResultWriter
 
 
 class ResultWriter:

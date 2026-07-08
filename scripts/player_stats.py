@@ -4,7 +4,7 @@ from collections import Counter
 from dataclasses import dataclass
 from datetime import datetime
 
-from all_rating import process_old_results
+from coco_ratings.pipeline import process_old_results
 
 
 @dataclass

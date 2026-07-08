@@ -9,26 +9,60 @@ rating system (spread-based Glicko-style; see `docs/norwegian-rating.pdf`). Ther
 is no database yet — everything is CSV/text files carried forward by re-running
 the full tournament history from scratch each time.
 
+## Project layout
+
+`src`-layout package installed with **uv**:
+
+```
+pyproject.toml          # project metadata + console script + ruff config
+uv.lock
+src/coco_ratings/       # the importable package
+    rating.py           # single-tournament engine + file formats + GUI
+    pipeline.py         # full-history replay/orchestrator (was all_rating.py)
+    players.py          # PlayerDB   (name <-> CoCo id)
+    tournaments.py      # TournamentDB (chronological driver)
+    paths.py            # anchors data/ and results/ to the project root
+scripts/                # standalone / experimental scripts (not core)
+tests/                  # unittest suite, incl. golden-master test
+data/  results/  docs/  testdata/   # kept at repo root
+```
+
 ## Commands
 
-```bash
-# Run the tests (from the repo root — the tests use package-relative imports,
-# so `unittest discover` inside tests/ will fail)
-python -m unittest
+Environment is managed by **uv** (this is an Arch/PEP-668 externally-managed
+host, so a project venv is required — do not `pip install` into system Python).
 
-# Lint (config lives only in .ruff_cache; ruff is run with defaults)
-ruff check .
+```bash
+# One-time / after dependency or metadata changes: create .venv and install editable
+uv sync
+
+# Run the tests (must run through the venv so `coco_ratings` is importable)
+uv run python -m unittest              # whole suite
+uv run python -m unittest tests.test_golden   # just the golden-master test
+
+# Regenerate the golden file after an INTENTIONAL behaviour change
+UPDATE_GOLDEN=1 uv run python -m unittest tests.test_golden
+
+# Lint (config in pyproject.toml [tool.ruff])
+uv run ruff check .
 
 # Rate the full history and write the current combined ratings list to a file
-python all_rating.py <output.txt>
+uv run coco-rate <output.txt>          # console script -> pipeline.main
+# equivalently: uv run python -m coco_ratings.pipeline <output.txt>
 
 # Launch the Tk GUI (no argument)
-python all_rating.py
+uv run coco-rate
 ```
 
 **Do not run `rating.py` directly.** Its `__main__` is intentionally stubbed to
-print a reminder and exit — `all_rating.py` is the real entry point because a
+print a reminder and exit — `pipeline.py` is the real entry point because a
 single tournament can only be rated in the context of everything before it.
+
+**`tests/test_golden.py`** is a characterization test: it replays the entire
+history and diffs an exhaustive snapshot against `tests/golden_all_ratings.txt`.
+Any refactor that changes the numbers fails it. The values are only reproducible
+on a matching CPython/platform (generated on CPython 3.14) — regenerate if you
+change interpreter.
 
 ## Architecture
 
@@ -57,17 +91,22 @@ Key tunables: `beta` (rating points per point of expected spread, default 5) and
 `tau`. `_player_multiplier` damps rating changes for established/high-rated
 players. Rating deviation grows with inactivity (`adjust_initial_deviation`).
 
-**`all_rating.py`** — the orchestrator that replays history. `RatingsDB` walks
+**`pipeline.py`** — the orchestrator that replays history. `RatingsDB` walks
 every tournament in date order, and before rating each one, `adjust_tournament`
 overwrites each returning player's `init_rating`/`deviation`/`career_games` with
 their carried-forward values from prior tournaments. It produces the combined
 current ratings list (`complete-ratings-list.csv`) and a per-tournament report,
-and hosts the GUI (`App`, subclassing `rating.App`).
+and hosts the GUI (`App`, subclassing `rating.App`). `main()` is the console
+entry point.
 
 **`players.py` / `tournaments.py`** — thin CSV-backed lookup tables in `data/`.
 `PlayerDB` (`data/players.csv`) maps player name ↔ CoCo id. `TournamentDB`
 (`data/tournaments.csv`) is the chronological list that drives the replay; its
 `Filename` column is the prefix used to locate result/rating files.
+
+**`paths.py`** — resolves `data/` and `results/` relative to the project root
+(via `__file__`), so the pipeline works from any working directory. If you move
+the package depth, fix `PROJECT_ROOT = parents[2]` here.
 
 **`results/`** — the historical corpus. Each tournament is a pair of files:
 `<prefix>-results.{csv,tsv}` and `<prefix>-ratings.{csv,tsv}`. The `<prefix>`
