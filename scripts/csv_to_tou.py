@@ -5,7 +5,8 @@ import textwrap
 import tkinter as tk
 from tkinter import ttk
 
-from coco_ratings.rating import File, Tournament, TouResultWriter
+from coco_ratings.io import TouResultWriter
+from coco_ratings.rating import File, Tournament
 
 
 class FilesWidget(ttk.Frame):

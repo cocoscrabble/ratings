@@ -14,9 +14,10 @@ from io import StringIO
 import sys
 
 from coco_ratings import rating
+from coco_ratings.io import CSVResultWriter, TabularResultWriter
 from coco_ratings.paths import RESULTS_DIR
 from coco_ratings.players import PlayerDB
-from coco_ratings.rating import Tournament, CSVResultWriter, TabularResultWriter
+from coco_ratings.rating import Tournament
 from coco_ratings.tournaments import TournamentDB
 
 

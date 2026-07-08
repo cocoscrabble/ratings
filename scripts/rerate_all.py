@@ -13,8 +13,8 @@ import os
 from io import StringIO
 
 from coco_ratings import pipeline
+from coco_ratings.io import TabularResultWriter
 from coco_ratings.paths import RESULTS_DIR
-from coco_ratings.rating import TabularResultWriter
 from coco_ratings.tournaments import TournamentDB
 
 

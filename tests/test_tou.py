@@ -2,7 +2,8 @@
 
 import unittest
 
-from .context import rating
+from coco_ratings.io import TouReader
+from coco_ratings.rating import PlayerList
 
 TOUFILE = """\
 *M25.05.2020 Glorious Towel Day Tournament
@@ -18,9 +19,9 @@ Obelix 2400 3 2300 2 200 +1
 
 class TestParser(unittest.TestCase):
     def test_basic(self):
-        player_list = rating.PlayerList()
+        player_list = PlayerList()
         toufile = TOUFILE.split("\n")
-        t = rating.TouReader(player_list)
+        t = TouReader(player_list)
         t.parse_lines(toufile)
         self.assertEqual(len(t.sections), 1)
         s = t.sections[0]

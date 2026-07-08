@@ -17,7 +17,9 @@ the full tournament history from scratch each time.
 pyproject.toml          # project metadata + console script + ruff config
 uv.lock
 src/coco_ratings/       # the importable package
-    rating.py           # single-tournament engine + file formats + GUI
+    types.py            # data model: Player, Section, GameResult, constants
+    io.py               # file readers/writers (CSV/TSV, .tou, .RT) + parsing
+    rating.py           # engine (RatingsCalculator), Tournament, PlayerList, GUI
     pipeline.py         # full-history replay/orchestrator (was all_rating.py)
     players.py          # PlayerDB   (name <-> CoCo id)
     tournaments.py      # TournamentDB (chronological driver)
@@ -70,19 +72,30 @@ The core insight: a player's new rating depends on their opponents' *current*
 ratings, so ratings are always recomputed by replaying the entire tournament
 history in chronological order. There is no persisted rating state between runs.
 
-**`rating.py`** — the rating engine and file-format layer for a *single*
-tournament. Everything funnels through the `Tournament` class, which wires
-together three concerns, each with pluggable reader/writer classes selected by
-file extension:
+The single-tournament code is split into three layers with an acyclic
+dependency graph (`types` ← `io` ← `rating`):
+
+**`types.py`** — the pure data model: `Player`, `Section`, `GameResult`, and the
+`MAX_DEVIATION` / `UNRATED_INIT_RATING` constants. No dependency on `io` or
+`rating`, which is what keeps the graph acyclic.
+
+**`io.py`** — the file-format layer (imports `types`). Pluggable reader/writer
+classes selected by file extension:
 
 - **Results readers** (`ResultCSVReader` for `.csv`/`.tsv`, `TouReader` for
   AUPAIR `.tou`) parse game-by-game results into `Player` objects grouped into
   `Section`s. `.csv` results carry no metadata, so name/date must be passed in;
   `.tou` files embed them.
 - **Ratings-file readers** (`CSVRatingsFileReader`, `RTFileReader`) load the
-  pre-tournament rating list into a `PlayerList`.
+  pre-tournament rating list into a dict of `Player`s.
 - **Writers** (`TabularResultWriter` → `.txt`, `CSVResultWriter` → `.csv`,
   `TouResultWriter` → `.tou`, `RTFileWriter` → `.RT`) emit results/ratings.
+  Writers/readers only duck-type `Tournament`/`PlayerList`, so `io` needs
+  nothing from `rating`.
+
+**`rating.py`** — the engine (imports `types` + `io`). Everything funnels
+through the `Tournament` class, which wires a `PlayerList` (loaded via `io`
+readers) to the parsed result sections and drives rating.
 
 `RatingsCalculator` holds the actual math. Two-phase per section: iteratively
 solve for unrated players' seed ratings until convergence
@@ -118,7 +131,7 @@ means dropping in these two files and adding a row there.
 - **Results CSV** columns: `Submitted On, Round, Winner, Winners Score, Opponent, Opponents Score` (header row is skipped).
 - **Ratings CSV** columns: `Name, Rating, Email` (rating `0` ⇒ unrated).
 - `.tou` and `.RT` are legacy AUPAIR formats supported for interop; readers/writers
-  live in `rating.py`. Extension determines the parser, so name files correctly.
+  live in `io.py`. Extension determines the parser, so name files correctly.
 - Player identity is by exact name string across all files — name mismatches
   create phantom unrated players, so consistency matters.
 

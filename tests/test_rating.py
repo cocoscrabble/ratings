@@ -2,7 +2,8 @@
 
 import unittest
 
-from coco_ratings.rating import GameResult, PlayerList, Section, RatingsCalculator
+from coco_ratings.rating import PlayerList, RatingsCalculator
+from coco_ratings.types import GameResult, Section
 
 
 class TestRatings(unittest.TestCase):
