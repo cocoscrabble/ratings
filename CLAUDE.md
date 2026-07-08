@@ -22,7 +22,8 @@ src/coco_ratings/       # the importable package
     rating.py           # engine (RatingsCalculator), Tournament, PlayerList, CLI
     gui.py              # Tk front-ends (App, SimulationApp, File widgets)
     ratingsdb.py        # RatingsDB (carry-forward replay), Player/PlayerReport records
-    pipeline.py         # thin orchestration: process_*/write_* over RatingsDB
+    reports.py          # pure output writers (tabular/CSV rating reports)
+    pipeline.py         # thin orchestration: process_* drivers over RatingsDB
     cli.py              # `coco-rate` entry point (main); __main__.py delegates here
     players.py          # PlayerDB   (name <-> CoCo id)
     tournaments.py      # TournamentDB (chronological driver)
@@ -119,11 +120,16 @@ prior tournaments before rating. `beta` (the rating-system tuning parameter,
 which simulations vary) is a constructor arg, threaded in from the caller. Also
 holds the `Player`/`PlayerReport` snapshot records and `CSVRatingsFileWriter`.
 
+**`reports.py`** — pure output writers. Given an already-computed `RatingsDB`
+(and optionally the latest tournament), they render the combined ratings list
+(`complete-ratings-list.csv`) and the per-tournament report. They know nothing
+about the replay, so `pipeline` imports them, not vice versa.
+
 **`pipeline.py`** — thin orchestration over `RatingsDB`. `process_old_results`
 walks every tournament in date order (via `TournamentDB`) to build the current
-`RatingsDB`; the `write_*` helpers emit the combined ratings list
-(`complete-ratings-list.csv`) and the per-tournament report. Also holds the GUI
-subclasses (`App`, subclassing `gui.App`) that wire the replay into the GUI.
+`RatingsDB`; `write_current_ratings` / `write_sim_report` drive that replay and
+hand off to `reports`. Also holds the GUI subclasses (`App`, subclassing
+`gui.App`) that wire the replay into the GUI.
 
 **`cli.py`** — the `coco-rate` entry point. `main()` dispatches: an argument
 writes the combined ratings list to that file; no argument launches the GUI.
