@@ -8,17 +8,25 @@
     {% with cr=player.current_rating %}
     {% if cr %}
     <tr>
-      <th>Current Rating</th>
+      <th>Rating</th>
       <td>{{ cr.rating }}</td>
     </tr>
     <tr>
-      <th>Rating Date</th>
-      <td>{{ cr.date }}</td>
+      <th>Deviation</th>
+      <td>{{ cr.deviation|floatformat:2 }}</td>
+    </tr>
+    <tr>
+      <th>Career Games</th>
+      <td>{{ cr.career_games }}</td>
+    </tr>
+    <tr>
+      <th>Last Played</th>
+      <td>{{ cr.last_played }}</td>
     </tr>
     {% else %}
     <tr>
-      <th>Current Rating</th>
-      <td>No rating recorded</td>
+      <th>Rating</th>
+      <td>No rating yet</td>
     </tr>
     {% endif %}
     {% endwith %}

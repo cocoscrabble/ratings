@@ -4,11 +4,11 @@
 # Dev server port; override with `make run PORT=9000`.
 PORT ?= 8001
 
-# Start the Django dev server on a freshly seeded DB: migrate, import the
-# published players (so build_db can match them), rebuild the ratings projection.
+# Start the Django dev server on a freshly seeded DB: migrate, import player
+# identity (so build_db can match them), rebuild the ratings projection.
 run:
 	uv run --extra web python web/manage.py migrate --noinput
-	uv run --extra web python web/manage.py import_csv --current data/published-ratings.csv
+	uv run --extra web python web/manage.py import_csv --current data/players-list.csv
 	uv run --extra web python web/manage.py build_db
 	uv run --extra web python web/manage.py runserver $(PORT)
 

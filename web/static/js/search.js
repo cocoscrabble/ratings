@@ -103,8 +103,7 @@
       <h2>${escHtml(player.name)}</h2>
       <table class="detail-table">
         <tr><th>Player Number</th><td>#${escHtml(String(player.player_number))}</td></tr>
-        <tr><th>Current Rating</th><td>${player.current_rating !== null ? escHtml(String(player.current_rating)) : "No rating recorded"}</td></tr>
-        ${player.rating_date ? `<tr><th>Rating Date</th><td>${escHtml(player.rating_date)}</td></tr>` : ""}
+        <tr><th>Rating</th><td>${player.current_rating !== null ? escHtml(String(player.current_rating)) : "No rating yet"}</td></tr>
       </table>`;
   }
 

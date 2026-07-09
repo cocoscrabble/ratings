@@ -32,13 +32,13 @@ src/coco_ratings/       # the importable package
 web/                    # Django site (two apps; see "Web site" below)
     manage.py
     cocoweb/            # Django project (settings, urls, wsgi)
-    players/            # player identity: search, /manage CRUD, published Rating, CSV import
+    players/            # player identity: search, /manage CRUD, CSV import
     ratings/            # computed-ratings projection: build_db + Tournament/CurrentRating/…
     static/             # players app css/js/logo
 scripts/                # standalone / experimental scripts (not core)
 tests/                  # engine unittest suite, incl. golden-master test
 data/  results/  docs/  testdata/   # kept at repo root
-# data/published-ratings.csv — org Name,Number,Rating seed for the players app
+# data/players-list.csv — org player-identity seed (Name,Number) for the players app
 ```
 
 ## Commands
@@ -66,7 +66,7 @@ uv run ruff check .
 # Web site (Django, optional 'web' extra)
 uv sync --extra web                    # install Django (+ gunicorn)
 uv run python web/manage.py migrate    # apply schema
-uv run python web/manage.py import_csv --current data/published-ratings.csv  # seed players
+uv run python web/manage.py import_csv --current data/players-list.csv  # seed players
 uv run python web/manage.py build_db   # rebuild the ratings projection from results/
 uv run python web/manage.py test players ratings   # both apps' suites
 uv run python web/manage.py runserver  # browse locally (or: make run)
@@ -172,13 +172,14 @@ One Django site (deployed as the `cocodb` Dokku app) with two apps sharing a
 single player identity. `../cocodb` was merged in here — its history is preserved
 in this repo's log.
 
-**`players`** — the canonical player database (from cocodb). `Player`
-(`player_number` unique, `name`) and `Rating` (published, dated, imported from
-`Name,Number,Rating` CSVs; `Player.current_rating` = latest). This is **persistent
-data**, managed via the auth-gated `/manage/` CRUD and `import_csv`, and is the
-FK target for the computed tables. Public fuzzy **search** at `/` (Postgres
-pg_trgm, `icontains` fallback on SQLite). Seed it with:
-`import_csv --current data/published-ratings.csv`.
+**`players`** — the canonical player **identity** (from cocodb): `Player`
+(`player_number` unique, `name`). This is **persistent data**, managed via the
+auth-gated `/manage/` CRUD and `import_csv`, and is the FK target for the
+computed ratings. There are no stored ratings here — `Player.current_rating` is a
+property that returns the player's computed rating (`ratings.CurrentRating`).
+Public fuzzy **search** at `/` (Postgres pg_trgm, `icontains` fallback on SQLite).
+Seed the identity table with: `import_csv --current data/players-list.csv` (the
+`Rating` column, if present, is ignored).
 
 **`ratings`** — the computed-ratings projection. **Key principle: this projection
 is a rebuildable view of `results/`, never a source of truth.** `Tournament`,
@@ -189,14 +190,14 @@ is a rebuildable view of `results/`, never a source of truth.** `Tournament`,
   **by name**. It creates no identity — computed names with no `Player` record
   (e.g. "Bye", "Test Player") are **skipped and flagged** in the output. Idempotent
   and safe to run on every deploy.
-- The computed reverse accessor on `players.Player` is `computed_rating` (the
-  published-rating property already owns `current_rating`).
+- The computed reverse accessor on `players.Player` is `computed_rating`; the
+  `Player.current_rating` property wraps it as the single rating shown everywhere.
 - `web/ratings/tests.py` is the DB-layer golden check (DB == engine): it seeds a
   `players.Player` per engine player, builds, and asserts every row matches.
 
-**URLs**: player search at `/`, `/manage/…`, `/player/<pk>/` (the **unified**
-player page: published rating + computed rating + tournament history); computed
-ratings namespaced under `/ratings/` (`ratings:` names); admin at `/django-admin/`.
+**URLs**: player search at `/`, `/manage/…`, `/player/<pk>/` (player page: the
+computed rating + tournament history); computed ratings namespaced under
+`/ratings/` (`ratings:` names); admin at `/django-admin/`.
 
 Django is an optional `web` extra (`uv sync --extra web`); the `coco_ratings`
 engine stays dependency-free. Prod uses Postgres via `DATABASE_URL`; SQLite
@@ -223,7 +224,7 @@ always has the source of truth.
   projection from `results/` on every deploy, atomically/idempotently),
   `web: gunicorn`. Player identity is **persistent** (managed via `/manage`), so
   on the *first* deploy seed it once:
-  `dokku run cocodb python web/manage.py import_csv --current data/published-ratings.csv`,
+  `dokku run cocodb python web/manage.py import_csv --current data/players-list.csv`,
   then re-run `build_db` (or redeploy) so it matches.
 - **Env vars** are set by `../vps` `configure-app.yml`: `SECRET_KEY`,
   `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS`, `DEBUG` (settings read these

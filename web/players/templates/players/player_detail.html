@@ -7,18 +7,6 @@
   <p><a href="/">&larr; Back to search</a></p>
   {% include "players/player_detail_fragment.html" %}
 
-  {% if computed %}
-  <div class="player-detail">
-    <h3>Computed rating <small>(from tournament results)</small></h3>
-    <table class="detail-table">
-      <tr><th>Rating</th><td>{{ computed.rating }}</td></tr>
-      <tr><th>Deviation</th><td>{{ computed.deviation|floatformat:2 }}</td></tr>
-      <tr><th>Career games</th><td>{{ computed.career_games }}</td></tr>
-      <tr><th>Last played</th><td>{{ computed.last_played }}</td></tr>
-    </table>
-  </div>
-  {% endif %}
-
   {% if results %}
   <div class="player-detail">
     <h3>Tournament history</h3>

@@ -23,21 +23,11 @@ class Player(models.Model):
 
     @property
     def current_rating(self):
-        return Rating.objects.filter(player=self).order_by("-date").first()
+        """The player's computed rating (ratings.CurrentRating), or None.
 
+        Ratings are the tournament-computed values from the ratings app — the
+        single source of truth.
+        """
+        from ratings.models import CurrentRating
 
-class Rating(models.Model):
-    player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name="ratings")
-    rating = models.IntegerField()
-    date = models.DateField()
-
-    class Meta:
-        ordering = ["-date"]
-        constraints = [
-            models.UniqueConstraint(
-                fields=["player", "date"], name="unique_player_date"
-            )
-        ]
-
-    def __str__(self):
-        return f"{self.player.name}: {self.rating} on {self.date}"
+        return CurrentRating.objects.filter(player=self).first()

@@ -1,28 +1,23 @@
 {% extends "players/manage_base.html" %}
 
-{% block title %}Import CSV — CocoDB Admin{% endblock %}
+{% block title %}Import Players — CocoDB Admin{% endblock %}
 
 {% block content %}
 <div class="manage-actions">
-  <h1>Import CSV</h1>
-  <a href="{% url 'manage_import_current' %}" class="coco-button">Import Current Ratings</a>
+  <h1>Import Players</h1>
 </div>
 
+<p style="color:var(--text-muted);margin-bottom:8px;">
+  Import / update the player list (identity only). Ratings are computed from
+  tournament results, not imported.
+</p>
 <p style="color:var(--text-muted);margin-bottom:24px;">
-  Import players and/or ratings from a CSV file. Choose the format that matches your file.
+  Expected columns: <code style="background:var(--surface);padding:2px 6px;border-radius:3px;">Name, Number</code>
+  (a <code>Rating</code> column, if present, is ignored).
 </p>
 
 <form method="post" enctype="multipart/form-data" class="manage-form" style="max-width:520px;">
   {% csrf_token %}
-
-  <div>
-    <label>Format</label>
-    <select name="mode">
-      <option value="players">Players only — columns: player_number, name</option>
-      <option value="ratings">Ratings only — columns: player_number, rating, date</option>
-      <option value="combined">Combined — columns: player_number, name, rating, date</option>
-    </select>
-  </div>
 
   <div>
     <label>CSV File</label>
@@ -41,7 +36,7 @@
 
 {% if summary %}
 <div class="import-summary">
-  <h3>{{ summary.mode }} — Import complete</h3>
+  <h3>Import complete</h3>
   {% for line in summary.lines %}
   <p>{{ line }}</p>
   {% endfor %}
