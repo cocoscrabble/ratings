@@ -7,7 +7,12 @@ urlpatterns = [
     # Public
     path("", views.search_page, name="search_page"),
     path("search/", views.search_api, name="search_api"),
-    path("player/<int:pk>/", views.player_detail, name="player_detail"),
+    # Player URLs are keyed on the unique player_number; the name-slug is
+    # decorative. The bare (slug-less) form redirects to the canonical URL.
+    path(
+        "player/<int:number>/<slug:slug>/", views.player_detail, name="player_detail"
+    ),
+    path("player/<int:number>/", views.player_detail, name="player_detail"),
     # Manage
     path("manage/", views.manage_redirect, name="manage_redirect"),
     path(

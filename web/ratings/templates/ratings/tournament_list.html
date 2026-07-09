@@ -12,7 +12,7 @@
     {% for t in tournaments %}
     <tr>
       <td>{{ t.date }}</td>
-      <td><a href="{% url 'ratings:tournament_detail' t.filename %}">{{ t }}</a></td>
+      <td><a href="{{ t.get_absolute_url }}">{{ t }}</a></td>
       <td>{{ t.city }}</td>
     </tr>
     {% endfor %}

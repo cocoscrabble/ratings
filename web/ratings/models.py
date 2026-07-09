@@ -7,12 +7,14 @@ build_db truncates and rebuilds (matching engine output to players by name).
 """
 
 from django.db import models
+from django.urls import reverse
 
 
 class Tournament(models.Model):
     """One tournament, from data/tournaments.csv."""
 
-    # filename is the join key / prefix used throughout results/.
+    # filename is the join key / prefix used throughout results/, and doubles as
+    # the URL slug (already a unique, stable, hyphenated identifier).
     filename = models.CharField(max_length=200, unique=True)
     fancy_name = models.CharField(max_length=300, blank=True)
     division = models.CharField(max_length=100, blank=True)
@@ -21,6 +23,13 @@ class Tournament(models.Model):
 
     class Meta:
         ordering = ["date", "filename"]
+
+    @property
+    def slug(self):
+        return self.filename
+
+    def get_absolute_url(self):
+        return reverse("ratings:tournament_detail", kwargs={"slug": self.filename})
 
     def __str__(self):
         name = self.fancy_name or self.filename

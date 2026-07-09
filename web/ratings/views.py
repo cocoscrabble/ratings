@@ -29,8 +29,8 @@ def tournament_list(request):
     )
 
 
-def tournament_detail(request, filename):
-    tournament = get_object_or_404(Tournament, filename=filename)
+def tournament_detail(request, slug):
+    tournament = get_object_or_404(Tournament, filename=slug)
     # Standings order mirrors the engine: wins first, then spread.
     results = (
         TournamentResult.objects.filter(tournament=tournament)

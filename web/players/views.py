@@ -97,10 +97,10 @@ def _player_data(player):
         cr = player.current_rating
         rating = cr.rating if cr else None
     return {
-        "id": player.pk,
         "player_number": player.player_number,
         "name": player.name,
         "current_rating": rating,
+        "url": player.get_absolute_url(),
     }
 
 
@@ -114,27 +114,13 @@ def _wants_json(request):
 
 
 def search_page(request):
-    """Main search page. Handles no-JS fallback via ?q= query param."""
+    """Main search page. No-JS fallback lists matching players via ?q=."""
     query = request.GET.get("q", "").strip()
     players = _search_players(query) if query else []
-    selected = None
-
-    player_id = request.GET.get("player")
-    if player_id:
-        try:
-            selected = Player.objects.get(pk=player_id)
-        except Player.DoesNotExist:
-            pass
-
     return render(
         request,
         "players/search.html",
-        {
-            "query": query,
-            "players": players if not selected else [],
-            "selected": selected,
-            "section": "search",
-        },
+        {"query": query, "players": players, "section": "search"},
     )
 
 
@@ -149,20 +135,23 @@ def search_api(request):
     return render(
         request,
         "players/search.html",
-        {"query": query, "players": players, "selected": None, "section": "search"},
+        {"query": query, "players": players, "section": "search"},
     )
 
 
-def player_detail(request, pk):
+def player_detail(request, number, slug=None):
     """Player detail — JSON for AJAX, HTML for direct/no-JS.
 
-    The HTML page shows the computed rating (via the detail fragment) plus this
-    player's tournament history from the ratings app.
+    Looked up by the unique player_number; the slug is decorative. HTML requests
+    with a missing/stale slug 301-redirect to the canonical URL.
     """
-    player = get_object_or_404(Player, pk=pk)
+    player = get_object_or_404(Player, player_number=str(number))
 
     if _wants_json(request):
         return JsonResponse(_player_data(player))
+
+    if slug != player.slug:
+        return redirect(player.get_absolute_url(), permanent=True)
 
     from ratings.models import TournamentResult
 

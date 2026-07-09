@@ -15,7 +15,7 @@
     {% for r in ratings %}
     <tr>
       <td class="num">{{ forloop.counter }}</td>
-      <td><a href="{% url 'player_detail' r.player.pk %}">{{ r.player.name }}</a></td>
+      <td><a href="{{ r.player.get_absolute_url }}">{{ r.player.name }}</a></td>
       <td class="num">{{ r.rating }}</td>
       <td class="num">{{ r.deviation|floatformat:2 }}</td>
       <td class="num">{{ r.career_games }}</td>

@@ -195,9 +195,13 @@ is a rebuildable view of `results/`, never a source of truth.** `Tournament`,
 - `web/ratings/tests.py` is the DB-layer golden check (DB == engine): it seeds a
   `players.Player` per engine player, builds, and asserts every row matches.
 
-**URLs**: player search at `/`, `/manage/…`, `/player/<pk>/` (player page: the
-computed rating + tournament history); computed ratings namespaced under
-`/ratings/` (`ratings:` names); admin at `/django-admin/`.
+**URLs** (no DB pks in public URLs — use each model's `get_absolute_url`):
+player search at `/`, `/manage/…`, and the player page at
+`/player/<number>/<name-slug>/` (looked up by the unique `player_number`; the
+slug is decorative and a stale/absent slug 301-redirects to canonical). Computed
+ratings under `/ratings/` (`ratings:` names); tournament pages at
+`/ratings/tournament/<slug>/` where the slug is the tournament `filename` (already
+a unique, hyphenated identifier). Admin at `/django-admin/`.
 
 Django is an optional `web` extra (`uv sync --extra web`); the `coco_ratings`
 engine stays dependency-free. Prod uses Postgres via `DATABASE_URL`; SQLite

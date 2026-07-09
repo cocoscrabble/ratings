@@ -24,22 +24,15 @@
     </div>
   </form>
 
-  {# No-JS: list of matching players #}
+  {# No-JS: list of matching players, linking to their pages #}
   {% if players %}
   <ul class="results-list" id="results-list">
     {% for player in players %}
     <li>
-      <a href="/?q={{ query|urlencode }}&player={{ player.pk }}">{{ player.name }}</a>
+      <a href="{{ player.get_absolute_url }}">{{ player.name }}</a>
     </li>
     {% endfor %}
   </ul>
-  {% endif %}
-
-  {# No-JS: selected player details #}
-  {% if selected %}
-  <div id="server-player-detail">
-  {% include "players/player_detail_fragment.html" with player=selected %}
-  </div>
   {% endif %}
 
   {# JS: populated dynamically #}

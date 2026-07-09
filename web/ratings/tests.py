@@ -83,11 +83,21 @@ class ViewTest(TestCase):
         self.assertContains(resp, "Dave Wiegand")
 
     def test_player_detail_shows_computed_history(self):
-        # The unified player page lives in the players app.
+        # The unified player page lives in the players app; URL is number+slug.
         player = Player.objects.get(name="Dave Wiegand")
-        resp = self.client.get(reverse("player_detail", args=[player.pk]))
+        resp = self.client.get(player.get_absolute_url())
         self.assertEqual(resp.status_code, 200)
         self.assertContains(resp, "Tournament history")
+
+    def test_player_url_is_number_and_slug(self):
+        player = Player.objects.get(name="Dave Wiegand")
+        self.assertEqual(
+            player.get_absolute_url(),
+            f"/player/{player.player_number}/dave-wiegand/",
+        )
+        # Bare / stale slug 301-redirects to the canonical URL.
+        resp = self.client.get(f"/player/{player.player_number}/")
+        self.assertRedirects(resp, player.get_absolute_url(), status_code=301)
 
     def test_tournament_list(self):
         resp = self.client.get(reverse("ratings:tournament_list"))
@@ -96,7 +106,8 @@ class ViewTest(TestCase):
     def test_tournament_detail(self):
         t = Tournament.objects.first()
         assert t is not None
-        resp = self.client.get(reverse("ratings:tournament_detail", args=[t.filename]))
+        self.assertEqual(t.get_absolute_url(), f"/ratings/tournament/{t.filename}/")
+        resp = self.client.get(t.get_absolute_url())
         self.assertEqual(resp.status_code, 200)
         self.assertContains(resp, "Spread")
 

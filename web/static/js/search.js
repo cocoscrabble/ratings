@@ -104,7 +104,8 @@
       <table class="detail-table">
         <tr><th>Player Number</th><td>#${escHtml(String(player.player_number))}</td></tr>
         <tr><th>Rating</th><td>${player.current_rating !== null ? escHtml(String(player.current_rating)) : "No rating yet"}</td></tr>
-      </table>`;
+      </table>
+      <p style="margin-top:12px;"><a href="${escHtml(player.url)}">View full profile &rarr;</a></p>`;
   }
 
   function escHtml(str) {
@@ -171,12 +172,8 @@
       const link = e.target.closest("a");
       if (!link) return;
       e.preventDefault();
-      // Extract player PK from the link's ?player=<pk> param
-      const url = new URL(link.href, window.location.origin);
-      const pk = url.searchParams.get("player");
-      if (!pk) return;
-      // Fetch player detail and show it
-      fetch(`/player/${pk}/`, { headers: { Accept: "application/json" } })
+      // Fetch the player page's JSON and show it inline (stay on search).
+      fetch(link.href, { headers: { Accept: "application/json" } })
         .then((res) => (res.ok ? res.json() : null))
         .then((player) => {
           if (!player) return;
