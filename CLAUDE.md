@@ -20,7 +20,8 @@ src/coco_ratings/       # the importable package
     types.py            # data model: Player, Section, GameResult, constants
     io.py               # file readers/writers (CSV/TSV, .tou, .RT) + parsing
     rating.py           # engine (RatingsCalculator), Tournament, PlayerList, CLI
-    gui.py              # Tk front-ends (App, SimulationApp, File widgets)
+    gui.py              # Tk widgets + base App/SimulationApp (imports nothing heavy)
+    gui_app.py          # GUI apps wiring Tk to the pipeline (keeps pipeline Tk-free)
     ratingsdb.py        # RatingsDB (carry-forward replay), PlayerRecord/PlayerReport
     reports.py          # pure output writers (tabular/CSV rating reports)
     pipeline.py         # thin orchestration: process_* drivers over RatingsDB
@@ -113,9 +114,12 @@ through the `Tournament` class, which wires a `PlayerList` (loaded via `io`
 readers) to the parsed result sections and drives rating. Also holds the
 headless CLI (`run_cli`); its `__main__` is a stub that refuses to run.
 
-**`gui.py`** — the Tk front-ends (`App`, `SimulationApp`, `File`/`FilesWidget`),
-at the top of the stack. `pipeline` subclasses `App`/`SimulationApp` to wire in
-the full-history replay; nothing in the engine imports `gui`.
+**`gui.py` / `gui_app.py`** — the Tk layer. `gui.py` holds the widgets and base
+`App`/`SimulationApp`; `gui_app.py` holds the subclasses that wire them to the
+pipeline. **Nothing headless imports these** — `gui_app` is loaded lazily by
+`cli.run_gui` and the simulation script, and `pipeline` does *not* import `gui`.
+This keeps Tk (and its C libs) out of the web/`build_db` path, which matters in
+the slim server container.
 
 `RatingsCalculator` holds the actual math. Two-phase per section: iteratively
 solve for unrated players' seed ratings until convergence
@@ -139,8 +143,8 @@ about the replay, so `pipeline` imports them, not vice versa.
 **`pipeline.py`** — thin orchestration over `RatingsDB`. `process_old_results`
 walks every tournament in date order (via `TournamentDB`) to build the current
 `RatingsDB`; `write_current_ratings` / `write_sim_report` drive that replay and
-hand off to `reports`. Also holds the GUI subclasses (`App`, subclassing
-`gui.App`) that wire the replay into the GUI.
+hand off to `reports`. Deliberately imports no GUI, so it's safe to import in
+headless contexts (the web `build_db` command).
 
 **`cli.py`** — the `coco-rate` entry point. `main()` dispatches: an argument
 writes the combined ratings list to that file; no argument launches the GUI.
@@ -190,6 +194,31 @@ migrations.
 `<prefix>-results.{csv,tsv}` and `<prefix>-ratings.{csv,tsv}`. The `<prefix>`
 must match the `Filename` column in `data/tournaments.csv`. Adding a tournament
 means dropping in these two files and adding a row there.
+
+## Deployment (Dokku + Ansible)
+
+Deploys to a Dokku server; Ansible config lives in the sibling `../vps` repo
+(app name **`cocodb`**, `cocodb.cocoscrabble.org`). The DB is Postgres in prod
+(injected as `DATABASE_URL` by `dokku-postgres`) and SQLite locally — settings
+switch on `DATABASE_URL`. `results/` ships inside the image, so the container
+always has the source of truth.
+
+- **`Dockerfile`** — uv build (`uv sync --extra web`), runs `collectstatic`
+  (WhiteNoise serves it), gunicorn as the web process.
+- **`Procfile`** — `release: migrate && build_db` (rebuilds the DB from
+  `results/` on every deploy, atomically/idempotently), `web: gunicorn`.
+- **Env vars** are set by `../vps` `configure-app.yml`: `SECRET_KEY`,
+  `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS`, `DEBUG` (settings read these
+  unprefixed names). `cocodb_builder: dockerfile` and `cocodb_ports` are in the
+  vps `production.yml`.
+- **CI/CD** (`.github/workflows/ci.yml`): tests on every push/PR; on push to
+  `main`, deploys to Dokku via `dokku/github-action`. One-time setup: add the
+  deploy key as GH secret `DOKKU_SSH_PRIVATE_KEY` and its public half to Dokku
+  (`dokku ssh-keys:add github <pubkey>`).
+- **First-time provisioning** (from `../vps`, playbooks are idempotent):
+  `new-app.yml -e app_name=cocodb` (app + Postgres + domain + LE),
+  `configure-app.yml -e app_name=cocodb` (env + builder + ports),
+  `sync-domains.yml -e app_name=cocodb` (extra hosts).
 
 ## File formats
 

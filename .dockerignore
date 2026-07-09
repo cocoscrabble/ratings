@@ -1,0 +1,16 @@
+.git
+.venv
+**/__pycache__
+*.pyc
+.ruff_cache
+
+# Local/generated artifacts (results/ and data/ are NOT ignored — they ship)
+web/db.sqlite3
+web/staticfiles
+coco_ratings.log
+*.log
+tmp
+
+# Docs/dev-only
+docs
+testdata

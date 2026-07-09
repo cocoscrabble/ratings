@@ -10,9 +10,14 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "dev-insecure-key-change-me")
-DEBUG = os.environ.get("DJANGO_DEBUG", "1") == "1"
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "*").split(",")
+# Env var names match the VPS Ansible convention (configure-app.yml sets
+# SECRET_KEY / ALLOWED_HOSTS / CSRF_TRUSTED_ORIGINS / DEBUG unprefixed).
+SECRET_KEY = os.environ.get("SECRET_KEY", "dev-insecure-key-change-me")
+DEBUG = os.environ.get("DEBUG", "True") == "True"
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
+CSRF_TRUSTED_ORIGINS = [
+    o for o in os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",") if o
+]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -26,6 +31,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -53,14 +59,20 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "cocoweb.wsgi.application"
 
-# SQLite lives on a persistent volume in production (Dokku storage mount); the
-# path is overridable so a deploy points it at /data rather than the checkout.
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.environ.get("COCO_DB_PATH", str(BASE_DIR / "db.sqlite3")),
+# In production Dokku injects DATABASE_URL (dokku-postgres); locally there's no
+# DATABASE_URL so we fall back to SQLite. The DB is a rebuildable projection of
+# results/ either way, so the backend is an implementation detail.
+if os.environ.get("DATABASE_URL"):
+    import dj_database_url
+
+    DATABASES = {"default": dj_database_url.config(conn_max_age=600)}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.environ.get("COCO_DB_PATH", str(BASE_DIR / "db.sqlite3")),
+        }
     }
-}
 
 AUTH_PASSWORD_VALIDATORS = []
 
@@ -71,5 +83,13 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# WhiteNoise serves static (admin assets) straight from the app container.
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
+    },
+}
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

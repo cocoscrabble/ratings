@@ -1,0 +1,36 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - name: Install (with web extra)
+        run: uv sync --extra web
+      - name: Engine tests
+        run: uv run python -m unittest
+      - name: Web/DB tests
+        run: uv run python web/manage.py test ratings
+      - name: Lint
+        run: uv run ruff check .
+
+  deploy:
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Dokku needs the full git history to build.
+          fetch-depth: 0
+      - name: Deploy to Dokku
+        uses: dokku/github-action@master
+        with:
+          git_remote_url: "ssh://dokku@cocoscrabble.vps.webdock.cloud/cocodb"
+          ssh_private_key: ${{ secrets.DOKKU_SSH_PRIVATE_KEY }}

@@ -6,12 +6,14 @@ current combined ratings list; with no argument it launches the Tk GUI.
 
 import sys
 
-from coco_ratings.pipeline import App, write_current_ratings
+from coco_ratings.pipeline import write_current_ratings
 
 
 def run_gui():
-    w = App()
-    w.mainloop()
+    # Imported lazily so the headless path (`coco-rate <file>`) never loads Tk.
+    from coco_ratings.gui_app import App
+
+    App().mainloop()
 
 
 def main(argv=None):
