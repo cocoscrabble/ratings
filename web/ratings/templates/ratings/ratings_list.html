@@ -1,9 +1,10 @@
-{% extends "ratings/base.html" %}
-{% block title %}Ratings — CoCo{% endblock %}
+{% extends "players/base.html" %}
+{% block title %}Ratings — CocoDB{% endblock %}
+{% block main_class %}main-content main-wide{% endblock %}
 {% block content %}
 <h1>Current ratings</h1>
-<p class="summary">{{ ratings|length }} rated players.</p>
-<table>
+<p class="page-summary">{{ ratings|length }} rated players.</p>
+<table class="data-table">
   <thead>
     <tr>
       <th class="num">#</th><th>Player</th>

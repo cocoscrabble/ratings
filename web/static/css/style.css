@@ -408,3 +408,81 @@ a:hover {
   border-radius: 4px;
   font-weight: 600;
 }
+
+/* --- Public site nav (in the header) --- */
+.site-nav {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.site-nav a {
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.site-nav a:hover,
+.site-nav a.active {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+/* --- Wider container for data-heavy pages --- */
+.main-wide {
+  max-width: 960px;
+}
+
+/* --- Page heading --- */
+.main-content h1 {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.page-summary {
+  color: var(--text-muted);
+  margin: 4px 0 20px;
+}
+
+/* --- Data tables (public: ratings list, tournaments, standings) --- */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+
+.data-table th,
+.data-table td {
+  padding: 9px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+
+.data-table th {
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tbody tr:hover td {
+  background: var(--surface);
+}
+
+.data-table th.num,
+.data-table td.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.pos { color: #2d6b2d; }
+.neg { color: #8b2020; }

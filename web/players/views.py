@@ -133,6 +133,7 @@ def search_page(request):
             "query": query,
             "players": players if not selected else [],
             "selected": selected,
+            "section": "search",
         },
     )
 
@@ -148,7 +149,7 @@ def search_api(request):
     return render(
         request,
         "players/search.html",
-        {"query": query, "players": players, "selected": None},
+        {"query": query, "players": players, "selected": None, "section": "search"},
     )
 
 

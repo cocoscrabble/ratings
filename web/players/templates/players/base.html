@@ -12,9 +12,14 @@
     <a href="/" class="logo-link">
       <img src="{% static 'img/logo.png' %}" alt="Coco Scrabble" class="site-logo">
     </a>
+    <nav class="site-nav">
+      <a href="{% url 'search_page' %}"{% if section == 'search' %} class="active"{% endif %}>Search</a>
+      <a href="{% url 'ratings:ratings_list' %}"{% if section == 'ratings' %} class="active"{% endif %}>Ratings</a>
+      <a href="{% url 'ratings:tournament_list' %}"{% if section == 'tournaments' %} class="active"{% endif %}>Tournaments</a>
+    </nav>
   </header>
 
-  <main class="main-content">
+  <main class="{% block main_class %}main-content{% endblock %}">
     {% block content %}{% endblock %}
   </main>
 </body>

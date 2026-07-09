@@ -1,9 +1,10 @@
-{% extends "ratings/base.html" %}
-{% block title %}Tournaments — CoCo Ratings{% endblock %}
+{% extends "players/base.html" %}
+{% block title %}Tournaments — CocoDB{% endblock %}
+{% block main_class %}main-content main-wide{% endblock %}
 {% block content %}
 <h1>Tournaments</h1>
-<p class="summary">{{ tournaments|length }} tournaments.</p>
-<table>
+<p class="page-summary">{{ tournaments|length }} tournaments.</p>
+<table class="data-table">
   <thead>
     <tr><th>Date</th><th>Tournament</th><th>City</th></tr>
   </thead>

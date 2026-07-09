@@ -8,30 +8,28 @@
   {% include "players/player_detail_fragment.html" %}
 
   {% if results %}
-  <div class="player-detail">
-    <h3>Tournament history</h3>
-    <table class="detail-table">
-      <thead>
-        <tr>
-          <th>Date</th><th>Tournament</th><th>Record</th>
-          <th>Spread</th><th>Old</th><th>New</th><th>&Delta;</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for r in results %}
-        <tr>
-          <td>{{ r.tournament.date }}</td>
-          <td><a href="{% url 'ratings:tournament_detail' r.tournament.filename %}">{{ r.tournament }}</a></td>
-          <td>{{ r.record }}</td>
-          <td>{{ r.spread|stringformat:"+d" }}</td>
-          <td>{{ r.old_rating }}</td>
-          <td>{{ r.new_rating }}</td>
-          <td>{{ r.rating_change|stringformat:"+d" }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+  <h3 style="margin-top:28px;">Tournament history</h3>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Date</th><th>Tournament</th><th>Record</th>
+        <th class="num">Spread</th><th class="num">Old</th><th class="num">New</th><th class="num">&Delta;</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in results %}
+      <tr>
+        <td>{{ r.tournament.date }}</td>
+        <td><a href="{% url 'ratings:tournament_detail' r.tournament.filename %}">{{ r.tournament }}</a></td>
+        <td>{{ r.record }}</td>
+        <td class="num">{{ r.spread|stringformat:"+d" }}</td>
+        <td class="num">{{ r.old_rating }}</td>
+        <td class="num">{{ r.new_rating }}</td>
+        <td class="num {% if r.rating_change >= 0 %}pos{% else %}neg{% endif %}">{{ r.rating_change|stringformat:"+d" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
   {% endif %}
 </div>
 {% endblock %}

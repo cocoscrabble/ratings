@@ -13,13 +13,19 @@ def ratings_list(request):
     ratings = CurrentRating.objects.select_related("player").order_by(
         "-rating", "player__name"
     )
-    return render(request, "ratings/ratings_list.html", {"ratings": ratings})
+    return render(
+        request,
+        "ratings/ratings_list.html",
+        {"ratings": ratings, "section": "ratings"},
+    )
 
 
 def tournament_list(request):
     tournaments = Tournament.objects.order_by("-date", "filename")
     return render(
-        request, "ratings/tournament_list.html", {"tournaments": tournaments}
+        request,
+        "ratings/tournament_list.html",
+        {"tournaments": tournaments, "section": "tournaments"},
     )
 
 
@@ -34,5 +40,5 @@ def tournament_detail(request, filename):
     return render(
         request,
         "ratings/tournament_detail.html",
-        {"tournament": tournament, "results": results},
+        {"tournament": tournament, "results": results, "section": "tournaments"},
     )
