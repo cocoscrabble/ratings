@@ -16,7 +16,7 @@
     {% for r in results %}
     <tr>
       <td class="num">{{ forloop.counter }}</td>
-      <td><a href="{% url 'player_detail' r.player.pk %}">{{ r.player.name }}</a></td>
+      <td><a href="{% url 'ratings:player_detail' r.player.pk %}">{{ r.player.name }}</a></td>
       <td>{{ r.record }}</td>
       <td class="num">{{ r.spread|stringformat:"+d" }}</td>
       <td class="num">{{ r.old_rating }}</td>

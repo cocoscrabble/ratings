@@ -23,7 +23,7 @@
     {% for r in results %}
     <tr>
       <td>{{ r.tournament.date }}</td>
-      <td><a href="{% url 'tournament_detail' r.tournament.filename %}">{{ r.tournament }}</a></td>
+      <td><a href="{% url 'ratings:tournament_detail' r.tournament.filename %}">{{ r.tournament }}</a></td>
       <td>{{ r.record }}</td>
       <td class="num">{{ r.spread|stringformat:"+d" }}</td>
       <td class="num">{{ r.old_rating }}</td>

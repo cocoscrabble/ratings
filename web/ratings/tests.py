@@ -56,29 +56,29 @@ class ViewTest(TestCase):
         call_command("build_db", verbosity=0)
 
     def test_ratings_list(self):
-        resp = self.client.get(reverse("ratings_list"))
+        resp = self.client.get(reverse("ratings:ratings_list"))
         self.assertEqual(resp.status_code, 200)
         self.assertContains(resp, "Dave Wiegand")
 
     def test_player_detail(self):
         player = Player.objects.get(name="Dave Wiegand")
-        resp = self.client.get(reverse("player_detail", args=[player.pk]))
+        resp = self.client.get(reverse("ratings:player_detail", args=[player.pk]))
         self.assertEqual(resp.status_code, 200)
         self.assertContains(resp, "Tournament history")
 
     def test_tournament_list(self):
-        resp = self.client.get(reverse("tournament_list"))
+        resp = self.client.get(reverse("ratings:tournament_list"))
         self.assertEqual(resp.status_code, 200)
 
     def test_tournament_detail(self):
         t = Tournament.objects.first()
         assert t is not None
-        resp = self.client.get(reverse("tournament_detail", args=[t.filename]))
+        resp = self.client.get(reverse("ratings:tournament_detail", args=[t.filename]))
         self.assertEqual(resp.status_code, 200)
         self.assertContains(resp, "Spread")
 
     def test_unknown_player_404(self):
-        resp = self.client.get(reverse("player_detail", args=[999999]))
+        resp = self.client.get(reverse("ratings:player_detail", args=[999999]))
         self.assertEqual(resp.status_code, 404)
 
 

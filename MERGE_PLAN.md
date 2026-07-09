@@ -19,18 +19,20 @@ ratings, CSV import — from `../cocodb`) with the **tournament-computed ratings
 7. One project (`web/cocoweb`), two apps (`players`, `ratings`); one Dockerfile/Procfile;
    Python 3.14; psycopg3; keep the Ansible env-var convention.
 
-## Phase A — bring cocodb in, both apps working side by side
+## Phase A — bring cocodb in, both apps working side by side ✅
 
-- [ ] Subtree-merge cocodb under `cocodb-import/` (history preserved).
-- [ ] Relocate: `players/` → `web/players/`, `static/` → `web/static/`, keep `players.csv`
-      (published-ratings seed); drop cocodb's project/manage/Docker/Procfile/pyproject/etc.
-- [ ] Fold cocodb settings into `web/cocoweb/settings.py` (add `players` app, search config,
-      LOGIN_URL, STATICFILES_DIRS, messages). Keep env-var names Ansible expects.
-- [ ] Reconcile deps into the `web` extra (django-environ or dj-database-url — pick one;
-      psycopg3). Port the pg_trgm migration.
-- [ ] URLs: `players.urls` at `/`, `ratings.urls` namespaced at `/ratings/` (update ratings
-      templates to `ratings:` names to avoid `player_detail`/`/` collisions).
-- [ ] Green: migrations apply; cocodb tests + engine tests + web/ratings tests + ruff + pyright.
+- [x] Subtree-merge cocodb under `cocodb-import/` (history preserved).
+- [x] Relocate: `players/` → `web/players/`, `static/` → `web/static/`, keep the published
+      CSV as `data/published-ratings.csv`; drop cocodb's project/manage/Docker/Procfile/etc.
+- [x] Fold cocodb settings into `web/cocoweb/settings.py` (add `players` app, LOGIN_URL,
+      STATICFILES_DIRS, password validators). Kept our env-var convention + dj-database-url.
+- [x] Deps: reused our web extra (psycopg3, dj-database-url — dropped django-environ /
+      psycopg2). pg_trgm migration ships as-is (no-op on SQLite).
+- [x] URLs: `players.urls` at `/`, `ratings.urls` namespaced at `/ratings/` (ratings
+      templates/tests now use `ratings:` names). admin at `/django-admin/`.
+- [x] Green: migrations apply; engine 5 + players 6 + ratings 11 tests; ruff + pyright clean.
+      Live-checked routes (/, /ratings/, /manage/login/, /search/) all 200;
+      `import_csv --current data/published-ratings.csv` seeds 222 players.
 
 ## Phase B — unify Player identity
 

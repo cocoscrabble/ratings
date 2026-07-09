@@ -61,7 +61,10 @@ def _search_players(query):
             return _with_current_rating(prefix_qs)
 
     if connection.vendor == "postgresql":
-        from django.contrib.postgres.search import TrigramWordSimilarity
+        # django-types doesn't stub django.contrib.postgres; this is Postgres-only.
+        from django.contrib.postgres.search import (
+            TrigramWordSimilarity,  # type: ignore[attr-defined]
+        )
 
         # Exact substring matches (always reliable)
         exact = set(

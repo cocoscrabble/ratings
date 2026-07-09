@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "players",
     "ratings",
 ]
 
@@ -49,6 +50,7 @@ TEMPLATES = [
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
+                "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
@@ -74,7 +76,13 @@ else:
         }
     }
 
-AUTH_PASSWORD_VALIDATORS = []
+_VALIDATORS = "django.contrib.auth.password_validation"
+AUTH_PASSWORD_VALIDATORS = [
+    {"NAME": f"{_VALIDATORS}.UserAttributeSimilarityValidator"},
+    {"NAME": f"{_VALIDATORS}.MinimumLengthValidator"},
+    {"NAME": f"{_VALIDATORS}.CommonPasswordValidator"},
+    {"NAME": f"{_VALIDATORS}.NumericPasswordValidator"},
+]
 
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
@@ -83,6 +91,7 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = [BASE_DIR / "static"]  # web/static (players app css/js/logo)
 
 # WhiteNoise serves static (admin assets) straight from the app container.
 STORAGES = {
@@ -93,3 +102,8 @@ STORAGES = {
 }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Auth for the players /manage section.
+LOGIN_URL = "/manage/login/"
+LOGIN_REDIRECT_URL = "/manage/players/"
+LOGOUT_REDIRECT_URL = "/"

@@ -10,7 +10,7 @@ run:
 	uv run --extra web python web/manage.py build_db
 	uv run --extra web python web/manage.py runserver $(PORT)
 
-# Run all tests: the engine's unittest suite and the Django DB/view suite.
+# Run all tests: the engine's unittest suite and both Django apps' suites.
 test:
 	uv run --extra web python -m unittest
-	uv run --extra web python web/manage.py test ratings
+	uv run --extra web python web/manage.py test players ratings

@@ -23,7 +23,7 @@ class Player(models.Model):
 
     @property
     def current_rating(self):
-        return self.ratings.order_by("-date").first()
+        return Rating.objects.filter(player=self).order_by("-date").first()
 
 
 class Rating(models.Model):
