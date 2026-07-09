@@ -43,6 +43,9 @@ data/  results/  docs/  testdata/   # kept at repo root
 Environment is managed by **uv** (this is an Arch/PEP-668 externally-managed
 host, so a project venv is required — do not `pip install` into system Python).
 
+Shortcuts: `make test` runs both test suites; `make run` builds the DB and
+starts the dev server. The full commands:
+
 ```bash
 # One-time / after dependency or metadata changes: create .venv and install editable
 uv sync
