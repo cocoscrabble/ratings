@@ -16,7 +16,7 @@ jobs:
       - name: Engine tests
         run: uv run python -m unittest
       - name: Web/DB tests
-        run: uv run python web/manage.py test ratings
+        run: uv run python web/manage.py test players ratings
       - name: Lint
         run: uv run ruff check .
 

@@ -49,12 +49,23 @@ ratings, CSV import — from `../cocodb`) with the **tournament-computed ratings
       `{% static %}` works without collectstatic. Green: engine 5 + players 6 + ratings 10;
       ruff + pyright clean.
 
-## Phase C — deploy as one app
+## Phase C — deploy as one app ✅
 
-- [ ] Single `Dockerfile` (uv, 3.14, collectstatic, gunicorn `cocoweb.wsgi`) + `Procfile`
-      (`release: migrate && build_db`). Remove cocodb's deploy files.
-- [ ] Verify in a container (build + release + serve), as in phase 3.
-- [ ] Update `Makefile`, `CLAUDE.md`, `.github/workflows`, and `../vps` if needed.
+- [x] Single `Dockerfile` + `Procfile` already target `cocoweb.wsgi` + `migrate && build_db`
+      (from phase 3); cocodb's deploy files were dropped in the relocation. `../vps` cocodb
+      config (dockerfile builder, ports, extra_hosts, secret) already in place.
+- [x] Verified in a container: build + migrate + import players + build_db + gunicorn; `/`,
+      `/search/`, `/ratings/`, `/manage/login/`, static, and the unified `/player/<pk>/`
+      (published + computed + history) all 200.
+- [x] Updated `Makefile` (run seeds players then rebuilds), `.github/workflows` (test both
+      apps), and `CLAUDE.md`. Player identity is persistent; first deploy seeds it once via
+      `import_csv`, documented in CLAUDE.md.
+
+## Done. Follow-ups (separate work)
+
+- An "add new players" flow so skipped names (currently "Bye"/"Test Player" only) can be
+  onboarded, per the deferred decision.
+- Consider whether computed ratings should feed the published `Rating` list, or stay separate.
 
 ## Safety net
 
