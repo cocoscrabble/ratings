@@ -80,3 +80,19 @@ class ViewTest(TestCase):
     def test_unknown_player_404(self):
         resp = self.client.get(reverse("player_detail", args=[999999]))
         self.assertEqual(resp.status_code, 404)
+
+
+class TournamentStrTest(TestCase):
+    def _tournament(self, **kwargs):
+        from datetime import date
+
+        defaults = {"filename": "x", "fancy_name": "Word Cup", "date": date(2022, 1, 1)}
+        return Tournament.objects.create(**{**defaults, **kwargs})
+
+    def test_display_name_includes_division(self):
+        t = self._tournament(division="D1")
+        self.assertEqual(str(t), "Word Cup: D1")
+
+    def test_display_name_without_division(self):
+        t = self._tournament(division="")
+        self.assertEqual(str(t), "Word Cup")

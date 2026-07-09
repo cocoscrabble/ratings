@@ -35,7 +35,10 @@ class Tournament(models.Model):
         ordering = ["date", "filename"]
 
     def __str__(self):
-        return self.fancy_name or self.filename
+        name = self.fancy_name or self.filename
+        if self.division:
+            return f"{name}: {self.division}"
+        return name
 
 
 class CurrentRating(models.Model):
