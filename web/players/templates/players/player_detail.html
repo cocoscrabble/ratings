@@ -6,5 +6,44 @@
 <div class="search-container">
   <p><a href="/">&larr; Back to search</a></p>
   {% include "players/player_detail_fragment.html" %}
+
+  {% if computed %}
+  <div class="player-detail">
+    <h3>Computed rating <small>(from tournament results)</small></h3>
+    <table class="detail-table">
+      <tr><th>Rating</th><td>{{ computed.rating }}</td></tr>
+      <tr><th>Deviation</th><td>{{ computed.deviation|floatformat:2 }}</td></tr>
+      <tr><th>Career games</th><td>{{ computed.career_games }}</td></tr>
+      <tr><th>Last played</th><td>{{ computed.last_played }}</td></tr>
+    </table>
+  </div>
+  {% endif %}
+
+  {% if results %}
+  <div class="player-detail">
+    <h3>Tournament history</h3>
+    <table class="detail-table">
+      <thead>
+        <tr>
+          <th>Date</th><th>Tournament</th><th>Record</th>
+          <th>Spread</th><th>Old</th><th>New</th><th>&Delta;</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in results %}
+        <tr>
+          <td>{{ r.tournament.date }}</td>
+          <td><a href="{% url 'ratings:tournament_detail' r.tournament.filename %}">{{ r.tournament }}</a></td>
+          <td>{{ r.record }}</td>
+          <td>{{ r.spread|stringformat:"+d" }}</td>
+          <td>{{ r.old_rating }}</td>
+          <td>{{ r.new_rating }}</td>
+          <td>{{ r.rating_change|stringformat:"+d" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
 </div>
 {% endblock %}

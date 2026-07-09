@@ -162,13 +162,29 @@ def search_api(request):
 
 
 def player_detail(request, pk):
-    """Player detail — returns JSON for AJAX, HTML for direct/no-JS."""
+    """Player detail — returns JSON for AJAX, HTML for direct/no-JS.
+
+    The HTML page also shows this player's *computed* rating and tournament
+    history from the ratings app (the JSON API stays published-rating only).
+    """
     player = get_object_or_404(Player, pk=pk)
 
     if _wants_json(request):
         return JsonResponse(_player_data(player))
 
-    return render(request, "players/player_detail.html", {"player": player})
+    from ratings.models import CurrentRating, TournamentResult
+
+    computed = CurrentRating.objects.filter(player=player).first()
+    results = (
+        TournamentResult.objects.filter(player=player)
+        .select_related("tournament")
+        .order_by("-tournament__date", "tournament__filename")
+    )
+    return render(
+        request,
+        "players/player_detail.html",
+        {"player": player, "computed": computed, "results": results},
+    )
 
 
 # ---------------------------------------------------------------------------

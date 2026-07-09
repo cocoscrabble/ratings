@@ -2,7 +2,11 @@
 
 from django.shortcuts import get_object_or_404, render
 
-from ratings.models import CurrentRating, Player, Tournament, TournamentResult
+from ratings.models import CurrentRating, Tournament, TournamentResult
+
+# The per-player page lives in the players app (players.views.player_detail),
+# which shows both the published rating history and this project's computed
+# ratings + tournament results.
 
 
 def ratings_list(request):
@@ -10,21 +14,6 @@ def ratings_list(request):
         "-rating", "player__name"
     )
     return render(request, "ratings/ratings_list.html", {"ratings": ratings})
-
-
-def player_detail(request, pk):
-    player = get_object_or_404(Player, pk=pk)
-    current = CurrentRating.objects.filter(player=player).first()
-    results = (
-        TournamentResult.objects.filter(player=player)
-        .select_related("tournament")
-        .order_by("-tournament__date", "tournament__filename")
-    )
-    return render(
-        request,
-        "ratings/player_detail.html",
-        {"player": player, "current": current, "results": results},
-    )
 
 
 def tournament_list(request):

@@ -1,12 +1,6 @@
 from django.contrib import admin
 
-from ratings.models import CurrentRating, Player, Tournament, TournamentResult
-
-
-@admin.register(Player)
-class PlayerAdmin(admin.ModelAdmin):
-    list_display = ("name", "coco_id")
-    search_fields = ("name", "coco_id")
+from ratings.models import CurrentRating, Tournament, TournamentResult
 
 
 @admin.register(Tournament)

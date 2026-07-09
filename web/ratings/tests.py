@@ -3,6 +3,9 @@
 Builds the DB with build_db, then asserts every CurrentRating and
 TournamentResult row equals what the rating engine computes directly from
 results/. This extends the engine's golden-master guarantee across the DB layer.
+
+Computed ratings are keyed to canonical players.Player rows, so the tests seed a
+Player per engine player first (build_db matches by name and skips unmatched).
 """
 
 from django.core.management import call_command
@@ -10,18 +13,24 @@ from django.test import TestCase
 from django.urls import reverse
 
 from coco_ratings.pipeline import process_old_results
+from players.models import Player
 
-from ratings.models import CurrentRating, Player, Tournament, TournamentResult
+from ratings.models import CurrentRating, Tournament, TournamentResult
+
+
+def seed_players(names):
+    """Create a canonical players.Player for each name so build_db matches it."""
+    Player.objects.bulk_create(
+        Player(player_number=str(i + 1), name=name) for i, name in enumerate(names)
+    )
 
 
 class BuildDbTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        call_command("build_db", verbosity=0)
         cls.ratingsdb, _ = process_old_results()
-
-    def test_players_match_engine(self):
-        self.assertEqual(Player.objects.count(), len(self.ratingsdb.players))
+        seed_players(cls.ratingsdb.players)
+        call_command("build_db", verbosity=0)
 
     def test_current_ratings_match_engine(self):
         self.assertEqual(CurrentRating.objects.count(), len(self.ratingsdb.players))
@@ -49,10 +58,23 @@ class BuildDbTest(TestCase):
         call_command("build_db", verbosity=0)
         self.assertEqual(CurrentRating.objects.count(), len(self.ratingsdb.players))
 
+    def test_skips_players_without_a_record(self):
+        # Remove one player's canonical record; rebuild should skip them.
+        Player.objects.filter(name="Dave Wiegand").delete()
+        call_command("build_db", verbosity=0)
+        self.assertFalse(
+            CurrentRating.objects.filter(player__name="Dave Wiegand").exists()
+        )
+        self.assertEqual(
+            CurrentRating.objects.count(), len(self.ratingsdb.players) - 1
+        )
+
 
 class ViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
+        ratingsdb, _ = process_old_results()
+        seed_players(ratingsdb.players)
         call_command("build_db", verbosity=0)
 
     def test_ratings_list(self):
@@ -60,9 +82,10 @@ class ViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertContains(resp, "Dave Wiegand")
 
-    def test_player_detail(self):
+    def test_player_detail_shows_computed_history(self):
+        # The unified player page lives in the players app.
         player = Player.objects.get(name="Dave Wiegand")
-        resp = self.client.get(reverse("ratings:player_detail", args=[player.pk]))
+        resp = self.client.get(reverse("player_detail", args=[player.pk]))
         self.assertEqual(resp.status_code, 200)
         self.assertContains(resp, "Tournament history")
 
@@ -76,10 +99,6 @@ class ViewTest(TestCase):
         resp = self.client.get(reverse("ratings:tournament_detail", args=[t.filename]))
         self.assertEqual(resp.status_code, 200)
         self.assertContains(resp, "Spread")
-
-    def test_unknown_player_404(self):
-        resp = self.client.get(reverse("ratings:player_detail", args=[999999]))
-        self.assertEqual(resp.status_code, 404)
 
 
 class TournamentStrTest(TestCase):

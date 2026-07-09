@@ -34,14 +34,20 @@ ratings, CSV import — from `../cocodb`) with the **tournament-computed ratings
       Live-checked routes (/, /ratings/, /manage/login/, /search/) all 200;
       `import_csv --current data/published-ratings.csv` seeds 222 players.
 
-## Phase B — unify Player identity
+## Phase B — unify Player identity ✅
 
-- [ ] Repoint `ratings.CurrentRating`/`TournamentResult` FKs to `players.Player`; drop
-      `ratings.Player` (migration).
-- [ ] Rewrite `build_db`: match `players.Player` by name (number from `coco_id`); skip+flag
-      unmatched names (print a report, don't create). Keep the DB-golden test green.
-- [ ] Merge the player detail page: published rating history + computed current rating +
-      tournament results in one view.
+- [x] Repoint `ratings.CurrentRating`/`TournamentResult` FKs to `players.Player` (string ref;
+      computed OneToOne is `computed_rating` to avoid clashing with the published
+      `current_rating` property). Dropped `ratings.Player` (migration 0002).
+- [x] Rewrote `build_db`: matches `players.Player` by name, skips + flags unmatched (prints a
+      report, creates nothing). On the real data it skips exactly "Bye" and "Test Player"
+      (222 players / 1329 results). DB-golden test green (seeds a Player per engine player).
+- [x] Merged the player page into the players app: published rating + computed rating +
+      tournament history; ratings/tournament tables link back to it. Removed ratings'
+      player_detail view/url/template.
+- [x] Fixed static storage: manifest (hashed) backend only in prod; plain in dev/tests so
+      `{% static %}` works without collectstatic. Green: engine 5 + players 6 + ratings 10;
+      ruff + pyright clean.
 
 ## Phase C — deploy as one app
 

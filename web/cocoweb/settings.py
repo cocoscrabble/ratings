@@ -6,6 +6,7 @@ paths are environment-overridable for deployment (Dokku).
 """
 
 import os
+import sys
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -93,12 +94,18 @@ STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"]  # web/static (players app css/js/logo)
 
-# WhiteNoise serves static (admin assets) straight from the app container.
+# WhiteNoise serves static (admin + players app css/js) from the container. The
+# hashed/manifest backend needs collectstatic to have run (it does in the Docker
+# build), so use it only in production; dev and tests use plain storage so
+# {% static %} works without a manifest.
+_TESTING = "test" in sys.argv
+if DEBUG or _TESTING:
+    _staticfiles_backend = "django.contrib.staticfiles.storage.StaticFilesStorage"
+else:
+    _staticfiles_backend = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
-    },
+    "staticfiles": {"BACKEND": _staticfiles_backend},
 }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
