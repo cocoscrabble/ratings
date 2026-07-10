@@ -34,3 +34,6 @@ jobs:
         with:
           git_remote_url: "ssh://dokku@cocoscrabble.vps.webdock.cloud/cocodb"
           ssh_private_key: ${{ secrets.DOKKU_SSH_PRIVATE_KEY }}
+          # Dokku's deploy-branch is 'main' (set globally in ../vps dokku.yml);
+          # the action defaults to pushing 'master', which Dokku ignores.
+          branch: "main"
