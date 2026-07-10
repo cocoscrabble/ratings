@@ -209,10 +209,21 @@ locally. The hashed/manifest static backend is used only in prod (collectstatic
 runs in the Docker build); dev/tests use plain storage. Run `manage.py test
 players ratings` for both apps (bare `manage.py test` misses `web/` apps).
 
-**`results/`** — the historical corpus. Each tournament is a pair of files:
-`<prefix>-results.{csv,tsv}` and `<prefix>-ratings.{csv,tsv}`. The `<prefix>`
-must match the `Filename` column in `data/tournaments.csv`. Adding a tournament
-means dropping in these two files and adding a row there.
+**`results/`** — the historical corpus. Each tournament has a
+`<prefix>-results.{csv,tsv}` and an **optional** `<prefix>-ratings.{csv,tsv}`.
+The `<prefix>` must match the `Filename` column in `data/tournaments.csv`.
+Adding a tournament means dropping in the results file (plus a ratings file if
+needed) and adding a row there.
+
+The ratings file is **largely redundant**: `RatingsDB.adjust_tournament`
+overwrites every returning player's seed from the accumulated carry-forward
+ratings, so the file only supplies a starting rating for players making their
+*first* appearance in the whole history. A missing ratings file is handled
+gracefully (`pipeline.process_old_results` passes `ratings_file=None`) — it is a
+no-op for any tournament whose players have all played before, and otherwise
+just reseeds genuine first-timers from their own results. A minimal ratings file
+listing *only* the new players is therefore sufficient. See
+`tests/test_missing_ratings.py`.
 
 ## Deployment (Dokku + Ansible)
 
@@ -246,7 +257,8 @@ always has the source of truth.
 ## File formats
 
 - **Results CSV** columns: `Submitted On, Round, Winner, Winners Score, Opponent, Opponents Score` (header row is skipped).
-- **Ratings CSV** columns: `Name, Rating, Email` (rating `0` ⇒ unrated).
+- **Ratings CSV** columns: `Name, Rating, Email` (rating `0` ⇒ unrated). Optional
+  per tournament (see `results/` above); when present it only seeds first-timers.
 - `.tou` and `.RT` are legacy AUPAIR formats supported for interop; readers/writers
   live in `io.py`. Extension determines the parser, so name files correctly.
 - Player identity is by exact name string across all files — name mismatches

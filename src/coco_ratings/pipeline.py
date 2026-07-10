@@ -39,8 +39,17 @@ def process_old_results(display_progress=False, beta: float = 5):
         if display_progress:
             print(f"Reading {prefix}")
         date = datetime.strptime(date, "%Y-%m-%d")
-        res = hres[prefix]
-        rat = hrat[prefix]
+        res = hres.get(prefix)
+        if res is None:
+            # Can't rate a tournament with no results; skip it loudly.
+            print(f"!! No results file for {prefix}, skipping")
+            continue
+        # The ratings file is optional: returning players are rated from the
+        # accumulated carry-forward ratings, and first-timers are seeded from
+        # their results. A missing file only affects genuine first-timers.
+        rat = hrat.get(prefix)
+        if rat is None:
+            print(f"!! No ratings file for {prefix}, rating from accumulated ratings")
         latest = ratingsdb.process_one_tournament(rat, res, prefix, date)
     if latest is None:
         raise RuntimeError("No tournaments with result files were processed")
