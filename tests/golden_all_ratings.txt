@@ -1,210 +1,225 @@
 === COMPLETE RATINGS LIST ===
 Name	Rating	Deviation	Games
 Matthew Tunnicliffe	2119	90.72	34
+Alec Sjöholm	2093	76.92	489
 Adam Logan	2089	114.36	7
 David Eldar	2085	71.63	37
-Alec Sjöholm	2070	76.08	435
-Wellington Jighere	2061	72.62	107
-Dave Wiegand	2060	77.53	658
-Thomas Reinke	2052	73.32	45
-Austin Shin	2028	73.57	195
-Joshua Castellano	2004	81.09	319
-Eta Karo	1988	74.68	66
+Josh Sokol	2081	85.98	195
+Wellington Jighere	2040	83.26	127
+Dave Wiegand	1993	84.35	710
+Austin Shin	1988	86.13	215
 Marlon Prudencio	1981	73.13	31
-Kolton Koehler	1977	100.55	325
 Will Anderson	1975	117.27	54
-Sammy Okosagah	1970	74.71	149
+Conrad Bassett-Bouchard	1972	87.0	461
+Eta Karo	1968	86.09	86
+Joshua Castellano	1963	86.19	364
+Thomas Reinke	1961	86.03	65
 Jim Kramer	1960	96.27	14
 Stefan Rau	1960	112.85	41
-Conrad Bassett-Bouchard	1959	100.76	409
-Matthew O'Connor	1955	114.1	150
 Jason Keller	1954	90.9	147
-Enoch Nwali	1946	73.61	31
+Christopher Grubb	1952	88.87	317
 Brett Haughney	1942	150.0	12
-Ben Schoenbrun	1929	72.5	283
+Edgar Odongkara	1912	86.1	20
 David Webb	1910	73.1	31
-Geoff Thevenot	1902	74.81	124
-Christopher Grubb	1900	91.77	285
-Kevin Fraley	1896	74.7	148
+Peter Armstrong	1910	85.0	375
+Sam Rosin	1909	110.9	102
+Ben Schoenbrun	1903	73.35	323
 Nsikak Etim	1892	90.79	57
-Josh Sokol	1885	74.57	175
 Dennis Ikekeregor	1884	72.98	56
+Kevin Fraley	1884	73.39	188
 Kate Fukawa-Connelly	1882	85.64	20
 Waseem Khatri	1881	74.52	92
 Anand Bharadwaj	1878	74.5	31
 Quinn James	1878	90.76	41
-Peter Armstrong	1877	68.36	355
-Sam Rosin	1875	118.31	94
-Charles Reinke	1872	67.32	45
-Jesse Matthews	1869	117.19	66
+Enoch Nwali	1876	83.29	51
+Kolton Koehler	1861	89.66	357
 Lisa Odom	1860	99.92	15
+Brad Whitmarsh	1857	100.34	218
+Jesse Matthews	1853	95.84	80
+Rob Robinsky	1853	84.44	450
 Wale Fashina	1850	107.83	17
-Chris Williams	1849	150.0	8
-Evans Clinchy	1848	89.08	443
 Cooper Komatsu	1847	150.0	20
-Brad Whitmarsh	1846	73.17	200
+Sammy Okosagah	1843	111.01	157
 Jesse Day	1837	96.38	238
-Erickson Smith	1831	95.8	103
-Chris Lipe	1825	71.57	417
+Erickson Smith	1835	71.97	143
+Matthew O'Connor	1821	90.02	194
 Brian Bowman	1820	74.75	151
+Charles Reinke	1817	85.96	65
+Chris Lipe	1813	68.34	477
 Zachary Ansell	1813	150.0	14
+Geoff Thevenot	1811	85.94	144
 Evan Berofsky	1805	85.87	71
 Dean Saldanha	1804	76.15	55
-Rasheed Balogun	1803	74.67	286
+Joel Wapnick	1796	83.55	176
+Evans Clinchy	1789	74.12	549
 Laurie Cohen	1789	78.9	69
-John O'Laughlin	1788	93.63	163
+Chris Williams	1788	96.0	22
 Chloe Fatsis	1784	118.18	6
-David Whitley	1781	85.92	537
-Scott Jackson	1763	74.6	54
-Joel Wapnick	1759	74.66	156
+Jamie Ryan	1783	150.0	6
+John O'Laughlin	1781	76.24	203
+Tim Weiss	1781	94.73	271
+David Whitley	1762	84.79	577
+Rasheed Balogun	1759	83.41	306
+Bharath Balakrishnan	1757	77.25	313
 Jeremy Khoo	1757	90.29	34
 Chris Tallman	1755	85.11	48
 Winter	1743	73.22	231
+Niel Gan	1742	97.23	84
 Emmanuel King	1739	92.44	20
 Jim Brennan	1732	90.76	17
 Robert Linn	1723	70.22	339
-Puneet Sharma	1716	75.48	386
 Wolfram Poh	1712	90.29	68
 Mike Johnson	1708	122.26	40
+Mohammad Sulaiman	1708	85.92	186
 Moiz Ullah Baig	1706	90.79	48
 Carl Durdan	1704	92.5	30
+Scott Jackson	1702	86.07	74
 Mark Kenas	1701	74.6	81
-Rob Robinsky	1700	75.18	385
 Karl Higby	1696	114.1	60
+Jason Ubeika	1695	85.98	80
+Puneet Sharma	1694	72.6	426
 Becky Dyer	1687	80.72	442
-Matt Zeleznik	1687	108.05	12
 Dielle Pinto	1682	111.19	8
-Mohammad Sulaiman	1680	74.69	166
-Tim Weiss	1678	82.14	223
+Adebola Sanya	1680	85.97	51
+Richard Buck	1676	105.31	48
 Mpakaboari Jack	1675	75.69	60
+Travis Chaney	1674	80.8	366
 Scott Appel	1673	150.0	17
 Chris Canik	1670	106.75	25
 David Brown	1660	115.04	86
 Steve Pellinen	1660	93.52	29
 Matt Canik	1659	95.99	41
-Niel Gan	1653	94.02	60
+Eric Fox	1656	74.86	346
+Nitya Chagti	1651	99.05	225
 Femi Awowade	1650	74.12	31
-Travis Chaney	1642	74.09	314
 Michael McKenna	1641	85.13	48
 Eloy Gardea	1639	96.82	14
+Jennifer Clinchy	1636	85.93	357
 Leslie Charles	1631	74.28	31
+Zachary Dang	1631	81.67	143
 Akeem Adekunle	1630	76.65	28
+Yukiko Loritz	1625	86.05	188
 Ayotunde Adeyeri	1621	85.8	160
-Eric Fox	1619	86.93	280
 Cecilia Le	1614	86.94	74
 Bill Rexhausen	1613	79.63	28
-Jason Ubeika	1600	85.77	60
-Yukiko Loritz	1600	75.61	168
-Carson Ip	1598	95.42	94
 Cedric Lewis	1594	96.43	14
-Bharath Balakrishnan	1590	68.42	273
+Luke Yu	1593	150.0	20
 Emmanuel Egbele	1588	75.64	80
+Mehul Arora	1582	86.12	20
+Ekansh Arora	1574	86.14	20
 Kevin Schutz	1573	74.4	30
+Carson Ip	1571	81.23	162
+Martin DeMello	1569	86.09	40
+Barry Keith	1565	111.2	22
 Mark Francillon	1563	79.19	276
-Richard Buck	1562	118.27	36
 James Curley	1559	96.52	124
-Sandy Nang	1557	80.6	165
-Martin DeMello	1556	87.57	20
+Greg Harper	1556	85.31	48
+Melissa Routzahn	1556	85.98	144
 BJ Premore	1555	74.35	109
 Lisa Mueller	1546	96.23	14
-Barry Keith	1540	95.8	14
-Gunther Jacobi	1534	115.97	167
-Adebola Sanya	1530	73.85	31
+Gunther Jacobi	1539	85.59	187
 Nicholas Tam	1526	73.66	31
+Matt Zeleznik	1523	116.81	24
 George MacAulay	1507	94.31	15
 Brent Weil	1503	96.47	14
-Bye	1500	150.0	238
+Bye	1500	150.0	250
 Test Player	1500	150.0	7
 John Karris	1496	75.49	65
 Stefan Kac	1490	95.51	93
+Osikhena Ojior	1489	111.34	8
 Kyle Fellahi	1483	102.8	26
-Jennifer Clinchy	1482	89.16	317
-Chris Cheng	1480	85.04	55
+Randi Goldberg	1480	67.9	391
 Mark Milan	1476	95.62	14
-Justin Morris	1465	118.21	6
+Justin Morris	1470	107.39	18
+Anuj Shetty	1466	86.13	66
 Noel Livermore	1463	75.4	81
+Sridhar Paidikondala	1458	86.02	40
 Wajid Iqbal	1458	85.88	71
-Marty Gold	1456	95.8	50
-Bruce Ward	1454	87.31	37
 Terry Kang	1451	73.06	312
+Bruce Ward	1450	86.15	57
 Ethan Joseph	1449	74.77	91
-Gary Smart	1449	74.52	225
 Yvonne Lobo	1444	74.54	61
-Anuj Shetty	1442	86.12	46
-Ruth Hamilton	1442	60.73	511
-Greg Harper	1430	85.09	28
+Ayodele Odekunle	1442	86.0	49
+Walker Willingham	1433	85.24	89
 Roger Cullman	1430	73.59	31
+Chris Cheng	1416	85.51	75
 Rohaina Tanveer	1413	73.47	31
 Zbigniew Wieckowski	1411	62.47	65
 Dorcas Alexander	1410	73.6	31
 Priya Fernando	1410	73.66	62
-Melissa Routzahn	1407	74.54	124
 Fidelis Olotu	1405	74.58	103
-Nancy Bowen	1398	85.65	34
+Alex Chew	1402	150.0	20
+Sandy Nang	1402	86.09	185
+Gary Smart	1397	83.65	245
 Dan Blake	1395	90.76	17
-Lila Crotty	1393	85.96	60
-Walker Willingham	1380	113.69	69
-Nitya Chagti	1379	95.8	197
-Kaia	1378	73.65	151
-Ather Sharif	1374	81.06	118
-Jeremy Jeffers	1370	95.48	72
+Kaia	1367	111.15	159
+Lila Crotty	1366	86.02	80
 Mark Peltier	1362	150.0	20
+Abayomi Brown	1359	95.92	14
 Lola McKissen	1359	75.51	293
+Marty Gold	1357	109.97	58
 Emily Brodeur	1356	72.6	164
 Prashant Murti	1353	96.55	63
+Robin Levin	1353	86.14	57
+Ruth Hamilton	1353	105.15	523
 Elise Bickford	1352	74.58	50
 Chris Patrick Morgan	1347	117.63	6
 Lindsay Shin	1344	75.58	120
 Tijan Jeng	1340	150.0	8
 Vera Bigall	1339	115.53	52
-Ayodele Odekunle	1338	150.0	29
-Zachary Dang	1338	81.47	78
+Nancy Bowen	1338	85.85	54
 Daniel Milton	1337	96.36	14
 Judy Romann	1337	86.6	20
-Randi Goldberg	1333	82.2	331
-Sridhar Paidikondala	1326	87.53	20
-Jane Geary	1317	80.68	60
+Jeremy Jeffers	1324	85.91	92
+Joe Roberdeau	1324	83.37	209
 Heidi Robertson	1316	90.76	17
-Paula Catanese	1313	62.39	260
+Ather Sharif	1312	93.62	135
 Kevin Gauthier	1312	150.0	7
 Keith Valentine	1308	117.41	48
+Paula Catanese	1308	71.97	300
 Chris Sjöholm	1300	76.21	30
 Guy Ingram	1297	95.5	103
-Robin Levin	1290	89.08	37
 Ifedayo Obisesan	1287	73.68	31
 Steve Krieger	1286	73.55	31
+Betty Cornelison	1285	102.64	455
+Loreta Paelmo	1282	86.28	20
 Irfan Faroqui	1280	150.0	31
 Richard Ganguet	1271	150.0	8
-Joe Roberdeau	1263	68.47	189
 Ben Weaver	1250	96.48	61
 Peter Dolgenos	1239	87.58	20
+Jane Geary	1237	72.74	100
+Easton Singer	1236	150.0	6
+Pamina Deutsch	1234	74.02	40
+Bruce Baginski	1232	86.2	20
 Abdul Khan	1225	73.65	62
 Beth Leech	1221	150.0	20
 Rod Weis	1219	150.0	24
 Cornelia Guest	1217	87.56	19
+Mary Stevens	1214	74.03	40
 Noella Ward	1204	94.37	15
-Carolyn Atchison	1196	150.0	19
+Cheryl Melvin	1194	79.45	272
 Nancee Mancel	1189	150.0	31
 KC Frodyma	1186	84.41	66
 Tobey Roland	1182	73.57	62
-Betty Cornelison	1177	68.29	443
 Maureen Morris	1172	90.97	82
-Andrea Hatch	1164	75.55	175
+Jean-Louis Guill	1165	105.53	22
+Jeannie Wilson	1154	71.99	246
 Rachel Grubb	1148	94.42	115
-Jeannie Wilson	1143	62.37	206
 Gerianne Abriano	1137	85.95	20
 Mahboob Khan	1133	74.68	31
-Cheryl Melvin	1128	62.41	252
+Caroline Polak Scowcroft	1125	85.9	79
 Joev Dubach	1125	150.0	14
 Michael Donegan	1123	106.94	19
 Mary Pastore	1122	150.0	20
+Andrea Hatch	1117	72.57	215
 Iliana Filby	1109	93.71	31
-Caroline Polak Scowcroft	1096	64.14	59
 Betsey Wood	1092	86.03	20
 Julia Swaney	1086	72.85	56
 Tara Hurley	1067	94.25	29
 Harmony Kuller	1062	74.56	31
 Kaleb Lybecker	1030	150.0	6
+Buffy Hogan	1024	86.33	20
+Carolyn Atchison	994	85.94	39
 Courtney Paley	948	150.0	14
 Robin Cole	929	150.0	8
 Barbara Van Alen	928	150.0	28
@@ -213,23 +228,27 @@ Tony Boyle	909	115.04	52
 Chris Wiegand	880	150.0	7
 Norman Lemoine	878	150.0	7
 Anne Hopkins	875	150.0	6
-Jean-Louis Guill	788	150.0	6
 Emily Cookson	785	150.0	7
 Cam Lawrence	748	150.0	15
 Henry Gould	742	150.0	15
 Jeffrey Muwarure	734	143.02	1
 Theresa Lean	731	150.0	7
+Shannon Constantine	698	150.0	6
 Isaac Lipnick	669	150.0	14
+Joe Thorngren	611	150.0	20
 Solomon Smilack	603	150.0	7
+Jemmy Pierre-Louis	595	150.0	20
 Olanma Cheche	511	150.0	15
 Mia Yamamoto	360	131.03	9
 Amy Kasprzycki	300	150.0	6
 
 === PER-TOURNAMENT REPORT ===
 Player	Tournament	CocoId	OldRating	NewRating	OldDeviation	NewDeviation	Games
+Abayomi Brown	vancouver-may2026	9999	1519	1359	150.0	95.92	14
 Abdul Khan	wordcup-2024-d2	0078	1242	1225	150.0	73.65	62
 Abdul Khan	wordcup-d2-2022	0078	1287	1242	150.0	73.68	31
 Adam Logan	wordcup-d1-2022	0098	2141	2089	150.0	114.36	7
+Adebola Sanya	nola-lite-2026	0071	1530	1680	150.0	85.97	51
 Adebola Sanya	wordcup-2024-d2	0071	1570	1530	150.0	73.85	31
 Adelaide Drennen	rome-may2025	0080	920	920	150.0	150.0	8
 Akeem Adekunle	wordcup-2025-d1	0203	1616	1630	150.0	76.65	28
@@ -239,6 +258,7 @@ Alec Sjöholm	bend-jun2025	0117	2072	2065	99.75	85.23	357
 Alec Sjöholm	hood-river-2023	0117	2005	2073	119.18	78.47	100
 Alec Sjöholm	hood-river-2024	0117	1982	1895	120.39	78.66	190
 Alec Sjöholm	hood-river-2025	0117	1934	1971	111.37	76.0	311
+Alec Sjöholm	hood-river-2026	0117	2070	2050	130.72	81.46	455
 Alec Sjöholm	loco-2022	0117	2020	2100	143.53	83.92	49
 Alec Sjöholm	moco-2023	0117	2073	2050	126.32	80.43	120
 Alec Sjöholm	nacc2023-afterword	0117	1960	1982	76.36	70.66	170
@@ -257,6 +277,7 @@ Alec Sjöholm	portland-pub-apr142024	0117	1988	2017	94.64	84.57	202
 Alec Sjöholm	portlandpub-jun2024	0117	2052	2062	88.06	79.79	228
 Alec Sjöholm	portlandpub-oct2024	0117	1986	1924	91.9	83.85	262
 Alec Sjöholm	seattle-2021	0117	2040	2040	150.0	150.0	14
+Alec Sjöholm	seattle-jul2026	0117	2115	2093	112.9	76.92	489
 Alec Sjöholm	seattle-may2024	0117	2017	2052	106.08	75.2	222
 Alec Sjöholm	seattle-may2025	0117	1976	2072	95.13	70.36	349
 Alec Sjöholm	seattle-oct252025	0117	2067	2083	95.53	83.88	428
@@ -266,8 +287,10 @@ Alec Sjöholm	seattle-oct272024	0117	1928	1931	84.49	76.01	276
 Alec Sjöholm	seattle-sept2023	0117	1978	2013	111.94	96.69	140
 Alec Sjöholm	vancouver-aug2023	0117	2050	2005	116.49	95.45	128
 Alec Sjöholm	vancouver-dec2024	0117	1931	1934	102.85	78.12	291
+Alec Sjöholm	vancouver-may2026	0117	2050	2115	125.04	88.58	469
 Alec Sjöholm	wordcup-2025-d1	0117	2091	2059	87.7	60.97	393
 Alec Sjöholm	wordcup-2025-eb	0117	2065	2091	95.73	87.13	362
+Alex Chew	seattle-jul2026	9999	1402	1402	150.0	150.0	20
 Amy Kasprzycki	providence-apr2025	0140	300	300	150.0	150.0	6
 Anand Bharadwaj	wordcup-2024-d1	0130	1883	1878	150.0	74.5	31
 Andrea Hatch	nacc2023-afterword	0199	1097	1101	83.44	76.23	50
@@ -275,18 +298,23 @@ Andrea Hatch	nacc2023-d2	0199	1097	1097	150.0	81.01	44
 Andrea Hatch	nola-d2-2023	0199	878	1097	150.0	86.21	20
 Andrea Hatch	nola-lite-2024	0199	1149	1103	92.92	69.62	87
 Andrea Hatch	nola-lite-2025	0199	1063	1179	105.63	74.48	147
+Andrea Hatch	nola-lite-2026	0199	1211	1117	100.53	72.57	215
 Andrea Hatch	palmsprings-dec2023	0199	1101	1149	90.61	70.95	67
 Andrea Hatch	pdxwords-2024	0199	1103	1092	150.0	84.83	107
 Andrea Hatch	pdxwords-2025	0199	1282	1164	110.93	75.55	175
 Andrea Hatch	pdxwords-eb-2025	0199	1179	1282	150.0	110.48	155
 Andrea Hatch	sanfrancisco-dec2024	0199	1092	1063	129.99	82.81	127
+Andrea Hatch	sanfrancisco-dec2025	0199	1164	1211	127.7	81.28	195
 Anne Hopkins	portland-pub-jan2024	0190	875	875	150.0	150.0	6
 Anuj Shetty	austin-aug2023	0138	1367	1396	150.0	118.04	6
 Anuj Shetty	hood-river-2024	0138	1396	1400	150.0	85.41	26
 Anuj Shetty	sanfrancisco-dec2024	0138	1400	1442	150.0	86.12	46
+Anuj Shetty	sanfrancisco-dec2025	0138	1442	1466	150.0	86.13	66
 Ather Sharif	charlottesville-2025	0193	1369	1374	106.65	81.06	118
 Ather Sharif	nola-lite-2025	0193	1135	1206	105.79	74.59	67
+Ather Sharif	nova-feb2026	0193	1374	1332	138.46	105.88	126
 Ather Sharif	nova-jun2025	0193	1206	1190	145.13	115.94	73
+Ather Sharif	nova-mar2026	0193	1332	1312	118.37	93.62	135
 Ather Sharif	pdxwords-2024	0193	1038	1038	150.0	150.0	20
 Ather Sharif	sanfrancisco-dec2024	0193	1223	1135	130.68	83.01	47
 Ather Sharif	seattle-oct262024	0193	1038	1223	150.0	113.92	27
@@ -296,10 +324,12 @@ Austin Shin	nacc2023-d1p	0132	1929	1923	70.5	66.64	93
 Austin Shin	nola-d1-2023	0132	1925	1913	150.0	85.84	51
 Austin Shin	nola-open-2024	0132	1923	2003	104.12	73.72	113
 Austin Shin	nola-open-2025	0132	1867	1917	150.0	85.68	164
+Austin Shin	nola-open-2026	0132	2028	1988	149.71	86.13	215
 Austin Shin	texasstate-2023	0132	1913	2036	150.0	98.32	64
 Austin Shin	wordcup-2024-d1	0132	2003	1867	150.0	74.35	144
 Austin Shin	wordcup-2025-d1	0132	1917	2028	150.0	73.57	195
 Austin Shin	wordcup-d1-2022	0132	2030	1925	150.0	73.18	31
+Ayodele Odekunle	nola-lite-2026	0189	1338	1442	150.0	86.0	49
 Ayodele Odekunle	wordcup-2025-d2	0189	1338	1338	150.0	150.0	29
 Ayotunde Adeyeri	columbia-2023	0075	1413	1601	150.0	111.7	79
 Ayotunde Adeyeri	nacc2023-d2	0075	1601	1554	136.66	78.67	103
@@ -317,6 +347,7 @@ BJ Premore	wordcup-2024-d1	0191	1498	1555	150.0	74.35	109
 BJ Premore	wordcup-d2-2022	0191	1487	1521	130.45	71.01	45
 Barbara Van Alen	wordcup-2025-d2	0141	928	928	150.0	150.0	28
 Barry Keith	charlottesville-2025	0228	1501	1540	150.0	95.8	14
+Barry Keith	nova-apr2026	0228	1540	1565	150.0	111.2	22
 Becky Dyer	3m-2022	0012	1839	1712	109.71	82.71	74
 Becky Dyer	austin-atx2024	0012	1679	1724	117.24	85.36	290
 Becky Dyer	austin-atx2025	0012	1624	1653	139.21	93.47	398
@@ -354,8 +385,10 @@ Ben Schoenbrun	hoodriver-2022	0024	1902	1920	138.39	83.57	34
 Ben Schoenbrun	lewes-2024	0024	1933	1994	123.81	82.34	216
 Ben Schoenbrun	nola-open-2024	0024	1933	1852	134.43	82.48	163
 Ben Schoenbrun	nola-open-2025	0024	1994	1954	144.15	84.43	236
+Ben Schoenbrun	nola-open-2026	0024	1955	1903	102.51	73.35	323
 Ben Schoenbrun	potomac-may2024	0024	1916	1933	101.04	74.35	198
 Ben Schoenbrun	potomac-oct2023	0024	2016	1933	150.0	98.34	143
+Ben Schoenbrun	sanfrancisco-dec2025	0024	1929	1955	136.59	83.12	303
 Ben Schoenbrun	silver-spring-2023	0024	2054	1980	146.26	95.37	112
 Ben Schoenbrun	slingerlands-2022	0024	1980	2054	105.3	77.41	98
 Ben Schoenbrun	slingerlands-2023	0024	1980	2016	102.45	75.97	129
@@ -386,6 +419,8 @@ Betty Cornelison	portland-aug2023	0018	1143	1215	119.59	101.19	198
 Betty Cornelison	portland-nov2023	0018	1215	1223	136.53	111.34	204
 Betty Cornelison	portland-pub-12apr2025	0018	1148	1120	108.63	94.47	387
 Betty Cornelison	portland-pub-13apr2025	0018	1120	1131	95.0	86.26	393
+Betty Cornelison	portland-pub-18apr2026	0018	1177	1272	150.0	117.78	449
+Betty Cornelison	portland-pub-19apr2026	0018	1272	1285	118.2	102.64	455
 Betty Cornelison	portland-pub-apr142024	0018	1108	1211	117.88	99.85	252
 Betty Cornelison	portland-pub-jan2024	0018	1158	1147	108.13	94.11	240
 Betty Cornelison	portland-pub-mar2024	0018	1147	1108	114.27	97.96	246
@@ -405,11 +440,13 @@ Betty Cornelison	wordcup-2025-d2	0018	1137	1177	112.2	68.29	443
 Betty Cornelison	wordcup-d2-2022	0018	1264	1315	101.49	64.94	118
 Bharath Balakrishnan	hood-river-2024	0133	1528	1557	96.8	70.9	124
 Bharath Balakrishnan	hood-river-2025	0133	1558	1524	114.82	77.04	222
+Bharath Balakrishnan	hood-river-2026	0133	1766	1757	115.1	77.25	313
 Bharath Balakrishnan	moco-2023	0133	1433	1564	143.93	84.43	54
 Bharath Balakrishnan	nacc2023-d2	0133	1594	1517	129.86	78.44	84
 Bharath Balakrishnan	nola-d1-2023	0133	1567	1433	150.0	86.11	34
 Bharath Balakrishnan	nola-lite-2024	0133	1517	1528	112.04	76.62	104
 Bharath Balakrishnan	sanfrancisco-dec2024	0133	1440	1558	116.11	78.0	202
+Bharath Balakrishnan	sanfrancisco-dec2025	0133	1590	1766	134.47	82.75	293
 Bharath Balakrishnan	seattle-2022	0133	1265	1567	150.0	95.53	14
 Bharath Balakrishnan	seattle-may2024	0133	1557	1686	121.77	80.28	144
 Bharath Balakrishnan	seattle-may2025	0133	1524	1554	125.44	80.07	242
@@ -424,11 +461,14 @@ Brad Whitmarsh	nacc2023-d1	0142	1782	1855	150.0	80.5	78
 Brad Whitmarsh	nola-d1-2023	0142	1560	1676	120.57	79.3	37
 Brad Whitmarsh	nola-open-2024	0142	1855	1739	113.49	77.02	98
 Brad Whitmarsh	nola-open-2025	0142	1851	1829	108.12	75.15	155
+Brad Whitmarsh	providence-mar2026	0142	1832	1872	126.74	105.36	212
 Brad Whitmarsh	sanfrancisco-dec2024	0142	1752	1851	150.0	85.97	135
 Brad Whitmarsh	slingerlands-2022	0142	1743	1560	150.0	90.76	17
 Brad Whitmarsh	slingerlands-2023	0142	1676	1782	129.57	85.23	54
 Brad Whitmarsh	slingerlands-series1-2025	0142	1852	1843	91.47	79.76	193
 Brad Whitmarsh	slingerlands-series2-2025	0142	1843	1846	80.38	73.17	200
+Brad Whitmarsh	somerville-apr2026	0142	1872	1857	117.9	100.34	218
+Brad Whitmarsh	somerville-feb2026	0142	1846	1832	150.0	118.17	206
 Brad Whitmarsh	wordcup-2025-d1	0142	1829	1852	150.0	74.61	185
 Brent Weil	charlottesville-2021	0214	1543	1503	150.0	96.47	14
 Brett Haughney	rome-may2025	0194	1942	1942	150.0	150.0	12
@@ -440,8 +480,11 @@ Brian Bowman	stl-2022	0034	1825	1855	99.15	78.56	42
 Brian Bowman	stlouis-jun2023	0034	1926	1901	111.14	82.62	104
 Brian Bowman	wordcup-2025-d1	0034	1926	1820	150.0	74.75	151
 Brian Bowman	wordcup-d1-2022	0034	1855	1926	87.02	60.39	73
+Bruce Baginski	sanfrancisco-dec2025	9999	1287	1232	150.0	86.2	20
 Bruce Ward	palmsprings-dec2023	0043	1531	1548	150.0	90.33	17
 Bruce Ward	sanfrancisco-dec2024	0043	1548	1454	150.0	87.31	37
+Bruce Ward	sanfrancisco-dec2025	0043	1454	1450	150.0	86.15	57
+Buffy Hogan	sanfrancisco-dec2025	9999	1175	1024	150.0	86.33	20
 Bye	austin-atx2024	0000	1500	1500	150.0	150.0	148
 Bye	austin-sep2023	0000	1500	1500	150.0	150.0	104
 Bye	bend-2022	0000	1500	1500	150.0	150.0	83
@@ -450,6 +493,8 @@ Bye	mn-2022	0000	1500	1500	150.0	150.0	55
 Bye	nacc2023-d2	0000	1500	1500	150.0	150.0	142
 Bye	nola-lite-2024	0000	1500	1500	150.0	150.0	143
 Bye	portland-pub-13apr2025	0000	1500	1500	150.0	150.0	238
+Bye	portland-pub-18apr2026	0000	1500	1500	150.0	150.0	244
+Bye	portland-pub-19apr2026	0000	1500	1500	150.0	150.0	250
 Bye	portland-pub-apr132024	0000	1500	1500	150.0	150.0	149
 Bye	portland-pub-apr142024	0000	1500	1500	150.0	150.0	150
 Bye	portlandpub-jun2024	0000	1500	1500	150.0	150.0	177
@@ -471,11 +516,17 @@ Carl Durdan	boston-2022	0163	1732	1608	150.0	96.52	14
 Carl Durdan	brattleboro-2022	0163	1608	1704	150.0	92.5	30
 Caroline Polak Scowcroft	pdxwords-2024	0069	1082	1096	81.91	64.14	59
 Caroline Polak Scowcroft	pdxwords-eb-2024	0069	1078	1082	93.8	81.3	39
+Caroline Polak Scowcroft	sanfrancisco-dec2025	0069	1096	1125	150.0	85.9	79
 Caroline Polak Scowcroft	wordcup-2024-d2	0069	1199	1078	150.0	73.48	31
 Carolyn Atchison	nola-lite-2025	0109	1196	1196	150.0	150.0	19
+Carolyn Atchison	nola-lite-2026	0109	1196	994	150.0	85.94	39
+Carson Ip	hood-river-2026	0096	1462	1580	112.11	76.32	134
 Carson Ip	nola-lite-2025	0096	1465	1590	100.11	72.47	60
+Carson Ip	nova-apr2026	0096	1580	1609	105.95	89.21	142
 Carson Ip	portlandpub-oct2024	0096	1374	1468	150.0	117.06	6
 Carson Ip	sanfrancisco-dec2024	0096	1513	1465	108.82	75.65	40
+Carson Ip	sanfrancisco-dec2025	0096	1598	1462	118.34	78.54	114
+Carson Ip	seattle-jul2026	0096	1609	1571	128.29	81.23	162
 Carson Ip	seattle-may2025	0096	1590	1616	133.61	82.0	80
 Carson Ip	seattle-oct252025	0096	1616	1708	148.74	113.47	87
 Carson Ip	seattle-oct262024	0096	1468	1477	125.71	102.29	13
@@ -487,6 +538,7 @@ Cecilia Le	seattle-2022	0040	1734	1738	150.0	95.53	14
 Cecilia Le	seattle-may2024	0040	1705	1614	150.0	86.94	74
 Cedric Lewis	boston-2022	0149	1643	1594	150.0	96.43	14
 Charles Reinke	madison-2022	0157	1867	2046	150.0	95.88	14
+Charles Reinke	nola-open-2026	0157	1872	1817	150.0	85.96	65
 Charles Reinke	wordcup-d1-2022	0157	2046	1872	112.66	67.32	45
 Cheryl Melvin	nola-d2-2023	0112	1093	1109	150.0	86.3	51
 Cheryl Melvin	nola-lite-2024	0112	1109	1066	150.0	85.88	71
@@ -496,6 +548,7 @@ Cheryl Melvin	pdxwords-2025	0112	1055	1128	78.21	62.41	252
 Cheryl Melvin	pdxwords-eb-2024	0112	1116	1142	90.68	79.33	115
 Cheryl Melvin	pdxwords-eb-2025	0112	1126	1055	88.15	77.57	232
 Cheryl Melvin	sanfrancisco-dec2024	0112	1172	1111	117.0	79.04	155
+Cheryl Melvin	sanfrancisco-dec2025	0112	1128	1194	120.4	79.45	272
 Cheryl Melvin	vancouver-dec2024	0112	1111	1143	83.95	69.02	170
 Cheryl Melvin	wordcup-2024-d2	0112	985	1116	122.27	69.45	107
 Cheryl Melvin	wordcup-2024-eb	0112	1066	985	150.0	121.86	76
@@ -507,6 +560,7 @@ Chris Canik	austin-aug2023	0081	1924	1756	142.1	114.05	18
 Chris Canik	austin-jun-2023	0081	1758	1924	150.0	117.87	12
 Chris Canik	austin-may-2023	0081	1758	1758	150.0	150.0	6
 Chris Canik	austin-sep2023	0081	1756	1670	128.48	106.75	25
+Chris Cheng	hood-river-2026	0159	1480	1416	150.0	85.51	75
 Chris Cheng	nola-open-2025	0159	1602	1529	150.0	85.82	35
 Chris Cheng	pdxwords-2025	0159	1529	1480	150.0	85.04	55
 Chris Cheng	vancouver-dec2024	0159	1602	1602	150.0	150.0	15
@@ -520,13 +574,16 @@ Chris Lipe	charlottesville-2021	0013	2022	1932	150.0	96.23	14
 Chris Lipe	hood-river-2023	0013	1874	1913	97.87	71.43	164
 Chris Lipe	hood-river-2024	0013	1959	1907	95.59	70.39	279
 Chris Lipe	hood-river-2025	0013	1899	1845	91.82	68.82	370
+Chris Lipe	hood-river-2026	0013	1816	1813	90.46	68.34	477
 Chris Lipe	hoodriver-2022	0013	1932	1954	138.06	83.49	34
 Chris Lipe	nacc2023-afterword	0013	1850	1881	82.26	75.26	239
 Chris Lipe	nacc2023-d1	0013	1873	1850	145.3	79.79	233
 Chris Lipe	nola-d1-2023	0013	1889	1874	116.38	77.97	144
 Chris Lipe	nola-open-2024	0013	1881	1959	108.0	75.08	259
 Chris Lipe	nola-open-2025	0013	1799	1899	108.04	75.04	350
+Chris Lipe	nola-open-2026	0013	1830	1816	102.63	73.37	457
 Chris Lipe	sanfrancisco-dec2024	0013	1872	1799	150.0	85.87	330
+Chris Lipe	sanfrancisco-dec2025	0013	1825	1830	136.1	83.27	437
 Chris Lipe	slingerlands-2022	0013	1832	1889	127.79	85.11	124
 Chris Lipe	slingerlands-2023	0013	1967	1901	92.87	71.82	195
 Chris Lipe	stl-2022	0013	1831	1780	100.68	80.5	76
@@ -542,15 +599,19 @@ Chris Tallman	seattle-jul2023	0022	1754	1774	148.44	100.04	34
 Chris Tallman	vancouver-aug2023	0022	1774	1795	110.49	91.97	42
 Chris Wiegand	seattle-oct252025	0229	880	880	150.0	150.0	7
 Chris Williams	vancouver-aug2023	0210	1849	1849	150.0	150.0	8
+Chris Williams	vancouver-may2026	0210	1849	1788	150.0	96.0	22
 Christopher Grubb	bend-jun2025	0023	1822	1806	106.89	89.43	271
 Christopher Grubb	brattleboro-2022	0023	1906	1795	150.0	92.51	64
 Christopher Grubb	hood-river-2023	0023	1795	1759	150.0	85.57	84
 Christopher Grubb	hood-river-2024	0023	1859	1724	121.05	78.86	174
 Christopher Grubb	hood-river-2025	0023	1953	1940	115.64	77.29	243
+Christopher Grubb	hood-river-2026	0023	1900	1942	140.43	83.7	305
 Christopher Grubb	loco-2021	0023	1848	1892	150.0	86.6	20
 Christopher Grubb	moco-2023	0023	1759	1826	130.85	81.56	104
 Christopher Grubb	nacc2023-afterword	0023	1858	1859	77.71	71.79	154
 Christopher Grubb	nacc2023-d1	0023	1784	1858	121.17	75.09	148
+Christopher Grubb	portland-pub-18apr2026	0023	1942	1983	114.48	100.31	311
+Christopher Grubb	portland-pub-19apr2026	0023	1983	1952	100.81	88.87	317
 Christopher Grubb	sandiego-2022	0023	1869	1906	131.51	90.22	48
 Christopher Grubb	seattle-2021	0023	1892	1869	131.53	90.53	34
 Christopher Grubb	seattle-jul2023	0023	1826	1769	107.48	84.32	118
@@ -568,6 +629,7 @@ Conrad Bassett-Bouchard	bend-jun2025	0003	1946	1959	127.98	100.76	409
 Conrad Bassett-Bouchard	hood-river-2023	0003	1987	1965	88.48	67.48	218
 Conrad Bassett-Bouchard	hood-river-2024	0003	1902	1921	124.74	79.83	293
 Conrad Bassett-Bouchard	hood-river-2025	0003	1875	1880	125.07	79.91	389
+Conrad Bassett-Bouchard	hood-river-2026	0003	1871	1913	117.46	78.01	449
 Conrad Bassett-Bouchard	hoodriver-2022	0003	2043	2042	150.0	85.97	40
 Conrad Bassett-Bouchard	la-2022	0003	2032	1990	95.07	75.59	178
 Conrad Bassett-Bouchard	loco-2021	0003	2062	2043	150.0	86.6	20
@@ -580,6 +642,8 @@ Conrad Bassett-Bouchard	portland-aug2023	0003	1973	1898	112.27	96.83	261
 Conrad Bassett-Bouchard	portland-nov2023	0003	1898	1871	133.33	109.59	267
 Conrad Bassett-Bouchard	portland-pub-12apr2025	0003	1880	1924	109.48	95.0	395
 Conrad Bassett-Bouchard	portland-pub-13apr2025	0003	1924	1946	95.52	85.31	401
+Conrad Bassett-Bouchard	portland-pub-18apr2026	0003	1913	1921	110.39	97.63	455
+Conrad Bassett-Bouchard	portland-pub-19apr2026	0003	1921	1972	98.14	87.0	461
 Conrad Bassett-Bouchard	portland-pub-apr132024	0003	1921	1885	109.42	94.69	299
 Conrad Bassett-Bouchard	portland-pub-apr142024	0003	1885	1890	95.22	85.0	305
 Conrad Bassett-Bouchard	portland-pub-jan2024	0003	1871	1902	140.39	112.96	273
@@ -589,6 +653,7 @@ Conrad Bassett-Bouchard	portlandpub-may2024	0003	1890	1899	96.05	85.51	312
 Conrad Bassett-Bouchard	portlandpub-nov2024	0003	1884	1903	102.21	89.67	363
 Conrad Bassett-Bouchard	portlandpub-oct2024	0003	1926	1884	97.93	86.87	357
 Conrad Bassett-Bouchard	sandiego-2022	0003	2042	2031	97.42	76.6	54
+Conrad Bassett-Bouchard	sanfrancisco-dec2025	0003	1959	1871	150.0	86.0	429
 Conrad Bassett-Bouchard	seattle-2022	0003	1969	2036	78.7	66.54	113
 Conrad Bassett-Bouchard	seattle-may2024	0003	1899	1895	97.02	78.65	325
 Conrad Bassett-Bouchard	slingerlands-2023	0003	1965	1997	107.49	77.96	235
@@ -607,6 +672,7 @@ Dave Wiegand	glenhaven-2024	0010	1973	2016	66.69	55.23	469
 Dave Wiegand	hood-river-2023	0010	2108	2089	94.27	69.96	231
 Dave Wiegand	hood-river-2024	0010	2125	2132	94.99	70.14	345
 Dave Wiegand	hood-river-2025	0010	2045	2021	93.78	69.65	547
+Dave Wiegand	hood-river-2026	0010	2061	1996	95.21	70.33	698
 Dave Wiegand	hoodriver-2022	0010	2118	2093	118.32	78.52	66
 Dave Wiegand	loco-2021	0010	1973	2086	150.0	86.6	20
 Dave Wiegand	loco-2022	0010	2209	2155	100.99	72.4	160
@@ -616,6 +682,7 @@ Dave Wiegand	nacc2023-d1p	0010	2121	2126	72.7	69.27	305
 Dave Wiegand	nola-d1-2023	0010	2099	2108	102.46	73.39	211
 Dave Wiegand	nola-open-2024	0010	2126	2125	105.82	74.32	325
 Dave Wiegand	nola-open-2025	0010	2056	2045	115.48	77.42	527
+Dave Wiegand	nola-open-2026	0010	2060	2061	120.46	79.15	678
 Dave Wiegand	osc-2022	0010	2152	2180	92.37	73.17	109
 Dave Wiegand	pabst-2021	0010	2086	2164	108.16	84.34	32
 Dave Wiegand	pabst-2022	0010	2155	2106	93.5	74.64	174
@@ -625,6 +692,8 @@ Dave Wiegand	portland-aug2023	0010	2111	2080	115.14	98.34	271
 Dave Wiegand	portland-nov2023	0010	2080	2092	134.43	109.98	277
 Dave Wiegand	portland-pub-12apr2025	0010	2021	1993	102.23	90.08	553
 Dave Wiegand	portland-pub-13apr2025	0010	1993	1999	90.63	81.67	559
+Dave Wiegand	portland-pub-18apr2026	0010	1996	2018	105.1	93.84	704
+Dave Wiegand	portland-pub-19apr2026	0010	2018	1993	94.37	84.35	710
 Dave Wiegand	portland-pub-apr132024	0010	2100	2092	80.62	74.16	371
 Dave Wiegand	portland-pub-apr142024	0010	2092	2094	74.83	69.54	377
 Dave Wiegand	portland-pub-mar2024	0010	2132	2122	79.5	73.23	351
@@ -660,6 +729,7 @@ David Whitley	glenhaven-2024	0009	1702	1690	68.75	56.38	453
 David Whitley	hood-river-2023	0009	1865	1818	102.99	73.29	253
 David Whitley	hood-river-2024	0009	1658	1708	109.28	75.31	361
 David Whitley	hood-river-2025	0009	1712	1718	116.53	77.55	493
+David Whitley	hood-river-2026	0009	1781	1828	136.68	82.9	557
 David Whitley	hoodriver-2022	0009	1954	1900	118.37	78.55	66
 David Whitley	la-2022	0009	1945	1865	94.99	75.55	233
 David Whitley	loco-2021	0009	1762	1873	150.0	86.6	20
@@ -674,6 +744,7 @@ David Whitley	sandiego-2022	0009	1900	1872	90.94	73.41	80
 David Whitley	sanfrancisco-dec2024	0009	1690	1712	125.61	80.5	473
 David Whitley	seattle-2021	0009	1936	1954	112.75	83.73	46
 David Whitley	seattle-2022	0009	1898	1894	71.83	62.23	168
+David Whitley	seattle-jul2026	0009	1828	1762	144.13	84.79	577
 David Whitley	seattle-may2024	0009	1619	1657	105.99	75.2	395
 David Whitley	seattle-oct252025	0009	1820	1768	118.15	98.23	530
 David Whitley	seattle-oct262025	0009	1768	1781	98.74	85.92	537
@@ -691,6 +762,9 @@ Dennis Ikekeregor	columbia-2024	0180	1847	1860	150.0	107.91	9
 Dennis Ikekeregor	wordcup-2025-d1	0180	1939	1884	137.0	72.98	56
 Dielle Pinto	vancouver-aug2023	0092	1700	1682	150.0	111.19	8
 Dorcas Alexander	wordcup-d2-2022	0076	1351	1410	150.0	73.6	31
+Easton Singer	somerville-apr2026	9999	1236	1236	150.0	150.0	6
+Edgar Odongkara	sanfrancisco-dec2025	9999	1927	1912	150.0	86.1	20
+Ekansh Arora	nola-open-2026	9999	1681	1574	150.0	86.14	20
 Elise Bickford	nola-lite-2025	0124	1516	1303	150.0	85.98	20
 Elise Bickford	wordcup-2025-d2	0124	1303	1352	150.0	74.58	50
 Eloy Gardea	charlottesville-2021	0085	1809	1639	150.0	96.82	14
@@ -708,15 +782,20 @@ Emmanuel Egbele	wordcup-2024-d2	0106	1444	1545	150.0	73.75	31
 Emmanuel Egbele	wordcup-2025-d1	0106	1616	1588	150.0	75.64	80
 Emmanuel King	austin-sep2023	0200	1547	1610	150.0	114.53	7
 Emmanuel King	texasstate-2023	0200	1610	1739	131.59	92.44	20
+Enoch Nwali	sanfrancisco-dec2025	0093	1946	1876	137.18	83.29	51
 Enoch Nwali	wordcup-2025-d1	0093	1978	1946	150.0	73.61	31
 Eric Fox	bellingham-may2025	0099	1472	1423	113.99	97.6	202
 Eric Fox	hood-river-2024	0099	1226	1267	123.74	79.61	56
 Eric Fox	hood-river-2025	0099	1489	1472	89.35	67.78	196
+Eric Fox	hood-river-2026	0099	1619	1659	137.32	83.06	300
 Eric Fox	nacc2023-afterword	0099	1229	1226	83.44	76.24	36
 Eric Fox	nacc2023-d2	0099	1438	1229	150.0	81.01	30
 Eric Fox	nola-lite-2025	0099	1427	1489	98.95	71.99	176
 Eric Fox	pdxwords-2024	0099	1354	1340	90.08	67.78	127
 Eric Fox	pdxwords-2025	0099	1545	1572	85.72	65.94	273
+Eric Fox	portland-pub-18apr2026	0099	1659	1668	114.01	100.01	306
+Eric Fox	portland-pub-19apr2026	0099	1668	1656	100.51	90.39	312
+Eric Fox	seattle-jul2026	0099	1647	1656	106.7	74.86	346
 Eric Fox	seattle-may2024	0099	1267	1188	127.03	81.83	76
 Eric Fox	seattle-may2025	0099	1423	1517	104.53	73.81	222
 Eric Fox	seattle-oct262024	0099	1340	1339	100.97	87.67	134
@@ -724,14 +803,18 @@ Eric Fox	seattle-oct262025	0099	1572	1619	100.24	86.93	280
 Eric Fox	seattle-oct272024	0099	1339	1316	88.24	78.7	141
 Eric Fox	seattle-sept2023	0099	1438	1438	150.0	150.0	6
 Eric Fox	vancouver-dec2024	0099	1316	1427	104.85	79.32	156
+Eric Fox	vancouver-may2026	0099	1656	1647	104.74	80.53	326
 Eric Fox	wordcup-2024-d2	0099	1188	1354	114.0	67.93	107
 Eric Fox	wordcup-2025-d2	0099	1517	1545	111.57	67.44	253
 Erickson Smith	charlottesville-2025	0165	1707	1831	150.0	95.8	103
+Erickson Smith	hood-river-2026	0165	1811	1835	99.45	71.97	143
 Erickson Smith	lewes-2024	0165	1788	1707	150.0	88.74	89
 Erickson Smith	nola-d1-2023	0165	1736	1774	150.0	86.06	20
 Erickson Smith	nola-open-2024	0165	1657	1788	135.99	83.04	71
+Erickson Smith	nola-open-2026	0165	1831	1811	140.99	84.2	123
 Erickson Smith	potomac-oct2023	0165	1756	1657	150.0	100.47	51
 Erickson Smith	slingerlands-2023	0165	1774	1756	133.81	86.39	37
+Eta Karo	nola-open-2026	0153	1988	1968	150.0	86.09	86
 Eta Karo	wordcup-2024-d1	0153	1963	2089	122.59	71.96	36
 Eta Karo	wordcup-2024-eb	0153	1939	1963	150.0	122.18	5
 Eta Karo	wordcup-2025-d1	0153	2089	1988	150.0	74.68	66
@@ -749,22 +832,28 @@ Evans Clinchy	austin-atx2025	0001	1850	1857	110.11	83.08	422
 Evans Clinchy	bellingham-may2025	0001	1921	1850	112.32	96.56	408
 Evans Clinchy	charlottesville-2021	0001	1806	1885	99.57	78.3	46
 Evans Clinchy	charlottesville-2025	0001	1857	1875	137.12	92.26	436
+Evans Clinchy	hood-river-2026	0001	1908	1827	88.99	67.7	503
 Evans Clinchy	hoodriver-2022	0001	1870	1923	112.61	76.79	80
 Evans Clinchy	loco-2021	0001	1928	1877	150.0	86.6	20
 Evans Clinchy	loco-2022	0001	1794	1797	99.74	71.85	171
 Evans Clinchy	nola-open-2024	0001	1898	1923	138.7	83.46	270
 Evans Clinchy	nola-open-2025	0001	1922	1922	100.37	72.42	396
+Evans Clinchy	nola-open-2026	0001	1916	1908	97.85	71.55	483
 Evans Clinchy	osc-2022	0001	1949	1875	92.13	73.05	123
 Evans Clinchy	pabst-2021	0001	1877	1806	108.16	84.34	32
 Evans Clinchy	pabst-2022	0001	1797	1881	93.07	74.36	185
 Evans Clinchy	portland-aug2023	0001	1852	1902	89.5	80.96	244
 Evans Clinchy	portland-pub-13apr2025	0001	1922	1921	117.24	99.58	402
+Evans Clinchy	portland-pub-18apr2026	0001	1827	1765	103.36	90.8	509
+Evans Clinchy	portland-pub-19apr2026	0001	1765	1800	91.35	83.54	515
 Evans Clinchy	portland-pub-apr132024	0001	1872	1849	92.0	82.72	290
 Evans Clinchy	portland-pub-apr142024	0001	1849	1850	83.32	76.18	296
 Evans Clinchy	sandiego-2022	0001	1923	1901	89.42	72.54	94
+Evans Clinchy	sanfrancisco-dec2025	0001	1848	1916	113.73	77.29	463
 Evans Clinchy	seattle-2021	0001	1885	1870	94.5	75.37	60
 Evans Clinchy	seattle-2022	0001	1890	1794	95.6	75.81	151
 Evans Clinchy	seattle-jul2023	0001	1806	1803	117.88	89.03	230
+Evans Clinchy	seattle-jul2026	0001	1842	1789	104.63	74.12	549
 Evans Clinchy	seattle-may2024	0001	1850	1823	99.52	72.68	316
 Evans Clinchy	seattle-oct252025	0001	1875	1848	103.01	89.08	443
 Evans Clinchy	seattle-oct262024	0001	1849	1825	116.62	97.14	354
@@ -774,6 +863,7 @@ Evans Clinchy	slingerlands-2023	0001	1855	1806	109.51	78.72	216
 Evans Clinchy	stl-2022	0001	1875	1890	101.17	79.62	137
 Evans Clinchy	vancouver-aug2023	0001	1803	1852	100.63	86.08	238
 Evans Clinchy	vancouver-dec2024	0001	1800	1922	109.78	81.08	376
+Evans Clinchy	vancouver-may2026	0001	1800	1842	98.89	77.76	529
 Evans Clinchy	wordcup-2024-d1	0001	1823	1849	107.62	67.08	347
 Femi Awowade	wordcup-d1-2022	0097	1837	1650	150.0	74.12	31
 Fidelis Olotu	wgpo-earlybird-2022	0063	1568	1647	150.0	117.92	6
@@ -789,21 +879,25 @@ Gary Smart	nola-lite-2025	0087	1439	1456	105.34	74.28	195
 Gary Smart	pabst-2022	0087	1363	1508	120.52	86.27	45
 Gary Smart	riorancho-oct2023	0087	1508	1467	150.0	98.7	60
 Gary Smart	sanfrancisco-dec2024	0087	1397	1439	128.03	82.44	175
+Gary Smart	sanfrancisco-dec2025	0087	1449	1397	137.67	83.65	245
 Gary Smart	wordcup-2024-d2	0087	1384	1488	140.95	72.6	135
 Gary Smart	wordcup-2025-d2	0087	1456	1449	150.0	74.52	225
 Gary Smart	wordcup-d2-2022	0087	1199	1363	150.0	73.65	31
 Geoff Thevenot	atx-2022	0051	1909	1939	150.0	95.59	14
 Geoff Thevenot	madison-2022	0051	1939	1915	124.25	88.11	28
+Geoff Thevenot	nola-open-2026	0051	1902	1811	150.0	85.94	144
 Geoff Thevenot	stl-2022	0051	1915	1940	99.31	78.67	42
 Geoff Thevenot	wordcup-2024-d1	0051	2004	1967	150.0	74.54	94
 Geoff Thevenot	wordcup-2025-d1	0051	1967	1902	150.0	74.81	124
 Geoff Thevenot	wordcup-d1-2022	0051	1940	2004	87.11	66.34	63
 George MacAulay	vancouver-dec2024	0179	1536	1507	150.0	94.31	15
 Gerianne Abriano	nola-lite-2025	0121	1392	1137	150.0	85.95	20
+Greg Harper	nola-open-2026	0225	1430	1556	146.43	85.31	48
 Greg Harper	pdxwords-2025	0225	1478	1430	150.0	85.09	28
 Greg Harper	pdxwords-eb-2025	0225	1478	1478	150.0	150.0	8
 Gunther Jacobi	hood-river-2023	0183	1695	1616	150.0	85.64	34
 Gunther Jacobi	hood-river-2024	0183	1667	1647	124.57	79.79	72
+Gunther Jacobi	hood-river-2026	0183	1534	1539	150.0	85.59	187
 Gunther Jacobi	pabst-2022	0183	1695	1695	150.0	150.0	14
 Gunther Jacobi	pdxwords-2024	0183	1729	1702	99.77	71.59	135
 Gunther Jacobi	portland-nov2023	0183	1583	1634	131.8	108.7	46
@@ -845,8 +939,11 @@ James Curley	austin-sep2023	0058	1698	1711	120.75	102.12	96
 James Curley	hoodriver-2022	0058	1678	1665	150.0	85.91	20
 James Curley	wgpo-earlybird-2022	0058	1665	1610	145.88	115.69	26
 James Curley	wordcup-d1-2022	0058	1610	1656	116.12	67.92	57
+Jamie Ryan	somerville-apr2026	9999	1783	1783	150.0	150.0	6
 Jane Geary	nola-lite-2025	0100	1555	1440	150.0	85.87	20
+Jane Geary	nola-lite-2026	0100	1232	1237	101.11	72.74	100
 Jane Geary	pdxwords-2025	0100	1329	1317	129.62	80.68	60
+Jane Geary	sanfrancisco-dec2025	0100	1317	1232	130.8	82.0	80
 Jane Geary	seattle-may2025	0100	1440	1329	141.33	83.68	40
 Jason Keller	championscup-2024	0042	1962	2016	150.0	90.61	130
 Jason Keller	championscup-2025	0042	2016	1954	150.0	90.9	147
@@ -859,20 +956,26 @@ Jason Keller	wordcup-d1-2022	0042	1829	1871	104.59	65.37	45
 Jason Ubeika	nola-d1-2023	0173	1593	1618	150.0	86.24	20
 Jason Ubeika	nola-open-2024	0173	1618	1568	150.0	85.92	40
 Jason Ubeika	nola-open-2025	0173	1568	1600	150.0	85.77	60
+Jason Ubeika	nola-open-2026	0173	1600	1695	150.0	85.98	80
+Jean-Louis Guill	nova-apr2026	0218	1091	1165	136.53	105.53	22
+Jean-Louis Guill	nova-feb2026	0218	788	1091	150.0	111.09	14
 Jean-Louis Guill	nova-jun2025	0218	788	788	150.0	150.0	6
 Jeannie Wilson	nola-d2-2023	0226	1109	1145	150.0	86.28	20
 Jeannie Wilson	nola-lite-2024	0226	1145	1072	150.0	85.97	40
 Jeannie Wilson	nola-lite-2025	0226	1161	1236	102.87	73.39	144
+Jeannie Wilson	nola-lite-2026	0226	1157	1154	98.89	71.99	246
 Jeannie Wilson	pdxwords-2024	0226	1204	1147	79.95	63.26	104
 Jeannie Wilson	pdxwords-2025	0226	1067	1143	78.2	62.37	206
 Jeannie Wilson	pdxwords-eb-2024	0226	1097	1204	90.78	79.32	84
 Jeannie Wilson	pdxwords-eb-2025	0226	1108	1067	88.13	77.56	186
 Jeannie Wilson	sanfrancisco-dec2024	0226	1147	1161	117.05	79.26	124
+Jeannie Wilson	sanfrancisco-dec2025	0226	1143	1157	120.37	79.24	226
 Jeannie Wilson	wordcup-2024-d2	0226	1145	1097	122.68	69.58	76
 Jeannie Wilson	wordcup-2024-eb	0226	1072	1145	150.0	122.27	45
 Jeannie Wilson	wordcup-2025-d2	0226	1211	1108	122.29	71.18	178
 Jeannie Wilson	wordcup-2025-eb	0226	1236	1211	150.0	121.88	149
 Jeffrey Muwarure	wordcup-2025-d2	0091	800	734	150.0	143.02	1
+Jemmy Pierre-Louis	nola-lite-2026	9999	595	595	150.0	150.0	20
 Jennifer Clinchy	atx-2022	0002	1502	1518	100.48	78.15	94
 Jennifer Clinchy	austin-atx2024	0002	1483	1459	125.58	88.8	190
 Jennifer Clinchy	bellingham-may2025	0002	1393	1470	112.95	96.95	276
@@ -882,6 +985,7 @@ Jennifer Clinchy	hoodriver-2022	0002	1518	1502	112.61	76.79	80
 Jennifer Clinchy	loco-2021	0002	1587	1436	150.0	86.6	20
 Jennifer Clinchy	loco-2022	0002	1488	1504	111.13	75.76	128
 Jennifer Clinchy	nola-lite-2025	0002	1383	1379	102.02	73.1	264
+Jennifer Clinchy	nola-lite-2026	0002	1482	1359	127.87	80.97	337
 Jennifer Clinchy	nola-open-2024	0002	1498	1483	150.0	85.85	176
 Jennifer Clinchy	pabst-2021	0002	1436	1370	108.16	84.27	32
 Jennifer Clinchy	pabst-2022	0002	1504	1518	96.12	75.91	142
@@ -889,6 +993,7 @@ Jennifer Clinchy	portland-pub-12apr2025	0002	1379	1393	117.23	99.79	270
 Jennifer Clinchy	sanfrancisco-dec2024	0002	1353	1383	113.93	78.15	244
 Jennifer Clinchy	seattle-2021	0002	1447	1518	94.43	75.37	60
 Jennifer Clinchy	seattle-2022	0002	1518	1488	131.56	90.28	108
+Jennifer Clinchy	seattle-jul2026	0002	1359	1636	150.0	85.93	357
 Jennifer Clinchy	seattle-may2024	0002	1459	1373	113.07	77.71	210
 Jennifer Clinchy	seattle-may2025	0002	1470	1437	103.92	73.54	296
 Jennifer Clinchy	seattle-oct262024	0002	1373	1274	146.42	112.71	217
@@ -899,6 +1004,7 @@ Jennifer Clinchy	vancouver-aug2023	0002	1518	1597	150.0	111.32	150
 Jeremy Jeffers	nola-d2-2023	0028	1253	1376	150.0	86.25	20
 Jeremy Jeffers	nola-lite-2024	0028	1376	1415	150.0	85.91	40
 Jeremy Jeffers	nola-lite-2025	0028	1415	1354	150.0	86.13	60
+Jeremy Jeffers	nola-lite-2026	0028	1370	1324	150.0	85.91	92
 Jeremy Jeffers	rome-may2025	0028	1354	1370	133.86	95.48	72
 Jeremy Khoo	slingerlands-2022	0095	1872	1815	150.0	90.76	17
 Jeremy Khoo	slingerlands-2023	0095	1815	1757	150.0	90.29	34
@@ -922,10 +1028,12 @@ Jesse Matthews	hood-river-2023	0021	1837	1891	150.0	85.64	60
 Jesse Matthews	hoodriver-2022	0021	1806	1652	150.0	85.95	20
 Jesse Matthews	loco-2022	0021	1652	1837	150.0	85.13	40
 Jesse Matthews	portlandpub-jun2024	0021	1891	1869	150.0	117.19	66
+Jesse Matthews	vancouver-may2026	0021	1869	1853	150.0	95.84	80
 Jim Brennan	slingerlands-2022	0119	1566	1732	150.0	90.76	17
 Jim Kramer	3m-2022	0032	1921	1960	150.0	96.27	14
 Joe Roberdeau	charlottesville-2021	0090	1194	1367	150.0	96.47	14
 Joe Roberdeau	hood-river-2025	0090	1284	1363	117.14	77.72	139
+Joe Roberdeau	nola-lite-2026	0090	1263	1324	137.07	83.37	209
 Joe Roberdeau	pdxwords-2024	0090	1273	1306	110.66	75.31	99
 Joe Roberdeau	pdxwords-2025	0090	1334	1263	91.41	68.47	189
 Joe Roberdeau	pdxwords-eb-2024	0090	1223	1273	150.0	110.21	79
@@ -935,10 +1043,12 @@ Joe Roberdeau	sanfrancisco-dec2024	0090	1306	1284	123.98	81.38	119
 Joe Roberdeau	stl-2022	0090	1367	1369	150.0	99.78	28
 Joe Roberdeau	wordcup-2025-d2	0090	1363	1334	150.0	74.54	169
 Joe Roberdeau	wordcup-d2-2022	0090	1369	1307	106.56	66.94	59
+Joe Thorngren	seattle-jul2026	9999	611	611	150.0	150.0	20
 Joel Wapnick	nacc2023-afterword	0082	1668	1695	76.59	70.84	75
 Joel Wapnick	nacc2023-d1	0082	1746	1668	116.55	73.93	69
 Joel Wapnick	nola-open-2025	0082	1872	1870	150.0	85.72	126
 Joel Wapnick	riorancho-oct2023	0082	1751	1746	150.0	100.91	45
+Joel Wapnick	sanfrancisco-dec2025	0082	1759	1796	137.75	83.55	176
 Joel Wapnick	wordcup-2024-d1	0082	1695	1872	150.0	74.5	106
 Joel Wapnick	wordcup-2025-d1	0082	1870	1759	150.0	74.66	156
 Joel Wapnick	wordcup-d1-2022	0082	1845	1751	150.0	73.18	31
@@ -947,10 +1057,12 @@ John Karris	nacc2023-afterword	0113	1487	1499	83.51	76.22	45
 John Karris	nacc2023-d2	0113	1585	1487	150.0	81.08	39
 John Karris	nola-lite-2024	0113	1499	1496	108.67	75.49	65
 John Karris	riorancho-oct2023	0113	1585	1585	150.0	150.0	15
+John O'Laughlin	hood-river-2026	0019	1750	1781	111.86	76.24	203
 John O'Laughlin	loco-2022	0019	1758	1796	105.22	73.8	51
 John O'Laughlin	nacc2023-d1	0019	1704	1812	148.27	80.19	83
 John O'Laughlin	portlandpub-jun2025	0019	1956	1896	104.29	91.39	149
 John O'Laughlin	sanfrancisco-dec2024	0019	1716	1934	150.0	85.85	123
+John O'Laughlin	sanfrancisco-dec2025	0019	1788	1750	116.9	78.18	183
 John O'Laughlin	seattle-may2024	0019	1812	1716	150.0	86.93	103
 John O'Laughlin	seattle-may2025	0019	1934	1956	150.0	85.3	143
 John O'Laughlin	seattle-oct252025	0019	1896	1786	141.96	110.49	156
@@ -959,6 +1071,7 @@ John O'Laughlin	vancouver-aug2023	0019	1796	1704	150.0	111.29	59
 John O'Laughlin	wordcup-d1-2022	0019	1935	1758	150.0	73.97	31
 Josh Sokol	championscup-2024	0084	1898	1833	150.0	90.6	34
 Josh Sokol	nola-open-2025	0084	1826	1907	87.98	67.32	145
+Josh Sokol	nola-open-2026	0084	1885	2081	150.0	85.98	195
 Josh Sokol	portlandpub-nov2024	0084	1951	1949	89.62	80.83	90
 Josh Sokol	sanfrancisco-dec2024	0084	1949	1867	99.16	72.07	110
 Josh Sokol	seattle-oct262024	0084	1829	1905	117.21	97.72	77
@@ -979,7 +1092,11 @@ Joshua Castellano	lewes-2024	0025	2083	1977	123.75	82.32	239
 Joshua Castellano	nola-d1-2023	0025	1942	1923	144.03	84.94	113
 Joshua Castellano	nola-open-2024	0025	1945	2002	129.66	81.31	186
 Joshua Castellano	nola-open-2025	0025	2030	2036	127.26	80.63	268
+Joshua Castellano	nola-open-2026	0025	2004	2007	131.44	82.0	339
+Joshua Castellano	nova-apr2026	0025	1934	1963	100.99	86.19	364
+Joshua Castellano	nova-feb2026	0025	2007	1949	92.87	80.99	347
 Joshua Castellano	nova-jun2025	0025	2036	2072	148.33	117.52	274
+Joshua Castellano	nova-mar2026	0025	1949	1934	96.74	81.85	356
 Joshua Castellano	potomac-2022	0025	1849	1942	94.9	77.74	93
 Joshua Castellano	potomac-may2024	0025	2067	2083	100.92	74.26	221
 Joshua Castellano	potomac-oct2023	0025	1917	1945	124.25	91.72	166
@@ -991,7 +1108,9 @@ Judy Romann	loco-2021	0048	1401	1337	150.0	86.6	20
 Julia Swaney	denver-21jun2025	0161	1150	988	150.0	115.04	27
 Julia Swaney	nola-lite-2025	0161	1150	1150	150.0	150.0	20
 Julia Swaney	wordcup-2025-d2	0161	988	1086	132.04	72.85	56
+Justin Morris	providence-jan2026	0144	1465	1508	150.0	118.07	12
 Justin Morris	providence-mar2025	0144	1524	1465	150.0	118.21	6
+Justin Morris	somerville-feb2026	0144	1508	1470	129.77	107.39	18
 KC Frodyma	osc-2022	0039	1416	1367	150.0	93.47	15
 KC Frodyma	sanfrancisco-dec2024	0039	1296	1186	136.44	84.41	66
 KC Frodyma	wordcup-2024-d2	0039	1367	1296	150.0	73.59	46
@@ -999,6 +1118,7 @@ Kaia	austin-atx2024	0077	1327	1388	125.57	88.75	102
 Kaia	lewes-2024	0077	1388	1367	150.0	88.74	120
 Kaia	nola-d2-2023	0077	1311	1248	120.57	79.48	68
 Kaia	nola-lite-2024	0077	1248	1327	150.0	85.83	88
+Kaia	nova-apr2026	0077	1378	1367	150.0	111.15	159
 Kaia	slingerlands-2022	0077	1318	1311	150.0	90.76	48
 Kaia	wordcup-2025-d2	0077	1367	1378	150.0	73.65	151
 Kaia	wordcup-d2-2022	0077	1318	1318	150.0	150.0	31
@@ -1020,7 +1140,9 @@ Kevin Fraley	nacc2023-d1	0222	1915	1987	150.0	80.4	24
 Kevin Fraley	nacc2023-d1p	0222	1987	2010	80.4	76.89	27
 Kevin Fraley	nola-open-2024	0222	2010	1939	110.96	75.99	47
 Kevin Fraley	nola-open-2025	0222	1877	1833	105.94	74.41	118
+Kevin Fraley	nola-open-2026	0222	1768	1884	102.88	73.39	188
 Kevin Fraley	sanfrancisco-dec2024	0222	1875	1877	136.88	83.21	98
+Kevin Fraley	sanfrancisco-dec2025	0222	1896	1768	137.77	83.57	168
 Kevin Fraley	wordcup-2024-d1	0222	1939	1875	150.0	74.41	78
 Kevin Fraley	wordcup-2025-d1	0222	1833	1896	150.0	74.7	148
 Kevin Gauthier	slingerlands-series2-2025	0123	1312	1312	150.0	150.0	7
@@ -1030,6 +1152,7 @@ Kolton Koehler	bend-jun2025	0213	1981	1977	127.54	100.55	325
 Kolton Koehler	hood-river-2023	0213	1884	1856	111.54	76.19	88
 Kolton Koehler	hood-river-2024	0213	1920	1832	108.11	74.92	176
 Kolton Koehler	hood-river-2025	0213	1934	1982	119.12	78.31	305
+Kolton Koehler	hood-river-2026	0213	1977	1907	150.0	85.55	345
 Kolton Koehler	la-2022	0213	1849	1884	121.28	86.84	68
 Kolton Koehler	loco-2021	0213	1883	1883	150.0	150.0	20
 Kolton Koehler	loco-2022	0213	1883	1845	150.0	85.11	40
@@ -1042,6 +1165,8 @@ Kolton Koehler	portland-aug2023	0213	1951	1898	118.72	100.63	114
 Kolton Koehler	portland-nov2023	0213	1898	1868	136.11	111.05	120
 Kolton Koehler	portland-pub-12apr2025	0213	1982	1990	108.32	94.03	311
 Kolton Koehler	portland-pub-13apr2025	0213	1990	1981	94.56	84.65	317
+Kolton Koehler	portland-pub-18apr2026	0213	1907	1845	115.84	99.09	351
+Kolton Koehler	portland-pub-19apr2026	0213	1845	1861	99.59	89.66	357
 Kolton Koehler	portland-pub-apr132024	0213	1826	1787	100.32	88.62	188
 Kolton Koehler	portland-pub-apr142024	0213	1787	1804	89.18	80.57	194
 Kolton Koehler	portland-pub-jan2024	0213	1987	1920	108.3	94.27	156
@@ -1065,6 +1190,7 @@ Leslie Charles	wordcup-2024-d1	0158	1693	1631	150.0	74.28	31
 Lila Crotty	nola-d2-2023	0187	1274	1290	150.0	86.26	20
 Lila Crotty	nola-lite-2024	0187	1290	1276	150.0	85.97	40
 Lila Crotty	nola-lite-2025	0187	1276	1393	150.0	85.96	60
+Lila Crotty	nola-lite-2026	0187	1393	1366	150.0	86.02	80
 Lindsay Shin	nacc2023-d2	0116	1397	1550	150.0	82.29	55
 Lindsay Shin	nacc2023-d2p	0116	1550	1568	82.29	76.34	60
 Lindsay Shin	wordcup-2024-d2	0116	1568	1469	150.0	73.54	91
@@ -1088,6 +1214,8 @@ Lola McKissen	seattle-oct262024	0208	1371	1317	148.74	113.81	237
 Lola McKissen	seattle-oct272024	0208	1317	1324	114.25	95.49	244
 Lola McKissen	wordcup-2025-d2	0208	1304	1359	150.0	75.51	293
 Lola McKissen	wordcup-d2-2022	0208	1154	1318	110.15	67.05	126
+Loreta Paelmo	sanfrancisco-dec2025	9999	1272	1282	150.0	86.28	20
+Luke Yu	seattle-jul2026	9999	1593	1593	150.0	150.0	20
 Mahboob Khan	wordcup-d2-2022	0220	1028	1133	150.0	74.68	31
 Mark Francillon	atx-2022	0008	1532	1539	107.61	81.27	54
 Mark Francillon	austin-atx2024	0008	1617	1664	110.39	84.19	186
@@ -1111,36 +1239,49 @@ Mark Milan	la-2022	0102	1301	1476	150.0	95.62	14
 Mark Peltier	pdxwords-2025	0209	1362	1362	150.0	150.0	20
 Marlon Prudencio	wordcup-d1-2022	0126	1888	1981	150.0	73.13	31
 Martin DeMello	sanfrancisco-dec2024	0007	1436	1556	150.0	87.57	20
+Martin DeMello	sanfrancisco-dec2025	0007	1556	1569	150.0	86.09	40
 Marty Gold	charlottesville-2021	0064	1723	1723	150.0	150.0	14
 Marty Gold	charlottesville-2025	0064	1608	1456	150.0	95.8	50
 Marty Gold	columbia-2023	0064	1602	1608	150.0	111.75	36
+Marty Gold	nova-feb2026	0064	1456	1357	147.57	109.97	58
 Marty Gold	potomac-2022	0064	1723	1602	150.0	100.27	28
 Mary Pastore	nola-lite-2025	0178	1122	1122	150.0	150.0	20
+Mary Stevens	nola-lite-2026	9999	1261	1214	104.54	74.03	40
+Mary Stevens	sanfrancisco-dec2025	9999	1457	1261	150.0	86.19	20
 Matt Canik	atx-2022	0198	1951	1812	150.0	95.82	14
 Matt Canik	austin-atx2024	0198	1616	1659	150.0	95.99	41
 Matt Canik	austin-may-2023	0198	1812	1764	150.0	117.93	20
 Matt Canik	austin-sep2023	0198	1764	1616	150.0	118.24	27
 Matt Zeleznik	providence-apr2025	0067	1554	1687	130.67	108.05	12
+Matt Zeleznik	providence-jan2026	0067	1687	1566	150.0	118.07	18
 Matt Zeleznik	providence-mar2025	0067	1709	1554	150.0	118.21	6
+Matt Zeleznik	somerville-apr2026	0067	1566	1523	147.45	116.81	24
 Matthew O'Connor	boston-2022	0045	1856	1846	150.0	96.3	14
 Matthew O'Connor	brattleboro-2022	0045	1846	1910	150.0	92.29	30
 Matthew O'Connor	lewes-2024	0045	1823	1877	131.51	84.47	131
 Matthew O'Connor	nola-open-2024	0045	1890	1818	134.43	82.72	95
+Matthew O'Connor	nola-open-2026	0045	1955	1874	150.0	85.99	170
 Matthew O'Connor	potomac-may2024	0045	1818	1823	141.92	86.57	113
 Matthew O'Connor	potomac-oct2023	0045	1762	1890	150.0	98.34	75
 Matthew O'Connor	providence-apr2025	0045	2038	2024	130.67	108.14	143
+Matthew O'Connor	providence-jan2026	0045	1874	1892	88.85	80.76	176
 Matthew O'Connor	providence-mar2025	0045	1877	2038	150.0	118.21	137
+Matthew O'Connor	providence-mar2026	0045	1874	1888	98.03	87.17	188
 Matthew O'Connor	silver-spring-2023	0045	1910	1838	150.0	96.36	44
 Matthew O'Connor	slingerlands-2023	0045	1838	1762	103.37	76.35	61
 Matthew O'Connor	slingerlands-series2-2025	0045	2024	1955	150.0	114.1	150
+Matthew O'Connor	somerville-apr2026	0045	1888	1821	101.97	90.02	194
+Matthew O'Connor	somerville-feb2026	0045	1892	1874	97.07	86.66	182
 Matthew Tunnicliffe	championscup-2024	0127	1981	2119	150.0	90.72	34
 Matthew Tunnicliffe	slingerlands-2023	0127	1912	1981	150.0	90.29	17
 Maureen Morris	vancouver-dec2024	0137	1089	1172	137.25	90.97	82
 Maureen Morris	wordcup-2024-d2	0137	1086	1089	122.48	69.56	67
 Maureen Morris	wordcup-2024-eb	0137	1121	1086	150.0	122.07	36
 Maureen Morris	wordcup-d2-2022	0137	1043	1121	150.0	74.61	31
+Mehul Arora	sanfrancisco-dec2025	9999	1677	1582	150.0	86.12	20
 Melissa Routzahn	atx-2022	0052	1551	1455	150.0	95.61	14
 Melissa Routzahn	madison-2022	0052	1455	1592	124.26	87.9	28
+Melissa Routzahn	nola-lite-2026	0052	1407	1556	149.85	85.98	144
 Melissa Routzahn	stl-2022	0052	1592	1639	99.13	79.76	42
 Melissa Routzahn	wordcup-2024-d2	0052	1461	1470	150.0	73.71	94
 Melissa Routzahn	wordcup-2025-d2	0052	1470	1407	150.0	74.54	124
@@ -1161,6 +1302,7 @@ Mohammad Sulaiman	nacc2023-d1	0118	1811	1628	150.0	80.61	75
 Mohammad Sulaiman	nola-d1-2023	0118	1615	1811	150.0	86.1	51
 Mohammad Sulaiman	nola-open-2024	0118	1628	1666	113.57	76.95	95
 Mohammad Sulaiman	nola-open-2025	0118	1730	1680	106.02	74.69	166
+Mohammad Sulaiman	nola-open-2026	0118	1680	1708	150.0	85.92	186
 Mohammad Sulaiman	sanfrancisco-dec2024	0118	1710	1730	136.87	83.31	146
 Mohammad Sulaiman	wordcup-2024-d1	0118	1666	1710	150.0	74.39	126
 Mohammad Sulaiman	wordcup-d1-2022	0118	1534	1615	150.0	73.98	31
@@ -1171,11 +1313,16 @@ Mpakaboari Jack	wordcup-2025-d1	0152	1748	1675	150.0	75.69	60
 Nancee Mancel	wordcup-2024-d2	0147	1189	1189	150.0	150.0	31
 Nancy Bowen	charlottesville-2021	0115	1347	1347	150.0	150.0	14
 Nancy Bowen	nola-lite-2025	0115	1347	1398	150.0	85.65	34
+Nancy Bowen	nola-lite-2026	0115	1398	1338	150.0	85.85	54
 Nicholas Tam	wordcup-2025-d2	0139	1538	1526	150.0	73.66	31
 Niel Gan	brattleboro-2022	0103	1143	1143	150.0	150.0	16
 Niel Gan	lewes-2024	0103	1143	1383	150.0	88.74	34
 Niel Gan	nola-open-2025	0103	1383	1621	147.9	85.25	54
+Niel Gan	providence-jan2026	0103	1653	1690	150.0	118.07	66
 Niel Gan	providence-mar2025	0103	1621	1653	107.55	94.02	60
+Niel Gan	providence-mar2026	0103	1667	1616	116.92	99.56	78
+Niel Gan	somerville-apr2026	0103	1616	1742	112.75	97.23	84
+Niel Gan	somerville-feb2026	0103	1690	1667	129.77	107.56	72
 Nitya Chagti	boston-2022	0150	967	1178	150.0	96.52	14
 Nitya Chagti	charlottesville-2025	0150	1341	1379	150.0	95.8	197
 Nitya Chagti	columbia-2023	0150	1220	1136	150.0	111.65	87
@@ -1183,6 +1330,8 @@ Nitya Chagti	hood-river-2024	0150	1394	1393	143.67	84.15	121
 Nitya Chagti	hood-river-2025	0150	1456	1445	150.0	85.38	177
 Nitya Chagti	lewes-2024	0150	1486	1456	129.57	83.95	157
 Nitya Chagti	nola-d2-2023	0150	1332	1220	144.39	85.26	79
+Nitya Chagti	nola-lite-2026	0150	1379	1666	140.63	84.15	217
+Nitya Chagti	nova-apr2026	0150	1666	1651	124.02	99.05	225
 Nitya Chagti	nova-jun2025	0150	1445	1341	141.39	114.14	183
 Nitya Chagti	potomac-2022	0150	1219	1332	96.15	78.42	59
 Nitya Chagti	potomac-may2024	0150	1393	1486	129.93	83.59	139
@@ -1198,15 +1347,20 @@ Nsikak Etim	championscup-2025	0207	1921	1892	150.0	90.79	57
 Nsikak Etim	columbia-2024	0207	1886	1921	123.8	96.84	40
 Nsikak Etim	wordcup-2024-d1	0207	1926	1886	150.0	74.34	31
 Olanma Cheche	vancouver-dec2024	0072	511	511	150.0	150.0	15
+Osikhena Ojior	nova-apr2026	9999	1790	1489	150.0	111.34	8
+Pamina Deutsch	nola-lite-2026	9999	1296	1234	104.59	74.02	40
+Pamina Deutsch	sanfrancisco-dec2025	9999	1410	1296	150.0	86.25	20
 Paula Catanese	nola-d2-2023	0202	1309	1246	150.0	86.4	57
 Paula Catanese	nola-lite-2024	0202	1236	1202	108.5	75.4	94
 Paula Catanese	nola-lite-2025	0202	1196	1209	102.82	73.47	198
+Paula Catanese	nola-lite-2026	0202	1337	1308	98.82	71.97	300
 Paula Catanese	palmsprings-dec2023	0202	1246	1236	150.0	90.4	74
 Paula Catanese	pdxwords-2024	0202	1279	1337	79.92	63.2	158
 Paula Catanese	pdxwords-2025	0202	1290	1313	78.17	62.39	260
 Paula Catanese	pdxwords-eb-2024	0202	1302	1279	90.74	79.29	138
 Paula Catanese	pdxwords-eb-2025	0202	1224	1290	88.1	77.53	240
 Paula Catanese	sanfrancisco-dec2024	0202	1337	1196	117.02	79.19	178
+Paula Catanese	sanfrancisco-dec2025	0202	1313	1337	120.38	79.16	280
 Paula Catanese	wgpo-earlybird-2022	0202	1294	1329	150.0	121.73	6
 Paula Catanese	wordcup-2024-d2	0202	1371	1302	122.38	69.52	130
 Paula Catanese	wordcup-2024-eb	0202	1202	1371	150.0	121.97	99
@@ -1216,6 +1370,7 @@ Paula Catanese	wordcup-d2-2022	0202	1329	1309	122.14	70.36	37
 Peter Armstrong	bend-2022	0011	1789	1840	105.45	79.38	159
 Peter Armstrong	hood-river-2023	0011	1907	1852	103.15	73.35	193
 Peter Armstrong	hood-river-2025	0011	1805	1848	100.86	72.4	305
+Peter Armstrong	hood-river-2026	0011	1877	1910	147.22	85.0	375
 Peter Armstrong	hoodriver-2022	0011	1831	1841	123.27	79.91	54
 Peter Armstrong	la-2022	0011	1840	1907	95.4	75.76	173
 Peter Armstrong	loco-2021	0011	1914	1790	150.0	86.6	20
@@ -1248,6 +1403,7 @@ Puneet Sharma	austin-atx2024	0006	1729	1706	99.69	77.89	266
 Puneet Sharma	hood-river-2023	0006	1782	1723	104.47	73.87	168
 Puneet Sharma	hood-river-2024	0006	1711	1729	97.1	70.98	252
 Puneet Sharma	hood-river-2025	0006	1594	1642	98.61	71.56	357
+Puneet Sharma	hood-river-2026	0006	1707	1694	101.03	72.6	426
 Puneet Sharma	hoodriver-2022	0006	1545	1585	123.3	79.92	54
 Puneet Sharma	loco-2021	0006	1679	1558	150.0	86.6	20
 Puneet Sharma	moco-2023	0006	1723	1670	123.52	79.88	188
@@ -1255,6 +1411,7 @@ Puneet Sharma	nacc2023-d1	0006	1670	1765	150.0	80.49	212
 Puneet Sharma	nola-d1-2023	0006	1713	1782	150.0	86.11	148
 Puneet Sharma	nola-open-2024	0006	1765	1711	113.48	77.0	232
 Puneet Sharma	nola-open-2025	0006	1596	1594	136.94	83.21	337
+Puneet Sharma	nola-open-2026	0006	1716	1707	150.0	86.06	406
 Puneet Sharma	osc-2022	0006	1639	1673	92.69	73.35	97
 Puneet Sharma	pdxwords-2024	0006	1636	1596	92.98	68.94	317
 Puneet Sharma	sandiego-2022	0006	1585	1593	92.13	74.03	68
@@ -1278,13 +1435,16 @@ Randi Goldberg	charlottesville-2025	0004	1357	1333	109.3	82.2	331
 Randi Goldberg	hood-river-2023	0004	1444	1478	104.67	73.94	119
 Randi Goldberg	hood-river-2024	0004	1470	1458	95.85	70.52	217
 Randi Goldberg	hood-river-2025	0004	1445	1463	92.38	69.07	288
+Randi Goldberg	hood-river-2026	0004	1437	1480	89.37	67.9	391
 Randi Goldberg	hoodriver-2022	0004	1648	1621	138.23	83.53	34
 Randi Goldberg	nacc2023-afterword	0004	1453	1454	82.98	75.81	177
 Randi Goldberg	nacc2023-d1	0004	1450	1453	149.36	80.53	171
 Randi Goldberg	nola-d1-2023	0004	1538	1444	150.0	86.35	99
 Randi Goldberg	nola-open-2024	0004	1454	1470	108.38	75.42	197
 Randi Goldberg	nola-open-2025	0004	1470	1445	109.34	75.72	268
+Randi Goldberg	nola-open-2026	0004	1373	1437	98.72	72.02	371
 Randi Goldberg	sanfrancisco-dec2024	0004	1436	1470	150.0	87.5	248
+Randi Goldberg	sanfrancisco-dec2025	0004	1333	1373	117.72	78.4	351
 Randi Goldberg	stlouis-jun2023	0004	1520	1450	113.91	83.72	147
 Randi Goldberg	wordcup-2025-d2	0004	1463	1357	146.87	75.14	317
 Randi Goldberg	wordcup-d2-2022	0004	1618	1538	128.39	70.65	79
@@ -1297,6 +1457,7 @@ Rasheed Balogun	nola-d1-2023	0014	1835	1759	150.0	86.14	97
 Rasheed Balogun	nola-open-2025	0014	1808	1817	107.0	74.65	256
 Rasheed Balogun	pabst-2021	0014	1845	1922	150.0	100.1	12
 Rasheed Balogun	sanfrancisco-dec2024	0014	1828	1808	136.24	84.55	236
+Rasheed Balogun	sanfrancisco-dec2025	0014	1803	1759	137.75	83.41	306
 Rasheed Balogun	seattle-2021	0014	1922	1841	124.98	88.26	26
 Rasheed Balogun	slingerlands-2023	0014	1786	1757	102.34	75.93	128
 Rasheed Balogun	texasstate-2023	0014	1757	1829	150.0	98.32	141
@@ -1307,6 +1468,8 @@ Rasheed Balogun	wordcup-d1-2022	0014	1836	1835	110.65	66.9	77
 Richard Buck	boston-2022	0223	1759	1686	150.0	96.3	14
 Richard Buck	brattleboro-2022	0223	1686	1706	150.0	92.51	30
 Richard Buck	providence-apr2025	0223	1706	1562	150.0	118.27	36
+Richard Buck	providence-mar2026	0223	1692	1676	126.65	105.31	48
+Richard Buck	somerville-feb2026	0223	1562	1692	150.0	118.07	42
 Richard Ganguet	rome-may2025	0065	1271	1271	150.0	150.0	8
 Rob Robinsky	3m-2022	0031	1961	2035	150.0	96.37	14
 Rob Robinsky	championscup-2024	0031	1888	1905	108.96	78.72	240
@@ -1321,10 +1484,15 @@ Rob Robinsky	nacc2023-d1	0031	1941	1957	101.12	69.46	177
 Rob Robinsky	nola-d1-2023	0031	1924	1967	135.75	83.02	83
 Rob Robinsky	nola-open-2024	0031	1914	1899	102.68	73.19	203
 Rob Robinsky	nola-open-2025	0031	1892	1780	98.66	71.83	321
+Rob Robinsky	nola-open-2026	0031	1730	1808	94.86	70.33	425
+Rob Robinsky	nova-apr2026	0031	1874	1853	98.11	84.44	450
+Rob Robinsky	nova-feb2026	0031	1808	1808	82.74	73.98	433
 Rob Robinsky	nova-jun2025	0031	1780	1765	143.73	115.22	327
+Rob Robinsky	nova-mar2026	0031	1808	1874	90.96	78.27	442
 Rob Robinsky	potomac-may2024	0031	1905	1859	94.85	71.74	258
 Rob Robinsky	potomac-oct2023	0031	1997	1941	126.18	90.69	153
 Rob Robinsky	sanfrancisco-dec2024	0031	1825	1892	101.01	73.71	301
+Rob Robinsky	sanfrancisco-dec2025	0031	1700	1730	102.72	73.47	405
 Rob Robinsky	seattle-oct252025	0031	1750	1690	93.39	82.66	378
 Rob Robinsky	seattle-oct262024	0031	1859	1849	143.34	111.3	265
 Rob Robinsky	seattle-oct262025	0031	1690	1700	83.26	75.18	385
@@ -1359,6 +1527,7 @@ Robert Linn	wordcup-2025-eb	0053	1799	1751	117.95	102.83	267
 Robin Cole	nacc2023-d2	0224	929	929	150.0	150.0	8
 Robin Levin	palmsprings-dec2023	0041	1240	1240	150.0	150.0	17
 Robin Levin	sanfrancisco-dec2024	0041	1240	1290	150.0	89.08	37
+Robin Levin	sanfrancisco-dec2025	0041	1290	1353	150.0	86.14	57
 Rod Weis	nacc2023-d2	0204	1219	1219	150.0	150.0	24
 Roger Cullman	wordcup-d2-2022	0122	1377	1430	150.0	73.59	31
 Rohaina Tanveer	wordcup-d2-2022	0205	1278	1413	150.0	73.47	31
@@ -1382,6 +1551,8 @@ Ruth Hamilton	pdxwords-eb-2025	0017	1421	1426	83.53	74.37	491
 Ruth Hamilton	portland-aug2023	0017	1384	1403	121.34	102.37	241
 Ruth Hamilton	portland-pub-12apr2025	0017	1349	1407	139.67	112.65	422
 Ruth Hamilton	portland-pub-13apr2025	0017	1407	1446	113.09	99.09	428
+Ruth Hamilton	portland-pub-18apr2026	0017	1442	1356	150.0	121.67	517
+Ruth Hamilton	portland-pub-19apr2026	0017	1356	1353	122.08	105.15	523
 Ruth Hamilton	portland-pub-apr132024	0017	1392	1345	117.81	100.1	295
 Ruth Hamilton	portland-pub-apr142024	0017	1345	1389	100.6	88.69	301
 Ruth Hamilton	portland-pub-jan2024	0017	1410	1351	109.68	95.21	283
@@ -1406,6 +1577,7 @@ Ruth Hamilton	wordcup-d2-2022	0017	1448	1392	89.84	61.62	146
 Sam Rosin	charlottesville-2021	0055	2001	2051	150.0	96.47	14
 Sam Rosin	columbia-2023	0055	2056	1825	150.0	111.7	36
 Sam Rosin	nola-open-2024	0055	1764	1968	129.68	81.29	70
+Sam Rosin	nova-apr2026	0055	1875	1909	150.0	110.9	102
 Sam Rosin	nova-jun2025	0055	1899	1875	150.0	118.31	94
 Sam Rosin	potomac-2022	0055	2051	2056	150.0	100.27	28
 Sam Rosin	potomac-may2024	0055	1968	1899	141.1	86.38	88
@@ -1413,6 +1585,7 @@ Sam Rosin	potomac-oct2023	0055	1825	1764	129.14	91.75	50
 Sammy Okosagah	columbia-2023	0201	1909	2039	150.0	111.75	59
 Sammy Okosagah	columbia-2024	0201	1769	1808	123.85	96.93	99
 Sammy Okosagah	nola-open-2025	0201	1808	1810	130.75	81.49	119
+Sammy Okosagah	nova-apr2026	0201	1970	1843	150.0	111.01	157
 Sammy Okosagah	silver-spring-2023	0201	1905	1909	150.0	96.36	51
 Sammy Okosagah	wgpo-earlybird-2022	0201	2108	1977	150.0	122.35	6
 Sammy Okosagah	wordcup-2024-d1	0201	2039	1769	150.0	74.42	90
@@ -1423,15 +1596,19 @@ Sandy Nang	austin-2023	0066	1401	1420	97.37	76.78	141
 Sandy Nang	hood-river-2023	0066	1499	1401	101.19	72.67	127
 Sandy Nang	nacc2023-d1	0066	1420	1557	150.0	80.6	165
 Sandy Nang	nola-d1-2023	0066	1458	1499	130.88	82.1	107
+Sandy Nang	nola-open-2026	0066	1557	1402	150.0	86.09	185
 Sandy Nang	pabst-2022	0066	1456	1458	118.74	85.61	87
 Sandy Nang	sandiego-2022	0066	1340	1354	135.2	91.6	28
 Sandy Nang	seattle-2021	0066	1498	1340	150.0	95.81	14
 Sandy Nang	wordcup-d1-2022	0066	1317	1456	126.7	70.71	73
 Scott Appel	slingerlands-2022	0131	1673	1673	150.0	150.0	17
 Scott Jackson	nacc2023-d1	0005	1815	1758	150.0	80.59	24
+Scott Jackson	nola-open-2026	0005	1763	1702	150.0	86.07	74
 Scott Jackson	wordcup-2025-d1	0005	1758	1763	150.0	74.6	54
+Shannon Constantine	somerville-feb2026	9999	698	698	150.0	150.0	6
 Solomon Smilack	denver-21jun2025	0215	603	603	150.0	150.0	7
 Sridhar Paidikondala	sanfrancisco-dec2024	0148	1108	1326	150.0	87.53	20
+Sridhar Paidikondala	sanfrancisco-dec2025	0148	1326	1458	150.0	86.02	40
 Stefan Kac	austin-atx2024	0070	1654	1705	125.55	88.61	74
 Stefan Kac	nola-open-2024	0070	1756	1654	150.0	85.8	60
 Stefan Kac	pabst-2021	0070	1713	1713	150.0	150.0	12
@@ -1474,6 +1651,7 @@ Test Player	riorancho-oct2023	9999	1500	1500	150.0	150.0	2
 Test Player	seattle-sept2023	9999	1500	1500	150.0	150.0	1
 Theresa Lean	denver-21jun2025	0195	731	731	150.0	150.0	7
 Thomas Reinke	madison-2022	0186	2053	2053	150.0	150.0	14
+Thomas Reinke	nola-open-2026	0186	2052	1961	150.0	86.03	65
 Thomas Reinke	wordcup-d1-2022	0186	2053	2052	150.0	73.32	45
 Tijan Jeng	columbia-2023	0166	1340	1340	150.0	150.0	8
 Tim Weiss	brattleboro-2022	0026	1730	1705	150.0	92.34	50
@@ -1485,8 +1663,11 @@ Tim Weiss	hoodriver-2022	0026	1794	1730	138.06	83.51	34
 Tim Weiss	lewes-2024	0026	1747	1797	123.72	82.31	159
 Tim Weiss	nola-open-2024	0026	1685	1728	130.94	81.69	106
 Tim Weiss	nola-open-2025	0026	1797	1696	144.14	84.81	179
+Tim Weiss	nola-open-2026	0026	1706	1710	98.8	71.99	263
+Tim Weiss	nova-apr2026	0026	1710	1781	115.68	94.73	271
 Tim Weiss	potomac-may2024	0026	1765	1747	100.92	74.2	141
 Tim Weiss	potomac-oct2023	0026	1720	1685	129.14	93.51	86
+Tim Weiss	sanfrancisco-dec2025	0026	1678	1706	117.67	78.49	243
 Tim Weiss	silver-spring-2023	0026	1705	1730	150.0	96.36	64
 Tim Weiss	wordcup-2025-d1	0026	1696	1710	150.0	74.74	209
 Tobey Roland	wordcup-2024-d2	0164	1275	1182	150.0	73.57	62
@@ -1499,6 +1680,7 @@ Travis Chaney	bend-jun2025	0206	1639	1666	93.37	81.14	294
 Travis Chaney	glenhaven-2024	0206	1643	1660	69.28	57.57	170
 Travis Chaney	hood-river-2024	0206	1527	1589	108.32	75.02	82
 Travis Chaney	hood-river-2025	0206	1677	1699	117.86	78.0	248
+Travis Chaney	hood-river-2026	0206	1642	1698	149.96	85.52	334
 Travis Chaney	nacc2023-afterword	0206	1496	1506	77.62	71.67	56
 Travis Chaney	nacc2023-d1	0206	1526	1496	120.44	75.0	50
 Travis Chaney	pdxwords-2024	0206	1672	1713	73.77	59.96	196
@@ -1507,6 +1689,8 @@ Travis Chaney	portland-aug2023	0206	1583	1619	150.0	118.0	20
 Travis Chaney	portland-nov2023	0206	1619	1526	149.41	117.92	26
 Travis Chaney	portland-pub-12apr2025	0206	1699	1709	108.09	94.01	254
 Travis Chaney	portland-pub-13apr2025	0206	1709	1627	94.54	86.11	260
+Travis Chaney	portland-pub-18apr2026	0206	1698	1750	115.82	101.1	340
+Travis Chaney	portland-pub-19apr2026	0206	1750	1709	101.59	91.19	346
 Travis Chaney	portland-pub-apr132024	0206	1556	1566	100.35	88.68	94
 Travis Chaney	portland-pub-apr142024	0206	1566	1572	89.24	80.68	100
 Travis Chaney	portland-pub-jan2024	0206	1506	1527	108.8	94.51	62
@@ -1519,6 +1703,7 @@ Travis Chaney	portlandpub-jun2025	0206	1610	1639	95.81	85.55	286
 Travis Chaney	portlandpub-may2024	0206	1572	1507	92.25	82.8	107
 Travis Chaney	portlandpub-nov2024	0206	1667	1670	77.72	71.77	222
 Travis Chaney	portlandpub-oct2024	0206	1713	1745	84.23	76.89	202
+Travis Chaney	seattle-jul2026	0206	1709	1674	126.55	80.8	366
 Travis Chaney	seattle-may2025	0206	1627	1610	107.31	74.7	280
 Travis Chaney	seattle-oct262024	0206	1745	1715	89.51	79.84	209
 Travis Chaney	seattle-oct272024	0206	1715	1667	80.46	73.08	216
@@ -1535,6 +1720,7 @@ Wale Fashina	columbia-2024	0177	1896	1850	150.0	107.83	17
 Walker Willingham	austin-atx2024	0192	1280	1280	150.0	111.35	42
 Walker Willingham	hood-river-2025	0192	1280	1355	150.0	85.44	62
 Walker Willingham	nacc2023-afterword	0192	1325	1280	149.34	116.61	34
+Walker Willingham	nola-lite-2026	0192	1380	1433	146.03	85.24	89
 Walker Willingham	seattle-2022	0192	1590	1329	150.0	95.53	14
 Walker Willingham	seattle-jul2023	0192	1329	1325	150.0	100.51	28
 Walker Willingham	seattle-oct262025	0192	1355	1380	150.0	113.69	69
@@ -1544,6 +1730,7 @@ Waseem Khatri	wordcup-d1-2022	0227	1807	1833	150.0	74.12	31
 Wellington Jighere	championscup-2025	0175	1974	1983	139.03	88.33	77
 Wellington Jighere	columbia-2024	0175	2029	2032	123.9	97.06	40
 Wellington Jighere	sanfrancisco-dec2024	0175	2032	1974	113.23	77.0	60
+Wellington Jighere	sanfrancisco-dec2025	0175	2061	2040	136.65	83.26	127
 Wellington Jighere	wordcup-2024-d1	0175	2006	2029	150.0	74.5	31
 Wellington Jighere	wordcup-2025-d1	0175	1983	2061	135.29	72.62	107
 Will Anderson	portlandpub-jun2025	0059	2004	1975	150.0	117.27	54
@@ -1573,6 +1760,7 @@ Yukiko Loritz	palmsprings-dec2023	0172	1550	1583	126.26	84.38	108
 Yukiko Loritz	riorancho-oct2023	0172	1553	1550	150.0	98.7	91
 Yukiko Loritz	sandiego-2022	0172	1527	1527	150.0	150.0	14
 Yukiko Loritz	sanfrancisco-dec2024	0172	1619	1600	150.0	87.42	148
+Yukiko Loritz	sanfrancisco-dec2025	0172	1600	1625	150.0	86.05	188
 Yukiko Loritz	slingerlands-2022	0172	1583	1551	134.15	86.9	62
 Yukiko Loritz	wordcup-d2-2022	0172	1527	1583	150.0	73.46	45
 Yvonne Lobo	wordcup-2025-d2	0162	1332	1444	150.0	74.54	61
@@ -1580,8 +1768,13 @@ Yvonne Lobo	wordcup-d2-2022	0162	1383	1332	150.0	74.54	31
 Zachary Ansell	la-2022	0143	1813	1813	150.0	150.0	14
 Zachary Dang	charlottesville-2021	0033	1898	1494	150.0	96.47	14
 Zachary Dang	charlottesville-2025	0033	1297	1338	107.47	81.47	78
+Zachary Dang	hood-river-2026	0033	1649	1610	94.93	70.24	126
+Zachary Dang	nova-apr2026	0033	1562	1631	93.82	81.67	143
+Zachary Dang	nova-feb2026	0033	1599	1649	107.79	90.06	106
 Zachary Dang	nova-jun2025	0033	1365	1382	150.0	118.2	34
+Zachary Dang	nova-mar2026	0033	1610	1562	82.67	72.82	135
 Zachary Dang	potomac-2022	0033	1494	1365	150.0	100.27	28
+Zachary Dang	sanfrancisco-dec2025	0033	1338	1599	117.21	78.22	98
 Zachary Dang	wordcup-2025-d2	0033	1382	1297	134.43	72.45	64
 Zbigniew Wieckowski	3m-2022	0050	1508	1466	150.0	96.19	14
 Zbigniew Wieckowski	madison-2022	0050	1466	1494	103.21	79.58	28
