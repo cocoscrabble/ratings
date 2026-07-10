@@ -19,7 +19,10 @@ ENV PATH="/app/.venv/bin:$PATH" \
     COCO_RESULTS_DIR=/app/results
 
 # Bake admin/static assets into the image (WhiteNoise serves them). No DB needed.
-RUN python web/manage.py collectstatic --noinput
+# DEBUG=False so this uses the manifest storage backend and writes
+# staticfiles.json — runtime (DEBUG=False) requires it, and without it every
+# {% static %} render 500s. DEBUG defaults to True, so it must be forced here.
+RUN DEBUG=False python web/manage.py collectstatic --noinput
 
 EXPOSE 8000
 
