@@ -72,9 +72,10 @@ uv run python web/manage.py build_db   # rebuild the ratings projection from res
 uv run python web/manage.py test players ratings   # both apps' suites
 uv run python web/manage.py runserver  # browse locally (or: make run)
 
-# Rate the full history and write the current combined ratings list to a file
-uv run coco-rate <output.txt>          # console script -> cli.main
-# equivalently: uv run python -m coco_ratings <output.txt>
+# Rate the full history. The named file gets the LATEST tournament's per-player
+# results; the combined list always goes to ./complete-ratings-list.csv
+uv run coco-rate <output.csv>          # console script -> cli.main
+# equivalently: uv run python -m coco_ratings <output.csv>
 
 # Launch the Tk GUI (no argument)
 uv run coco-rate

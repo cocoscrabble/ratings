@@ -1,57 +1,140 @@
-Rating software for CoCo tournaments.
+# CoCo ratings
 
-The ratings are based on the Norwegian system; see docs/norwegian-rating.pdf.
+Rating software for CoCo tournaments. The published ratings live at
+<https://cocodb.cocoscrabble.org>.
 
-Sample input and output files can be found under testdata/
+Ratings use the Norwegian system, a spread-based, Glicko-style rating; see
+`docs/norwegian-rating.pdf`. Sample input files are under `testdata/`, and the
+historical results that the published ratings are computed from are in
+`results/`.
 
-### Usage
+### Adding a tournament
 
-```
-usage: rating.py [-h] [--name NAME] [--date DATE] [--rating-file RATING_FILE] [--result-file RESULT_FILE]
+Adding a tournament is entirely a matter of editing CSV files and pushing to
+`main`. Everything downstream (tests, deploy, rebuilding the site's database)
+happens automatically. You do not need to run anything on the server.
 
-optional arguments:
-  -h, --help            show this help message and exit
-  --name NAME           Tournament name
-  --date DATE           Tournament date (yyyy-mm-dd)
-  --rating-file RATING_FILE
-                        Ratings file
-  --result-file RESULT_FILE
-                        Results file
-```
+**1. Add the results file** as `results/<prefix>-results.csv`, where `<prefix>`
+is a short hyphenated identifier for the tournament (e.g. `wordcup-2026-eb`).
 
-### Input format
+NOTE: The results file is typically exported from the tournament management software;
+you should not have to create it by hand.
 
-The script can accept data in several formats.
-
-**Ratings**
-
-Ratings can be entered in one of two formats:
-- csv: See `testdata/loco-ratings.csv`
-- RT: See `testdata/20200217_HoodRiver.RT`
-
-**Results**
-
-Tournament data can likewise be entered in two formats:
-- csv: See `testdata/loco21.csv`
-- tou: See `testdata/hoodriver.tou`
-
-The `.RT` and `.tou` formats are provided to support other programs that use
-them; if you are entering the data yourself `.csv` is an easier format to
-produce, e.g. by exporting from Excel or a Google Sheets document. Note that
-the files must be named with the correct extension since the script uses the
-extension to determine what format they are in.
-
-If you are using the `.csv` results format, you need to supply a tournament
-name and date as well (`.tou` files have the tournament details included).
-
-### Output format
-
-The results and new ratings are output in two formats, `output.txt` and
-`output.csv`. The `.txt` file is easy to read and print out; the `.csv` file
-can be imported into a spreadsheet app.
-
-### Example
+**2. Add a row to `data/tournaments.csv`**, whose `Filename` column must be
+exactly the `<prefix>` you used above — that is how the results file is found.
+The tournament's date comes from the `Month`, `Day` and `Year` columns:
 
 ```
-python rating.py --rating-file testdata/loco-ratings.csv --result-file testdata/loco21.csv --name "LOCO 2021" --date 2021-09-06
+FancyName,Division,City,Month,Day,Year,Name,Tournament,Filename,Date
+Word Cup,EB,Williamsburg,7,31,2026,,,wordcup-2026-eb,2026-07-31
 ```
+
+**3. Add any players who have never played before** to `data/players.csv`
+(`Name,Number`), using their CoCo player number. Either `233` or `0233` works,
+both are read as the same player.
+
+NOTE: This is the one file the website's player pages are built from, so a
+player missing here is rated by the engine but will not appear on the site.
+
+**4. Optionally add a ratings file** as `results/<prefix>-ratings.csv`
+(`Name,Rating`, a rating of `0` meaning unrated). This is usually unnecessary:
+returning players always carry their rating forward from previous tournaments,
+so the file only supplies a starting rating for players making their very first
+appearance. A file listing *only* those new players is enough, and if every
+player has played before you can leave it out entirely.
+
+**5. Commit and push to `main`.**  The push runs the test suite, and on success
+deploys the site and rebuilds its database from `results/`. Rebuilding is
+idempotent, so re-running or re-pushing is always safe.
+
+Then check the tournament at <https://cocodb.cocoscrabble.org/ratings/>.
+
+**Names must match exactly**, character for character, across the results file,
+the ratings file and `data/players.csv`. Player identity is the name string, so
+a typo or a changed spelling does not raise an error, it silently creates a
+second, unrated player. If someone's rating looks wrong or they are missing from
+the site, a name mismatch is the first thing to check.
+
+Correcting a past tournament works the same way: every rating is recomputed from
+the entire history on each run, so fixing a result file and pushing re-rates
+everything that followed it.
+
+### Running it locally
+
+You only need this to inspect the ratings yourself; publishing them is just the
+push described above.
+
+The project uses [uv](https://docs.astral.sh/uv/). One-time setup:
+
+```bash
+uv sync
+```
+
+Then rate the whole history:
+
+```bash
+uv run coco-rate latest-tournament.csv
+```
+
+This replays every tournament in `data/tournaments.csv` in date order and writes
+two files:
+
+- the file you name on the command line — the **most recent tournament's**
+  results
+- `complete-ratings-list.csv`, in the current directory — the **combined ratings
+  list**: every player's current rating, deviation and career games
+
+The per-tournament report is also printed to the terminal. Running with no
+argument opens a small Tk GUI that does the same thing from a file picker:
+
+```bash
+uv run coco-rate
+```
+
+There is no way to rate a single tournament on its own, because a player's new
+rating depends on their opponents' current ratings, so the whole history is
+always recomputed from scratch. There is no stored rating state between runs.
+
+### Input formats
+
+Files are identified by their extension, so name them correctly.
+
+**Results** — the games played:
+
+- `.csv` / `.tsv`: columns `Submitted On, Round, Winner, Winners Score,
+  Opponent, Opponents Score`. See `testdata/loco21.csv`.
+- `.tou`: the AUPAIR format. See `testdata/hoodriver.tou`.
+
+**Ratings** — the starting ratings for a tournament:
+
+- `.csv` / `.tsv`: columns `Name, Rating` (a rating of `0` means unrated; a
+  trailing `Email` column is ignored if present). See `testdata/loco-ratings.csv`.
+- `.RT`: the AUPAIR format. See `testdata/20200217_HoodRiver.RT`.
+
+The `.RT` and `.tou` formats exist to interoperate with other programs. If you
+are entering data yourself, use `.csv` — you can export it from Excel or Google
+Sheets. Unlike `.tou` files, `.csv` results carry no tournament name or date, so
+those come from the row in `data/tournaments.csv`.
+
+### Development
+
+```bash
+uv run python -m unittest                          # engine tests
+uv run ruff check .                                # lint
+
+uv sync --extra web                                # install Django
+uv run python web/manage.py test players ratings   # web tests
+make run                                           # build the DB, serve locally
+make test                                          # both test suites
+```
+
+`tests/test_golden.py` locks down the rating maths by replaying a fixed range of
+tournaments and comparing an exhaustive snapshot against a checked-in file.
+Adding a tournament does not affect it. If you change the maths *deliberately*,
+regenerate the snapshot:
+
+```bash
+UPDATE_GOLDEN=1 uv run python -m unittest tests.test_golden
+```
+
+See `CLAUDE.md` for the architecture, the web site's design and deployment.
