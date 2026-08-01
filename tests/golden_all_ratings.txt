@@ -450,11 +450,11 @@ Brian Bowman	stl-2022	0034	1825	1855	99.15	78.56	42
 Brian Bowman	stlouis-jun2023	0034	1926	1901	111.14	82.62	104
 Brian Bowman	wordcup-2025-d1	0034	1926	1820	150.0	74.75	151
 Brian Bowman	wordcup-d1-2022	0034	1855	1926	87.02	60.39	73
-Bruce Baginski	sanfrancisco-dec2025	9999	1287	1232	150.0	86.2	20
+Bruce Baginski	sanfrancisco-dec2025	0234	1287	1232	150.0	86.2	20
 Bruce Ward	palmsprings-dec2023	0043	1531	1548	150.0	90.33	17
 Bruce Ward	sanfrancisco-dec2024	0043	1548	1454	150.0	87.31	37
 Bruce Ward	sanfrancisco-dec2025	0043	1454	1450	150.0	86.15	57
-Buffy Hogan	sanfrancisco-dec2025	9999	1175	1024	150.0	86.33	20
+Buffy Hogan	sanfrancisco-dec2025	0236	1175	1024	150.0	86.33	20
 Bye	austin-atx2024	0000	1500	1500	150.0	150.0	145
 Bye	austin-sep2023	0000	1500	1500	150.0	150.0	104
 Bye	bend-2022	0000	1500	1500	150.0	150.0	83
@@ -704,7 +704,7 @@ Dennis Ikekeregor	columbia-2024	0180	1847	1860	150.0	107.91	9
 Dennis Ikekeregor	wordcup-2025-d1	0180	1939	1884	137.0	72.98	56
 Dielle Pinto	vancouver-aug2023	0092	1700	1682	150.0	111.19	8
 Dorcas Alexander	wordcup-d2-2022	0076	1351	1410	150.0	73.6	31
-Edgar Odongkara	sanfrancisco-dec2025	9999	1927	1912	150.0	86.1	20
+Edgar Odongkara	sanfrancisco-dec2025	0231	1927	1912	150.0	86.1	20
 Elise Bickford	nola-lite-2025	0124	1516	1303	150.0	85.98	20
 Elise Bickford	wordcup-2025-d2	0124	1303	1352	150.0	74.58	50
 Eloy Gardea	charlottesville-2021	0085	1809	1639	150.0	96.82	14
@@ -1110,7 +1110,7 @@ Lola McKissen	seattle-oct262024	0208	1371	1317	148.74	113.81	237
 Lola McKissen	seattle-oct272024	0208	1317	1324	114.25	95.49	244
 Lola McKissen	wordcup-2025-d2	0208	1304	1359	150.0	75.51	293
 Lola McKissen	wordcup-d2-2022	0208	1154	1318	110.15	67.05	126
-Loreta Paelmo	sanfrancisco-dec2025	9999	1272	1282	150.0	86.28	20
+Loreta Paelmo	sanfrancisco-dec2025	0235	1272	1282	150.0	86.28	20
 Mahboob Khan	wordcup-d2-2022	0220	1028	1133	150.0	74.68	31
 Mark Francillon	atx-2022	0008	1532	1539	107.61	81.27	54
 Mark Francillon	austin-atx2024	0008	1617	1664	110.39	84.19	186
@@ -1140,7 +1140,7 @@ Marty Gold	charlottesville-2025	0064	1608	1456	150.0	95.8	50
 Marty Gold	columbia-2023	0064	1602	1608	150.0	111.75	36
 Marty Gold	potomac-2022	0064	1723	1602	150.0	100.27	28
 Mary Pastore	nola-lite-2025	0178	1122	1122	150.0	150.0	20
-Mary Stevens	sanfrancisco-dec2025	9999	1457	1261	150.0	86.19	20
+Mary Stevens	sanfrancisco-dec2025	0035	1457	1261	150.0	86.19	20
 Matt Canik	atx-2022	0198	1951	1812	150.0	95.82	14
 Matt Canik	austin-atx2024	0198	1616	1659	150.0	95.99	41
 Matt Canik	austin-may-2023	0198	1812	1764	150.0	117.93	20
@@ -1164,7 +1164,7 @@ Maureen Morris	vancouver-dec2024	0137	1089	1172	137.25	90.97	82
 Maureen Morris	wordcup-2024-d2	0137	1086	1089	122.48	69.56	67
 Maureen Morris	wordcup-2024-eb	0137	1121	1086	150.0	122.07	36
 Maureen Morris	wordcup-d2-2022	0137	1043	1121	150.0	74.61	31
-Mehul Arora	sanfrancisco-dec2025	9999	1677	1582	150.0	86.12	20
+Mehul Arora	sanfrancisco-dec2025	0232	1677	1582	150.0	86.12	20
 Melissa Routzahn	atx-2022	0052	1551	1455	150.0	95.61	14
 Melissa Routzahn	madison-2022	0052	1455	1592	124.26	87.9	28
 Melissa Routzahn	stl-2022	0052	1592	1639	99.13	79.76	42
@@ -1224,7 +1224,7 @@ Nsikak Etim	championscup-2025	0207	1921	1892	150.0	90.79	57
 Nsikak Etim	columbia-2024	0207	1886	1921	123.8	96.84	40
 Nsikak Etim	wordcup-2024-d1	0207	1926	1886	150.0	74.34	31
 Olanma Cheche	vancouver-dec2024	0072	511	511	150.0	150.0	15
-Pamina Deutsch	sanfrancisco-dec2025	9999	1410	1296	150.0	86.25	20
+Pamina Deutsch	sanfrancisco-dec2025	0233	1410	1296	150.0	86.25	20
 Paula Catanese	nola-d2-2023	0202	1309	1246	150.0	86.4	57
 Paula Catanese	nola-lite-2024	0202	1236	1202	108.5	75.4	94
 Paula Catanese	nola-lite-2025	0202	1196	1209	102.82	73.47	198
