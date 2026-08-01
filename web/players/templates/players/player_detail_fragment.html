@@ -3,7 +3,7 @@
   <table class="detail-table">
     <tr>
       <th>Player Number</th>
-      <td>#{{ player.player_number }}</td>
+      <td>#{{ player.padded_number }}</td>
     </tr>
     {% with cr=player.current_rating %}
     {% if cr %}

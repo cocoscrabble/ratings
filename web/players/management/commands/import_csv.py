@@ -20,15 +20,19 @@ import io
 
 from django.core.management.base import BaseCommand, CommandError
 
-from players.models import Player
+from players.models import Player, canonical_player_number
 
 
 def _parse_player_number(raw):
-    """Return cleaned player_number string, or raise ValueError."""
+    """Return cleaned player_number string, or raise ValueError.
+
+    Either form of the number is accepted: `233` and `0233` are the same player,
+    and both normalize to the bare key (see `canonical_player_number`).
+    """
     val = str(raw).strip()
     if not val.isdigit() or not (1 <= len(val) <= 4):
         raise ValueError(f"Invalid player number: {raw!r}")
-    return val
+    return canonical_player_number(val)
 
 
 def _col(row, *names):

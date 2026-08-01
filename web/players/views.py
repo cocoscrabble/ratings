@@ -98,6 +98,7 @@ def _player_data(player):
         rating = cr.rating if cr else None
     return {
         "player_number": player.player_number,
+        "padded_number": player.padded_number,
         "name": player.name,
         "current_rating": rating,
         "url": player.get_absolute_url(),

@@ -102,7 +102,7 @@
     detailBox.innerHTML = `
       <h2>${escHtml(player.name)}</h2>
       <table class="detail-table">
-        <tr><th>Player Number</th><td>#${escHtml(String(player.player_number))}</td></tr>
+        <tr><th>Player Number</th><td>#${escHtml(String(player.padded_number))}</td></tr>
         <tr><th>Rating</th><td>${player.current_rating !== null ? escHtml(String(player.current_rating)) : "No rating yet"}</td></tr>
       </table>
       <p style="margin-top:12px;"><a href="${escHtml(player.url)}">View full profile &rarr;</a></p>`;

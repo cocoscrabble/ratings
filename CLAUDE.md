@@ -168,7 +168,10 @@ writes the combined ratings list to that file; no argument launches the GUI.
 **`players.py` / `tournaments.py`** — thin CSV-backed lookup tables in `data/`.
 `PlayerDB` (`data/players.csv`) maps player name ↔ CoCo id, and is the *same*
 file the players app is seeded from — identity lives in one place. Numbers are
-stored bare and padded to four digits on read. `TournamentDB`
+written bare (`233`) but **either form is accepted**: readers normalize, so a
+hand-pasted `0233` is the same player, not a second one. The engine renders ids
+padded; the site displays `Player.padded_number` and keys/URLs stay bare.
+`TournamentDB`
 (`data/tournaments.csv`) is the chronological list that drives the replay; its
 `Filename` column is the prefix used to locate result/rating files.
 

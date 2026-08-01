@@ -24,7 +24,7 @@
   <tbody>
     {% for player in page_obj %}
     <tr>
-      <td>{{ player.player_number }}</td>
+      <td>{{ player.padded_number }}</td>
       <td>{{ player.name }}</td>
       <td>{% if player.latest_rating is not None %}{{ player.latest_rating }}{% else %}—{% endif %}</td>
       <td><a href="{% url 'manage_player_edit' player.pk %}">Edit</a></td>

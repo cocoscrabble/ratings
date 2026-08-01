@@ -2,8 +2,9 @@ from django.test import TestCase
 
 from coco_ratings.paths import PLAYERS_CSV
 
+from players.forms import PlayerForm
 from players.management.commands.import_csv import import_players_rows, read_csv_rows
-from players.models import Player
+from players.models import Player, canonical_player_number
 from players.views import _search_players
 
 
@@ -90,10 +91,60 @@ class SeedFileImportTest(TestCase):
         self.assertEqual(Player.objects.count(), len(rows))
 
     def test_numbers_are_stored_bare(self):
-        """player_number is a string key, so "0233" and "233" are *different*
-        players. Prod holds the bare form and it appears in player URLs, so a
-        zero-padded seed file would silently duplicate every identity."""
+        """player_number is a string key, so "0233" and "233" would be *different*
+        players. Prod holds the bare form and it appears in player URLs, so
+        everything normalizes to bare on the way in."""
         import_players_rows(read_csv_rows(PLAYERS_CSV))
 
         padded = Player.objects.filter(player_number__startswith="0")
         self.assertEqual(list(padded), [])
+
+
+class PlayerNumberFormTest(TestCase):
+    """Either form of the number must resolve to one identity.
+
+    data/players.csv is written bare, but the engine's reports and older exports
+    use the zero-padded form, so both get pasted into imports and the /manage
+    form. Accepting only one silently creates duplicate players.
+    """
+
+    def test_padded_and_bare_rows_import_as_one_player(self):
+        imported, _, errors = import_players_rows(
+            [{"Name": "Padded Person", "Number": "0233"}]
+        )
+        self.assertEqual((imported, errors), (1, []))
+        self.assertEqual(Player.objects.get().player_number, "233")
+
+        # The same person written bare must update, not duplicate.
+        imported, skipped, errors = import_players_rows(
+            [{"Name": "Padded Person", "Number": "233"}]
+        )
+        self.assertEqual((imported, skipped, errors), (0, 1, []))
+        self.assertEqual(Player.objects.count(), 1)
+
+    def test_form_normalizes_padded_input(self):
+        form = PlayerForm(data={"player_number": "0233", "name": "Padded Person"})
+        self.assertTrue(form.is_valid(), form.errors)
+        self.assertEqual(form.save().player_number, "233")
+
+    def test_canonical_player_number(self):
+        for raw, expected in [
+            ("0233", "233"),
+            ("233", "233"),
+            (" 0007 ", "7"),
+            ("0000", "0"),
+            ("", ""),  # left alone rather than crashing; the validator rejects it
+        ]:
+            self.assertEqual(canonical_player_number(raw), expected, raw)
+
+    def test_padded_number_is_display_only(self):
+        """Display pads; the stored key and the URL stay bare so links survive."""
+        p = Player.objects.create(player_number="233", name="Padded Person")
+        self.assertEqual(p.padded_number, "0233")
+        self.assertEqual(p.player_number, "233")
+        self.assertEqual(p.get_absolute_url(), "/player/233/padded-person/")
+
+    def test_detail_page_shows_padded_number(self):
+        Player.objects.create(player_number="233", name="Padded Person")
+        html = self.client.get("/player/233/padded-person/").content.decode()
+        self.assertIn("#0233", html)
