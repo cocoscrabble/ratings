@@ -87,7 +87,8 @@ single tournament can only be rated in the context of everything before it.
 history and diffs an exhaustive snapshot against `tests/golden_all_ratings.txt`.
 Any refactor that changes the numbers fails it. The values are only reproducible
 on a matching CPython/platform (generated on CPython 3.14) — regenerate if you
-change interpreter.
+change interpreter. For that reason it is a **local-only** check: CI sets
+`SKIP_GOLDEN=1`, which skips the whole test case.
 
 ## Architecture
 

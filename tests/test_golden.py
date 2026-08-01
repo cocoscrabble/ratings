@@ -72,6 +72,11 @@ def generate_snapshot():
     return "\n".join(lines) + "\n"
 
 
+@unittest.skipIf(
+    os.environ.get("SKIP_GOLDEN"),
+    "SKIP_GOLDEN set: golden values are only reproducible on a matching "
+    "Python/platform, so CI doesn't run this.",
+)
 class GoldenRatingsTest(unittest.TestCase):
     def setUp(self):
         self._cwd = os.getcwd()
