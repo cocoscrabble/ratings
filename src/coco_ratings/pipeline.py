@@ -21,7 +21,14 @@ from coco_ratings.reports import (
 from coco_ratings.tournaments import TournamentDB
 
 
-def process_old_results(display_progress=False, beta: float = 5):
+def process_old_results(display_progress=False, beta: float = 5, until: str | None = None):
+    """Replay the tournament history in date order and return (ratingsdb, latest).
+
+    `until` is an optional inclusive yyyy-mm-dd cutoff: tournaments dated after
+    it are skipped. Ratings are a running total over the whole history, so this
+    is only meaningful for pinning a reproducible prefix of it (see
+    tests/test_golden.py) — never for producing the current ratings.
+    """
     d = str(RESULTS_DIR)
     results = glob.glob(f"{d}/*results.?sv")
     ratings = glob.glob(f"{d}/*ratings.?sv")
@@ -33,6 +40,11 @@ def process_old_results(display_progress=False, beta: float = 5):
     latest = None
     for entry in tournamentdb.tournaments:
         prefix, date = entry.filename, entry.date
+        if until is not None and date > until:
+            # Dates are zero-padded yyyy-mm-dd, so a string compare is a date
+            # compare. Entries are already sorted, but skip rather than break so
+            # the loop stays independent of the ordering.
+            continue
         if not prefix:
             print(f"!! No results file for {entry.fancy_name}")
             continue

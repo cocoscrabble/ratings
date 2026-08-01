@@ -83,9 +83,15 @@ uv run coco-rate
 print a reminder and exit — `pipeline.py` is the real entry point because a
 single tournament can only be rated in the context of everything before it.
 
-**`tests/test_golden.py`** is a characterization test: it replays the entire
-history and diffs an exhaustive snapshot against `tests/golden_all_ratings.txt`.
-Any refactor that changes the numbers fails it. The values are only reproducible
+**`tests/test_golden.py`** is a characterization test: it replays a **pinned
+prefix** of the history and diffs an exhaustive snapshot against
+`tests/golden_all_ratings.txt`. Any refactor that changes the numbers fails it.
+
+The input is fixed to tournaments dated on or before `GOLDEN_CUTOFF`
+(`2025-12-31`, 108 tournaments), via `process_old_results(until=…)`, so **adding
+a tournament does not touch this test** — it only measures the math. Regenerate
+the golden file for an *intentional* math change, when moving the cutoff, or
+when back-filling a tournament dated before it. The values are only reproducible
 on a matching CPython/platform (generated on CPython 3.14) — regenerate if you
 change interpreter. For that reason it is a **local-only** check: CI sets
 `SKIP_GOLDEN=1`, which skips the whole test case.

@@ -1,22 +1,27 @@
-"""Golden-master test locking down the full ratings-regeneration output.
+"""Golden-master test locking down the ratings computation.
 
-This is a characterization test for the upcoming refactor: it replays the entire
-tournament history (exactly what `all_rating` does when it rebuilds the ratings)
+A characterization test: it replays a *fixed* prefix of the tournament history
 and compares a canonical snapshot of the result against a checked-in golden file.
 
-Any change to the numbers a refactor produces will fail this test. If a change
-is *intentional*, regenerate the golden file:
-
-    UPDATE_GOLDEN=1 python -m unittest tests.test_golden
+The point is to catch changes to the rating *math*, so the input is pinned to
+tournaments dated on or before GOLDEN_CUTOFF. Adding a new tournament therefore
+does not touch this test — without the cutoff, every new result file changed the
+numbers and the golden had to be regenerated, which is exactly what makes a
+golden file stop meaning anything.
 
 The snapshot is deliberately exhaustive: it records the final rating, deviation
 and game count for every player, plus every player's before/after numbers for
 every tournament they played in, so behaviour is pinned down game-by-game rather
 than only at the final state.
 
-Note: the rating math is floating-point heavy, so the golden values are only
-guaranteed reproducible on a matching Python/platform; regenerate if you move
-environments.
+Regenerate the golden file when a change to the numbers is *intentional*:
+
+    UPDATE_GOLDEN=1 python -m unittest tests.test_golden
+
+Two other things legitimately require regeneration, neither of them a bug in the
+math: moving the cutoff, and back-filling a tournament dated on or before it
+(that edits the pinned input). The rating math is also floating-point heavy, so
+the values only reproduce on a matching Python/platform.
 """
 
 import os
@@ -29,6 +34,12 @@ from coco_ratings import pipeline as all_rating
 # repo root regardless of where the runner was invoked.
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 GOLDEN_FILE = os.path.join(os.path.dirname(__file__), "golden_all_ratings.txt")
+
+# Inclusive yyyy-mm-dd cutoff pinning the input. Covers 2021-09 through 2025-12
+# (108 tournaments), which is more than enough history to exercise the math;
+# everything after it is deliberately excluded so new tournaments can't break
+# this test. Bumping this is a choice, not routine maintenance.
+GOLDEN_CUTOFF = "2025-12-31"
 
 # Tab-separated so player names containing commas can't corrupt the columns.
 SEP = "\t"
@@ -43,8 +54,8 @@ def _row(*values):
 
 
 def generate_snapshot():
-    """Replay every tournament and render a canonical, sorted text snapshot."""
-    ratingsdb, _ = all_rating.process_old_results()
+    """Replay the pinned tournaments and render a canonical, sorted snapshot."""
+    ratingsdb, _ = all_rating.process_old_results(until=GOLDEN_CUTOFF)
 
     lines = ["=== COMPLETE RATINGS LIST ===", _row("Name", "Rating", "Deviation", "Games")]
     for p in sorted(ratingsdb.players.values(), key=lambda p: (-p.rating, p.name)):
