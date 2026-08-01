@@ -8,7 +8,7 @@ PORT ?= 8001
 # identity (so build_db can match them), rebuild the ratings projection.
 run:
 	uv run --extra web python web/manage.py migrate --noinput
-	uv run --extra web python web/manage.py import_csv --current data/players-list.csv
+	uv run --extra web python web/manage.py import_csv --current data/players.csv
 	uv run --extra web python web/manage.py build_db
 	uv run --extra web python web/manage.py runserver $(PORT)
 

@@ -38,7 +38,8 @@ web/                    # Django site (two apps; see "Web site" below)
 scripts/                # standalone / experimental scripts (not core)
 tests/                  # engine unittest suite, incl. golden-master test
 data/  results/  docs/  testdata/   # kept at repo root
-# data/players-list.csv — org player-identity seed (Name,Number) for the players app
+# data/players.csv — the single player-identity list (Name,Number): the
+#   engine's name<->CoCo-id map AND the players app's seed
 ```
 
 ## Commands
@@ -66,7 +67,7 @@ uv run ruff check .
 # Web site (Django, optional 'web' extra)
 uv sync --extra web                    # install Django (+ gunicorn)
 uv run python web/manage.py migrate    # apply schema
-uv run python web/manage.py import_csv --current data/players-list.csv  # seed players
+uv run python web/manage.py import_csv --current data/players.csv  # seed players
 uv run python web/manage.py build_db   # rebuild the ratings projection from results/
 uv run python web/manage.py test players ratings   # both apps' suites
 uv run python web/manage.py runserver  # browse locally (or: make run)
@@ -165,7 +166,9 @@ writes the combined ratings list to that file; no argument launches the GUI.
 `__main__.py` just delegates here so `python -m coco_ratings` works too.
 
 **`players.py` / `tournaments.py`** — thin CSV-backed lookup tables in `data/`.
-`PlayerDB` (`data/players.csv`) maps player name ↔ CoCo id. `TournamentDB`
+`PlayerDB` (`data/players.csv`) maps player name ↔ CoCo id, and is the *same*
+file the players app is seeded from — identity lives in one place. Numbers are
+stored bare and padded to four digits on read. `TournamentDB`
 (`data/tournaments.csv`) is the chronological list that drives the replay; its
 `Filename` column is the prefix used to locate result/rating files.
 
@@ -185,8 +188,9 @@ auth-gated `/manage/` CRUD and `import_csv`, and is the FK target for the
 computed ratings. There are no stored ratings here — `Player.current_rating` is a
 property that returns the player's computed rating (`ratings.CurrentRating`).
 Public fuzzy **search** at `/` (Postgres pg_trgm, `icontains` fallback on SQLite).
-Seed the identity table with: `import_csv --current data/players-list.csv` (the
-`Rating` column, if present, is ignored).
+Seed the identity table with: `import_csv --current data/players.csv` — the same
+file the engine reads, so a new player is added in exactly one place (a `Rating`
+column, if present, is ignored).
 
 **`ratings`** — the computed-ratings projection. **Key principle: this projection
 is a rebuildable view of `results/`, never a source of truth.** `Tournament`,
@@ -246,7 +250,7 @@ always has the source of truth.
   projection from `results/` on every deploy, atomically/idempotently),
   `web: gunicorn`. Player identity is **persistent** (managed via `/manage`), so
   on the *first* deploy seed it once:
-  `dokku run cocodb python web/manage.py import_csv --current data/players-list.csv`,
+  `dokku run cocodb python web/manage.py import_csv --current data/players.csv`,
   then re-run `build_db` (or redeploy) so it matches.
 - **Env vars** are set by `../vps` `configure-app.yml`: `SECRET_KEY`,
   `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS`, `DEBUG` (settings read these

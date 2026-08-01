@@ -8,6 +8,9 @@ Usage:
     uv run manage.py import_csv --players players.csv   # columns: player_number,name
     uv run manage.py import_csv --current players.csv   # columns: Name,Number(,Rating ignored)
 
+`--current data/players.csv` is the canonical seed: that file is the engine's
+player list too, so identity is maintained in exactly one place.
+
 Flags:
     --update   Update existing player names instead of skipping duplicates.
 """
