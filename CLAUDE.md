@@ -246,12 +246,14 @@ always has the source of truth.
 
 - **`Dockerfile`** — uv build (`uv sync --extra web`), runs `collectstatic`
   (WhiteNoise serves it), gunicorn as the web process.
-- **`Procfile`** — `release: migrate && build_db` (rebuilds the ratings
-  projection from `results/` on every deploy, atomically/idempotently),
-  `web: gunicorn`. Player identity is **persistent** (managed via `/manage`), so
-  on the *first* deploy seed it once:
-  `dokku run cocodb python web/manage.py import_csv --current data/players.csv`,
-  then re-run `build_db` (or redeploy) so it matches.
+- **`Procfile`** — `release: migrate && import_csv && build_db`, `web: gunicorn`.
+  The release phase seeds identity from `data/players.csv` and then rebuilds the
+  ratings projection from `results/`, on every deploy. Both steps are idempotent,
+  so adding a player is just a commit: no manual `dokku run` needed. Identity
+  stays **persistent** — `import_csv` without `--update` only ever *adds* rows,
+  so it never disturbs edits made through `/manage`. A row it rejects raises
+  `CommandError`, which fails the release and aborts the deploy, leaving the
+  running version up; `players.SeedFileImportTest` guards the file in CI.
 - **Env vars** are set by `../vps` `configure-app.yml`: `SECRET_KEY`,
   `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS`, `DEBUG` (settings read these
   unprefixed names). `cocodb_builder: dockerfile` and `cocodb_ports` are in the
