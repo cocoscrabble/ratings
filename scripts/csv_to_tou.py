@@ -1,13 +1,26 @@
+"""Convert a CSV results file to AUPAIR's .tou format.
+
+Runs from a plain checkout with nothing but Python installed — no venv, no
+install step, no third-party packages. Double-click it (or run with no
+arguments) for the GUI; pass an input and output file for the command line.
+"""
+
 from datetime import datetime
+from pathlib import Path
 import sys
 import textwrap
 
-import tkinter as tk
-from tkinter import ttk
+# Make the checkout importable without installing it: coco_ratings lives under
+# src/ (a "src layout"), which is not on the import path by default. Must come
+# before the coco_ratings imports below.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from coco_ratings.gui import File
-from coco_ratings.io import TouResultWriter
-from coco_ratings.rating import Tournament
+import tkinter as tk  # noqa: E402
+from tkinter import ttk  # noqa: E402
+
+from coco_ratings.gui import File  # noqa: E402
+from coco_ratings.io import TouResultWriter  # noqa: E402
+from coco_ratings.rating import Tournament  # noqa: E402
 
 
 class FilesWidget(ttk.Frame):
