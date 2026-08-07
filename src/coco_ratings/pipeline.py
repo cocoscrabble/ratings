@@ -21,14 +21,28 @@ from coco_ratings.reports import (
 from coco_ratings.tournaments import TournamentDB
 
 
-def process_old_results(display_progress=False, beta: float = 5, until: str | None = None):
+def process_old_results(
+    display_progress=False,
+    beta: float = 5,
+    until: str | None = None,
+    quiet: bool = False,
+):
     """Replay the tournament history in date order and return (ratingsdb, latest).
 
     `until` is an optional inclusive yyyy-mm-dd cutoff: tournaments dated after
     it are skipped. Ratings are a running total over the whole history, so this
     is only meaningful for pinning a reproducible prefix of it (see
     tests/test_golden.py) — never for producing the current ratings.
+
+    `quiet` silences the `!!` warnings about missing files. They are worth seeing
+    on a real run, but a test that replays the history several times just buries
+    the test runner's output in them.
     """
+
+    def warn(msg: str) -> None:
+        if not quiet:
+            print(msg)
+
     d = str(RESULTS_DIR)
     results = glob.glob(f"{d}/*results.?sv")
     ratings = glob.glob(f"{d}/*ratings.?sv")
@@ -46,7 +60,7 @@ def process_old_results(display_progress=False, beta: float = 5, until: str | No
             # the loop stays independent of the ordering.
             continue
         if not prefix:
-            print(f"!! No results file for {entry.fancy_name}")
+            warn(f"!! No results file for {entry.fancy_name}")
             continue
         if display_progress:
             print(f"Reading {prefix}")
@@ -54,17 +68,23 @@ def process_old_results(display_progress=False, beta: float = 5, until: str | No
         res = hres.get(prefix)
         if res is None:
             # Can't rate a tournament with no results; skip it loudly.
-            print(f"!! No results file for {prefix}, skipping")
+            warn(f"!! No results file for {prefix}, skipping")
             continue
         # The ratings file is optional: returning players are rated from the
         # accumulated carry-forward ratings, and first-timers are seeded from
         # their results. A missing file only affects genuine first-timers.
         rat = hrat.get(prefix)
         if rat is None:
-            print(f"!! No ratings file for {prefix}, rating from accumulated ratings")
+            warn(f"!! No ratings file for {prefix}, rating from accumulated ratings")
         latest = ratingsdb.process_one_tournament(rat, res, prefix, date)
     if latest is None:
         raise RuntimeError("No tournaments with result files were processed")
+    if ratingsdb.missing_ids:
+        names = ", ".join(sorted(ratingsdb.missing_ids))
+        warn(
+            f"!! {len(ratingsdb.missing_ids)} rated name(s) with no row in "
+            f"data/players.csv: {names}"
+        )
     return ratingsdb, latest
 
 

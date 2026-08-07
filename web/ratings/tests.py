@@ -28,7 +28,7 @@ def seed_players(names):
 class BuildDbTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.ratingsdb, _ = process_old_results()
+        cls.ratingsdb, _ = process_old_results(quiet=True)
         seed_players(cls.ratingsdb.players)
         call_command("build_db", verbosity=0)
 
@@ -73,7 +73,7 @@ class BuildDbTest(TestCase):
 class ViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        ratingsdb, _ = process_old_results()
+        ratingsdb, _ = process_old_results(quiet=True)
         seed_players(ratingsdb.players)
         call_command("build_db", verbosity=0)
 

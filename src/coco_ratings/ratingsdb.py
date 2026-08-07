@@ -14,6 +14,12 @@ from datetime import datetime
 from coco_ratings.rating import Tournament
 
 
+# Stand-in id for a rated player with no row in data/players.csv. The name is
+# collected in RatingsDB.missing_ids so the caller can report it once, rather
+# than printing per player per tournament.
+UNKNOWN_COCO_ID = "9999"
+
+
 @dataclass
 class PlayerRecord:
     name: str
@@ -43,12 +49,7 @@ class PlayerReport:
     spread: int
 
     @classmethod
-    def from_tournament_player(cls, p, playerdb):
-        try:
-            coco_id = playerdb.get_id(p.name)
-        except KeyError:
-            print(f"MISSING NAME: {p.name}")
-            coco_id = "9999"
+    def from_tournament_player(cls, p, coco_id):
         return cls(
             p.name,
             coco_id,
@@ -97,13 +98,25 @@ class RatingsDB:
         self.beta = beta
         self.players = {}
         self.report = defaultdict(dict)
+        # Rated names with no row in data/players.csv, accumulated over the
+        # whole replay. A name missing here is usually a typo that has split one
+        # player in two, so it is worth reporting — but once, at the end.
+        self.missing_ids = set()
+
+    def coco_id_for(self, name):
+        """The player's CoCo id, remembering the name if there isn't one."""
+        try:
+            return self.playerdb.get_id(name)
+        except KeyError:
+            self.missing_ids.add(name)
+            return UNKNOWN_COCO_ID
 
     def update(self, tournament):
         for s in tournament.sections:
             for p in s.get_players():
                 self.players[p.name] = PlayerRecord.from_tournament_player(p)
                 self.report[p.name][tournament.name] = (
-                    PlayerReport.from_tournament_player(p, self.playerdb)
+                    PlayerReport.from_tournament_player(p, self.coco_id_for(p.name))
                 )
 
     def adjust_tournament(self, tournament):

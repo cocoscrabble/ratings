@@ -7,6 +7,8 @@ rated as unrated from their own results. Nothing should crash when the file is
 absent (see pipeline.process_old_results, which passes ratings_file=None).
 """
 
+import contextlib
+import io
 import tempfile
 import unittest
 from datetime import datetime
@@ -14,7 +16,7 @@ from pathlib import Path
 
 from coco_ratings.players import PlayerDB
 from coco_ratings.rating import PlayerList, Tournament
-from coco_ratings.ratingsdb import RatingsDB
+from coco_ratings.ratingsdb import UNKNOWN_COCO_ID, RatingsDB
 
 RESULTS_HEADER = "Submitted On,Round,Winner,Winners Score,Opponent,Opponents Score\n"
 
@@ -110,6 +112,8 @@ class MissingRatingsFileTest(unittest.TestCase):
             self.t1_ratings, self.t1_results, "t1", datetime(2024, 1, 1)
         )
         db.process_one_tournament(t2_ratings, results, "t2", datetime(2024, 2, 1))
+        # Kept for the tests that inspect the db itself, not just the ratings.
+        self.db = db
         return {n: r.rating for n, r in db.players.items()}
 
     def test_ratings_file_with_only_new_players(self):
@@ -131,6 +135,18 @@ class MissingRatingsFileTest(unittest.TestCase):
         # every rating, so the minimal file is genuinely doing its job.
         from_empty = self._replay_with_newcomer(None)
         self.assertNotEqual(from_only_new["carol"], from_empty["carol"])
+
+    def test_name_missing_from_playerdb_is_collected_not_printed(self):
+        # carol is rated but has no row in the PlayerDB (i.e. data/players.csv).
+        # She gets the stand-in id, and her name is remembered once so the
+        # caller can report it, rather than printed per player per tournament.
+        with contextlib.redirect_stdout(io.StringIO()) as out:
+            self._replay_with_newcomer(None)
+        self.assertEqual(out.getvalue(), "")
+        self.assertEqual(self.db.missing_ids, {"carol"})
+        self.assertEqual(self.db.report["carol"]["t2"].coco_id, UNKNOWN_COCO_ID)
+        # Players who do have a row get their real id and are not flagged.
+        self.assertEqual(self.db.report["alice"]["t2"].coco_id, "0001")
 
 
 if __name__ == "__main__":

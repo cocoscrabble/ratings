@@ -55,7 +55,7 @@ def _row(*values):
 
 def generate_snapshot():
     """Replay the pinned tournaments and render a canonical, sorted snapshot."""
-    ratingsdb, _ = all_rating.process_old_results(until=GOLDEN_CUTOFF)
+    ratingsdb, _ = all_rating.process_old_results(until=GOLDEN_CUTOFF, quiet=True)
 
     lines = ["=== COMPLETE RATINGS LIST ===", _row("Name", "Rating", "Deviation", "Games")]
     for p in sorted(ratingsdb.players.values(), key=lambda p: (-p.rating, p.name)):

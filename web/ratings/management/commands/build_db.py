@@ -27,7 +27,11 @@ class Command(BaseCommand):
     help = "Rebuild the ratings projection from the results/ folder."
 
     def handle(self, *args, **options):
-        ratingsdb, _ = process_old_results()
+        # Standard Django convention: -v 0 means no output at all. That covers
+        # the engine's own warnings too, which are otherwise printed straight to
+        # stdout and swamp the test runner (tests rebuild several times).
+        verbosity = options["verbosity"]
+        ratingsdb, _ = process_old_results(quiet=verbosity < 1)
         entries = {
             t.filename: t for t in TournamentDB.read_csv().tournaments if t.filename
         }
@@ -45,6 +49,9 @@ class Command(BaseCommand):
             tournaments = self._build_tournaments(ratingsdb, entries)
             self._build_current_ratings(ratingsdb, matched)
             self._build_results(ratingsdb, matched, tournaments)
+
+        if verbosity < 1:
+            return
 
         self.stdout.write(
             self.style.SUCCESS(
