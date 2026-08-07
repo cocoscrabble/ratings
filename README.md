@@ -49,6 +49,9 @@ idempotent, so re-running or re-pushing is always safe.
 
 Then check the tournament at <https://cocodb.cocoscrabble.org/ratings/>.
 
+If GitHub Actions is down (or the deploy otherwise does not happen), you can
+deploy by hand from a checkout instead — see "Deploying by hand" below.
+
 **Names must match exactly**, character for character, across the results file,
 the ratings file and `data/players.csv`. Player identity is the name string, so
 a typo or a changed spelling does not raise an error, it silently creates a
@@ -58,6 +61,32 @@ the site, a name mismatch is the first thing to check.
 Correcting a past tournament works the same way: every rating is recomputed from
 the entire history on each run, so fixing a result file and pushing re-rates
 everything that followed it.
+
+### Deploying by hand
+
+Normally you never need this: pushing to `main` deploys. But when GitHub Actions
+is unavailable, `scripts/deploy.sh` does the same job from your machine — it runs
+the test suites and then pushes your commit straight to the Dokku server, which
+re-seeds the players and rebuilds the ratings database exactly as an automatic
+deploy would.
+
+```bash
+make deploy               # or: ./scripts/deploy.sh
+```
+
+You need SSH access to the Dokku host as the `dokku` user; the script adds the
+git remote itself. Useful variants:
+
+```bash
+./scripts/deploy.sh --skip-tests   # deploy now, skip the suites
+./scripts/deploy.sh --rebuild      # don't deploy code, just rebuild the site's DB
+./scripts/deploy.sh --force        # non-fast-forward push (e.g. after a revert)
+```
+
+Two things to watch for. Only *committed* work is deployed — the script warns
+about a dirty tree, because uncommitted changes are the usual reason a deploy
+looks like it did nothing. And a manual deploy does not touch GitHub, so push to
+`origin` as well once Actions is back, or the repo and the live site drift apart.
 
 ### Running it locally
 

@@ -266,6 +266,14 @@ always has the source of truth.
   `main`, deploys to Dokku via `dokku/github-action`. One-time setup: add the
   deploy key as GH secret `DOKKU_SSH_PRIVATE_KEY` and its public half to Dokku
   (`dokku ssh-keys:add github <pubkey>`).
+- **Manual deploy** (`scripts/deploy.sh`, `make deploy`) — the fallback when
+  Actions is unavailable. Same steps as the CI deploy job, run locally: the test
+  suites, then `git push <dokku remote> HEAD:main`, which triggers the Procfile
+  release phase on the server. `--skip-tests`, `--force`, and `--rebuild` (no
+  push; `ps:rebuild` to re-run release + `build_db` against deployed code).
+  Needs SSH access as `dokku@$DOKKU_HOST`; host/app/remote names are env-var
+  overridable. Note it deploys the *committed* HEAD and bypasses GitHub, so
+  `origin` must be pushed separately.
 - **First-time provisioning** (from `../vps`, playbooks are idempotent):
   `new-app.yml -e app_name=cocodb` (app + Postgres + domain + LE),
   `configure-app.yml -e app_name=cocodb` (env + builder + ports),
