@@ -36,6 +36,8 @@ web/                    # Django site (two apps; see "Web site" below)
     ratings/            # computed-ratings projection: build_db + Tournament/CurrentRating/…
     static/             # players app css/js/logo
 scripts/                # standalone / experimental scripts (not core)
+    deploy.sh           # manual deploy (see "Deployment" below)
+    rating_history.py   # git archaeology: which commits moved ratings
 tests/                  # engine unittest suite, incl. golden-master test
 data/  results/  docs/  testdata/   # kept at repo root
 # data/players.csv — the single player-identity list (Name,Number): the
@@ -288,6 +290,39 @@ always has the source of truth.
   live in `io.py`. Extension determines the parser, so name files correctly.
 - Player identity is by exact name string across all files — name mismatches
   create phantom unrated players, so consistency matters.
+
+## Rating archaeology (`scripts/rating_history.py`)
+
+Answers "did this commit change anyone's rating?" — which cannot be read off a
+diff, because ratings keep no persisted state and are recomputed by replaying
+the whole corpus. The tool walks every commit that touched a `.py` file,
+materialises that commit's tree *and* its parent's with `git archive` (so a
+dirty checkout is fine), replays both, and diffs the ratings lists.
+
+`docs/rating-history.md` is the committed run over the full history. Of 200
+commits touching `.py`, **four** ever moved a rating: bye handling
+(`da077423a3`), forfeit handling (`906445ab82`), applying the inactivity
+deviation adjustment in the carry-forward (`546051b407`), and the switch to
+real tournament dates (`c5aa5ff05a`).
+
+Two traps, both already handled — do not "simplify" them away:
+
+- **The editable install.** `.venv/…/__editable__.coco_ratings-0.1.0.pth` puts
+  the live `src/` on `sys.path`, so `import coco_ratings` succeeds for *any*
+  tree, including every commit predating the src layout. Those commits then get
+  evaluated as HEAD and the tool reports that nothing ever changed. The replay
+  subprocess therefore runs with `-S -E`, and the driver rejects a module whose
+  `__file__` is outside the extracted tree.
+- **The tournament list used to be code.** Until `c5aa5ff05a` (2025-11-16) it
+  lived in `all_rating.py`, so adding a tournament was a `.py` change. Those
+  commits move ratings without touching the maths, so the `.py` diff is
+  classified and they are reported in a separate section.
+
+Entry points are probed newest-first (`coco_ratings.pipeline` → `pipeline` →
+`all_rating` → `rating`), since the module moved four times. Commits with no
+replay at all — 2021, which predates `process_old_results`, and the merged-in
+`cocodb` Django history — are listed as not replayable rather than skipped.
+`--cache` makes re-rendering free; `--commit SHA` reports one commit in full.
 
 ## Notes
 
