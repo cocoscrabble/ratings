@@ -20,9 +20,14 @@ class Tournament(models.Model):
     division = models.CharField(max_length=100, blank=True)
     city = models.CharField(max_length=200, blank=True)
     date = models.DateField()
+    # Tie-break for same-day tournaments, from tournaments.csv's Order column.
+    # The engine rates them in this order, so the site must display them in it
+    # too — otherwise a player's history shows one row's new_rating not
+    # matching the next row's old_rating.
+    order = models.IntegerField(default=0)
 
     class Meta:
-        ordering = ["date", "filename"]
+        ordering = ["date", "order", "filename"]
 
     @property
     def slug(self):

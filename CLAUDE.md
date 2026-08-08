@@ -176,7 +176,19 @@ hand-pasted `0233` is the same player, not a second one. The engine renders ids
 padded; the site displays `Player.padded_number` and keys/URLs stay bare.
 `TournamentDB`
 (`data/tournaments.csv`) is the chronological list that drives the replay; its
-`Filename` column is the prefix used to locate result/rating files.
+`Filename` column is the prefix used to locate result/rating files. Columns are
+`FancyName, Division, City, Name, Tournament, Filename, Date, Order` — `Date` is
+`yyyy-mm-dd` and is the only source of the date (the old redundant `Month`,
+`Day`, `Year` columns are gone).
+
+Entries sort by `(date, sort_order, filename)`. **`Order` exists because the
+replay order is part of the result**: ratings carry forward, so two tournaments
+on the same day that share players give different ratings depending on which is
+rated first, and the date cannot express that. Blank `Order` is 0, so rows that
+don't need it keep sorting by filename exactly as before. `ratings.Tournament`
+mirrors the field so the site's chronology matches the rating order; a player
+page ordered any other way would show one row's `new_rating` not matching the
+next row's `old_rating`.
 
 **`paths.py`** — resolves `data/` and `results/` relative to the project root
 (via `__file__`), so the pipeline works from any working directory. If you move
@@ -286,6 +298,9 @@ always has the source of truth.
 - **Results CSV** columns: `Submitted On, Round, Winner, Winners Score, Opponent, Opponents Score` (header row is skipped).
 - **Ratings CSV** columns: `Name, Rating, Email` (rating `0` ⇒ unrated). Optional
   per tournament (see `results/` above); when present it only seeds first-timers.
+- **`data/tournaments.csv`** columns: `FancyName, Division, City, Name,
+  Tournament, Filename, Date, Order` — `Date` is `yyyy-mm-dd`; `Order` breaks
+  ties between same-day tournaments (see `TournamentDB` above).
 - `.tou` and `.RT` are legacy AUPAIR formats supported for interop; readers/writers
   live in `io.py`. Extension determines the parser, so name files correctly.
 - Player identity is by exact name string across all files — name mismatches

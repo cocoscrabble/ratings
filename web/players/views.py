@@ -159,7 +159,7 @@ def player_detail(request, number, slug=None):
     results = (
         TournamentResult.objects.filter(player=player)
         .select_related("tournament")
-        .order_by("-tournament__date", "tournament__filename")
+        .order_by("-tournament__date", "-tournament__order", "tournament__filename")
     )
     return render(
         request,

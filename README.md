@@ -22,12 +22,25 @@ you should not have to create it by hand.
 
 **2. Add a row to `data/tournaments.csv`**, whose `Filename` column must be
 exactly the `<prefix>` you used above — that is how the results file is found.
-The tournament's date comes from the `Month`, `Day` and `Year` columns:
+`Date` is `yyyy-mm-dd`:
 
 ```
-FancyName,Division,City,Month,Day,Year,Name,Tournament,Filename,Date
-Word Cup,EB,Williamsburg,7,31,2026,,,wordcup-2026-eb,2026-07-31
+FancyName,Division,City,Name,Tournament,Filename,Date,Order
+Word Cup,EB,Williamsburg,,,wordcup-2026-eb,2026-07-31,
 ```
+
+Leave `Order` blank unless **two tournaments share a date**. Ratings are carried
+forward from one tournament to the next, so if a player appears in both, the
+order they are rated in changes the answer — and a date alone cannot say which
+came first. When that happens, number the events of that day `1`, `2`, `3` …:
+
+```
+Word Cup,D1,Williamsburg,,,wordcup-2026-d1,2026-08-05,1
+Word Cup,D2,Williamsburg,,,wordcup-2026-d2,2026-08-05,2
+```
+
+Same-day rows that leave `Order` blank fall back to sorting by filename, which
+is arbitrary — fine when no player played in both, wrong when someone did.
 
 **3. Add any players who have never played before** to `data/players.csv`
 (`Name,Number`), using their CoCo player number. Either `233` or `0233` works,

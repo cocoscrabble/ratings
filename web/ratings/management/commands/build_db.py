@@ -81,6 +81,7 @@ class Command(BaseCommand):
                 division=e.division,
                 city=e.city,
                 date=datetime.strptime(e.date, "%Y-%m-%d").date(),
+                order=e.sort_order,
             )
         return tournaments
 

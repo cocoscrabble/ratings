@@ -21,7 +21,7 @@ def ratings_list(request):
 
 
 def tournament_list(request):
-    tournaments = Tournament.objects.order_by("-date", "filename")
+    tournaments = Tournament.objects.order_by("-date", "-order", "filename")
     return render(
         request,
         "ratings/tournament_list.html",
