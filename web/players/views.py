@@ -1,10 +1,11 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db import connection
 from django.db.models import F
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+
+from accounts.decorators import staff_required
 
 from .forms import PlayerForm
 from .models import Player
@@ -169,18 +170,18 @@ def player_detail(request, number, slug=None):
 
 
 # ---------------------------------------------------------------------------
-# Manage views (login required)
+# Manage views (staff only)
 # ---------------------------------------------------------------------------
 
 MANAGE_PAGE_SIZE = 50
 
 
-@login_required
+@staff_required
 def manage_redirect(request):
     return redirect("manage_players")
 
 
-@login_required
+@staff_required
 def manage_players(request):
     qs = _with_current_rating(Player.objects.all())
     query = request.GET.get("q", "").strip()
@@ -195,7 +196,7 @@ def manage_players(request):
     )
 
 
-@login_required
+@staff_required
 def manage_player_add(request):
     form = PlayerForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
@@ -207,7 +208,7 @@ def manage_player_add(request):
     )
 
 
-@login_required
+@staff_required
 def manage_player_edit(request, pk):
     player = get_object_or_404(Player, pk=pk)
     form = PlayerForm(request.POST or None, instance=player)
@@ -222,7 +223,7 @@ def manage_player_edit(request, pk):
     )
 
 
-@login_required
+@staff_required
 def manage_import(request):
     """Import / update player identity (name, number) from a CSV upload."""
     from players.management.commands.import_csv import (

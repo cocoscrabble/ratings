@@ -20,7 +20,7 @@ jobs:
           SKIP_GOLDEN: "1"
         run: uv run python -m unittest
       - name: Web/DB tests
-        run: uv run python web/manage.py test players ratings
+        run: uv run python web/manage.py test accounts players ratings
       - name: Lint
         run: uv run ruff check .
 

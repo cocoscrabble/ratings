@@ -82,7 +82,7 @@ if [ "$skip_tests" = 0 ]; then
   uv run python -m unittest
 
   say "Web/DB tests"
-  uv run python web/manage.py test players ratings
+  uv run python web/manage.py test accounts players ratings
 
   say "Lint"
   uv run ruff check .

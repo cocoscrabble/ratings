@@ -76,6 +76,36 @@ a:hover {
   text-decoration: none;
 }
 
+/* Log out is a POST form (Django 5+ dropped GET logout); style its button as
+   one more nav item so the form is invisible to the reader. */
+.logout-form {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin: 0;
+}
+
+.manage-user {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.linklike {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  color: var(--text-muted);
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.linklike:hover {
+  color: var(--text);
+}
+
 /* --- Main content --- */
 .main-content {
   max-width: 720px;

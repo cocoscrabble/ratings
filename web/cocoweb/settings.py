@@ -9,12 +9,25 @@ import os
 import sys
 from pathlib import Path
 
+from django.core.exceptions import ImproperlyConfigured
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Env var names match the VPS Ansible convention (configure-app.yml sets
 # SECRET_KEY / ALLOWED_HOSTS / CSRF_TRUSTED_ORIGINS / DEBUG unprefixed).
-SECRET_KEY = os.environ.get("SECRET_KEY", "dev-insecure-key-change-me")
+DEV_SECRET_KEY = "dev-insecure-key-change-me"
+SECRET_KEY = os.environ.get("SECRET_KEY", DEV_SECRET_KEY)
 DEBUG = os.environ.get("DEBUG", "True") == "True"
+
+# The secret key signs session cookies, so with the dev fallback in place
+# anyone can forge a staff session. ../vps configure-app.yml sets SECRET_KEY,
+# but a missing one must fail loudly rather than quietly serve a public site
+# with a key that is in this file. Raised during release (migrate), which
+# aborts the deploy and leaves the running version up.
+if not DEBUG and SECRET_KEY == DEV_SECRET_KEY:
+    raise ImproperlyConfigured(
+        "SECRET_KEY must be set in the environment when DEBUG is False."
+    )
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
 CSRF_TRUSTED_ORIGINS = [
     o for o in os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",") if o
@@ -27,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "accounts",
     "players",
     "ratings",
 ]
@@ -110,7 +124,30 @@ STORAGES = {
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# Auth for the players /manage section.
+# A custom user model from the start, so later additions (profile fields, or
+# switching the login identity to email) are ordinary migrations instead of a
+# swap of AUTH_USER_MODEL on a populated database. See accounts/models.py.
+AUTH_USER_MODEL = "accounts.User"
+
+# Auth for the players /manage section. Note /manage is gated on is_staff, not
+# merely on being logged in (accounts.decorators.staff_required).
 LOGIN_URL = "/manage/login/"
 LOGIN_REDIRECT_URL = "/manage/players/"
 LOGOUT_REDIRECT_URL = "/"
+
+# There is no mail service configured for this deployment, so there is no
+# self-service password reset: a superuser resets passwords in /django-admin/.
+# Wiring one up later means setting EMAIL_* here and adding Django's
+# PasswordReset* views to players/urls.py.
+
+# Session cookies carry staff privileges, so outside of dev they must never
+# travel in clear text. Dokku terminates TLS and forwards the original scheme,
+# which is what lets Django tell an HTTPS request from an HTTP one.
+if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 3600
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    X_FRAME_OPTIONS = "DENY"

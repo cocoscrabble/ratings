@@ -1,6 +1,8 @@
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 
+from accounts.forms import StaffAuthenticationForm
+
 from . import views
 
 urlpatterns = [
@@ -17,7 +19,10 @@ urlpatterns = [
     path("manage/", views.manage_redirect, name="manage_redirect"),
     path(
         "manage/login/",
-        LoginView.as_view(template_name="players/manage_login.html"),
+        LoginView.as_view(
+            template_name="players/manage_login.html",
+            authentication_form=StaffAuthenticationForm,
+        ),
         name="manage_login",
     ),
     path("manage/logout/", LogoutView.as_view(), name="manage_logout"),

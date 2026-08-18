@@ -15,7 +15,7 @@ run:
 # Run all tests: the engine's unittest suite and both Django apps' suites.
 test:
 	uv run --extra web python -m unittest
-	uv run --extra web python web/manage.py test players ratings
+	uv run --extra web python web/manage.py test accounts players ratings
 
 # Manual deploy: test, then push straight to Dokku. Only needed when GitHub
 # Actions is unavailable — normally a push to main deploys by itself.

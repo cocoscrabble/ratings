@@ -29,9 +29,10 @@ src/coco_ratings/       # the importable package
     players.py          # PlayerDB   (name <-> CoCo id)
     tournaments.py      # TournamentDB (chronological driver)
     paths.py            # anchors data/ and results/ to the project root
-web/                    # Django site (two apps; see "Web site" below)
+web/                    # Django site (three apps; see "Web site" below)
     manage.py
     cocoweb/            # Django project (settings, urls, wsgi)
+    accounts/           # site accounts: custom User model + the staff gate
     players/            # player identity: search, /manage CRUD, CSV import
     ratings/            # computed-ratings projection: build_db + Tournament/CurrentRating/…
     static/             # players app css/js/logo
@@ -71,7 +72,7 @@ uv sync --extra web                    # install Django (+ gunicorn)
 uv run python web/manage.py migrate    # apply schema
 uv run python web/manage.py import_csv --current data/players.csv  # seed players
 uv run python web/manage.py build_db   # rebuild the ratings projection from results/
-uv run python web/manage.py test players ratings   # both apps' suites
+uv run python web/manage.py test accounts players ratings  # all three apps
 uv run python web/manage.py runserver  # browse locally (or: make run)
 
 # Rate the full history. The named file gets the LATEST tournament's per-player
@@ -194,11 +195,48 @@ next row's `old_rating`.
 (via `__file__`), so the pipeline works from any working directory. If you move
 the package depth, fix `PROJECT_ROOT = parents[2]` here.
 
-### Web site (`web/`) — two apps, one identity
+### Web site (`web/`) — three apps, one identity
 
-One Django site (deployed as the `cocodb` Dokku app) with two apps sharing a
+One Django site (deployed as the `cocodb` Dokku app) with three apps sharing a
 single player identity. `../cocodb` was merged in here — its history is preserved
 in this repo's log.
+
+**`accounts`** — who can log in. `AUTH_USER_MODEL = "accounts.User"`, an
+`AbstractUser` subclass, so later changes (profile fields, or moving the login
+identity to email) are ordinary migrations rather than a swap of the user model
+on a populated database. It carries a nullable `player` OneToOne to
+`players.Player`, which is the hook for the planned **regular users** — people
+with an account who are linked to their own player row.
+
+That link is *only* a link and confers no rights over the `Player` row.
+`build_db` matches computed players to `players.Player` **by name**, so a
+self-service rename would silently orphan that player's entire tournament
+history; name and number stay staff-owned. Anything a user may edit about
+themselves belongs on the user, not on the player.
+
+Two kinds of account exist:
+
+- **Staff** (`is_staff`) — administrators. `/manage` is gated on this flag by
+  `accounts.decorators.staff_required`, **not** on `login_required`. The
+  distinction is load-bearing: `/manage` rewrites player identity and bulk-imports
+  the player list, so the moment a non-staff account exists, `login_required`
+  would hand it those powers. Anonymous visitors are redirected to login; a
+  logged-in non-staff user gets a 403 (redirecting would loop). `/manage/login/`
+  uses `StaffAuthenticationForm`, which refuses a correct non-staff password
+  rather than granting a session that 403s everywhere.
+- **Regular users** — not built yet. Nothing blocks them; the gate and the link
+  are in place.
+
+Accounts are managed in `/django-admin/` (superuser-only): creating staff,
+resetting passwords, and linking an account to a player. There is no mail service
+configured, so there is **no self-service password reset** — a superuser resets
+them. Adding one later means setting `EMAIL_*` in settings and wiring Django's
+`PasswordReset*` views.
+
+`accounts/tests.py` is the access-control matrix (anonymous / non-staff / staff /
+inactive, over every `/manage` URL). `test_all_manage_urls_are_covered` fails if a
+new `manage/` URL is added without being gated, so a new admin view cannot
+quietly ship open.
 
 **`players`** — the canonical player **identity** (from cocodb): `Player`
 (`player_number` unique, `name`). This is **persistent data**, managed via the
@@ -230,13 +268,19 @@ player search at `/`, `/manage/…`, and the player page at
 slug is decorative and a stale/absent slug 301-redirects to canonical). Computed
 ratings under `/ratings/` (`ratings:` names); tournament pages at
 `/ratings/tournament/<slug>/` where the slug is the tournament `filename` (already
-a unique, hyphenated identifier). Admin at `/django-admin/`.
+a unique, hyphenated identifier). Admin at `/django-admin/`; login at
+`/manage/login/`, logout is POST-only (Django 5+ dropped GET logout, so the
+templates use a form, not a link).
 
 Django is an optional `web` extra (`uv sync --extra web`); the `coco_ratings`
 engine stays dependency-free. Prod uses Postgres via `DATABASE_URL`; SQLite
 locally. The hashed/manifest static backend is used only in prod (collectstatic
 runs in the Docker build); dev/tests use plain storage. Run `manage.py test
-players ratings` for both apps (bare `manage.py test` misses `web/` apps).
+accounts players ratings` for all three apps (bare `manage.py test` misses `web/`
+apps). Outside DEBUG, settings refuse to start on the dev `SECRET_KEY` fallback
+(it signs session cookies, so it would make staff sessions forgeable) and turn on
+`SECURE_SSL_REDIRECT` / secure cookies / HSTS; the Dockerfile's `collectstatic`
+therefore passes a throwaway key, since it serves no requests.
 
 **`results/`** — the historical corpus. Each tournament has a
 `<prefix>-results.{csv,tsv}` and an **optional** `<prefix>-ratings.{csv,tsv}`.
@@ -272,6 +316,11 @@ always has the source of truth.
   so it never disturbs edits made through `/manage`. A row it rejects raises
   `CommandError`, which fails the release and aborts the deploy, leaving the
   running version up; `players.SeedFileImportTest` guards the file in CI.
+- **One-time DB step** — the switch to `AUTH_USER_MODEL = "accounts.User"` cannot
+  be applied to a database already migrated against `auth.User`; the release
+  phase stops with `InconsistentMigrationHistory` and Dokku aborts the deploy
+  (running version stays up). `docs/auth-migration.md` is the tested procedure —
+  it preserves existing accounts and password hashes.
 - **Env vars** are set by `../vps` `configure-app.yml`: `SECRET_KEY`,
   `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS`, `DEBUG` (settings read these
   unprefixed names). `cocodb_builder: dockerfile` and `cocodb_ports` are in the

@@ -13,9 +13,15 @@
       <img src="{% static 'img/logo.png' %}" alt="Coco Scrabble" class="site-logo">
     </a>
     <nav class="manage-nav">
-      <a href="/manage/players/">Players</a>
-      <a href="/manage/import/">Import</a>
-      <a href="/manage/logout/">Log out</a>
+      <a href="{% url 'manage_players' %}">Players</a>
+      <a href="{% url 'manage_import' %}">Import</a>
+      <a href="/django-admin/">Accounts</a>
+      {# Logout is POST-only (Django 5+), so it needs a form, not a link. #}
+      <form method="post" action="{% url 'manage_logout' %}" class="logout-form">
+        {% csrf_token %}
+        <span class="manage-user">{{ user.get_username }}</span>
+        <button type="submit" class="linklike">Log out</button>
+      </form>
     </nav>
   </header>
 

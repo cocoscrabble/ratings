@@ -22,7 +22,11 @@ ENV PATH="/app/.venv/bin:$PATH" \
 # DEBUG=False so this uses the manifest storage backend and writes
 # staticfiles.json — runtime (DEBUG=False) requires it, and without it every
 # {% static %} render 500s. DEBUG defaults to True, so it must be forced here.
-RUN DEBUG=False python web/manage.py collectstatic --noinput
+# SECRET_KEY is required whenever DEBUG=False (settings.py refuses the dev
+# fallback in production). Nothing is signed here — collectstatic serves no
+# requests — so a throwaway value is correct; the real key comes from the
+# Dokku config at runtime.
+RUN DEBUG=False SECRET_KEY=build-time-only-never-serves-requests python web/manage.py collectstatic --noinput
 
 EXPOSE 8000
 
