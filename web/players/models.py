@@ -10,17 +10,21 @@ player_number_validator = RegexValidator(
 
 
 def canonical_player_number(value):
-    """Normalize a player number to the bare form used as the identity key.
+    """Normalize a player number to the canonical zero-padded form (``0233``).
 
     The same number is written both ways in practice: bare (``233``) in
-    data/players.csv, in URLs and in the DB; zero-padded (``0233``) in the
-    engine's reports and older exports. They mean one player, but
-    ``player_number`` is a *string* key, so storing both forms would silently
-    create two identities — everything that can create or look up a Player
-    normalizes here first. Display uses :attr:`Player.padded_number`.
+    data/players.csv and in URLs, zero-padded (``0233``) in the engine's
+    reports and older exports. They mean one player, but ``player_number`` is
+    a *string* key, so storing both forms would silently create two
+    identities. Everything that creates or looks up a Player normalizes here
+    first, so which form is canonical is a storage detail — but there must be
+    exactly one, and it is the padded one.
+
+    Note the ``int()`` before padding: it collapses over-padded input
+    (``00233``) onto the same key rather than producing a third spelling.
     """
     value = str(value).strip()
-    return str(int(value)) if value.isdigit() else value
+    return str(int(value)).zfill(4) if value.isdigit() else value
 
 
 class Player(models.Model):
@@ -34,17 +38,28 @@ class Player(models.Model):
     class Meta:
         ordering = ["name"]
 
+    def save(self, *args, **kwargs):
+        """Normalize on the way in, so the stored key is canonical by construction.
+
+        The form and import_csv both normalize, but ``Player.objects.create``,
+        the admin and the shell did not — and one un-normalized write is enough
+        to split a person into two identities. (``bulk_create`` still bypasses
+        this, as it bypasses ``save`` generally.)
+        """
+        self.player_number = canonical_player_number(self.player_number)
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.name} (#{self.player_number})"
 
     @property
     def padded_number(self):
-        """The number as displayed: zero-padded to four digits (``0233``).
+        """Alias for :attr:`player_number`, which is itself padded now.
 
-        Presentation only — the stored key and the URL stay bare, so existing
-        links keep working. See :func:`canonical_player_number`.
+        Kept because templates and the search JSON both refer to it; dropping
+        it would break the JS for no gain.
         """
-        return self.player_number.zfill(4)
+        return self.player_number
 
     @property
     def slug(self):
@@ -53,9 +68,12 @@ class Player(models.Model):
 
     def get_absolute_url(self):
         # URL is anchored on the unique player_number; the slug is for readability.
+        # The URL keeps the bare form even though storage is padded, so every
+        # link that already exists stays canonical. Lookups normalize, so both
+        # /player/1/ and /player/0001/ resolve to the same player.
         return reverse(
             "player_detail",
-            kwargs={"number": self.player_number, "slug": self.slug},
+            kwargs={"number": int(self.player_number), "slug": self.slug},
         )
 
     @property

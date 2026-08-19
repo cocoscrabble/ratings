@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from accounts.decorators import staff_required
 
 from .forms import PlayerForm
-from .models import Player
+from .models import Player, canonical_player_number
 
 # ---------------------------------------------------------------------------
 # Query helpers
@@ -147,7 +147,9 @@ def player_detail(request, number, slug=None):
     Looked up by the unique player_number; the slug is decorative. HTML requests
     with a missing/stale slug 301-redirect to the canonical URL.
     """
-    player = get_object_or_404(Player, player_number=str(number))
+    # `number` arrives as an int from the URL converter, so it must be
+    # normalized to the stored (padded) key — str(1) would not match "0001".
+    player = get_object_or_404(Player, player_number=canonical_player_number(number))
 
     if _wants_json(request):
         return JsonResponse(_player_data(player))

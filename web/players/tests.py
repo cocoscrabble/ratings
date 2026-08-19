@@ -90,14 +90,15 @@ class SeedFileImportTest(TestCase):
         self.assertEqual(skipped, len(rows))
         self.assertEqual(Player.objects.count(), len(rows))
 
-    def test_numbers_are_stored_bare(self):
+    def test_numbers_are_stored_padded(self):
         """player_number is a string key, so "0233" and "233" would be *different*
-        players. Prod holds the bare form and it appears in player URLs, so
-        everything normalizes to bare on the way in."""
+        players. Everything normalizes to the padded form on the way in, so the
+        seed file (written bare) must land padded and four characters wide."""
         import_players_rows(read_csv_rows(PLAYERS_CSV))
 
-        padded = Player.objects.filter(player_number__startswith="0")
-        self.assertEqual(list(padded), [])
+        numbers = Player.objects.values_list("player_number", flat=True)
+        self.assertTrue(numbers)
+        self.assertEqual({len(n) for n in numbers}, {4})
 
 
 class PlayerNumberFormTest(TestCase):
@@ -113,7 +114,7 @@ class PlayerNumberFormTest(TestCase):
             [{"Name": "Padded Person", "Number": "0233"}]
         )
         self.assertEqual((imported, errors), (1, []))
-        self.assertEqual(Player.objects.get().player_number, "233")
+        self.assertEqual(Player.objects.get().player_number, "0233")
 
         # The same person written bare must update, not duplicate.
         imported, skipped, errors = import_players_rows(
@@ -123,28 +124,49 @@ class PlayerNumberFormTest(TestCase):
         self.assertEqual(Player.objects.count(), 1)
 
     def test_form_normalizes_padded_input(self):
-        form = PlayerForm(data={"player_number": "0233", "name": "Padded Person"})
+        form = PlayerForm(data={"player_number": "233", "name": "Padded Person"})
         self.assertTrue(form.is_valid(), form.errors)
-        self.assertEqual(form.save().player_number, "233")
+        self.assertEqual(form.save().player_number, "0233")
+
+    def test_form_rejects_a_duplicate_written_the_other_way(self):
+        """Typing the bare form of an existing padded player is a duplicate,
+        not a new person — uniqueness is checked after normalizing."""
+        Player.objects.create(player_number="0233", name="Padded Person")
+        form = PlayerForm(data={"player_number": "233", "name": "Impostor"})
+        self.assertFalse(form.is_valid())
+        self.assertIn("player_number", form.errors)
 
     def test_canonical_player_number(self):
         for raw, expected in [
-            ("0233", "233"),
-            ("233", "233"),
-            (" 0007 ", "7"),
-            ("0000", "0"),
+            ("0233", "0233"),
+            ("233", "0233"),
+            (" 7 ", "0007"),
+            ("00233", "0233"),  # over-padded collapses onto the same key
+            ("0000", "0000"),
+            ("1234", "1234"),
             ("", ""),  # left alone rather than crashing; the validator rejects it
         ]:
             self.assertEqual(canonical_player_number(raw), expected, raw)
 
-    def test_padded_number_is_display_only(self):
-        """Display pads; the stored key and the URL stay bare so links survive."""
-        p = Player.objects.create(player_number="233", name="Padded Person")
+    def test_padded_number_matches_the_stored_key(self):
+        """padded_number survives as an alias for templates and the JSON API."""
+        p = Player.objects.create(player_number="0233", name="Padded Person")
         self.assertEqual(p.padded_number, "0233")
-        self.assertEqual(p.player_number, "233")
+        self.assertEqual(p.player_number, "0233")
+
+    def test_url_keeps_the_bare_number(self):
+        """Storage padded, URLs bare — so links made before the change stay
+        canonical and do not start 301-redirecting."""
+        p = Player.objects.create(player_number="0233", name="Padded Person")
         self.assertEqual(p.get_absolute_url(), "/player/233/padded-person/")
 
+    def test_both_url_forms_resolve(self):
+        Player.objects.create(player_number="0233", name="Padded Person")
+        for url in ("/player/233/padded-person/", "/player/0233/padded-person/"):
+            with self.subTest(url=url):
+                self.assertEqual(self.client.get(url).status_code, 200)
+
     def test_detail_page_shows_padded_number(self):
-        Player.objects.create(player_number="233", name="Padded Person")
+        Player.objects.create(player_number="0233", name="Padded Person")
         html = self.client.get("/player/233/padded-person/").content.decode()
         self.assertIn("#0233", html)

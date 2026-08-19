@@ -13,15 +13,18 @@ from django.test import TestCase
 from django.urls import reverse
 
 from coco_ratings.pipeline import process_old_results
-from players.models import Player
+from players.models import Player, canonical_player_number
 
 from ratings.models import CurrentRating, Tournament, TournamentResult
 
 
 def seed_players(names):
     """Create a canonical players.Player for each name so build_db matches it."""
+    # bulk_create bypasses Player.save(), so normalize explicitly — the stored
+    # key must be the padded form or lookups by URL will not find these rows.
     Player.objects.bulk_create(
-        Player(player_number=str(i + 1), name=name) for i, name in enumerate(names)
+        Player(player_number=canonical_player_number(i + 1), name=name)
+        for i, name in enumerate(names)
     )
 
 
@@ -91,12 +94,11 @@ class ViewTest(TestCase):
 
     def test_player_url_is_number_and_slug(self):
         player = Player.objects.get(name="Dave Wiegand")
-        self.assertEqual(
-            player.get_absolute_url(),
-            f"/player/{player.player_number}/dave-wiegand/",
-        )
+        # Stored padded, linked bare (see Player.get_absolute_url).
+        bare = int(player.player_number)
+        self.assertEqual(player.get_absolute_url(), f"/player/{bare}/dave-wiegand/")
         # Bare / stale slug 301-redirects to the canonical URL.
-        resp = self.client.get(f"/player/{player.player_number}/")
+        resp = self.client.get(f"/player/{bare}/")
         self.assertRedirects(resp, player.get_absolute_url(), status_code=301)
 
     def test_tournament_list(self):
