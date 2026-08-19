@@ -167,6 +167,45 @@ class StaffLoginTest(TestCase):
         )
 
 
+class NavAdminLinkTest(TestCase):
+    """The public navbar's Admin link.
+
+    It points at /manage/, which redirects anonymous visitors to the login
+    page — that is how an administrator finds the login form. It is hidden
+    from a signed-in non-staff user, for whom it would only ever 403.
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.staff = User.objects.create_user(
+            username="admin", password="pw-admin-1234", is_staff=True
+        )
+        cls.regular = User.objects.create_user(username="ada", password="pw-ada-1234")
+
+    def assertAdminLink(self, present):
+        response = self.client.get(reverse("search_page"))
+        self.assertEqual(response.status_code, 200)
+        assertion = self.assertContains if present else self.assertNotContains
+        assertion(response, f'href="{reverse("manage_redirect")}"')
+
+    def test_shown_to_anonymous_visitors(self):
+        self.assertAdminLink(True)
+
+    def test_shown_to_staff(self):
+        self.client.force_login(self.staff)
+        self.assertAdminLink(True)
+
+    def test_hidden_from_regular_users(self):
+        self.client.force_login(self.regular)
+        self.assertAdminLink(False)
+
+    def test_link_reaches_the_login_page_for_anonymous_visitors(self):
+        """The link is only useful if it actually lands somewhere usable."""
+        response = self.client.get(reverse("manage_redirect"), follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "players/manage_login.html")
+
+
 class UserPlayerLinkTest(TestCase):
     def test_link_is_optional_and_one_to_one(self):
         player = Player.objects.create(player_number="7", name="Grace Hopper")
