@@ -86,3 +86,46 @@ class Player(models.Model):
         from ratings.models import CurrentRating
 
         return CurrentRating.objects.filter(player=self).first()
+
+
+class PlayerDetails(models.Model):
+    """Optional contact and administrative details for a player.
+
+    Separate from :class:`Player` because the two have different lifecycles and
+    different audiences. ``Player`` is identity — the name/number pair that
+    ``build_db`` matches computed ratings against, re-seeded from
+    data/players.csv on every deploy. This is hand-entered admin data that no
+    file reproduces: it exists only here, so it is never rewritten by a deploy
+    and never rebuilt.
+
+    It is also the first **private** data the site stores. Player pages and the
+    search JSON are public, so nothing here may be rendered there — see
+    ``PlayerDetailsPrivacyTest``. Editing is via /django-admin/, which is
+    superuser-only.
+
+    Every field is optional, so a row may legitimately be entirely blank.
+    """
+
+    player = models.OneToOneField(
+        Player,
+        on_delete=models.CASCADE,
+        related_name="details",
+    )
+    country = models.CharField(max_length=100, blank=True)
+    state = models.CharField(max_length=100, blank=True)
+    city = models.CharField(max_length=100, blank=True)
+    email = models.EmailField(blank=True)
+    phone_number = models.CharField(max_length=32, blank=True)
+    payout_preference = models.CharField(
+        max_length=200,
+        blank=True,
+        help_text="How this player prefers to be paid out (free text).",
+    )
+    comments = models.TextField(blank=True)
+
+    class Meta:
+        verbose_name = "player details"
+        verbose_name_plural = "player details"
+
+    def __str__(self):
+        return f"Details for {self.player}"

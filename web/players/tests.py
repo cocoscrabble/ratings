@@ -1,10 +1,12 @@
+from django.core.exceptions import ValidationError
+from django.db.utils import IntegrityError
 from django.test import TestCase
 
 from coco_ratings.paths import PLAYERS_CSV
 
 from players.forms import PlayerForm
 from players.management.commands.import_csv import import_players_rows, read_csv_rows
-from players.models import Player, canonical_player_number
+from players.models import Player, PlayerDetails, canonical_player_number
 from players.views import _search_players
 
 
@@ -170,3 +172,124 @@ class PlayerNumberFormTest(TestCase):
         Player.objects.create(player_number="0233", name="Padded Person")
         html = self.client.get("/player/233/padded-person/").content.decode()
         self.assertIn("#0233", html)
+
+
+class PlayerDetailsTest(TestCase):
+    """The optional contact/admin details attached to a player."""
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.player = Player.objects.create(player_number="233", name="Padded Person")
+
+    def test_every_field_is_optional(self):
+        """A details row with nothing filled in is valid — full_clean must pass.
+
+        blank=True is what the admin form checks; without it an empty row would
+        be rejected there even though the DB would accept it.
+        """
+        details = PlayerDetails(player=self.player)
+        details.full_clean()
+        details.save()
+        for field in (
+            "country",
+            "state",
+            "city",
+            "email",
+            "phone_number",
+            "payout_preference",
+            "comments",
+        ):
+            with self.subTest(field=field):
+                self.assertEqual(getattr(details, field), "")
+
+    def test_round_trips_all_fields(self):
+        PlayerDetails.objects.create(
+            player=self.player,
+            country="Canada",
+            state="Ontario",
+            city="Toronto",
+            email="player@example.com",
+            phone_number="+1 416 555 0134",
+            payout_preference="e-transfer",
+            comments="Prefers afternoon rounds.",
+        )
+        details = self.player.details
+        self.assertEqual(details.city, "Toronto")
+        self.assertEqual(details.email, "player@example.com")
+        self.assertEqual(details.payout_preference, "e-transfer")
+        self.assertEqual(details.comments, "Prefers afternoon rounds.")
+
+    def test_is_one_to_one(self):
+        PlayerDetails.objects.create(player=self.player)
+        with self.assertRaises(IntegrityError):
+            PlayerDetails.objects.create(player=self.player)
+
+    def test_invalid_email_is_rejected(self):
+        """The one field with a format: blank is fine, malformed is not."""
+        details = PlayerDetails(player=self.player, email="not-an-email")
+        with self.assertRaises(ValidationError):
+            details.full_clean()
+
+    def test_deleting_the_player_deletes_the_details(self):
+        PlayerDetails.objects.create(player=self.player, city="Toronto")
+        self.player.delete()
+        self.assertEqual(PlayerDetails.objects.count(), 0)
+
+    def test_a_player_without_details_is_normal(self):
+        """Most players will have no row at all; nothing may assume one exists."""
+        with self.assertRaises(PlayerDetails.DoesNotExist):
+            self.player.details
+
+    def test_survives_an_identity_re_import(self):
+        """import_csv runs on every deploy; it must not disturb these rows."""
+        PlayerDetails.objects.create(player=self.player, city="Toronto")
+        import_players_rows([{"Name": "Padded Person", "Number": "233"}])
+        self.player.refresh_from_db()
+        self.assertEqual(self.player.details.city, "Toronto")
+
+
+class PlayerDetailsPrivacyTest(TestCase):
+    """These fields are private. Player pages and search JSON are public.
+
+    Email, phone and comments are the first personal data the site holds, so
+    this pins the boundary: if someone later adds them to the public template
+    or the JSON serializer, these fail.
+    """
+
+    SECRETS = {
+        "country": "Canada",
+        "state": "Ontario",
+        "city": "Toronto",
+        "email": "player@example.com",
+        "phone_number": "+1 416 555 0134",
+        "payout_preference": "e-transfer",
+        "comments": "Prefers afternoon rounds.",
+    }
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.player = Player.objects.create(player_number="233", name="Padded Person")
+        PlayerDetails.objects.create(player=cls.player, **cls.SECRETS)
+
+    def assertNoSecrets(self, response):
+        body = response.content.decode()
+        for field, value in self.SECRETS.items():
+            with self.subTest(field=field):
+                self.assertNotIn(value, body)
+
+    def test_public_player_page_leaks_nothing(self):
+        response = self.client.get(self.player.get_absolute_url())
+        self.assertEqual(response.status_code, 200)
+        self.assertNoSecrets(response)
+
+    def test_search_json_leaks_nothing(self):
+        response = self.client.get(
+            "/search/?q=Padded", headers={"accept": "application/json"}
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertNoSecrets(response)
+
+    def test_search_page_leaks_nothing(self):
+        response = self.client.get("/?q=Padded")
+        self.assertEqual(response.status_code, 200)
+        self.assertNoSecrets(response)

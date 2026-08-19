@@ -253,6 +253,18 @@ auth-gated `/manage/` CRUD and `import_csv`, and is the FK target for the
 computed ratings. There are no stored ratings here — `Player.current_rating` is a
 property that returns the player's computed rating (`ratings.CurrentRating`).
 Public fuzzy **search** at `/` (Postgres pg_trgm, `icontains` fallback on SQLite).
+
+`PlayerDetails` (1:1, `player.details`) holds optional contact/admin data —
+country, state, city, email, phone, payout preference, comments; every field
+blank-able, so most players have no row at all and nothing may assume one
+exists. It is kept out of `Player` because the lifecycles differ: identity is
+re-seeded from `data/players.csv` on every deploy, whereas this is hand-entered
+and reproduced by no file, so it must never be rewritten by a deploy or a
+rebuild. It is also the site's first **private** data — player pages and the
+search JSON are public, so nothing here may be rendered there;
+`PlayerDetailsPrivacyTest` fails if it ever is. Edited through `/django-admin/`
+as an inline on the player (superuser-only); deliberately *not* in `/manage`,
+which is staff-wide.
 Seed the identity table with: `import_csv --current data/players.csv` — the same
 file the engine reads, so a new player is added in exactly one place (a `Rating`
 column, if present, is ignored).
