@@ -316,11 +316,11 @@ always has the source of truth.
   so it never disturbs edits made through `/manage`. A row it rejects raises
   `CommandError`, which fails the release and aborts the deploy, leaving the
   running version up; `players.SeedFileImportTest` guards the file in CI.
-- **One-time DB step** — the switch to `AUTH_USER_MODEL = "accounts.User"` cannot
-  be applied to a database already migrated against `auth.User`; the release
-  phase stops with `InconsistentMigrationHistory` and Dokku aborts the deploy
-  (running version stays up). `docs/auth-migration.md` is the tested procedure —
-  it preserves existing accounts and password hashes.
+- **The custom user model swap is done** (August 2026). It needed a one-time
+  manual database step, since `AUTH_USER_MODEL` cannot be swapped on a database
+  already migrated against `auth.User`. Nothing is outstanding, and a fresh
+  database needs no special handling; `docs/auth-migration.md` keeps the record
+  of why `accounts` exists and how the live database was moved.
 - **Env vars** are set by `../vps` `configure-app.yml`: `SECRET_KEY`,
   `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS`, `DEBUG` (settings read these
   unprefixed names). `cocodb_builder: dockerfile` and `cocodb_ports` are in the
