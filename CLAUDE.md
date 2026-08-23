@@ -40,7 +40,9 @@ scripts/                # standalone / experimental scripts (not core)
     deploy.sh           # manual deploy (see "Deployment" below)
     rating_history.py   # git archaeology: which commits moved ratings
 tests/                  # engine unittest suite, incl. golden-master test
-data/  results/  docs/  testdata/   # kept at repo root
+data/  results/  docs/  plans/  testdata/   # kept at repo root
+# plans/ — design/implementation notes for larger work (see plans/README.md);
+#   docs/ is static human reference material. Put new plans in plans/.
 # data/players.csv — the single player-identity list (Name,Number): the
 #   engine's name<->CoCo-id map AND the players app's seed
 ```
@@ -340,7 +342,7 @@ always has the source of truth.
 - **The custom user model swap is done** (August 2026). It needed a one-time
   manual database step, since `AUTH_USER_MODEL` cannot be swapped on a database
   already migrated against `auth.User`. Nothing is outstanding, and a fresh
-  database needs no special handling; `docs/auth-migration.md` keeps the record
+  database needs no special handling; `plans/auth-migration.md` keeps the record
   of why `accounts` exists and how the live database was moved.
 - **Env vars** are set by `../vps` `configure-app.yml`: `SECRET_KEY`,
   `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS`, `DEBUG` (settings read these
@@ -384,7 +386,7 @@ the whole corpus. The tool walks every commit that touched a `.py` file,
 materialises that commit's tree *and* its parent's with `git archive` (so a
 dirty checkout is fine), replays both, and diffs the ratings lists.
 
-`docs/rating-history.md` is the committed run over the full history. Of 200
+`plans/rating-history.md` is the committed run over the full history. Of 200
 commits touching `.py`, **four** ever moved a rating: bye handling
 (`da077423a3`), forfeit handling (`906445ab82`), applying the inactivity
 deviation adjustment in the carry-forward (`546051b407`), and the switch to
