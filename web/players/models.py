@@ -3,28 +3,20 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 
+from coco_ratings.identity import canonical_player_number
+
 player_number_validator = RegexValidator(
     r"^\d{1,4}$",
     "Player number must be 1–4 digits.",
 )
 
 
-def canonical_player_number(value):
-    """Normalize a player number to the canonical zero-padded form (``0233``).
-
-    The same number is written both ways in practice: bare (``233``) in
-    data/players.csv and in URLs, zero-padded (``0233``) in the engine's
-    reports and older exports. They mean one player, but ``player_number`` is
-    a *string* key, so storing both forms would silently create two
-    identities. Everything that creates or looks up a Player normalizes here
-    first, so which form is canonical is a storage detail — but there must be
-    exactly one, and it is the padded one.
-
-    Note the ``int()`` before padding: it collapses over-padded input
-    (``00233``) onto the same key rather than producing a third spelling.
-    """
-    value = str(value).strip()
-    return str(int(value)).zfill(4) if value.isdigit() else value
+# Re-exported, not defined here: the canonical form is shared with Baxter (the
+# tournament manager), which keys players by the same number and exchanges
+# rosters and results by it. Two implementations would eventually disagree about
+# whether 233 and 0233 are one person. Everything in this app has always
+# imported it from this module, so the name stays.
+__all__ = ["Player", "PlayerDetails", "canonical_player_number"]
 
 
 class Player(models.Model):

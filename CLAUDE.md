@@ -21,6 +21,7 @@ src/coco_ratings/       # the importable package
         types.py        # data model: Player, Section, GameResult, constants
         calculator.py   # RatingsCalculator — the rating math
     types.py            # re-export shim for core/types.py (stable import path)
+    identity.py         # canonical_player_number() -- shared with Baxter
     logging_setup.py    # configure_file_logging(); entry points only, never a library
     io.py               # file readers/writers (CSV/TSV, .tou, .RT) + parsing
     rating.py           # Tournament, PlayerList, CLI; re-exports RatingsCalculator
@@ -148,6 +149,15 @@ funnels through the `Tournament` class, which wires a `PlayerList` (loaded via
 headless CLI (`run_cli`); its `__main__` is a stub that refuses to run. It
 re-exports `RatingsCalculator` from `core`, which is where the math now lives —
 `from coco_ratings.rating import RatingsCalculator` still works.
+
+**`identity.py`** — `canonical_player_number()`: the single definition of
+whether `233` and `0233` are the same person. It lives in the shipped package
+rather than in `web/players/models.py` (which now imports it) because **Baxter
+imports it too** — the two projects key players by this number and exchange
+rosters and results by it, so two implementations would eventually disagree
+about identity and split one person in two on both sides at once. Non-numeric
+keys pass through untouched, which is what lets Baxter's `T-7` placeholders and
+`BYE` survive canonicalization.
 
 **`logging_setup.py`** — `configure_file_logging()`, called by `cli.main()`.
 `rating.py` used to call `logging.basicConfig` *at import*, which reconfigured

@@ -129,6 +129,14 @@ image), so `../ratings` is outside the build context and cannot resolve. Both
 repos are public, so the clone needs no credentials at build time, and this repo
 is ~1.2 MB.
 
+Two things are shared, not one. `coco_ratings.core` is the rating math;
+`coco_ratings.identity` is `canonical_player_number()`, the single definition of
+the canonical player-number form. Identity moved out of `web/players/models.py`
+into the package for exactly the reason the program plan gives: both projects
+key players by that number, so a second implementation would eventually disagree
+about whether `233` and `0233` are one person. `tests/test_identity.py` pins the
+contract, Baxter's placeholder forms (`T-7`, `BYE`) included.
+
 **What this obliges us to:** `main` here is now an input to Baxter's build.
 Anything that breaks `coco_ratings.core`'s import surface or its isolation
 breaks Baxter's next lock refresh — which is exactly what
