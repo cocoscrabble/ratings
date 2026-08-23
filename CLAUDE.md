@@ -17,9 +17,13 @@ the full tournament history from scratch each time.
 pyproject.toml          # project metadata + console script + ruff config
 uv.lock
 src/coco_ratings/       # the importable package
-    types.py            # data model: Player, Section, GameResult, constants
+    core/               # dependency-free core: imports nothing but stdlib
+        types.py        # data model: Player, Section, GameResult, constants
+        calculator.py   # RatingsCalculator — the rating math
+    types.py            # re-export shim for core/types.py (stable import path)
+    logging_setup.py    # configure_file_logging(); entry points only, never a library
     io.py               # file readers/writers (CSV/TSV, .tou, .RT) + parsing
-    rating.py           # engine (RatingsCalculator), Tournament, PlayerList, CLI
+    rating.py           # Tournament, PlayerList, CLI; re-exports RatingsCalculator
     gui.py              # Tk widgets + base App/SimulationApp (imports nothing heavy)
     gui_app.py          # GUI apps wiring Tk to the pipeline (keeps pipeline Tk-free)
     ratingsdb.py        # RatingsDB (carry-forward replay), PlayerRecord/PlayerReport
@@ -110,11 +114,19 @@ ratings, so ratings are always recomputed by replaying the entire tournament
 history in chronological order. There is no persisted rating state between runs.
 
 The single-tournament code is split into layers with an acyclic dependency
-graph (`types` ← `io` ← `rating` ← `gui`):
+graph (`core` ← `io` ← `rating` ← `gui`):
 
-**`types.py`** — the pure data model: `Player`, `Section`, `GameResult`, and the
-`MAX_DEVIATION` / `UNRATED_INIT_RATING` constants. No dependency on `io` or
-`rating`, which is what keeps the graph acyclic.
+**`core/`** — the dependency-free heart: the data model (`core/types.py`:
+`Player`, `Section`, `GameResult`, the `MAX_DEVIATION` /
+`UNRATED_INIT_RATING` constants) and the math (`core/calculator.py`:
+`RatingsCalculator`). It imports nothing but the standard library — not `io`,
+and **no logging configuration** — which is what keeps the graph acyclic *and*
+what lets Baxter (`../baxter`, the tournament manager) import the same rating
+math for live in-tournament projections rather than reimplementing it.
+
+That contract is enforced mechanically by `tests/test_core_isolation.py`; see
+`plans/baxter-integration.md`. `coco_ratings/types.py` remains as a re-export
+shim, so `io`, `ratingsdb`, `gui` and the tests keep their existing import path.
 
 **`io.py`** — the file-format layer (imports `types`). Pluggable reader/writer
 classes selected by file extension:
@@ -130,10 +142,19 @@ classes selected by file extension:
   Writers/readers only duck-type `Tournament`/`PlayerList`, so `io` needs
   nothing from `rating`.
 
-**`rating.py`** — the engine (imports `types` + `io`). Everything funnels
-through the `Tournament` class, which wires a `PlayerList` (loaded via `io`
-readers) to the parsed result sections and drives rating. Also holds the
-headless CLI (`run_cli`); its `__main__` is a stub that refuses to run.
+**`rating.py`** — the io-dependent glue (imports `core` + `io`). Everything
+funnels through the `Tournament` class, which wires a `PlayerList` (loaded via
+`io` readers) to the parsed result sections and drives rating. Also holds the
+headless CLI (`run_cli`); its `__main__` is a stub that refuses to run. It
+re-exports `RatingsCalculator` from `core`, which is where the math now lives —
+`from coco_ratings.rating import RatingsCalculator` still works.
+
+**`logging_setup.py`** — `configure_file_logging()`, called by `cli.main()`.
+`rating.py` used to call `logging.basicConfig` *at import*, which reconfigured
+the root logger of anything importing it, wrote a DEBUG file into the working
+directory (this is where the multi-GB `coco_ratings.log` came from), and cost
+~90% of the test suite's runtime. Entry points configure logging; libraries
+never do.
 
 **`gui.py` / `gui_app.py`** — the Tk layer. `gui.py` holds the widgets and base
 `App`/`SimulationApp`; `gui_app.py` holds the subclasses that wire them to the
