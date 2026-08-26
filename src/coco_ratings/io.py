@@ -16,6 +16,10 @@ import sys
 
 from coco_ratings.types import MAX_DEVIATION, GameResult, Player, Section
 
+# Module logger, not the root one: this is a library, and an application
+# importing it must be able to quiet the engine without silencing itself.
+logger = logging.getLogger(__name__)
+
 
 class ParserError(Exception):
     def __init__(self, line, message):
@@ -419,10 +423,10 @@ class RTFileReader:
                     # Return as soon as we parse a date.
                     return datetime.strptime(row[col : col + 8], fmt)
                 except ValueError:
-                    logging.debug(f"Failed parse: {fmt} @ {col}\n  {row}\n")
+                    logger.debug(f"Failed parse: {fmt} @ {col}\n  {row}\n")
 
         # If we reach here we have not found a date anywhere we've looked.
-        logging.debug(f"Could not parse last played date\n  {row}\n")
+        logger.debug(f"Could not parse last played date\n  {row}\n")
         return datetime.strptime("20060101", "%Y%m%d")
 
 

@@ -6,6 +6,7 @@ import logging
 import sys
 
 from coco_ratings.core import Player, RatingsCalculator  # noqa: F401
+
 from coco_ratings.io import (
     CSVRatingsFileReader,
     CSVResultWriter,
@@ -15,6 +16,10 @@ from coco_ratings.io import (
     TabularResultWriter,
     TouReader,
 )
+
+# Module logger, not the root one: this is a library, and an application
+# importing it must be able to quiet the engine without silencing itself.
+logger = logging.getLogger(__name__)
 
 # RatingsCalculator is re-exported above: it lives in coco_ratings.core now (so
 # it can be imported without the io layer), but tests and callers have always
@@ -50,7 +55,7 @@ class Tournament:
             raise ValueError(f"No reader for {file}")
 
     def calc_ratings(self, beta: float = 5):
-        logging.debug("--------------Calculating ratings for %s", self.name)
+        logger.debug("--------------Calculating ratings for %s", self.name)
         rc = RatingsCalculator(beta)
         for s in self.sections:
             # FIRST: Calculate initial ratings for all unrated players

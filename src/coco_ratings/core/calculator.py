@@ -6,14 +6,23 @@ deliberate and load-bearing: Baxter imports this to project live in-tournament
 ratings, and must get the math without the file-format layer and without having
 its own logging reconfigured. See ``plans/baxter-integration.md``.
 
-Logging here is ordinary library logging: the messages are emitted, and it is
-the *entry point's* job to decide whether anything listens (``cli.main`` and the
-GUI attach the debug file handler; an importing application inherits its own
-configuration).
+Logging here is ordinary library logging, on a **module** logger: the messages
+are emitted, and it is the *entry point's* job to decide whether anything
+listens (``cli.main`` and the GUI attach the debug file handler; an importing
+application inherits its own configuration).
+
+The module logger matters. These messages fire once per player per rating run,
+and Baxter runs this for a live projection that may be recomputed on every page
+load — so it has to be able to quiet ``coco_ratings`` without silencing its own
+logs. On the root logger, as this used to be, that was impossible.
 """
 
 import logging
 import math
+
+# Module logger, not the root one: this is a library, and an application
+# importing it must be able to quiet the engine without silencing itself.
+logger = logging.getLogger(__name__)
 
 
 class RatingsCalculator:
@@ -49,7 +58,7 @@ class RatingsCalculator:
         rated_opponent_sum = sum(p.init_rating for p in section.get_rated_players())
         rated_opponent_avg = rated_opponent_sum / len(section.get_players())
         if rated_opponent_avg < 300:
-            logging.debug(
+            logger.debug(
                 "Rated player avg = %f; setting to manual seed", rated_opponent_avg
             )
             rated_opponent_avg = MANUAL_SEED
@@ -71,7 +80,7 @@ class RatingsCalculator:
                 self.calc_new_rating_for_player(p)  # calculates rating as usual
                 converged = converged and (abs(pre_rating - p.new_rating) < EPS)
                 p.set_init_rating(p.new_rating)
-                logging.debug(f"Rating unrated player {p}: {p.new_rating}")
+                logger.debug(f"Rating unrated player {p}: {p.new_rating}")
 
             iterations = iterations + 1
 
@@ -104,7 +113,7 @@ class RatingsCalculator:
         beta = self.beta
 
         mu = player.init_rating
-        logging.debug(
+        logger.debug(
             "rating %s: initial = %d, multiplier = %f",
             player.name,
             mu,
@@ -120,13 +129,13 @@ class RatingsCalculator:
         for g in player.games:
             opponent = g.opponent
             if opponent == player or g.opp_score == 0 or g.score == 0:
-                logging.debug("  skipping bye / forfeit")
+                logger.debug("  skipping bye / forfeit")
                 continue  # skip byes
             opponent_mu = opponent.init_rating
             opponent_sigma = opponent.init_rating_deviation
             g_rho = (beta**2) * (tau**2) + opponent_sigma**2
             g_nu = opponent_mu + (beta * g.spread)
-            logging.debug(
+            logger.debug(
                 "  opp %s (μ=%.2f σ=%.2f) -> (ρ=%.2f ν=%.2f)",
                 opponent.name,
                 opponent_mu,
@@ -153,11 +162,11 @@ class RatingsCalculator:
         mu_prime = mu + (delta * multiplier)
 
         # Debug per-game rating change
-        logging.debug("Per game rating changes for %s", player.name)
+        logger.debug("Per game rating changes for %s", player.name)
         base = sigma_prime * (mu / (sigma**2))
         n_games = len(games)
         base_delta = (player.init_rating - base) / n_games if n_games else 0
-        logging.debug(
+        logger.debug(
             "  base from opp ratings: %.2f (%d games, baseline Δ = %.2f)",
             base,
             n_games,
@@ -169,7 +178,7 @@ class RatingsCalculator:
             base += g_mu
             d = g_mu - base_delta
             sum_d += d
-            logging.debug(
+            logger.debug(
                 "  %20s (%4d): \t Δ %6.2f \t Σ %6.2f \t d %6.2f \t Σd %6.2f \t ",
                 game.opponent.name,
                 game.spread,
@@ -181,14 +190,14 @@ class RatingsCalculator:
 
         # muPrime = mu + change
         # Don't set rating lower than 300
-        logging.info("Rated %s: %f -> %f", player.name, player.init_rating, mu_prime)
+        logger.info("Rated %s: %f -> %f", player.name, player.init_rating, mu_prime)
         player.new_rating = max(round(mu_prime), 300)
 
         # if (player.new_rating < 1000): #believes all lousy players can improve :))
         #  sigmaPrime += math.sqrt(1000 - player.new_rating)
         try:
             player.new_rating_deviation = round(math.sqrt(sigma_prime), 2)
-            logging.info(
+            logger.info(
                 "New deviation for %s: %f -> %f",
                 player.name,
                 player.init_rating_deviation,

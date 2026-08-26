@@ -10,6 +10,10 @@ from datetime import datetime
 import logging
 import math
 
+# Module logger, not the root one: this is a library, and an application
+# importing it must be able to quiet the engine without silencing itself.
+logger = logging.getLogger(__name__)
+
 
 MAX_DEVIATION = 150.0
 UNRATED_INIT_RATING = 1500
@@ -141,7 +145,7 @@ class Player:
             new = math.sqrt((init * init) + (c * c * inactive_days))
             self.init_rating_deviation = min(new, MAX_DEVIATION)
             if abs(init - self.init_rating_deviation) > 1e-5:
-                logging.info(
+                logger.info(
                     "Adjusted rating deviation for %s: %f -> %f",
                     self.name,
                     init,
