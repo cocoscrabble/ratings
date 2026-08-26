@@ -317,6 +317,20 @@ there.
 
 ---
 
+## What Baxter does with the core (for reference)
+
+Phase 1's whole point was that Baxter could import this engine rather than
+reimplement the rating math. It now does: `tournaments/live_ratings.py` projects
+in-tournament ratings through `coco_ratings.core`, and
+`tournaments/tests/test_live_ratings_corpus.py` rates **119 tournaments from
+this repo's `results/`** both ways, demanding they agree exactly.
+
+That test is worth knowing about from this side: it means a change to the rating
+math here is checked against a second, independent assembly of the same inputs.
+It skips itself unless `../baxter` and this repo are checked out side by side.
+
+---
+
 ## Phase 4 — Assigning numbers to new players
 
 The workflow the program plan settles on is: a director runs an event with a
