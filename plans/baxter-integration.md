@@ -249,7 +249,7 @@ games yet.
   out of public surfaces. This endpoint is another such surface.
 - No pagination. The roster is 245 rows.
 
-### 3b. Snapshot file
+### 3b. Snapshot file — **IMPLEMENTED**
 
 The same document, downloadable from `/manage/`, for offline events. Baxter
 imports either through one code path, so this is the lower-risk half to build
@@ -258,6 +258,37 @@ first — it needs no auth design at all.
 **Verification:** a test asserting the payload shape and that no `PlayerDetails`
 field appears in it; an unrated player serializes with `rating: null`; the
 snapshot file and the endpoint produce identical bytes for the same DB state.
+
+#### What landed (3b)
+
+`web/ratings/roster.py` builds the document; `ratings.views.roster_snapshot`
+serves it as a file; `/manage/roster/` is where a human finds it. 16 tests in
+`web/ratings/test_roster.py`. Verified against the live database: 222 players,
+40 KB, matching the contract's shape exactly.
+
+Three decisions worth keeping:
+
+- **The builder is separate from either transport**, so "the file and the
+  endpoint are identical" is a property of the code rather than a promise. 3a
+  adds a view over the same `roster_json`, and a test already asserts the
+  download *is* the builder's output verbatim — a view that starts assembling
+  its own payload fails.
+
+- **An unrated player gets `rating`, `deviation` and `last_played` null, but
+  `career_games: 0`.** Zero games is a fact; the other three are genuinely
+  unknown. Baxter reads the nulls as unrated and lets the calculator seed them
+  (1500 / 150), which is what this engine does anyway.
+
+- **The row is built from an explicit whitelist**, not by serializing a model,
+  and a test asserts the exact key set. This is the widest surface the site has
+  — every player in one request — so a private field added to `PlayerDetails`
+  later must not be able to leak by default. Three separate tests catch it if it
+  does.
+
+The download lives under `/manage/` rather than `/ratings/`, which is both what
+this plan says and what puts it inside `accounts.ManageAccessTest`'s coverage —
+that test caught the route the first time round, which is the reason to keep it
+there.
 
 ---
 

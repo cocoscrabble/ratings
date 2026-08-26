@@ -15,6 +15,7 @@
     <nav class="manage-nav">
       <a href="{% url 'manage_players' %}">Players</a>
       <a href="{% url 'manage_import' %}">Import</a>
+      <a href="{% url 'manage_roster' %}">Roster</a>
       <a href="/django-admin/">Accounts</a>
       {# Logout is POST-only (Django 5+), so it needs a form, not a link. #}
       <form method="post" action="{% url 'manage_logout' %}" class="logout-form">

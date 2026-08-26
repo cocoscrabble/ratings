@@ -3,6 +3,8 @@ from django.urls import path
 
 from accounts.forms import StaffAuthenticationForm
 
+from ratings import views as ratings_views
+
 from . import views
 
 urlpatterns = [
@@ -38,4 +40,14 @@ urlpatterns = [
         name="manage_player_edit",
     ),
     path("manage/import/", views.manage_import, name="manage_import"),
+    path("manage/roster/", views.manage_roster, name="manage_roster"),
+    # The file itself. Under /manage/ with the page — both so a human finds it
+    # where the plan says it is, and so accounts' ManageAccessTest covers its
+    # staff gate along with every other manage URL. The *view* stays in the
+    # ratings app, which owns the document.
+    path(
+        "manage/roster/download/",
+        ratings_views.roster_snapshot,
+        name="manage_roster_download",
+    ),
 ]

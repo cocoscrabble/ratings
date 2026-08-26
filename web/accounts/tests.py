@@ -22,6 +22,8 @@ MANAGE_URL_NAMES = [
     "manage_players",
     "manage_player_add",
     "manage_import",
+    "manage_roster",
+    "manage_roster_download",
 ]
 
 

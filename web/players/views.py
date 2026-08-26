@@ -249,3 +249,25 @@ def manage_import(request):
             }
 
     return render(request, "players/manage_import.html", {"summary": summary})
+
+
+@staff_required
+def manage_roster(request):
+    """The roster snapshot download page.
+
+    The file itself is served by ``ratings.views.roster_snapshot`` — the roster
+    document is the ratings app's to build, since three of its six fields come
+    from ``CurrentRating``. This page is just where a human finds it.
+    """
+    from ratings.models import CurrentRating
+    from ratings.roster import snapshot_filename
+
+    return render(
+        request,
+        "players/manage_roster.html",
+        {
+            "player_count": Player.objects.count(),
+            "rated_count": CurrentRating.objects.count(),
+            "filename": snapshot_filename(),
+        },
+    )

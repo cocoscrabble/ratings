@@ -1,0 +1,28 @@
+{% extends "players/manage_base.html" %}
+
+{% block title %}Roster snapshot — CocoDB Admin{% endblock %}
+
+{% block content %}
+<h1>Roster snapshot</h1>
+
+<p>Baxter, the tournament manager, needs each player's number, name and current
+rating before an event — and must then be able to run a tournament with no
+connection to this site at all. This is the offline way to give it that: download
+the file, and load it into Baxter.</p>
+
+<p>The file holds {{ player_count }} player{{ player_count|pluralize }},
+{{ rated_count }} of them rated. A player with no rated games yet appears with a
+null rating; Baxter treats them as unrated, the same as this engine does.</p>
+
+<p><a href="{% url 'manage_roster_download' %}" class="button">Download
+<code>{{ filename }}</code></a></p>
+
+<h2>What is in it</h2>
+<p>The player number, name, rating, deviation, career games and last-played date
+for every player — the <code>coco.roster/1</code> document. Nothing else: the
+contact and administrative details held against a player are private and never
+appear in an export.</p>
+
+<p>The player number is the identity. Names in the file are display data, and
+Baxter may overwrite its copy of them on every pull.</p>
+{% endblock %}
