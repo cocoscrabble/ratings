@@ -1,7 +1,12 @@
 """Read-only views over the ratings projection."""
 
-from django.http import HttpResponse
+import secrets
+
+from django.conf import settings
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_GET
 
 from accounts.decorators import staff_required
 from ratings.models import CurrentRating, Tournament, TournamentResult
@@ -67,3 +72,59 @@ def roster_snapshot(request):
         f'attachment; filename="{snapshot_filename()}"'
     )
     return response
+
+
+def _roster_token_ok(request) -> bool:
+    """Whether the request carries the shared roster token.
+
+    ``Authorization: Bearer <token>``, with ``X-Roster-Token: <token>`` accepted
+    too — some proxies strip or rewrite Authorization, and this endpoint has to
+    work from behind whatever the far end happens to be running.
+
+    Compared with ``compare_digest``. The roster is not sensitive, but a
+    timing-safe compare is one line and the alternative is a habit worth not
+    forming.
+
+    An unset ``ROSTER_API_TOKEN`` returns False for every request, so a
+    misconfigured deploy serves nothing rather than everything.
+    """
+    expected = settings.ROSTER_API_TOKEN
+    if not expected:
+        return False
+    header = request.headers.get("Authorization", "")
+    presented = (
+        header[len("Bearer ") :] if header.startswith("Bearer ") else ""
+    ) or request.headers.get("X-Roster-Token", "")
+    return bool(presented) and secrets.compare_digest(presented, expected)
+
+
+# csrf_exempt because this is a machine API: CSRF protects *cookie*-
+# authenticated state-changing requests, and this is token-authenticated and
+# read-only. Without it a POST is rejected by CSRF (403) before require_GET can
+# say the useful thing (405), which is a confusing answer to give a client.
+@csrf_exempt
+@require_GET
+def roster_api(request):
+    """The ``coco.roster/1`` document over HTTP — the normal path for Baxter.
+
+    Byte-identical to the ``/manage/roster/download/`` file, because both are
+    ``ratings.roster.roster_json``; ``test_roster`` asserts that rather than
+    trusting it. Baxter reads either through one code path.
+
+    Token-authenticated with a shared static token. The individual facts here
+    are already public — every player page shows a name and a rating — so this
+    is about not handing a bulk dump to anonymous crawlers, not about guarding
+    secrets. **Nothing from PlayerDetails may appear**, which the builder
+    enforces by whitelisting fields.
+
+    401 rather than 403: the caller is a machine, and "your credentials were
+    wrong" is the useful thing to say. No pagination — the roster is a few
+    hundred rows.
+    """
+    if not _roster_token_ok(request):
+        return JsonResponse(
+            {"error": "A valid roster token is required."},
+            status=401,
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    return HttpResponse(roster_json(), content_type="application/json")

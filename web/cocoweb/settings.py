@@ -29,6 +29,14 @@ if not DEBUG and SECRET_KEY == DEV_SECRET_KEY:
         "SECRET_KEY must be set in the environment when DEBUG is False."
     )
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
+
+# Shared static token for the roster endpoint (see ratings.views.roster_api).
+# The roster is names and ratings — already public one page at a time — so a
+# token is about not serving a bulk dump to anonymous crawlers, not about
+# guarding secrets. Deliberately *not* defaulted: an unset token disables the
+# endpoint rather than opening it, so a deploy that forgets to set one fails
+# closed. There is no dev fallback for the same reason.
+ROSTER_API_TOKEN = os.environ.get("ROSTER_API_TOKEN", "")
 CSRF_TRUSTED_ORIGINS = [
     o for o in os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",") if o
 ]

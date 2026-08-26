@@ -379,6 +379,13 @@ always has the source of truth.
   `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS`, `DEBUG` (settings read these
   unprefixed names). `cocodb_builder: dockerfile` and `cocodb_ports` are in the
   vps `production.yml`.
+
+  `ROSTER_API_TOKEN` is the shared static token for `GET /api/roster/`, the
+  roster Baxter pulls. **It is not set by Ansible yet** — set it on the app
+  (`dokku config:set cocodb ROSTER_API_TOKEN=…`) and give the same value to
+  Baxter. Leaving it unset disables the endpoint rather than opening it, so
+  forgetting is safe; the download at `/manage/roster/download/` works either
+  way.
 - **CI/CD** (`.github/workflows/ci.yml`): tests on every push/PR; on push to
   `main`, deploys to Dokku via `dokku/github-action`. One-time setup: add the
   deploy key as GH secret `DOKKU_SSH_PRIVATE_KEY` and its public half to Dokku

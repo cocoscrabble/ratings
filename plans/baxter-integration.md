@@ -235,16 +235,17 @@ Baxter needs each entrant's `rating`, `deviation`, `career_games` and
 `last_played` before an event, and must then be able to run with no connection
 here. `ratings.CurrentRating` already holds exactly those four fields.
 
-### 3a. Endpoint
+### 3a. Endpoint — **IMPLEMENTED**
 
 `GET /api/roster/` returning the `coco.roster/1` document specified in the
 program plan: `player_number`, `name`, `rating`, `deviation`, `career_games`,
 `last_played` for every player, with `rating: null` for players who have no rated
 games yet.
 
-- Token-authenticated. The roster is public-ish data already (player pages and
-  the search JSON are public), but this is a bulk endpoint and should not be
-  anonymous. **Nothing from `PlayerDetails` may appear here** — it is the only
+- Token-authenticated with a **shared static token** (`ROSTER_API_TOKEN`),
+  settled with the owner: the roster is not highly sensitive data. The roster is
+  public-ish already (player pages and the search JSON are public), but this is a
+  bulk endpoint and should not be anonymous. **Nothing from `PlayerDetails` may appear here** — it is the only
   private data the site holds, and `PlayerDetailsPrivacyTest` exists to keep it
   out of public surfaces. This endpoint is another such surface.
 - No pagination. The roster is 245 rows.
@@ -258,6 +259,30 @@ first — it needs no auth design at all.
 **Verification:** a test asserting the payload shape and that no `PlayerDetails`
 field appears in it; an unrated player serializes with `rating: null`; the
 snapshot file and the endpoint produce identical bytes for the same DB state.
+
+#### What landed (3a)
+
+`GET /api/roster/`, in its own `ratings/api_urls.py` under an `/api/` prefix —
+machine-facing, kept apart from the human rating pages because the two have
+different audiences, different auth and different compatibility promises. The
+URL is the contract Baxter codes against, so it should not be an accident of
+where the view happened to live.
+
+- `Authorization: Bearer <token>`, with `X-Roster-Token` accepted too, since
+  some proxies strip or rewrite Authorization.
+- Compared with `secrets.compare_digest`. Not because the roster is sensitive —
+  it isn't — but because the alternative is a habit worth not forming.
+- **An unset token disables the endpoint**, rather than opening it. A deploy
+  that forgets to set one serves nothing; there is deliberately no dev fallback.
+  Pinned by a test confirmed to fail if the check is inverted.
+- 401 with `WWW-Authenticate`, not 403: the caller is a machine, and "your
+  credentials were wrong" is the useful thing to say.
+
+`ROSTER_API_TOKEN` is **not set by Ansible yet** — see CLAUDE.md. The snapshot
+download works without it, which is why 3b was the right half to build first.
+
+A test asserts the endpoint and the file are the same bytes, so neither can grow
+its own serializer.
 
 #### What landed (3b)
 

@@ -7,7 +7,7 @@ the site has — so the privacy guard here matters more than on any single page.
 import json
 from datetime import date, datetime, timezone as dt_timezone
 
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
 from accounts.models import User
@@ -206,3 +206,109 @@ class ManageRosterPageTests(TestCase):
     def test_it_is_staff_only(self):
         response = self.client.get(reverse("manage_roster"))
         self.assertNotEqual(response.status_code, 200)
+
+
+class RosterApiTests(TestCase):
+    """``GET /api/roster/`` — the normal path for Baxter.
+
+    Token-authenticated with a shared static token. The roster is names and
+    ratings, already public one page at a time, so the token is about not
+    handing a bulk dump to anonymous crawlers rather than about guarding
+    secrets.
+    """
+
+    TOKEN = "s3cret-roster-token"
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.player = Player.objects.create(player_number="233", name="Alec")
+        CurrentRating.objects.create(
+            player=cls.player, rating=2093, deviation=76.92,
+            career_games=489, last_played=date(2026, 3, 14),
+        )
+
+    def _url(self):
+        return reverse("api:roster")
+
+    def _get(self, token=None, header="Authorization", prefix="Bearer "):
+        headers = {}
+        if token is not None:
+            headers[header] = f"{prefix}{token}"
+        return self.client.get(self._url(), headers=headers)
+
+    @override_settings(ROSTER_API_TOKEN=TOKEN)
+    def test_a_valid_token_gets_the_document(self):
+        response = self._get(self.TOKEN)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["Content-Type"], "application/json")
+        doc = json.loads(response.content)
+        self.assertEqual(doc["schema"], SCHEMA)
+        self.assertEqual(doc["players"][0]["player_number"], "0233")
+
+    @override_settings(ROSTER_API_TOKEN=TOKEN)
+    def test_the_x_roster_token_header_works_too(self):
+        """Some proxies strip or rewrite Authorization."""
+        response = self._get(self.TOKEN, header="X-Roster-Token", prefix="")
+        self.assertEqual(response.status_code, 200)
+
+    @override_settings(ROSTER_API_TOKEN=TOKEN)
+    def test_no_token_is_401(self):
+        response = self.client.get(self._url())
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response["WWW-Authenticate"], "Bearer")
+        self.assertNotIn("Alec", response.content.decode())
+
+    @override_settings(ROSTER_API_TOKEN=TOKEN)
+    def test_a_wrong_token_is_401(self):
+        self.assertEqual(self._get("nope").status_code, 401)
+
+    @override_settings(ROSTER_API_TOKEN=TOKEN)
+    def test_a_bare_token_without_the_bearer_prefix_is_refused(self):
+        self.assertEqual(self._get(self.TOKEN, prefix="").status_code, 401)
+
+    @override_settings(ROSTER_API_TOKEN="")
+    def test_an_unset_token_disables_the_endpoint(self):
+        """Fail closed. A deploy that forgets to set a token must serve nothing,
+        not everything — and there is no dev fallback for the same reason."""
+        self.assertEqual(self.client.get(self._url()).status_code, 401)
+        self.assertEqual(self._get("").status_code, 401)
+        self.assertEqual(self._get("anything").status_code, 401)
+
+    @override_settings(ROSTER_API_TOKEN=TOKEN)
+    def test_it_is_read_only(self):
+        response = self.client.post(
+            self._url(), headers={"Authorization": f"Bearer {self.TOKEN}"}
+        )
+        self.assertEqual(response.status_code, 405)
+
+    @override_settings(ROSTER_API_TOKEN=TOKEN)
+    def test_the_endpoint_and_the_file_are_the_same_bytes(self):
+        """One schema, two transports — asserted, not promised.
+
+        Both go through ``roster_json``; this is what fails if either grows its
+        own serializer.
+        """
+        staff = User.objects.create_user(
+            username="staff-bytes", password="pw", is_staff=True
+        )
+        api = self.client.get(
+            self._url(), headers={"Authorization": f"Bearer {self.TOKEN}"}
+        ).content
+
+        self.client.force_login(staff)
+        download = self.client.get(reverse("manage_roster_download")).content
+
+        # generated_at is a timestamp, so compare everything else exactly.
+        self.assertEqual(
+            json.loads(api)["players"], json.loads(download)["players"]
+        )
+        self.assertEqual(json.loads(api)["schema"], json.loads(download)["schema"])
+
+    @override_settings(ROSTER_API_TOKEN=TOKEN)
+    def test_it_leaks_no_private_details(self):
+        PlayerDetails.objects.create(
+            player=self.player, email="alec@example.com", city="Portland"
+        )
+        body = self._get(self.TOKEN).content.decode()
+        self.assertNotIn("alec@example.com", body)
+        self.assertNotIn("Portland", body)
