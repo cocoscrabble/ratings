@@ -381,11 +381,14 @@ always has the source of truth.
   vps `production.yml`.
 
   `ROSTER_API_TOKEN` is the shared static token for `GET /api/roster/`, the
-  roster Baxter pulls. **It is not set by Ansible yet** — set it on the app
-  (`dokku config:set cocodb ROSTER_API_TOKEN=…`) and give the same value to
-  Baxter. Leaving it unset disables the endpoint rather than opening it, so
-  forgetting is safe; the download at `/manage/roster/download/` works either
-  way.
+  roster Baxter pulls. It is set by Ansible as well, via `cocodb_extra_config` /
+  `baxter_extra_config` in `production.yml` — one value with two roles (we check
+  it, Baxter presents it), so the two must rotate together or the pull starts
+  401ing. The value lives in the vault-encrypted `secrets.yml`. Config is set
+  with `--no-restart`, so a change takes effect on the next deploy unless you
+  follow with `dokku ps:restart`. Leaving it unset disables the endpoint rather
+  than opening it, so forgetting is safe; the download at
+  `/manage/roster/download/` works either way.
 - **CI/CD** (`.github/workflows/ci.yml`): tests on every push/PR; on push to
   `main`, deploys to Dokku via `dokku/github-action`. One-time setup: add the
   deploy key as GH secret `DOKKU_SSH_PRIVATE_KEY` and its public half to Dokku

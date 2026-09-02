@@ -170,17 +170,41 @@ and stays load-bearing for as long as the Form exists.
 Number columns are an **optional addition**. Both shapes are valid input:
 
 ```
-legacy (unchanged, still produced):
+legacy (unchanged, still produced by the Google Form export):
   Submitted On, Round, Winner, Winners Score, Opponent, Opponents Score
 
-number-bearing (Baxter, once its identity work lands):
-  Submitted On, Round, Winner, Winner Number, Winners Score,
-                Opponent, Opponent Number, Opponents Score
+number-bearing (Baxter, shipping today):
+  Submitted On, Round, Winner, Winners Score, Opponent, Opponents Score,
+                Winner Number, Opponent Number
 ```
 
-Same for the ratings file: `Name, Rating` stays valid, `Name, Number, Rating` is
-the number-bearing form. The pair is produced together, so a reader should not
-assume the two halves agree about which form they are in — check each.
+**The number columns are appended, not interleaved.** An earlier draft of this
+plan put them next to the names they belong to; Baxter built the exporter, found
+that shape unreadable, and appending is what shipped. The reason is
+`ResultCSVReader.parse_row`, which unpacks positionally:
+
+```python
+_time, round, winner, win_score, opp, opp_score, *rest = row
+```
+
+A column inserted before `Opponents Score` shifts every field after it, so
+`win_score` reads a player number and `opp` reads a score. Appending lands the
+new columns in `*rest`, which today's reader discards — so **Baxter's files
+already parse correctly against the unmodified reader**, taking the legacy
+name-keyed path. That is what makes this phase purely additive with no
+coordination window: nothing is broken while it is unbuilt, and nothing needs to
+be deployed in step.
+
+`../baxter/tournaments/results_export.py` documents the ordering as
+load-bearing, and `test_interleaving_the_number_columns_would_break_it` pins it
+against this repo's real reader. Do not reorder the headers.
+
+The ratings file has **no number-bearing producer yet** — Baxter exports results
+only. When one is needed, the same rule applies for the same reason:
+`CSVRatingsFileReader.parse_row` also unpacks positionally (`name, rating,
+*_rest`), so `Name, Rating, Email` stays as it is and a number is appended.
+Since the pair is produced together but need not agree, check each file's header
+separately rather than inferring one from the other.
 
 Numbers are canonical (zero-padded, via `canonical_player_number`).
 
@@ -278,8 +302,13 @@ where the view happened to live.
 - 401 with `WWW-Authenticate`, not 403: the caller is a machine, and "your
   credentials were wrong" is the useful thing to say.
 
-`ROSTER_API_TOKEN` is **not set by Ansible yet** — see CLAUDE.md. The snapshot
-download works without it, which is why 3b was the right half to build first.
+`ROSTER_API_TOKEN` **is set by Ansible** — `../vps` `6e4d006` declares it in
+`production.yml` for both `cocodb` and `baxter` (one value, two roles: we check
+it, Baxter presents it), with the secret itself in the vault-encrypted
+`secrets.yml`. Note that playbook sets config with `--no-restart`, so a rotated
+token takes effect on the next deploy unless followed by `dokku ps:restart`.
+The snapshot download works without any token, which is why 3b was the right
+half to build first.
 
 A test asserts the endpoint and the file are the same bytes, so neither can grow
 its own serializer.
