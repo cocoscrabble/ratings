@@ -16,6 +16,7 @@ from datetime import datetime
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
+from coco_ratings.identity import canonical_player_number
 from coco_ratings.pipeline import process_old_results
 from coco_ratings.tournaments import TournamentDB
 
@@ -36,10 +37,7 @@ class Command(BaseCommand):
             t.filename: t for t in TournamentDB.read_csv().tournaments if t.filename
         }
 
-        # Match computed players to canonical players.Player rows by name.
-        players = {p.name: p for p in Player.objects.all()}
-        matched = {n: players[n] for n in ratingsdb.players if n in players}
-        unmatched = sorted(n for n in ratingsdb.players if n not in players)
+        matched, unmatched = self._match_players(ratingsdb)
 
         with transaction.atomic():
             TournamentResult.objects.all().delete()
@@ -59,6 +57,10 @@ class Command(BaseCommand):
                 f"{TournamentResult.objects.count()} results"
             )
         )
+        keyed = ratingsdb.keyed_by
+        self.stdout.write(
+            f"Result files: {keyed['name']} name-keyed, {keyed['number']} number-keyed"
+        )
         if unmatched:
             self.stdout.write(
                 self.style.WARNING(
@@ -66,8 +68,39 @@ class Command(BaseCommand):
                     f"record (add them in /manage, then rebuild):"
                 )
             )
-            for name in unmatched:
-                self.stdout.write(f"  - {name}")
+            for line in unmatched:
+                self.stdout.write(f"  - {line}")
+
+    def _match_players(self, ratingsdb):
+        """Join computed players to canonical players.Player rows.
+
+        By number when the result file carried one, by name otherwise. The
+        number is preferred because it is unambiguous: matching on names alone
+        makes two players who share one into a single player, which is the
+        whole reason the number columns exist.
+
+        Nothing is created here — identity is owned by the players app. An
+        unmatched player is reported with the key that actually failed, since a
+        number with no Player row (someone Baxter knows about and this database
+        does not) is a different problem from an unrecognized name (usually a
+        typo that has split one player in two).
+        """
+        rows = list(Player.objects.all())
+        by_number = {p.player_number: p for p in rows}
+        by_name = {p.name: p for p in rows}
+
+        matched, unmatched = {}, []
+        for key, rec in ratingsdb.players.items():
+            number = canonical_player_number(rec.number) if rec.number else None
+            if number and number in by_number:
+                matched[key] = by_number[number]
+            elif rec.name in by_name:
+                matched[key] = by_name[rec.name]
+            elif number:
+                unmatched.append(f"{rec.name} (number {number}: no Player record)")
+            else:
+                unmatched.append(f"{rec.name} (no Player record with that name)")
+        return matched, sorted(unmatched)
 
     def _build_tournaments(self, ratingsdb, entries):
         """Return {filename: Tournament} for every processed tournament."""
@@ -88,20 +121,20 @@ class Command(BaseCommand):
     def _build_current_ratings(self, ratingsdb, matched):
         CurrentRating.objects.bulk_create(
             CurrentRating(
-                player=matched[name],
+                player=matched[key],
                 rating=rec.rating,
                 deviation=rec.deviation,
                 career_games=rec.games,
                 last_played=rec.last_played.date(),
             )
-            for name, rec in ratingsdb.players.items()
-            if name in matched
+            for key, rec in ratingsdb.players.items()
+            if key in matched
         )
 
     def _build_results(self, ratingsdb, matched, tournaments):
         TournamentResult.objects.bulk_create(
             TournamentResult(
-                player=matched[name],
+                player=matched[key],
                 tournament=tournaments[filename],
                 old_rating=int(rep.old_rating),
                 new_rating=int(rep.new_rating),
@@ -112,7 +145,7 @@ class Command(BaseCommand):
                 losses=rep.losses,
                 spread=rep.spread,
             )
-            for name, reports in ratingsdb.report.items()
-            if name in matched
+            for key, reports in ratingsdb.report.items()
+            if key in matched
             for filename, rep in reports.items()
         )

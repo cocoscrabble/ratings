@@ -10,6 +10,8 @@ from datetime import datetime
 import logging
 import math
 
+from coco_ratings.identity import canonical_player_number
+
 # Module logger, not the root one: this is a library, and an application
 # importing it must be able to quiet the engine without silencing itself.
 logger = logging.getLogger(__name__)
@@ -54,6 +56,7 @@ class Player:
         self,
         name,
         *,
+        number=None,
         init_rating=0,
         init_rating_deviation=0.0,
         career_games=0,
@@ -61,6 +64,9 @@ class Player:
         last_played=None,
     ):
         self.name = name
+        # The CoCo player number, when the source file carried one. None for
+        # everything the Google Form produces, which is most of the corpus.
+        self.number = canonical_player_number(number) if number else None
         self.career_games = career_games
         self.is_unrated = is_unrated
         self.set_init_rating(init_rating, init_rating_deviation)
@@ -75,10 +81,22 @@ class Player:
         self.new_rating_deviation = 0.0
         self.games = []  # list of Game objects
 
+    @property
+    def key(self):
+        """The identity this player is filed under.
+
+        A number when the file gave one, the name otherwise. Every dict that
+        carries players across tournaments keys on this, so a number-bearing
+        file keeps two same-named players apart while the name-keyed corpus
+        behaves exactly as it always has.
+        """
+        return self.number or self.name
+
     @classmethod
-    def new_unrated(cls, name):
+    def new_unrated(cls, name, number=None):
         return cls(
             name=name,
+            number=number,
             init_rating=UNRATED_INIT_RATING,
             init_rating_deviation=MAX_DEVIATION,
             last_played=datetime.today(),

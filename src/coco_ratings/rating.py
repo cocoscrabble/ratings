@@ -34,6 +34,11 @@ class Tournament:
 
     def __init__(self, ratings_file, result_file, name=None, date=None):
         self.player_list = PlayerList(ratings_file)
+        # Which identity the results file keyed players by; see
+        # ResultsReader.keyed_by. Carried up so callers can report which
+        # corpus is which, and so retiring the name-keyed path has a way to
+        # measure its own progress.
+        self.keyed_by = "name"
         self.parse_results_file(result_file, name, date)
 
     def parse_results_file(self, file, name, date):
@@ -42,6 +47,7 @@ class Tournament:
             reader = ResultCSVReader(self.player_list, name, date)
             reader.parse(file)
             self.sections = reader.sections
+            self.keyed_by = reader.keyed_by
             self.name = name
             self.date = date
         elif file.endswith(".tou"):
@@ -114,8 +120,10 @@ class PlayerList:
         else:
             self.players = {}
 
-    def add_new_player(self, name):
-        self.players[name] = Player.new_unrated(name)
+    def add_new_player(self, name, number=None):
+        player = Player.new_unrated(name, number)
+        self.players[player.key] = player
+        return player
 
     def get_ranked_players(self):
         return sorted(
@@ -124,10 +132,31 @@ class PlayerList:
             reverse=True,
         )
 
-    def find_or_add_player(self, name):
-        if name not in self.players:
-            self.add_new_player(name)
-        return self.players[name]
+    def find_or_add_player(self, name, number=None):
+        """The player this (name, number) refers to, creating them if new.
+
+        Players are filed under their number when the file gave one and under
+        their name when it did not, so a number-bearing file keeps two
+        same-named players apart.
+
+        The two halves of a tournament need not agree about which form they
+        are in: the ratings file is a Google Sheets export with no numbers to
+        give, while the results file may come from Baxter and have them. So a
+        player met with a number who is already on file under their name is
+        the *same person*, newly identified -- adopt the number and re-file
+        them, rather than seeding a duplicate at 1500 and throwing away the
+        rating they came in with.
+        """
+        player = Player.new_unrated(name, number)
+        if player.key in self.players:
+            return self.players[player.key]
+        if player.number and name in self.players:
+            existing = self.players.pop(name)
+            existing.number = player.number
+            self.players[player.key] = existing
+            return existing
+        self.players[player.key] = player
+        return player
 
 
 # -----------------------------------------------------

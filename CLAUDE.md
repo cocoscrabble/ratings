@@ -408,16 +408,30 @@ always has the source of truth.
 
 ## File formats
 
-- **Results CSV** columns: `Submitted On, Round, Winner, Winners Score, Opponent, Opponents Score` (header row is skipped).
-- **Ratings CSV** columns: `Name, Rating, Email` (rating `0` ⇒ unrated). Optional
+- **Results CSV** columns: `Submitted On, Round, Winner, Winners Score, Opponent, Opponents Score`.
+  `Winner Number, Opponent Number` may be **appended** — the number-bearing form
+  Baxter produces. Readers dispatch on the header (`io.find_number_columns`),
+  matching normalized column *names*, and expose which form they read as
+  `keyed_by`. The columns are appended rather than interleaved because the six
+  legacy fields are unpacked positionally; a column inserted among them shifts
+  every later field. Half a pair is an error, not a per-row decision.
+- **Ratings CSV** columns: `Name, Rating, Email` (rating `0` ⇒ unrated), with an
+  optional appended `Number`, for the same positional reason. Optional
   per tournament (see `results/` above); when present it only seeds first-timers.
 - **`data/tournaments.csv`** columns: `FancyName, Division, City, Name,
   Tournament, Filename, Date, Order` — `Date` is `yyyy-mm-dd`; `Order` breaks
   ties between same-day tournaments (see `TournamentDB` above).
 - `.tou` and `.RT` are legacy AUPAIR formats supported for interop; readers/writers
   live in `io.py`. Extension determines the parser, so name files correctly.
-- Player identity is by exact name string across all files — name mismatches
-  create phantom unrated players, so consistency matters.
+- Player identity is the **number when a file carries one, the name otherwise**
+  (`Player.key`). In the name-keyed corpus that is the exact name string, so
+  name mismatches still create phantom unrated players and consistency still
+  matters. The two forms meet in `PlayerList.find_or_add_player` and
+  `RatingsDB.key_for`: someone met with a number who is already on file under
+  their name is the *same person*, so their record and history migrate onto the
+  number and a name→number alias is remembered. Without both halves, the first
+  number-keyed tournament resets a career to unrated and the next name-keyed one
+  splits it again. See `plans/baxter-integration.md` phase 2.
 
 ## Rating archaeology (`scripts/rating_history.py`)
 

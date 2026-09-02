@@ -144,7 +144,7 @@ breaks Baxter's next lock refresh — which is exactly what
 
 ---
 
-## Phase 2 — Number-keyed results, alongside the name-keyed ones
+## Phase 2 — Number-keyed results, alongside the name-keyed ones — **IMPLEMENTED**
 
 Today `results/*-results.csv` identifies players by name, and `build_db`
 (`web/ratings/management/commands/build_db.py:40`) matches computed players to
@@ -231,7 +231,7 @@ from a number that no `Player` row has.
 
 ### 2c. What is explicitly not happening
 
-- **The 256 existing files are not rewritten.** They are the Form export's
+- **The existing files are not rewritten.** They are the Form export's
   output and must keep working untouched.
 - **Name matching is not deleted.** It is a supported path for as long as the
   other producer exists, not a fallback waiting to rot.
@@ -251,6 +251,71 @@ Add reader tests over both header shapes, including a number-bearing file with
 two same-named players resolving to two distinct identities — the case the
 legacy format cannot express. Confirm `make test` passes both suites and that
 `build_db` still reports zero unmatched players.
+
+### What landed
+
+The identity a player is filed under became a *value* rather than an assumption.
+`Player` gained an optional `number` (canonicalized on the way in, through the
+shared `canonical_player_number`) and a `key` property — the number when the
+file gave one, the name otherwise. Every dict that carries players across
+tournaments now keys on `key`: `PlayerList.players`, `RatingsDB.players`,
+`RatingsDB.report`. For the existing all-name-keyed corpus every `number` is
+None, so every key is a name and nothing moves — which is why the golden file is
+byte-identical rather than regenerated.
+
+- **`io.find_number_columns`** does the header dispatch for both readers. It
+  matches on *normalized header names*, not positions, because the real corpus
+  is messier than the format description: 17 files carry a UTF-8 BOM, 31 quote
+  every cell, many have a tail of empty columns, and one has two extra named
+  Form columns. Finding one of the pair but not the other raises rather than
+  resolving row by row.
+- **`ResultCSVReader`** and **`CSVRatingsFileReader`** expose `keyed_by`
+  (`"name"` / `"number"`), carried up through `Tournament.keyed_by` and tallied
+  over the replay in `RatingsDB.keyed_by`. `build_db` prints the tally —
+  currently `128 name-keyed, 0 number-keyed`, which is the number that should
+  move as Baxter's files land.
+- **`build_db`** matches by number first, falling back to name, and its
+  unmatched report now names the key that failed.
+
+**The part that needed the most care is the seam between the two forms**, and it
+is not in the readers. Ratings carry forward across the entire history, so the
+identity key decides whether a player *continues a career or starts a new one*.
+The corpus is name-keyed and Baxter's files are number-keyed, and the same human
+appears in both. Two mechanisms hold that together, each pinned by a test
+confirmed to fail without it:
+
+- `PlayerList.find_or_add_player` — a player met with a number who is already on
+  file under their name is the same person, newly identified. Adopt the number
+  and re-file them. Without this, a Baxter results file paired with a Sheets
+  ratings file seeds a duplicate at unrated and discards the rating they walked
+  in with.
+- `RatingsDB.key_for` — the same, one level up and across tournaments. The first
+  time someone appears with a number after a career of name-keyed events, their
+  record and their whole report history move onto the number. The name→number
+  alias is then remembered, so a later Google Form file that knows them only by
+  name still finds the same record. Without the migration, the first
+  number-keyed tournament silently resets everyone to unrated; without the
+  alias, the next Form tournament splits them again.
+
+One case is genuinely unresolvable and is documented at the code: when two
+same-named players appear in a number-keyed file, which of them owns the
+name-keyed history is not recoverable, because nothing ever recorded it. The
+first number wins. The alternative is refusing an import that is otherwise
+correct.
+
+`coco_ratings.core` now imports `coco_ratings.identity`. That is still within
+the isolation contract — `identity` is stdlib-only and Baxter already imports it
+— and it is the right dependency, since the whole point of the shared
+canonicalizer is that there is exactly one answer to "are `233` and `0233` the
+same person".
+
+**Result:** golden file byte-identical, 58 engine tests (16 new, in
+`tests/test_number_keyed.py`) + 80 Django tests pass, ruff clean. Verified
+end to end by generating a file with Baxter's own `results_export.render_results_csv`
+and reading it back: two different people both named "Alex Kim" resolved to two
+players with separate ratings, and their shared opponent to one player with six
+games. After seeding the dev DB from `data/players.csv`, `build_db` reports one
+unmatched player — `Bye` — which is the documented steady state.
 
 
 ## Phase 3 — Roster pull

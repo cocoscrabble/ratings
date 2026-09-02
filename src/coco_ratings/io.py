@@ -39,6 +39,55 @@ def parse_int(s, line="", field="Score"):
         raise ParserError(line, msg)
 
 
+def normalize_header(cell):
+    """A header cell reduced to something worth comparing.
+
+    Real files in ``results/`` are messier than the format description: some
+    carry a UTF-8 BOM, some quote every cell, and many have a tail of empty
+    columns. Matching a normalized name is what lets the number columns be
+    found without caring about any of that.
+    """
+    return cell.lstrip("\ufeff").strip().casefold()
+
+
+def find_number_columns(header, wanted, file=""):
+    """Locate the optional player-number columns, or return None.
+
+    ``wanted`` is the pair of header names to look for. Returns their indices
+    when both are present and None when neither is, which is the header
+    dispatch: a file is number-bearing or it is not, and the decision is made
+    once here rather than per row.
+
+    Finding exactly one of the pair raises. A file half-way between the two
+    forms is malformed, and resolving it row by row would silently key some
+    players by number and others by name -- the one outcome worse than
+    refusing, because it splits people in two without saying so.
+    """
+    cells = [normalize_header(c) for c in header]
+    found = {name: cells.index(name) for name in wanted if name in cells}
+    if not found:
+        return None
+    if len(found) != len(wanted):
+        missing = ", ".join(repr(n) for n in wanted if n not in found)
+        raise ParserError(
+            ",".join(header),
+            f"{file}: number-bearing header is missing {missing}. A results "
+            f"file carries player numbers for both players or for neither.",
+        )
+    return tuple(found[name] for name in wanted)
+
+
+def cell(row, index):
+    """``row[index]``, or None if the row is short or the cell is empty.
+
+    Trailing empty cells are routinely dropped, so a number column can be
+    absent from an individual row of a file whose header declares it.
+    """
+    if index is None or index >= len(row):
+        return None
+    return row[index].strip() or None
+
+
 # -----------------------------------------------------
 # Result file
 
@@ -67,19 +116,29 @@ class ParsedSection:
 class ResultsReader:
     """Read a results file into Player and Section data."""
 
-    # Set by each subclass before player_for_name() is called.
+    # Set by each subclass before player_for() is called.
     tournament_date: datetime
+
+    # Which identity the file keyed its players by: "number" if it carried
+    # player numbers, "name" otherwise. Readers that cannot carry numbers at
+    # all (.tou) leave this at "name". Exposed so callers can report which
+    # corpus is which, and so retiring the name-keyed path has a way to
+    # measure its own progress.
+    keyed_by = "name"
 
     def __init__(self, player_list):
         self.player_list = player_list
         self.sections = []
 
-    def player_for_name(self, name):
-        player = self.player_list.find_or_add_player(name)
+    def player_for(self, name, number=None):
+        player = self.player_list.find_or_add_player(name, number)
         if not player.is_unrated:
             player.adjust_initial_deviation(self.tournament_date)
         player.last_played = self.tournament_date
         return player
+
+    def player_for_name(self, name):
+        return self.player_for(name)
 
 
 class TouReader(ResultsReader):
@@ -208,43 +267,86 @@ class TouReader(ResultsReader):
 
 
 class ResultCSVReader(ResultsReader):
-    """Read a csv exported from google sheets."""
+    """Read a csv exported from google sheets, or produced by Baxter.
+
+    Two header shapes are valid input:
+
+    - ``Submitted On, Round, Winner, Winners Score, Opponent, Opponents
+      Score`` -- the Google Form export. Players are identified by name,
+      joined to a canonical player through ``data/players.csv``.
+    - the same six columns with ``Winner Number, Opponent Number`` **appended**
+      -- what Baxter produces. The number is the identity, so two players
+      sharing a name stay two players.
+
+    The number columns are appended rather than interleaved because the six
+    legacy fields are unpacked positionally below: anything inserted among them
+    shifts every later field. Appending puts them in ``*rest``, which is why
+    Baxter's files already parsed here before this reader knew about them. See
+    plans/baxter-integration.md phase 2a.
+
+    The Form export can never carry numbers -- players type their own names
+    into it -- so the name-keyed path is a supported format, not a fallback
+    waiting to rot.
+    """
+
+    NUMBER_COLUMNS = ("winner number", "opponent number")
 
     def __init__(self, player_list, name, date):
         super().__init__(player_list)
         self.results = collections.defaultdict(list)
         self.tournament_date = date
         self.tournament_name = name
+        # How each player in this file was written, filed under the identity
+        # key they resolved to. Keeping them lets the section be rebuilt in
+        # file order without deriving identity a second time.
+        self.names = {}
+        self.numbers = {}
+        self.winner_col = None
+        self.opponent_col = None
 
     def parse(self, file):
         """Populates self.player_list with game results."""
         sep = "\t" if file.endswith(".tsv") else ","
         with open(file) as f:
             reader = csv.reader(f, delimiter=sep)
-            # skip the header
-            next(reader)
+            header = next(reader)
+            columns = find_number_columns(header, self.NUMBER_COLUMNS, file)
+            self.keyed_by = "name" if columns is None else "number"
+            if columns:
+                self.winner_col, self.opponent_col = columns
             for row in reader:
                 self.parse_row(row)
 
-        for name, games in self.results.items():
-            player = self.player_for_name(name)
+        for key, games in self.results.items():
+            player = self.player_for_key(key)
             player.games = games
             player.tally_results()
 
         section = Section("main")
-        section.players = [self.player_for_name(name) for name in self.results]
+        section.players = [self.player_for_key(key) for key in self.results]
         self.sections.append(section)
+
+    def player_for_key(self, key):
+        return self.player_for(self.names[key], self.numbers.get(key))
+
+    def add_player(self, name, number):
+        """Register one appearance; return the player and the key they file under."""
+        player = self.player_for(name, number)
+        self.names[player.key] = name
+        if number:
+            self.numbers[player.key] = number
+        return player, player.key
 
     def parse_row(self, row):
         _time, round, winner, win_score, opp, opp_score, *rest = row
-        p1 = self.player_for_name(winner)
-        p2 = self.player_for_name(opp)
+        p1, k1 = self.add_player(winner, cell(row, self.winner_col))
+        p2, k2 = self.add_player(opp, cell(row, self.opponent_col))
         win_score = parse_int(win_score, row)
         opp_score = parse_int(opp_score, row)
         g1 = GameResult(round=round, opponent=p2, score=win_score, opp_score=opp_score)
         g2 = GameResult(round=round, opponent=p1, score=opp_score, opp_score=win_score)
-        self.results[winner].append(g1)
-        self.results[opp].append(g2)
+        self.results[k1].append(g1)
+        self.results[k2].append(g2)
 
 
 class ResultWriter:
@@ -464,20 +566,35 @@ class CSVRatingsFileReader:
 
     CSV format exported from COCO google sheets:
         name, rating, email
+
+    A ``Number`` column may be **appended**, for the same reason it is appended
+    to the results file: ``parse_row`` unpacks positionally, so a column
+    inserted before ``Rating`` would be read as the rating. Nothing produces
+    the number-bearing form yet -- Baxter exports results only -- but the two
+    files are a pair, so each is dispatched on its own header rather than
+    assuming the other's shape.
     """
+
+    NUMBER_COLUMNS = ("number",)
+
+    # Set by parse(); see ResultsReader.keyed_by.
+    keyed_by = "name"
 
     def parse(self, file):
         players = {}
         sep = "\t" if file.endswith(".tsv") else ","
         with open(file) as f:
             reader = csv.reader(f, delimiter=sep)
-            next(reader)
+            header = next(reader)
+            columns = find_number_columns(header, self.NUMBER_COLUMNS, file)
+            self.keyed_by = "name" if columns is None else "number"
+            number_col = columns[0] if columns else None
             for row in reader:
-                p = self.parse_row(row)
-                players[p.name] = p
+                p = self.parse_row(row, cell(row, number_col))
+                players[p.key] = p
         return players
 
-    def parse_row(self, row):
+    def parse_row(self, row, number=None):
         name, rating, *_rest = row
         career_games = 0
         rating = parse_int(rating, row, field="Rating")
@@ -485,6 +602,7 @@ class CSVRatingsFileReader:
         is_unrated = rating == 0
         return Player(
             name=name,
+            number=number,
             init_rating=rating,
             init_rating_deviation=rating_deviation,
             career_games=career_games,
