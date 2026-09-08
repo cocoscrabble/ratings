@@ -14,8 +14,16 @@ the file, and load it into Baxter.</p>
 {{ rated_count }} of them rated. A player with no rated games yet appears with a
 null rating; Baxter treats them as unrated, the same as this engine does.</p>
 
-<p><a href="{% url 'manage_roster_download' %}" class="button">Download
-<code>{{ filename }}</code></a></p>
+<p class="roster-downloads">
+<a href="{% url 'manage_roster_download' %}" class="coco-button">Download
+<code>{{ filename }}</code></a>
+<a href="{% url 'manage_roster_download_csv' %}" class="coco-button">Download
+<code>{{ csv_filename }}</code></a>
+</p>
+
+<p>The JSON file is the one Baxter reads. The CSV holds the same players, in the
+same order, for opening in a spreadsheet — checking the list over, or mailing it
+round.</p>
 
 <h2>What is in it</h2>
 <p>The player number, name, rating, deviation, career games and last-played date

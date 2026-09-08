@@ -10,7 +10,7 @@ from django.views.decorators.http import require_GET
 
 from accounts.decorators import staff_required
 from ratings.models import CurrentRating, Tournament, TournamentResult
-from ratings.roster import roster_json, snapshot_filename
+from ratings.roster import roster_csv, roster_json, snapshot_filename
 
 # The per-player page lives in the players app (players.views.player_detail),
 # which shows both the published rating history and this project's computed
@@ -52,6 +52,15 @@ def tournament_detail(request, slug):
     )
 
 
+def _snapshot_response(body, content_type, ext):
+    """A roster body served as a dated attachment."""
+    response = HttpResponse(body, content_type=content_type)
+    response["Content-Disposition"] = (
+        f'attachment; filename="{snapshot_filename(ext=ext)}"'
+    )
+    return response
+
+
 @staff_required
 def roster_snapshot(request):
     """Download the ``coco.roster/1`` document as a file.
@@ -66,12 +75,20 @@ def roster_snapshot(request):
     is a different thing from a page-at-a-time browse, and the endpoint that
     replaces this will be authenticated too.
     """
-    body = roster_json()
-    response = HttpResponse(body, content_type="application/json")
-    response["Content-Disposition"] = (
-        f'attachment; filename="{snapshot_filename()}"'
-    )
-    return response
+    return _snapshot_response(roster_json(), "application/json", "json")
+
+
+@staff_required
+def roster_snapshot_csv(request):
+    """The same roster as a spreadsheet.
+
+    For a human: checking the list over, mailing it round, sorting it. Baxter
+    reads the JSON, which is the contract; this is a rendering of the same
+    ``build_roster`` document, so it is never a second version of the roster.
+
+    Staff-only for the same reason as the JSON — it is the same bulk dump.
+    """
+    return _snapshot_response(roster_csv(), "text/csv; charset=utf-8", "csv")
 
 
 def _roster_token_ok(request) -> bool:

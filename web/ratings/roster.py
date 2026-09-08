@@ -15,6 +15,8 @@ explicitly rather than serializing a model, so adding a private field to
 ``PlayerDetails`` later cannot leak it by default.
 """
 
+import csv
+import io
 import json
 from datetime import UTC
 
@@ -23,6 +25,19 @@ from django.utils import timezone
 from players.models import Player
 
 SCHEMA = "coco.roster/1"
+
+# The fields of a roster entry, in order: the JSON keys and the CSV columns are
+# the same list, so the two exports cannot describe different players. Adding a
+# field to ``_player_row`` without adding it here fails ``roster_csv`` loudly
+# (DictWriter rejects unknown keys) rather than silently dropping the column.
+FIELDS = (
+    "player_number",
+    "name",
+    "rating",
+    "deviation",
+    "career_games",
+    "last_played",
+)
 
 
 def _player_row(player, rating):
@@ -77,8 +92,30 @@ def roster_json(generated_at=None) -> str:
     return json.dumps(build_roster(generated_at), indent=2, ensure_ascii=False)
 
 
-def snapshot_filename(generated_at=None) -> str:
+def roster_csv(generated_at=None) -> str:
+    """The same roster as a spreadsheet: a header row and one row per player.
+
+    Built from ``build_roster``, so the CSV and the JSON always list the same
+    players in the same order with the same values — it is a rendering of the
+    document, not a second source of it.
+
+    It carries the rows only. ``schema`` and ``generated_at`` are document
+    metadata with no place in a flat table, and the CSV is not the machine
+    contract — Baxter reads the JSON. This is for a human opening the roster in
+    a spreadsheet; the date is in the filename.
+
+    Nulls (an unrated player's rating, deviation and last-played date) are
+    written as empty cells, which is what a spreadsheet reads as "no value".
+    """
+    out = io.StringIO(newline="")
+    writer = csv.DictWriter(out, fieldnames=FIELDS)
+    writer.writeheader()
+    writer.writerows(build_roster(generated_at)["players"])
+    return out.getvalue()
+
+
+def snapshot_filename(generated_at=None, ext="json") -> str:
     """A dated filename, so several downloads do not overwrite each other in a
     downloads folder."""
     stamp = (generated_at or timezone.now()).astimezone(UTC)
-    return f"coco-roster-{stamp:%Y%m%d}.json"
+    return f"coco-roster-{stamp:%Y%m%d}.{ext}"

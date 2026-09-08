@@ -24,6 +24,7 @@ MANAGE_URL_NAMES = [
     "manage_import",
     "manage_roster",
     "manage_roster_download",
+    "manage_roster_download_csv",
 ]
 
 

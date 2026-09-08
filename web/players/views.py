@@ -269,5 +269,6 @@ def manage_roster(request):
             "player_count": Player.objects.count(),
             "rated_count": CurrentRating.objects.count(),
             "filename": snapshot_filename(),
+            "csv_filename": snapshot_filename(ext="csv"),
         },
     )

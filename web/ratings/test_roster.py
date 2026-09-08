@@ -4,6 +4,8 @@ The roster is a bulk export of every player, which makes it the widest surface
 the site has — so the privacy guard here matters more than on any single page.
 """
 
+import csv
+import io
 import json
 from datetime import date, datetime, timezone as dt_timezone
 
@@ -14,7 +16,14 @@ from accounts.models import User
 from players.models import Player, PlayerDetails
 
 from ratings.models import CurrentRating
-from ratings.roster import SCHEMA, build_roster, roster_json, snapshot_filename
+from ratings.roster import (
+    FIELDS,
+    SCHEMA,
+    build_roster,
+    roster_csv,
+    roster_json,
+    snapshot_filename,
+)
 
 
 class RosterDocumentTests(TestCase):
@@ -137,6 +146,71 @@ class RosterPrivacyTests(TestCase):
         )
 
 
+class RosterCsvTests(TestCase):
+    """The CSV rendering of the same document.
+
+    It exists for a human with a spreadsheet; the JSON is what Baxter reads. The
+    tests are therefore about the two never disagreeing, not about the CSV
+    having a contract of its own.
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.rated = Player.objects.create(player_number="233", name="Alec Sjöholm")
+        CurrentRating.objects.create(
+            player=cls.rated,
+            rating=2093,
+            deviation=76.92,
+            career_games=489,
+            last_played=date(2026, 3, 14),
+        )
+        Player.objects.create(player_number="7", name="New Nellie")
+
+    def _rows(self):
+        return list(csv.DictReader(io.StringIO(roster_csv())))
+
+    def test_the_columns_are_the_document_fields(self):
+        """Header == FIELDS == the JSON keys, so neither export can grow a field
+        the other does not have."""
+        reader = csv.reader(io.StringIO(roster_csv()))
+        self.assertEqual(next(reader), list(FIELDS))
+        self.assertEqual(set(FIELDS), set(build_roster()["players"][0]))
+
+    def test_it_holds_the_same_players_in_the_same_order(self):
+        self.assertEqual(
+            [row["player_number"] for row in self._rows()],
+            [p["player_number"] for p in build_roster()["players"]],
+        )
+
+    def test_a_rated_player_carries_their_numbers(self):
+        row = {r["player_number"]: r for r in self._rows()}["0233"]
+        self.assertEqual(row["name"], "Alec Sjöholm")
+        self.assertEqual(row["rating"], "2093")
+        self.assertEqual(row["deviation"], "76.92")
+        self.assertEqual(row["career_games"], "489")
+        self.assertEqual(row["last_played"], "2026-03-14")
+
+    def test_an_unrated_player_has_empty_cells_not_zeros(self):
+        """A spreadsheet reads an empty cell as "no value"; 0 would read as a
+        rating of zero, which is a different claim."""
+        row = {r["player_number"]: r for r in self._rows()}["0007"]
+        self.assertEqual(row["rating"], "")
+        self.assertEqual(row["deviation"], "")
+        self.assertEqual(row["last_played"], "")
+        # Never having played is a fact, not an absence.
+        self.assertEqual(row["career_games"], "0")
+
+    def test_a_roster_with_no_players_is_still_a_header_row(self):
+        Player.objects.all().delete()
+        self.assertEqual(list(csv.reader(io.StringIO(roster_csv()))), [list(FIELDS)])
+
+    def test_the_filename_says_csv(self):
+        stamp = datetime(2026, 8, 22, 14, 3, tzinfo=dt_timezone.utc)
+        self.assertEqual(snapshot_filename(stamp, ext="csv"), "coco-roster-20260822.csv")
+        # Unchanged for callers that pass no extension.
+        self.assertEqual(snapshot_filename(stamp), "coco-roster-20260822.json")
+
+
 class RosterSnapshotViewTests(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -181,6 +255,25 @@ class RosterSnapshotViewTests(TestCase):
         response = self.client.get(self._url())
         self.assertNotEqual(response.status_code, 200)
 
+    def test_staff_download_serves_the_csv_as_a_file(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(reverse("manage_roster_download_csv"))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["Content-Type"], "text/csv; charset=utf-8")
+        self.assertIn("attachment;", response["Content-Disposition"])
+        self.assertIn(".csv", response["Content-Disposition"])
+        self.assertEqual(response.content.decode(), roster_csv())
+
+    def test_the_csv_is_not_public(self):
+        """Same bulk dump, same gate."""
+        response = self.client.get(reverse("manage_roster_download_csv"))
+        self.assertNotEqual(response.status_code, 200)
+
+    def test_a_non_staff_user_cannot_download_the_csv(self):
+        self.client.force_login(self.plain)
+        response = self.client.get(reverse("manage_roster_download_csv"))
+        self.assertNotEqual(response.status_code, 200)
+
 
 class ManageRosterPageTests(TestCase):
     @classmethod
@@ -202,6 +295,7 @@ class ManageRosterPageTests(TestCase):
         self.assertEqual(response.context["player_count"], 2)
         self.assertEqual(response.context["rated_count"], 1)
         self.assertContains(response, reverse("manage_roster_download"))
+        self.assertContains(response, reverse("manage_roster_download_csv"))
 
     def test_it_is_staff_only(self):
         response = self.client.get(reverse("manage_roster"))

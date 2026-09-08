@@ -50,4 +50,9 @@ urlpatterns = [
         ratings_views.roster_snapshot,
         name="manage_roster_download",
     ),
+    path(
+        "manage/roster/download/csv/",
+        ratings_views.roster_snapshot_csv,
+        name="manage_roster_download_csv",
+    ),
 ]
