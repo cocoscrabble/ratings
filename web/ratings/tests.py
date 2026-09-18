@@ -8,6 +8,8 @@ Computed ratings are keyed to canonical players.Player rows, so the tests seed a
 Player per engine player first (build_db matches by name and skips unmatched).
 """
 
+import datetime
+
 from django.core.management import call_command
 from django.test import TestCase
 from django.urls import reverse
@@ -128,3 +130,46 @@ class TournamentStrTest(TestCase):
     def test_display_name_without_division(self):
         t = self._tournament(division="")
         self.assertEqual(str(t), "Word Cup")
+
+
+class DeviationNotShownTest(TestCase):
+    """Rating deviation is an internal detail of the rating maths.
+
+    It is stored (Baxter's roster and the admin need it) but no public page
+    may show it. The values are distinctive so a leak cannot hide behind a
+    coincidental match elsewhere on the page.
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.player = Player.objects.create(player_number="233", name="Dev Person")
+        CurrentRating.objects.create(
+            player=cls.player, rating=1800, deviation=123.45,
+            career_games=40, last_played=datetime.date(2026, 1, 1),
+        )
+        cls.tournament = Tournament.objects.create(
+            filename="dev-test", fancy_name="Dev Test", date=datetime.date(2026, 1, 1),
+        )
+        TournamentResult.objects.create(
+            player=cls.player, tournament=cls.tournament,
+            old_rating=1790, new_rating=1800,
+            old_deviation=134.56, new_deviation=123.45,
+            games=8, wins=5, losses=3, spread=100,
+        )
+
+    def assertNoDeviation(self, url):
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        body = response.content.decode()
+        for value in ("123.45", "134.56", "123.4", "134.6"):
+            self.assertNotIn(value, body)
+        self.assertNotIn("Deviation", body)
+
+    def test_player_page(self):
+        self.assertNoDeviation(self.player.get_absolute_url())
+
+    def test_ratings_list(self):
+        self.assertNoDeviation(reverse("ratings:ratings_list"))
+
+    def test_tournament_page(self):
+        self.assertNoDeviation(self.tournament.get_absolute_url())

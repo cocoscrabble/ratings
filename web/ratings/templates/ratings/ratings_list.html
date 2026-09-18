@@ -8,7 +8,7 @@
   <thead>
     <tr>
       <th class="num">#</th><th>Player</th>
-      <th class="num">Rating</th><th class="num">Dev</th><th class="num">Games</th>
+      <th class="num">Rating</th><th class="num">Games</th>
     </tr>
   </thead>
   <tbody>
@@ -17,7 +17,6 @@
       <td class="num">{{ forloop.counter }}</td>
       <td><a href="{{ r.player.get_absolute_url }}">{{ r.player.name }}</a></td>
       <td class="num">{{ r.rating }}</td>
-      <td class="num">{{ r.deviation|floatformat:2 }}</td>
       <td class="num">{{ r.career_games }}</td>
     </tr>
     {% endfor %}
