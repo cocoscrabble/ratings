@@ -4,22 +4,5 @@
 {% block content %}
 <h1>Current ratings</h1>
 <p class="page-summary">{{ ratings|length }} rated players.</p>
-<table class="data-table">
-  <thead>
-    <tr>
-      <th class="num">#</th><th>Player</th>
-      <th class="num">Rating</th><th class="num">Games</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for r in ratings %}
-    <tr>
-      <td class="num">{{ forloop.counter }}</td>
-      <td><a href="{{ r.player.get_absolute_url }}">{{ r.player.name }}</a></td>
-      <td class="num">{{ r.rating }}</td>
-      <td class="num">{{ r.career_games }}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+{% include "ratings/_ratings_table.html" %}
 {% endblock %}

@@ -87,6 +87,17 @@ class ViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertContains(resp, "Dave Wiegand")
 
+    def test_ratings_embed(self):
+        resp = self.client.get(reverse("ratings:ratings_embed"))
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "Dave Wiegand")
+        # Just the table: none of the site chrome.
+        self.assertNotContains(resp, "site-header")
+        # Framable by other sites, unlike the rest of the site.
+        self.assertNotIn("X-Frame-Options", resp.headers)
+        full = self.client.get(reverse("ratings:ratings_list"))
+        self.assertEqual(full.headers["X-Frame-Options"], "DENY")
+
     def test_player_detail_shows_computed_history(self):
         # The unified player page lives in the players app; URL is number+slug.
         player = Player.objects.get(name="Dave Wiegand")
@@ -170,6 +181,9 @@ class DeviationNotShownTest(TestCase):
 
     def test_ratings_list(self):
         self.assertNoDeviation(reverse("ratings:ratings_list"))
+
+    def test_ratings_embed(self):
+        self.assertNoDeviation(reverse("ratings:ratings_embed"))
 
     def test_tournament_page(self):
         self.assertNoDeviation(self.tournament.get_absolute_url())

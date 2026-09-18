@@ -5,6 +5,7 @@ import secrets
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
+from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET
 
@@ -17,14 +18,28 @@ from ratings.roster import roster_csv, roster_json, snapshot_filename
 # ratings + tournament results.
 
 
-def ratings_list(request):
-    ratings = CurrentRating.objects.select_related("player").order_by(
+def _current_ratings():
+    return CurrentRating.objects.select_related("player").order_by(
         "-rating", "player__name"
     )
+
+
+def ratings_list(request):
     return render(
         request,
         "ratings/ratings_list.html",
-        {"ratings": ratings, "section": "ratings"},
+        {"ratings": _current_ratings(), "section": "ratings"},
+    )
+
+
+# The one view other sites may frame: X-Frame-Options is DENY site-wide. That
+# is safe here because the page is public, read-only and carries nothing a
+# framing page could trick a visitor into clicking -- no forms, no session.
+@xframe_options_exempt
+def ratings_embed(request):
+    """The bare ratings table, for embedding in another page via an iframe."""
+    return render(
+        request, "ratings/ratings_embed.html", {"ratings": _current_ratings()}
     )
 
 

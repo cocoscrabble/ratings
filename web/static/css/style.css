@@ -525,3 +525,12 @@ a:hover {
 
 .pos { color: #2d6b2d; }
 .neg { color: #8b2020; }
+
+/* --- Embeddable views (framed by other sites; no header or page chrome) --- */
+body.embed {
+  min-height: 0;
+}
+
+body.embed .data-table {
+  margin-top: 0;
+}

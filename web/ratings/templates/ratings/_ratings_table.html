@@ -1,0 +1,18 @@
+<table class="data-table">
+  <thead>
+    <tr>
+      <th class="num">#</th><th>Player</th>
+      <th class="num">Rating</th><th class="num">Games</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in ratings %}
+    <tr>
+      <td class="num">{{ forloop.counter }}</td>
+      <td><a href="{{ r.player.get_absolute_url }}">{{ r.player.name }}</a></td>
+      <td class="num">{{ r.rating }}</td>
+      <td class="num">{{ r.career_games }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
