@@ -9,6 +9,7 @@ Player per engine player first (build_db matches by name and skips unmatched).
 """
 
 import datetime
+import itertools
 
 from django.core.management import call_command
 from django.test import TestCase
@@ -20,13 +21,26 @@ from players.models import Player, canonical_player_number
 from ratings.models import CurrentRating, Tournament, TournamentResult
 
 
-def seed_players(names):
-    """Create a canonical players.Player for each name so build_db matches it."""
+def seed_players(players):
+    """Create a canonical players.Player per engine player so build_db matches it.
+
+    Where the corpus carries a number for a player, seed that number: build_db
+    matches by number in preference to name, so an invented number that happens
+    to equal someone's real one makes two engine records match one Player row
+    and the OneToOne CurrentRating insert fails. The invented numbers therefore
+    start above every real number in the corpus.
+    """
+    records = list(players.values())
+    real = {int(r.number) for r in records if r.number}
+    counter = itertools.count(max(real, default=0) + 1)
     # bulk_create bypasses Player.save(), so normalize explicitly — the stored
     # key must be the padded form or lookups by URL will not find these rows.
     Player.objects.bulk_create(
-        Player(player_number=canonical_player_number(i + 1), name=name)
-        for i, name in enumerate(names)
+        Player(
+            player_number=canonical_player_number(rec.number or next(counter)),
+            name=rec.name,
+        )
+        for rec in records
     )
 
 
@@ -39,12 +53,14 @@ class BuildDbTest(TestCase):
 
     def test_current_ratings_match_engine(self):
         self.assertEqual(CurrentRating.objects.count(), len(self.ratingsdb.players))
-        for name, rec in self.ratingsdb.players.items():
-            cr = CurrentRating.objects.get(player__name=name)
-            self.assertEqual(cr.rating, rec.rating, name)
-            self.assertAlmostEqual(cr.deviation, rec.deviation, msg=name)
-            self.assertEqual(cr.career_games, rec.games, name)
-            self.assertEqual(cr.last_played, rec.last_played.date(), name)
+        # Iterate the records, not the keys: a number-keyed player's key is
+        # their number, and the Player row is matched on rec.name.
+        for rec in self.ratingsdb.players.values():
+            cr = CurrentRating.objects.get(player__name=rec.name)
+            self.assertEqual(cr.rating, rec.rating, rec.name)
+            self.assertAlmostEqual(cr.deviation, rec.deviation, msg=rec.name)
+            self.assertEqual(cr.career_games, rec.games, rec.name)
+            self.assertEqual(cr.last_played, rec.last_played.date(), rec.name)
 
     def test_tournament_results_match_engine(self):
         expected = sum(len(reports) for reports in self.ratingsdb.report.values())
