@@ -29,34 +29,42 @@ def seed_players(players):
     to equal someone's real one makes two engine records match one Player row
     and the OneToOne CurrentRating insert fails. The invented numbers therefore
     start above every real number in the corpus.
+
+    Returns {engine key: player_number}. Tests look rows up by that number, not
+    by name: names are not unique (two same-named people in a number-keyed file
+    are two engine records), so a name lookup can match more than one row.
     """
-    records = list(players.values())
-    real = {int(r.number) for r in records if r.number}
+    records = list(players.items())
+    real = {int(r.number) for _, r in records if r.number}
     counter = itertools.count(max(real, default=0) + 1)
     # bulk_create bypasses Player.save(), so normalize explicitly — the stored
     # key must be the padded form or lookups by URL will not find these rows.
+    numbers = {
+        key: canonical_player_number(rec.number or next(counter))
+        for key, rec in records
+    }
     Player.objects.bulk_create(
-        Player(
-            player_number=canonical_player_number(rec.number or next(counter)),
-            name=rec.name,
-        )
-        for rec in records
+        Player(player_number=numbers[key], name=rec.name) for key, rec in records
     )
+    return numbers
 
 
 class BuildDbTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.ratingsdb, _ = process_old_results(quiet=True)
-        seed_players(cls.ratingsdb.players)
+        cls.numbers = seed_players(cls.ratingsdb.players)
         call_command("build_db", verbosity=0)
+        # The spot-checked player, resolved to their engine key: once they
+        # appear in a number-keyed file their record moves off their name.
+        name = "Dave Wiegand"
+        cls.key = cls.ratingsdb.aliases.get(name, name)
+        cls.number = cls.numbers[cls.key]
 
     def test_current_ratings_match_engine(self):
         self.assertEqual(CurrentRating.objects.count(), len(self.ratingsdb.players))
-        # Iterate the records, not the keys: a number-keyed player's key is
-        # their number, and the Player row is matched on rec.name.
-        for rec in self.ratingsdb.players.values():
-            cr = CurrentRating.objects.get(player__name=rec.name)
+        for key, rec in self.ratingsdb.players.items():
+            cr = CurrentRating.objects.get(player__player_number=self.numbers[key])
             self.assertEqual(cr.rating, rec.rating, rec.name)
             self.assertAlmostEqual(cr.deviation, rec.deviation, msg=rec.name)
             self.assertEqual(cr.career_games, rec.games, rec.name)
@@ -66,10 +74,9 @@ class BuildDbTest(TestCase):
         expected = sum(len(reports) for reports in self.ratingsdb.report.values())
         self.assertEqual(TournamentResult.objects.count(), expected)
         # Spot-check one row end to end against the engine's report.
-        name = "Dave Wiegand"
-        filename, rep = next(iter(self.ratingsdb.report[name].items()))
+        filename, rep = next(iter(self.ratingsdb.report[self.key].items()))
         tr = TournamentResult.objects.get(
-            player__name=name, tournament__filename=filename
+            player__player_number=self.number, tournament__filename=filename
         )
         self.assertEqual(tr.new_rating, int(rep.new_rating))
         self.assertEqual(tr.spread, rep.spread)
@@ -81,10 +88,10 @@ class BuildDbTest(TestCase):
 
     def test_skips_players_without_a_record(self):
         # Remove one player's canonical record; rebuild should skip them.
-        Player.objects.filter(name="Dave Wiegand").delete()
+        Player.objects.filter(player_number=self.number).delete()
         call_command("build_db", verbosity=0)
         self.assertFalse(
-            CurrentRating.objects.filter(player__name="Dave Wiegand").exists()
+            CurrentRating.objects.filter(player__player_number=self.number).exists()
         )
         self.assertEqual(
             CurrentRating.objects.count(), len(self.ratingsdb.players) - 1
@@ -95,8 +102,10 @@ class ViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         ratingsdb, _ = process_old_results(quiet=True)
-        seed_players(ratingsdb.players)
+        numbers = seed_players(ratingsdb.players)
         call_command("build_db", verbosity=0)
+        name = "Dave Wiegand"
+        cls.number = numbers[ratingsdb.aliases.get(name, name)]
 
     def test_ratings_list(self):
         resp = self.client.get(reverse("ratings:ratings_list"))
@@ -116,13 +125,13 @@ class ViewTest(TestCase):
 
     def test_player_detail_shows_computed_history(self):
         # The unified player page lives in the players app; URL is number+slug.
-        player = Player.objects.get(name="Dave Wiegand")
+        player = Player.objects.get(player_number=self.number)
         resp = self.client.get(player.get_absolute_url())
         self.assertEqual(resp.status_code, 200)
         self.assertContains(resp, "Tournament history")
 
     def test_player_url_is_number_and_slug(self):
-        player = Player.objects.get(name="Dave Wiegand")
+        player = Player.objects.get(player_number=self.number)
         # Stored padded, linked bare (see Player.get_absolute_url).
         bare = int(player.player_number)
         self.assertEqual(player.get_absolute_url(), f"/player/{bare}/dave-wiegand/")

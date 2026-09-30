@@ -22,6 +22,11 @@ Two other things legitimately require regeneration, neither of them a bug in the
 math: moving the cutoff, and back-filling a tournament dated on or before it
 (that edits the pinned input). The rating math is also floating-point heavy, so
 the values only reproduce on a matching Python/platform.
+
+Player identity is deliberately left out of the snapshot. CoCo ids come from the
+live data/players.csv, not from the pinned tournaments, so recording them made
+this test fail whenever a pre-cutoff player's number was corrected there — a
+change to identity, not to the math.
 """
 
 import os
@@ -65,7 +70,7 @@ def generate_snapshot():
         "",
         "=== PER-TOURNAMENT REPORT ===",
         _row(
-            "Player", "Tournament", "CocoId",
+            "Player", "Tournament",
             "OldRating", "NewRating", "OldDeviation", "NewDeviation", "Games",
         ),
     ]
@@ -74,7 +79,7 @@ def generate_snapshot():
             r = ratingsdb.report[name][tournament]
             lines.append(
                 _row(
-                    name, tournament, r.coco_id,
+                    name, tournament,
                     r.old_rating, r.new_rating,
                     r.old_deviation, r.new_deviation, r.games,
                 )
