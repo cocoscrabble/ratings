@@ -9,8 +9,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v6
+      - uses: actions/checkout@v7
+      # setup-uv stopped publishing floating major tags (v8+), so pin the release.
+      - uses: astral-sh/setup-uv@v10.2.0
       - name: Install (with web extra)
         run: uv sync --extra web
       - name: Engine tests
@@ -29,7 +30,7 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           # Dokku needs the full git history to build.
           fetch-depth: 0
