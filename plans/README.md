@@ -26,6 +26,9 @@ Current documents:
   (`accounts.User`) and gating `/manage` on `is_staff`. **Complete** (August
   2026, `b8e45dc`); kept because the reason for the `accounts` app and the
   manual `LogEntry` database step it required are not visible in a diff.
+- Unplayed games (byes/forfeits): the cross-repo plan is
+  `../baxter/plans/PLAN_UNPLAYED_GAMES.md`. Most of its code changes land here
+  (`core/types.py`, `io.py`, `calculator.py`), plus a backfill of `results/`.
 - `rating-history.md` — archaeology, not a plan: the committed run of
   `scripts/rating_history.py` over the full history, identifying which code
   changes actually moved someone's rating (4 of 200 commits touching `.py`).
