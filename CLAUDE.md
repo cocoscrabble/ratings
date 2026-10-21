@@ -71,6 +71,13 @@ uv run python -m unittest tests.test_golden   # just the golden-master test
 # Regenerate the golden file after an INTENTIONAL behaviour change
 UPDATE_GOLDEN=1 uv run python -m unittest tests.test_golden
 
+# After adding a tournament: record its (now published) ratings
+UPDATE_PENDING=1 uv run python -m unittest tests.test_pending
+
+# Freeze everything rated so far into milestone/ -- BEFORE any change that
+# would move a published rating (test_pending fails until you do)
+uv run coco-rate milestone
+
 # Lint (config in pyproject.toml [tool.ruff])
 uv run ruff check .
 
@@ -82,7 +89,7 @@ uv run python web/manage.py build_db   # rebuild the ratings projection from res
 uv run python web/manage.py test accounts players ratings  # all three apps
 uv run python web/manage.py runserver  # browse locally (or: make run)
 
-# Rate the full history. The named file gets the LATEST tournament's per-player
+# Rate the history (from the milestone). The named file gets the LATEST tournament's per-player
 # results; the combined list always goes to ./complete-ratings-list.csv
 uv run coco-rate <output.csv>          # console script -> cli.main
 # equivalently: uv run python -m coco_ratings <output.csv>
@@ -108,11 +115,49 @@ on a matching CPython/platform (generated on CPython 3.14) — regenerate if you
 change interpreter. For that reason it is a **local-only** check: CI sets
 `SKIP_GOLDEN=1`, which skips the whole test case.
 
+Golden is a test of the **engine**, not of the published ratings: it replays
+with `milestone=None`. Regenerating it no longer means anyone's published
+rating moved. What guards published ratings is the milestone (below) and
+**`tests/test_pending.py`**, which runs in CI.
+
+## Rating milestones — published ratings never change
+
+**Published ratings are frozen in `milestone/`** (`coco_ratings.milestone`,
+`plans/rating-milestones.md`). Every build used to replay the whole history,
+so any engine change (a fix, a reader change, a Python upgrade) rewrote every
+rating back to 2021. Now the replay starts from the milestone:
+
+- **Frozen tournaments are never rated again.** Their before/after ratings come
+  from `milestone/history.csv`; the carried rating state from `state.csv`.
+- **Their records still come from the files.** Each build re-reads them (the
+  record pass), so W/L, spread and career games follow the results file. A
+  frozen results file may change only with an entry in `manifest.json`
+  `amendments` (filename, new sha256, date, reason); otherwise the build fails.
+- **Tournaments after the milestone are rated by the current code.** Their
+  ratings are published too, and pinned by `milestone/pending.csv`
+  (`tests/test_pending.py`). A code change that would move them must **cut a
+  milestone first, with the old code** (`coco-rate milestone` on main), then
+  land. Cut every time the ratings code changes; a cut costs no accuracy,
+  since seeding from one is bit-identical to replaying through it
+  (`tests/test_milestone.py`).
+- **A tournament dated before the milestone** must be listed in
+  `manifest.json` `late_additions`; it is then rated first, against the
+  milestone's ratings.
+- `process_old_results(milestone=None)` is the full replay, for the engine's
+  own tests and research (golden, beta simulations). Production sets
+  `COCO_MILESTONE_DIR`, and a missing milestone there is an error rather than
+  a silent full replay.
+
+The first milestone (2026-10-20) froze all 132 tournaments through
+`charlottesville-2026`, verified first against every rating on the production
+site.
+
 ## Architecture
 
 The core insight: a player's new rating depends on their opponents' *current*
-ratings, so ratings are always recomputed by replaying the entire tournament
-history in chronological order. There is no persisted rating state between runs.
+ratings, so ratings are computed by replaying the tournament history in
+chronological order — from the committed milestone (above), whose frozen state
+is the only rating state persisted between runs.
 
 The single-tournament code is split into layers with an acyclic dependency
 graph (`core` ← `io` ← `rating` ← `gui`):

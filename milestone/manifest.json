@@ -1,0 +1,540 @@
+{
+ "format": 1,
+ "through": "charlottesville-2026",
+ "cut_on": "2026-10-20",
+ "code_rev": "4af95fdf1ef895d47584027dd0ea0847f3388152",
+ "python": "3.14.3",
+ "beta": 5,
+ "frozen": [
+  {
+   "filename": "loco-2021",
+   "results_sha256": "3e9897fc7f51e4eea504dc6164067c81286b9b61e06b88ea8cace8401141ebb3"
+  },
+  {
+   "filename": "pabst-2021",
+   "results_sha256": "408d6e79bcc301d4160aedc38a8e90e9e2c28a01c5bc47e489fdfd7858a82c1a"
+  },
+  {
+   "filename": "charlottesville-2021",
+   "results_sha256": "d96d2c71450b6828375e5225f070761c1839c46900180cfcc7f1f7762cf27804"
+  },
+  {
+   "filename": "seattle-2021",
+   "results_sha256": "14635a0168373233833b2cb7f0e744633244a58a41b7d37fb461cf55baf11b4e"
+  },
+  {
+   "filename": "hoodriver-2022",
+   "results_sha256": "b52f9f148d1cf594f4b3461ddfe6d14c5b8c536cb9f8734e9d0db1771e249f10"
+  },
+  {
+   "filename": "sandiego-2022",
+   "results_sha256": "fda51643e1a36395d6cbf9a24a9512941516a187c18c2af531ae48342947a70a"
+  },
+  {
+   "filename": "atx-2022",
+   "results_sha256": "7d1e269eee3b5dc0210636f99cc9e24851002533caced653af3d136f548b878e"
+  },
+  {
+   "filename": "boston-2022",
+   "results_sha256": "c196b9533cf8e9a034d59bef7c86a3595cad9fe1a032258acffc3860c0eaef88"
+  },
+  {
+   "filename": "osc-2022",
+   "results_sha256": "acaa4d4e5bb95d26bb90fe9119a767f8d1651f30e48d9ea70c50a8057c569172"
+  },
+  {
+   "filename": "3m-2022",
+   "results_sha256": "e52380357e43c1c74a78b153744cf5266f14ad69ccf079104e4b8fdc638ba361"
+  },
+  {
+   "filename": "madison-2022",
+   "results_sha256": "c6cabbfee68b0c510ff30824b0a6bd44cd5f33663eed7081323fb4de18540f0c"
+  },
+  {
+   "filename": "stl-2022",
+   "results_sha256": "027991dbbf0737cef24375622996fd6fe55775a9d6e0460ec4a4163890c6b605"
+  },
+  {
+   "filename": "wgpo-earlybird-2022",
+   "results_sha256": "3d399ef15ec15713c08eb7096301485dc03ab0bf078c2a1dfc3483fb58ca6e8c"
+  },
+  {
+   "filename": "wordcup-d1-2022",
+   "results_sha256": "33cbd0a15b7faeb2d5c9cad7a4c20dc4273c5af6f1907cb6e1ba024cc61910cd"
+  },
+  {
+   "filename": "wordcup-d2-2022",
+   "results_sha256": "31005c084433473c95c2d513d8c741ccccdc8bddbf63c7b6ec653001fb3a2fa0"
+  },
+  {
+   "filename": "seattle-2022",
+   "results_sha256": "dd6b503944819a32e38916626d6e35356be288b3d01ef81fbe7ddddd9c7d8c83"
+  },
+  {
+   "filename": "mn-2022",
+   "results_sha256": "69c61ce89ddc662acb52aab03b2ea13dcd0ea0b97e9a7ace31954c2f106b8340"
+  },
+  {
+   "filename": "potomac-2022",
+   "results_sha256": "926f54d13f52ee45c1c25014e7636752568dc1240ea948dab0f3df24c4584ca9"
+  },
+  {
+   "filename": "loco-2022",
+   "results_sha256": "cf593fa0a9f13dffd103b241c39a89f2af7dea2d96c84d64c467c2b0a64fc765"
+  },
+  {
+   "filename": "brattleboro-2022",
+   "results_sha256": "ec8793f00a4b162983b4695f190625ea6564825bce9f5ad61e7aedf21672058b"
+  },
+  {
+   "filename": "pabst-2022",
+   "results_sha256": "9341d463fa77bde4237e4c4b78fa64fdd568b97b4519473c38aeb4facfa288a1"
+  },
+  {
+   "filename": "slingerlands-2022",
+   "results_sha256": "dc4f5c847d3ceba5d7beb0cf9a25da366f9f883da6ea0d734170d30e3cc73edc"
+  },
+  {
+   "filename": "bend-2022",
+   "results_sha256": "81452fe183158b4d1012cdec9dc1a7bd47e36c97c5a47b5f353a005399255f1a"
+  },
+  {
+   "filename": "la-2022",
+   "results_sha256": "b01a32f0286c37a4c3e3e01a0aa37f87ec2197776f1441d51d54da41a4c2f44c"
+  },
+  {
+   "filename": "nola-d1-2023",
+   "results_sha256": "8d34d37fee2e945e73b0c3806629b8b636340caf9b0d70e44790accfefa13217"
+  },
+  {
+   "filename": "nola-d2-2023",
+   "results_sha256": "585dd925d5cbcf1abc4a2a21a48edb84232ad584f0669eca382f8be53df976ba"
+  },
+  {
+   "filename": "hood-river-2023",
+   "results_sha256": "884e598957314220cfd3dae6704ef504c796175b7a940daa6abb6982eb62490b"
+  },
+  {
+   "filename": "austin-2023",
+   "results_sha256": "8f2e8fdc940af23aaf75605faf38210bee4f6c8fc69e5f46c5e55778be5d0045"
+  },
+  {
+   "filename": "silver-spring-2023",
+   "results_sha256": "968c6489e9f871f524c2e6e9a27157030f3efc9799b1f78eb78283e1f5959630"
+  },
+  {
+   "filename": "slingerlands-2023",
+   "results_sha256": "bd6c55ea909e4c89fa54772974d22b47abb9d2b76e0c97fc549ed989870c9b3b"
+  },
+  {
+   "filename": "austin-may-2023",
+   "results_sha256": "8cdcbd1295323b4ab2aeb12228fc79f02498053958e8088104e11e280374c789"
+  },
+  {
+   "filename": "moco-2023",
+   "results_sha256": "d72f55fc175d062345f558e3a4b223168598e8334b85192147bd57c1a47e6304"
+  },
+  {
+   "filename": "austin-jun-2023",
+   "results_sha256": "2b88e1a22263b50d31bc3c7f322159b902828f0f97566610ec72c2a5f6cc1997"
+  },
+  {
+   "filename": "stlouis-jun2023",
+   "results_sha256": "9d0409dc2691fe90c7c7701452d28a413f4253123cca59a5d537230f176d40e0"
+  },
+  {
+   "filename": "seattle-jul2023",
+   "results_sha256": "ace59caf44121014fafe34a79bb6fdb2de9c6dd0c871f07d4b82743d39ff19fe"
+  },
+  {
+   "filename": "vancouver-aug2023",
+   "results_sha256": "b8c825aea601f1654b3129442e8676ca2b4061732b447f1d9bfb8f0221861037"
+  },
+  {
+   "filename": "austin-aug2023",
+   "results_sha256": "f53c042c41781c6e6dbe09c7da54b30fecd481380e0d9815ba7ae70c4e4ab27e"
+  },
+  {
+   "filename": "portland-aug2023",
+   "results_sha256": "55d4731d801d819903ca5cf2d50751ceb0e541516ed5b4dab06474f345e3a103"
+  },
+  {
+   "filename": "columbia-2023",
+   "results_sha256": "99e9d5b4168b35080553995aab95bdeb07d339fc73efe51a4afedab9b01dc8b8"
+  },
+  {
+   "filename": "austin-sep2023",
+   "results_sha256": "ac3387add413751808125dd2cba7e0b55ecd9dd80decc883f4ebd49d2b3b94b8"
+  },
+  {
+   "filename": "seattle-sept2023",
+   "results_sha256": "ecd3e4c71f62965357e160508e0c8697992199d137ee3d1b00b1203ca8e7b8ce"
+  },
+  {
+   "filename": "riorancho-oct2023",
+   "results_sha256": "f6d5d03a81c4b45798cc3658fba8421d51a55c3891930c5983fdd53a88cc8dd0"
+  },
+  {
+   "filename": "potomac-oct2023",
+   "results_sha256": "8410f5f2068a35f24df531d077c33a07bf00d56af80e56b79206149d8cf2d43d"
+  },
+  {
+   "filename": "texasstate-2023",
+   "results_sha256": "9aa42b053e142d5fc52628be87df2e281144eb21b9e7e61909f52dcfa317e0b1"
+  },
+  {
+   "filename": "portland-nov2023",
+   "results_sha256": "bdb09f3e92716de5632512f2ca24fc41ab2d8ff217395880c97792554d6013b8"
+  },
+  {
+   "filename": "nacc2023-d1",
+   "results_sha256": "52d60e032fa1d67edd1494f43fcc97f7f4631ce2ffe5b0146c2d806f5202e86a"
+  },
+  {
+   "filename": "nacc2023-d1p",
+   "results_sha256": "b6933ab380459992b733ef9bd5aa8568a8ffc0a25e7af27545d7897354a1213e"
+  },
+  {
+   "filename": "nacc2023-d2",
+   "results_sha256": "f7954886285cbdfdc19e903ab4263f8926869a7bfd6cf096c08adc07615ef4fb"
+  },
+  {
+   "filename": "nacc2023-d2p",
+   "results_sha256": "54179ae01631b73a7cb491774fbf5d976657eca2eaf3ecf267b2e9544bf7a28d"
+  },
+  {
+   "filename": "nacc2023-afterword",
+   "results_sha256": "387f081881fff35f3f8f29cec8e6bcf4e58f3aed8de2f6e626e4fa9c0597821e"
+  },
+  {
+   "filename": "palmsprings-dec2023",
+   "results_sha256": "a554b8616a75cf32acb6477a41cc9ce8d9d51e927ada1fc110490d961c2f9427"
+  },
+  {
+   "filename": "nola-lite-2024",
+   "results_sha256": "0b6e180ff9d84902e71e0568538834337f54642216d5c0175c9827d3bb932c93"
+  },
+  {
+   "filename": "nola-open-2024",
+   "results_sha256": "f8d7484a66fc4b7d669cbc3fe7d3f1427e07c01dbfbf3a065c14189b0a047606"
+  },
+  {
+   "filename": "portland-pub-jan2024",
+   "results_sha256": "338af1367874bb09778614e5c49f7744cf867c52a3f1b5a0265f938b120ce9c2"
+  },
+  {
+   "filename": "hood-river-2024",
+   "results_sha256": "5470d3a4cfb53e330ddecd9cdaddfb743eb3594b5e99f97260ef462a9d62a2dd"
+  },
+  {
+   "filename": "portland-pub-mar2024",
+   "results_sha256": "85382158643f319be5014457002ecf9f55dac68f4872430bde5d5096216b19a0"
+  },
+  {
+   "filename": "austin-atx2024",
+   "results_sha256": "f5c6b2821ee38e96913d90ebcbd70f5f732123cc8ed49a8d67376fbedb76e275"
+  },
+  {
+   "filename": "portland-pub-apr132024",
+   "results_sha256": "14e4a9005a17f256d96719534b2bc357988d626c487481dd4862946c31ecb8ec"
+  },
+  {
+   "filename": "portland-pub-apr142024",
+   "results_sha256": "c7753906e8410131b4091eb3797465662dfe39159b1e62b4a4be02ea22b83c7a"
+  },
+  {
+   "filename": "championscup-2024",
+   "results_sha256": "cd603b4997ce83adda3050dcc27b819484bfac4aeb502c4cdfd346a931d8c019"
+  },
+  {
+   "filename": "portlandpub-may2024",
+   "results_sha256": "5118cf5158e32656955335508c3f4db674393b27741b8bf3ef6bc7daae477be3"
+  },
+  {
+   "filename": "potomac-may2024",
+   "results_sha256": "44f12d782d7acc1d0400953f695d8b09b5f5c0509c261082a76bfde0a6a3117e"
+  },
+  {
+   "filename": "seattle-may2024",
+   "results_sha256": "e3c3c69e247818f0c54c1a31fa9a4c0572749a7f9f7fbcb795f778ac7bab1566"
+  },
+  {
+   "filename": "portlandpub-jun2024",
+   "results_sha256": "ec0bb0646f1925cf93975ba519b6c1b67f868e6a93f462e9af649d879418d69a"
+  },
+  {
+   "filename": "portlandpub-jul2024",
+   "results_sha256": "35fc7a15e4666cd23c548af6bb2b2d4b41e765d7d1d02670434273d9502dc8fc"
+  },
+  {
+   "filename": "wordcup-2024-eb",
+   "results_sha256": "626b5962c0abba9d439ab4d77599151ae4737799b18146f8768bbfc9b8a91e6c"
+  },
+  {
+   "filename": "wordcup-2024-d1",
+   "results_sha256": "b321872b3cef821cb6bf2f9e169cab8feae1a46cc4fbeafc222c2124e9955118"
+  },
+  {
+   "filename": "wordcup-2024-d2",
+   "results_sha256": "3c3a2f4ab44976f8ec985d8ea1d5c78f163bcbe60c0471b1010bd7ef67225598"
+  },
+  {
+   "filename": "glenhaven-2024",
+   "results_sha256": "cb93a1ed8d7e6c3c9905851c1d17c34ed63a3e813e547a64a937453671c07e2d"
+  },
+  {
+   "filename": "portlandpub-aug2024",
+   "results_sha256": "1db59ccd36d11fccbc96dd452e45b180c39dc466d971fcd2253202518a3cb5dc"
+  },
+  {
+   "filename": "pdxwords-eb-2024",
+   "results_sha256": "6f1e824495823468ed36ca0dd0916eede014c248e280040cf6dace903d9d6dfe"
+  },
+  {
+   "filename": "lewes-2024",
+   "results_sha256": "7a04f58945271a42de1d5f071a73b51c3367e6a87ac710d45ee77f5f4768e8dc"
+  },
+  {
+   "filename": "pdxwords-2024",
+   "results_sha256": "6ee665e5ac35290e58cba2678e38be0ef3bbf0fa18ee8cd401f72c74430375c9"
+  },
+  {
+   "filename": "portlandpub-oct2024",
+   "results_sha256": "b8656e79e374d9631d61a394680742a148fc074ce0b39a660d12b64083091a67"
+  },
+  {
+   "filename": "seattle-oct262024",
+   "results_sha256": "fdfe76ea8bae254b9c79bd3393b7d7c227baf7f6ce5b4cc3c71549a6f89657cf"
+  },
+  {
+   "filename": "seattle-oct272024",
+   "results_sha256": "e25bf3d98bd3a6caa07484341647ccf652e1a96713efd0eac311f8124be66a89"
+  },
+  {
+   "filename": "columbia-2024",
+   "results_sha256": "50d1f447b2bfdfa17eb4565753fa363a9f764f0b6e58bde0b661e91e800170dc"
+  },
+  {
+   "filename": "portlandpub-nov2024",
+   "results_sha256": "da64f569443e8d1bfbc6ab82ce1fda8f6edb7d50ebb1c5dcbc79afa666eb4b99"
+  },
+  {
+   "filename": "sanfrancisco-dec2024",
+   "results_sha256": "d93e43b07e7cd1429898013a0a603bb103c6f04ad1d5b2f3daf7e2dfb1ab51e7"
+  },
+  {
+   "filename": "portlandpub-dec2024",
+   "results_sha256": "d0855447d66724eeb7b8f7757df253851c21fb17f068fd75f0984f6893e11937"
+  },
+  {
+   "filename": "vancouver-dec2024",
+   "results_sha256": "e00d5a4a8fc7ae6410a060d0388e48aa82c25e1e4d31944fd80e4263c6dfb897"
+  },
+  {
+   "filename": "nola-lite-2025",
+   "results_sha256": "80fe486dd13f63e0ac78c7de8f8f4c6c68ab1b15ab9b5c5979c0378ff6da9846"
+  },
+  {
+   "filename": "nola-open-2025",
+   "results_sha256": "ffc11aab7f9d7b6101e8d28f9f911e7b7163937c4601b8a8a11499e93bb1e5e7"
+  },
+  {
+   "filename": "hood-river-2025",
+   "results_sha256": "42e55f51075e96e8b4ff831bb39934944e5213303116c39f1402699040d9f43e"
+  },
+  {
+   "filename": "providence-mar2025",
+   "results_sha256": "7437893ef3812f26f95fa2f66afd47fa8526527e111ce67539bde8ff946a302d"
+  },
+  {
+   "filename": "providence-apr2025",
+   "results_sha256": "a7af5ab9dff6d56b1bb294268c8a0ecd406272d57b6bcfca92191f7afdcbaf07"
+  },
+  {
+   "filename": "portland-pub-12apr2025",
+   "results_sha256": "28dff4248dd351582c219e8a81d05f0052af251e75594f7d8708d9ed3ff4dd59"
+  },
+  {
+   "filename": "portland-pub-13apr2025",
+   "results_sha256": "67421a97dacb44ba381f3bf2b229f8ca6ac10aa0cc0d400ff2482235d7f637ef"
+  },
+  {
+   "filename": "championscup-2025",
+   "results_sha256": "0a3c5a625cfd991c77a4876156147693d21ace3af69f30c19c09aaa45cfa3e39"
+  },
+  {
+   "filename": "rome-may2025",
+   "results_sha256": "155e0f903093c556b1ff6f2b83becee22201bf748828bea570f5e131fb26b80e"
+  },
+  {
+   "filename": "bellingham-may2025",
+   "results_sha256": "97612135754cb9e88296c62d361a030d873d06b56c581b1ccde4088909015050"
+  },
+  {
+   "filename": "seattle-may2025",
+   "results_sha256": "9424db40b9ab9ca0f48aaafb4b454fdd0d52b395a76fd8b94e73ae19d3cbe2c3"
+  },
+  {
+   "filename": "austin-atx2025",
+   "results_sha256": "fd94c68054fccbf3e8f54a90a427e86dee63d6827aeacd2f93c606dbf0ec9463"
+  },
+  {
+   "filename": "denver-21jun2025",
+   "results_sha256": "678db8abedc3b0fef22c34f509a8edba2d3822365997135be2a10f25328e50ea"
+  },
+  {
+   "filename": "nova-jun2025",
+   "results_sha256": "9f7637839470ef2b780c8e39e6f801d94be7cce7c43625ed8de72a02465df86e"
+  },
+  {
+   "filename": "portlandpub-jun2025",
+   "results_sha256": "cc5e7c09da649772ecd4700885441840fd11d61e77359649ff19913d1954640c"
+  },
+  {
+   "filename": "bend-jun2025",
+   "results_sha256": "4cbafcb28ea3830db8827a0516bcd95bf821b064e1e3cf77b4f391dc4da0f80b"
+  },
+  {
+   "filename": "wordcup-2025-eb",
+   "results_sha256": "2d2fa77feb2f520a2742996cdd11868d77b01b300ee0ca76450b947aa177cc31"
+  },
+  {
+   "filename": "wordcup-2025-d1",
+   "results_sha256": "96ddeb308a12722ec79d1f8d8746619009753987075c5823787b2fe555ce4bc3"
+  },
+  {
+   "filename": "wordcup-2025-d2",
+   "results_sha256": "c98fdae19b58f03b55b541c3cde22904d654655f2d0151836f6142a5916dcbed"
+  },
+  {
+   "filename": "pdxwords-eb-2025",
+   "results_sha256": "f226dadac36928336d408b718a04868439b743561286c536e048e3f67082436c"
+  },
+  {
+   "filename": "pdxwords-2025",
+   "results_sha256": "fa345d16a3b404f9e2d40ec9e4e92233f041fb1ed877381d3478709ba2af72dd"
+  },
+  {
+   "filename": "slingerlands-series1-2025",
+   "results_sha256": "ff8630b72c0b1efb272cb3fe40c604851a64ddf0eec061ae9121095b4a62fea6"
+  },
+  {
+   "filename": "slingerlands-series2-2025",
+   "results_sha256": "2d299588be3f0d52d52c21e98d3667061a21559e9754ef15b9e0ac05ad4460e7"
+  },
+  {
+   "filename": "charlottesville-2025",
+   "results_sha256": "3459419327070250593222403f222d689bd7dd9c1a8ed6a77ea02e9bcd3b04d4"
+  },
+  {
+   "filename": "seattle-oct252025",
+   "results_sha256": "c09fd8d6b70fcce13ebc237d48e484f340b78dd90735a5034e12983315fd271e"
+  },
+  {
+   "filename": "seattle-oct262025",
+   "results_sha256": "9f77733979adb89ff5037647bb91f42758a6d4d7a772e86bbd98cbf9ad19ab49"
+  },
+  {
+   "filename": "sanfrancisco-dec2025",
+   "results_sha256": "bc1ddad3dd7114ccc7e4088996fef9a097af7b9bfcc5e060010ef7b4deaab141"
+  },
+  {
+   "filename": "nola-lite-2026",
+   "results_sha256": "9d2dc952b450f7e5caf81b276c11b36a427fbcf511263c5cb211ea4934de44ee"
+  },
+  {
+   "filename": "nola-open-2026",
+   "results_sha256": "80f0d6548abb40fdae6b58d5a15b30cdf1d0b6f3ecc2a4f273b8bce58744ecb8"
+  },
+  {
+   "filename": "providence-jan2026",
+   "results_sha256": "df1adb2a0d0d35ebfc57ab87dd3db55eaefc434a5c09f4e6f87c00ea070a582c"
+  },
+  {
+   "filename": "nova-feb2026",
+   "results_sha256": "e852b047d37f2f58868b729192df93f42ec87587645dceca08e8d9d01b95f0d3"
+  },
+  {
+   "filename": "hood-river-2026",
+   "results_sha256": "b6c0c6c09c2dcbe48aed6311c903c0535a848f6c5037d0c35a456dff970401f4"
+  },
+  {
+   "filename": "somerville-feb2026",
+   "results_sha256": "3165d55c94eb1179aee4840e8fbd839523e42fa34e8c2ae370080b00b381afe3"
+  },
+  {
+   "filename": "nova-mar2026",
+   "results_sha256": "49e2a1c6afe7de7a734b3d390a4b1273f6bfeccef74b4a666fcdbe46f6a0193f"
+  },
+  {
+   "filename": "providence-mar2026",
+   "results_sha256": "feef43ca184e4541476c86e7dcc5df88d1f674b2344d2d717ab42e4a21038e16"
+  },
+  {
+   "filename": "nova-apr2026",
+   "results_sha256": "8b6c2e70e9dc2e6c9d33b53210d5cd31c51b0254d1bc4212aa45385a05e1a7be"
+  },
+  {
+   "filename": "somerville-apr2026",
+   "results_sha256": "7e9cdbd51345d8d52de7f41f56b5c8a99334b3c472cfc7b3cdff2e975c3da85b"
+  },
+  {
+   "filename": "portland-pub-18apr2026",
+   "results_sha256": "2cefc593b7af8d5ebb867fcdaf0213254e6ffd9b4fbbbed4cf4380646151ab38"
+  },
+  {
+   "filename": "portland-pub-19apr2026",
+   "results_sha256": "af9ab7e7e4c7d6561d8be32cfd8f45ca74678acde132268db5c8b405dfd4192e"
+  },
+  {
+   "filename": "vancouver-may2026",
+   "results_sha256": "eadf93170718d1a33042678d65371368800461493f389a906de521c9c13d006d"
+  },
+  {
+   "filename": "seattle-jul2026",
+   "results_sha256": "3592c0aad3d465a9b40045c39b87b42e6061aa60cfe778797044161af3430d35"
+  },
+  {
+   "filename": "wordcup-2026-eb",
+   "results_sha256": "08a11886d0d0803dae10b2eeda8de66f7317f6801abb64f1bec10bf72c211417"
+  },
+  {
+   "filename": "wordcup-2026-aa1",
+   "results_sha256": "5938f03c64b7c191b14e93cca970f20e825184575f431fd7d560bfd0caecb2e5"
+  },
+  {
+   "filename": "wordcup-2026-aa2",
+   "results_sha256": "828f183880b81a9cafa2c56f26440aca84e88cc0914669c310af22c84d31529a"
+  },
+  {
+   "filename": "wordcup-2026-aa3",
+   "results_sha256": "35fed2d18b01bc13f31964e5311800442da61c3f2c4acb4aab63d2f11a02c883"
+  },
+  {
+   "filename": "wordcup-2026-d1",
+   "results_sha256": "c93ddb07e23f4731e7dfba80ea20ac04fa6b927637a1fef506d1e51989ac9cb7"
+  },
+  {
+   "filename": "wordcup-2026-d2",
+   "results_sha256": "a26cc09b2b2e156b39236ea2a1afcac8bcc2a3be4268602d3645bf73ae84965d"
+  },
+  {
+   "filename": "providence-sept2026",
+   "results_sha256": "46347485f0b732030592585a1f3fedd1e0f65c37710ad3599eada3a0f28b4265"
+  },
+  {
+   "filename": "vancouver-sept2026",
+   "results_sha256": "b443d70356e102096cbb4468f7096a18c4317c712ed4f629c9044c03315a786c"
+  },
+  {
+   "filename": "pdx2032-sept2026",
+   "results_sha256": "de43f854146994923b1549c20a4231194797f6526eb79562e072744112e88957"
+  },
+  {
+   "filename": "charlottesville-2026",
+   "results_sha256": "425300acde0b1119acd87d45af67a17ffcf6352570e1a4e111a7140c4f6a0d84"
+  }
+ ],
+ "amendments": [],
+ "late_additions": []
+}

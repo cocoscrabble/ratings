@@ -1,0 +1,1596 @@
+tournament,key,old_rating,new_rating,old_deviation,new_deviation
+loco-2021,0001,1928,1877,150.0,86.6
+loco-2021,0002,1587,1436,150.0,86.6
+loco-2021,0003,2062,2043,150.0,86.6
+loco-2021,0010,1973,2086,150.0,86.6
+loco-2021,0017,1431,1485,150.0,86.6
+loco-2021,0018,1104,1290,150.0,86.6
+loco-2021,0213,1883,1883,150.0,150.0
+loco-2021,Becky Dyer,1773,1747,150.0,86.6
+loco-2021,Christopher Grubb,1848,1892,150.0,86.6
+loco-2021,David Whitley,1762,1873,150.0,86.6
+loco-2021,Judy Romann,1401,1337,150.0,86.6
+loco-2021,Lola McKissen,1311,1311,150.0,150.0
+loco-2021,Mark Francillon,1622,1507,150.0,86.6
+loco-2021,Peter Armstrong,1914,1790,150.0,86.6
+loco-2021,Puneet Sharma,1679,1558,150.0,86.6
+loco-2021,Rachel Grubb,1152,1314,150.0,86.6
+pabst-2021,0001,1877,1806,108.16,84.34
+pabst-2021,0002,1436,1370,108.16,84.27
+pabst-2021,0010,2086,2164,108.16,84.34
+pabst-2021,0017,1485,1424,108.16,84.34
+pabst-2021,0018,1290,1282,108.16,84.34
+pabst-2021,0070,1713,1713,150.0,150.0
+pabst-2021,Becky Dyer,1747,1704,108.16,84.27
+pabst-2021,David Whitley,1873,1936,108.16,84.34
+pabst-2021,Lola McKissen,1311,1393,150.0,100.1
+pabst-2021,Rasheed Balogun,1845,1922,150.0,100.1
+charlottesville-2021,0001,1806,1885,99.57,78.3
+charlottesville-2021,0002,1370,1447,99.51,78.21
+charlottesville-2021,0033,1898,1494,150.0,96.47
+charlottesville-2021,0055,2001,2051,150.0,96.47
+charlottesville-2021,Becky Dyer,1704,1712,99.51,78.21
+charlottesville-2021,Ben Schoenbrun,1934,1902,150.0,96.71
+charlottesville-2021,Brent Weil,1543,1503,150.0,96.47
+charlottesville-2021,Chris Lipe,2022,1932,150.0,96.23
+charlottesville-2021,Eloy Gardea,1809,1639,150.0,96.82
+charlottesville-2021,Joe Roberdeau,1194,1367,150.0,96.47
+charlottesville-2021,Joshua Castellano,1751,1712,150.0,96.47
+charlottesville-2021,Marty Gold,1723,1723,150.0,150.0
+charlottesville-2021,Michael McKenna,1759,1699,150.0,96.35
+charlottesville-2021,Nancy Bowen,1347,1347,150.0,150.0
+charlottesville-2021,Randi Goldberg,1586,1648,150.0,96.47
+charlottesville-2021,Robert Linn,1616,1755,150.0,96.59
+charlottesville-2021,Terry Kang,1255,1424,150.0,96.59
+charlottesville-2021,Tim Weiss,1815,1794,150.0,96.23
+seattle-2021,0001,1885,1870,94.5,75.37
+seattle-2021,0002,1447,1518,94.43,75.37
+seattle-2021,0010,2164,2118,112.75,83.67
+seattle-2021,0017,1424,1608,112.75,83.67
+seattle-2021,0018,1282,1165,112.75,83.68
+seattle-2021,0117,2040,2040,150.0,150.0
+seattle-2021,Ayotunde Adeyeri,1262,1515,150.0,95.89
+seattle-2021,Christopher Grubb,1892,1869,131.53,90.53
+seattle-2021,David Whitley,1936,1954,112.75,83.73
+seattle-2021,Lola McKissen,1393,1267,124.98,88.29
+seattle-2021,Peter Armstrong,1790,1831,131.53,90.53
+seattle-2021,Puneet Sharma,1558,1545,131.53,90.57
+seattle-2021,Rasheed Balogun,1922,1841,124.98,88.26
+seattle-2021,Sandy Nang,1498,1340,150.0,95.81
+hoodriver-2022,0001,1870,1923,112.61,76.79
+hoodriver-2022,0002,1518,1502,112.61,76.79
+hoodriver-2022,0003,2043,2042,150.0,85.97
+hoodriver-2022,0010,2118,2093,118.32,78.52
+hoodriver-2022,0017,1608,1630,118.32,78.54
+hoodriver-2022,0018,1165,1174,118.33,78.51
+hoodriver-2022,0021,1806,1652,150.0,85.95
+hoodriver-2022,Ben Schoenbrun,1902,1920,138.39,83.57
+hoodriver-2022,Chris Lipe,1932,1954,138.06,83.49
+hoodriver-2022,David Whitley,1954,1900,118.37,78.55
+hoodriver-2022,James Curley,1678,1665,150.0,85.91
+hoodriver-2022,Jesse Day,2062,2120,150.0,85.97
+hoodriver-2022,Joshua Castellano,1712,1896,138.23,83.54
+hoodriver-2022,Lola McKissen,1267,1186,121.64,79.44
+hoodriver-2022,Mark Francillon,1507,1532,150.0,85.91
+hoodriver-2022,Michael McKenna,1699,1693,138.14,83.57
+hoodriver-2022,Peter Armstrong,1831,1841,123.27,79.91
+hoodriver-2022,Puneet Sharma,1545,1585,123.3,79.92
+hoodriver-2022,Randi Goldberg,1648,1621,138.23,83.53
+hoodriver-2022,Tim Weiss,1794,1730,138.06,83.51
+sandiego-2022,0001,1923,1901,89.42,72.54
+sandiego-2022,0003,2042,2031,97.42,76.6
+sandiego-2022,0010,2093,2098,90.91,73.28
+sandiego-2022,0070,1713,1806,150.0,95.54
+sandiego-2022,Christopher Grubb,1869,1906,131.51,90.22
+sandiego-2022,David Whitley,1900,1872,90.94,73.41
+sandiego-2022,Jesse Day,2120,2080,97.42,76.53
+sandiego-2022,Puneet Sharma,1585,1593,92.13,74.03
+sandiego-2022,Sandy Nang,1340,1354,135.2,91.6
+sandiego-2022,Yukiko Loritz,1527,1527,150.0,150.0
+atx-2022,0001,1901,1949,85.8,70.63
+atx-2022,0002,1502,1518,100.48,78.15
+atx-2022,0003,2031,2062,89.26,72.53
+atx-2022,0010,2098,2152,86.43,70.94
+atx-2022,0017,1630,1546,101.83,78.74
+atx-2022,Brian Bowman,1890,1905,150.0,95.48
+atx-2022,Chris Lipe,1954,1919,105.69,80.49
+atx-2022,David Whitley,1872,1919,86.54,71.02
+atx-2022,Geoff Thevenot,1909,1939,150.0,95.59
+atx-2022,Jesse Day,2080,2019,89.2,72.54
+atx-2022,Lola McKissen,1186,1161,102.52,79.1
+atx-2022,Mark Francillon,1532,1539,107.61,81.27
+atx-2022,Matt Canik,1951,1812,150.0,95.82
+atx-2022,Melissa Routzahn,1551,1455,150.0,95.61
+atx-2022,Prashant Murti,1366,1366,150.0,150.0
+atx-2022,Puneet Sharma,1593,1639,87.07,71.36
+atx-2022,Randi Goldberg,1621,1618,105.72,81.75
+atx-2022,Rasheed Balogun,1841,1902,137.8,92.07
+atx-2022,Sandy Nang,1354,1317,102.42,79.07
+atx-2022,Winter,1752,1803,150.0,97.67
+boston-2022,BJ Premore,1465,1487,150.0,96.52
+boston-2022,Becky Dyer,1712,1839,149.05,96.1
+boston-2022,Carl Durdan,1732,1608,150.0,96.52
+boston-2022,Cedric Lewis,1643,1594,150.0,96.43
+boston-2022,Joev Dubach,1125,1125,150.0,150.0
+boston-2022,Joshua Castellano,1896,1848,115.23,85.12
+boston-2022,Mark Francillon,1539,1577,93.3,75.06
+boston-2022,Matthew O'Connor,1856,1846,150.0,96.3
+boston-2022,Michael McKenna,1693,1641,115.26,85.13
+boston-2022,Nitya Chagti,967,1178,150.0,96.52
+boston-2022,Richard Buck,1759,1686,150.0,96.3
+boston-2022,Terry Kang,1424,1386,150.0,96.52
+osc-2022,0001,1949,1875,92.13,73.05
+osc-2022,0010,2152,2180,92.37,73.17
+osc-2022,0017,1546,1506,98.49,76.05
+osc-2022,0018,1174,1239,117.74,84.06
+osc-2022,0117,2040,2020,150.0,93.28
+osc-2022,Chris Patrick Morgan,1440,1347,150.0,117.63
+osc-2022,David Whitley,1919,1959,92.43,73.2
+osc-2022,KC Frodyma,1416,1367,150.0,93.47
+osc-2022,Lola McKissen,1161,1154,98.78,76.38
+osc-2022,Peter Armstrong,1841,1913,118.68,94.12
+osc-2022,Puneet Sharma,1639,1673,92.69,73.35
+3m-2022,0017,1506,1426,84.76,70.34
+3m-2022,Becky Dyer,1839,1712,109.71,82.71
+3m-2022,Bill Rexhausen,1698,1645,150.0,96.38
+3m-2022,Chris Lipe,1919,1831,106.67,81.47
+3m-2022,Jim Kramer,1921,1960,150.0,96.27
+3m-2022,Lisa Mueller,1479,1546,150.0,96.23
+3m-2022,Mike Johnson,1713,1911,150.0,96.17
+3m-2022,Rob Robinsky,1961,2035,150.0,96.37
+3m-2022,Steve Pellinen,1554,1741,150.0,96.23
+3m-2022,Zbigniew Wieckowski,1508,1466,150.0,96.19
+madison-2022,Becky Dyer,1712,1670,90.78,73.45
+madison-2022,Bill Rexhausen,1645,1613,103.39,79.63
+madison-2022,Brian Bowman,1905,1825,124.16,87.92
+madison-2022,Charles Reinke,1867,2046,150.0,95.88
+madison-2022,Geoff Thevenot,1939,1915,124.25,88.11
+madison-2022,Mark Kenas,1820,1601,150.0,95.71
+madison-2022,Melissa Routzahn,1455,1592,124.26,87.9
+madison-2022,Peter Armstrong,1913,1971,107.97,81.82
+madison-2022,Thomas Reinke,2053,2053,150.0,150.0
+madison-2022,Zbigniew Wieckowski,1466,1494,103.21,79.58
+stl-2022,0001,1875,1890,101.17,79.62
+stl-2022,Becky Dyer,1670,1699,86.57,71.94
+stl-2022,Brian Bowman,1825,1855,99.15,78.56
+stl-2022,Chris Lipe,1831,1780,100.68,80.5
+stl-2022,David Whitley,1959,1896,101.28,79.67
+stl-2022,Geoff Thevenot,1915,1940,99.31,78.67
+stl-2022,Jason Keller,1927,1829,150.0,97.67
+stl-2022,Joe Roberdeau,1367,1369,150.0,99.78
+stl-2022,Melissa Routzahn,1592,1639,99.13,79.76
+stl-2022,Rob Robinsky,2035,1972,113.08,84.93
+stl-2022,Wolfram Poh,1642,1759,150.0,97.65
+wgpo-earlybird-2022,0017,1426,1448,98.73,89.28
+wgpo-earlybird-2022,0018,1239,1264,115.18,101.0
+wgpo-earlybird-2022,Ayotunde Adeyeri,1515,1600,150.0,117.92
+wgpo-earlybird-2022,Becky Dyer,1699,1715,80.47,74.16
+wgpo-earlybird-2022,David Eldar,2113,1958,150.0,130.96
+wgpo-earlybird-2022,Fidelis Olotu,1568,1647,150.0,117.92
+wgpo-earlybird-2022,James Curley,1665,1610,145.88,115.69
+wgpo-earlybird-2022,Mark Kenas,1601,1643,112.07,96.69
+wgpo-earlybird-2022,Paula Catanese,1294,1329,150.0,121.73
+wgpo-earlybird-2022,Rasheed Balogun,1902,1836,134.82,110.2
+wgpo-earlybird-2022,Sammy Okosagah,2108,1977,150.0,122.35
+wgpo-earlybird-2022,Terry Kang,1386,1419,130.06,107.25
+wgpo-earlybird-2022,Wolfram Poh,1759,1782,104.09,91.39
+wgpo-earlybird-2022,Zbigniew Wieckowski,1494,1451,98.66,89.27
+wordcup-d1-2022,0003,2062,1969,122.72,69.24
+wordcup-d1-2022,0010,2180,2209,107.95,67.82
+wordcup-d1-2022,Adam Logan,2141,2089,150.0,114.36
+wordcup-d1-2022,Austin Shin,2030,1925,150.0,73.18
+wordcup-d1-2022,Becky Dyer,1715,1677,74.83,60.32
+wordcup-d1-2022,Ben Schoenbrun,1920,1951,144.86,72.69
+wordcup-d1-2022,Brian Bowman,1855,1926,87.02,60.39
+wordcup-d1-2022,Charles Reinke,2046,1872,112.66,67.32
+wordcup-d1-2022,Chris Lipe,1780,1832,88.77,61.08
+wordcup-d1-2022,David Brown,1652,1652,150.0,150.0
+wordcup-d1-2022,David Eldar,1958,2085,131.34,71.63
+wordcup-d1-2022,David Webb,1769,1910,150.0,73.1
+wordcup-d1-2022,David Whitley,1896,1898,88.02,61.31
+wordcup-d1-2022,Evan Berofsky,1987,1957,150.0,73.13
+wordcup-d1-2022,Femi Awowade,1837,1650,150.0,74.12
+wordcup-d1-2022,Fidelis Olotu,1647,1688,118.34,69.28
+wordcup-d1-2022,Geoff Thevenot,1940,2004,87.11,66.34
+wordcup-d1-2022,James Curley,1610,1656,116.12,67.92
+wordcup-d1-2022,Jason Keller,1829,1871,104.59,65.37
+wordcup-d1-2022,Jesse Day,2019,2037,122.73,69.21
+wordcup-d1-2022,Joel Wapnick,1845,1751,150.0,73.18
+wordcup-d1-2022,John O'Laughlin,1935,1758,150.0,73.97
+wordcup-d1-2022,Joshua Castellano,1848,1849,122.25,69.33
+wordcup-d1-2022,Mark Francillon,1577,1620,115.47,68.51
+wordcup-d1-2022,Mark Kenas,1643,1576,97.21,64.17
+wordcup-d1-2022,Marlon Prudencio,1888,1981,150.0,73.13
+wordcup-d1-2022,Mohammad Sulaiman,1534,1615,150.0,73.98
+wordcup-d1-2022,Moiz Ullah Baig,1856,1844,150.0,73.17
+wordcup-d1-2022,Peter Armstrong,1971,1970,100.97,65.2
+wordcup-d1-2022,Puneet Sharma,1673,1713,108.08,66.25
+wordcup-d1-2022,Rasheed Balogun,1836,1835,110.65,66.9
+wordcup-d1-2022,Sammy Okosagah,1977,1905,122.76,70.11
+wordcup-d1-2022,Sandy Nang,1317,1456,126.7,70.71
+wordcup-d1-2022,Thomas Reinke,2053,2052,150.0,73.32
+wordcup-d1-2022,Waseem Khatri,1807,1833,150.0,74.12
+wordcup-d1-2022,Will Anderson,2013,2038,150.0,73.18
+wordcup-d1-2022,Winter,1803,1778,139.07,71.69
+wordcup-d1-2022,Wolfram Poh,1782,1767,91.94,61.98
+wordcup-d1-2022,Zbigniew Wieckowski,1451,1411,89.83,62.47
+wordcup-d2-2022,0017,1448,1392,89.84,61.62
+wordcup-d2-2022,0018,1264,1315,101.49,64.94
+wordcup-d2-2022,Abdul Khan,1287,1242,150.0,73.68
+wordcup-d2-2022,Ayotunde Adeyeri,1600,1520,118.34,68.78
+wordcup-d2-2022,BJ Premore,1487,1521,130.45,71.01
+wordcup-d2-2022,Cheryl Melvin,1049,1093,150.0,74.78
+wordcup-d2-2022,Dorcas Alexander,1351,1410,150.0,73.6
+wordcup-d2-2022,Emily Brodeur,1322,1322,150.0,150.0
+wordcup-d2-2022,Gary Smart,1199,1363,150.0,73.65
+wordcup-d2-2022,Harmony Kuller,1527,1062,150.0,74.56
+wordcup-d2-2022,Ifedayo Obisesan,1204,1287,150.0,73.68
+wordcup-d2-2022,Irfan Faroqui,1280,1280,150.0,150.0
+wordcup-d2-2022,Joe Roberdeau,1369,1307,106.56,66.94
+wordcup-d2-2022,Kaia,1318,1318,150.0,150.0
+wordcup-d2-2022,Lindsay Shin,1371,1397,150.0,73.46
+wordcup-d2-2022,Lola McKissen,1154,1318,110.15,67.05
+wordcup-d2-2022,Mahboob Khan,1028,1133,150.0,74.68
+wordcup-d2-2022,Maureen Morris,1043,1121,150.0,74.61
+wordcup-d2-2022,Melissa Routzahn,1639,1461,88.1,66.94
+wordcup-d2-2022,Nitya Chagti,1178,1219,130.45,71.03
+wordcup-d2-2022,Noel Livermore,1371,1545,150.0,74.47
+wordcup-d2-2022,Paula Catanese,1329,1309,122.14,70.36
+wordcup-d2-2022,Priya Fernando,1247,1281,150.0,74.61
+wordcup-d2-2022,Randi Goldberg,1618,1538,128.39,70.65
+wordcup-d2-2022,Roger Cullman,1377,1430,150.0,73.59
+wordcup-d2-2022,Rohaina Tanveer,1278,1413,150.0,73.47
+wordcup-d2-2022,Steve Krieger,1520,1286,150.0,73.55
+wordcup-d2-2022,Terry Kang,1419,1460,107.72,66.48
+wordcup-d2-2022,Tobey Roland,1302,1275,150.0,74.57
+wordcup-d2-2022,Wajid Iqbal,1338,1338,150.0,150.0
+wordcup-d2-2022,Yukiko Loritz,1527,1583,150.0,73.46
+wordcup-d2-2022,Yvonne Lobo,1383,1332,150.0,74.54
+seattle-2022,0001,1890,1794,95.6,75.81
+seattle-2022,0002,1518,1488,131.56,90.28
+seattle-2022,0003,1969,2036,78.7,66.54
+seattle-2022,Bharath Balakrishnan,1265,1567,150.0,95.53
+seattle-2022,Cecilia Le,1734,1738,150.0,95.53
+seattle-2022,David Whitley,1898,1894,71.83,62.23
+seattle-2022,Jesse Day,2037,2043,78.68,66.52
+seattle-2022,Walker Willingham,1590,1329,150.0,95.53
+mn-2022,0017,1392,1462,81.22,69.63
+mn-2022,Lisa Odom,1932,1860,150.0,99.92
+mn-2022,Mike Johnson,1911,1837,130.19,93.5
+mn-2022,Rob Robinsky,1972,2037,106.83,83.73
+mn-2022,Steve Pellinen,1741,1660,130.23,93.52
+potomac-2022,0033,1494,1365,150.0,100.27
+potomac-2022,0055,2051,2056,150.0,100.27
+potomac-2022,Joshua Castellano,1849,1942,94.9,77.74
+potomac-2022,Marty Gold,1723,1602,150.0,100.27
+potomac-2022,Nitya Chagti,1219,1332,96.15,78.42
+potomac-2022,Robert Linn,1755,1725,150.0,100.27
+potomac-2022,Winter,1778,1728,96.64,78.68
+loco-2022,0001,1794,1797,99.74,71.85
+loco-2022,0002,1488,1504,111.13,75.76
+loco-2022,0003,2036,2011,92.88,69.23
+loco-2022,0010,2209,2155,100.99,72.4
+loco-2022,0017,1462,1347,87.45,66.85
+loco-2022,0018,1315,1265,99.08,71.55
+loco-2022,0021,1652,1837,150.0,85.13
+loco-2022,0117,2020,2100,143.53,83.92
+loco-2022,0213,1883,1845,150.0,85.11
+loco-2022,David Whitley,1894,1917,89.85,67.85
+loco-2022,John O'Laughlin,1758,1796,105.22,73.8
+loco-2022,Lola McKissen,1318,1389,100.48,72.08
+loco-2022,Mark Francillon,1620,1659,101.46,72.48
+loco-2022,Peter Armstrong,1970,1929,99.25,71.62
+loco-2022,Rob Robinsky,2037,1924,99.05,71.61
+loco-2022,Terry Kang,1460,1537,100.1,72.0
+brattleboro-2022,BJ Premore,1521,1431,115.94,82.7
+brattleboro-2022,Becky Dyer,1677,1677,109.72,80.36
+brattleboro-2022,Ben Schoenbrun,1951,1980,116.98,82.99
+brattleboro-2022,Carl Durdan,1608,1704,150.0,92.5
+brattleboro-2022,Christopher Grubb,1906,1795,150.0,92.51
+brattleboro-2022,Iliana Filby,1133,1085,150.0,92.52
+brattleboro-2022,Mark Francillon,1659,1722,89.74,71.42
+brattleboro-2022,Matthew O'Connor,1846,1910,150.0,92.29
+brattleboro-2022,Niel Gan,1143,1143,150.0,150.0
+brattleboro-2022,Rachel Grubb,1314,1286,150.0,92.6
+brattleboro-2022,Richard Buck,1686,1706,150.0,92.51
+brattleboro-2022,Tim Weiss,1730,1705,150.0,92.34
+pabst-2022,0001,1797,1881,93.07,74.36
+pabst-2022,0002,1504,1518,96.12,75.91
+pabst-2022,0003,2011,2026,91.06,73.33
+pabst-2022,0010,2155,2106,93.5,74.64
+pabst-2022,0017,1347,1403,89.27,72.38
+pabst-2022,0018,1265,1270,92.84,74.24
+pabst-2022,0070,1806,1756,150.0,95.29
+pabst-2022,0117,2100,2041,102.68,78.99
+pabst-2022,0213,1845,1849,103.65,79.43
+pabst-2022,David Whitley,1917,1905,90.02,72.83
+pabst-2022,Gary Smart,1363,1508,120.52,86.27
+pabst-2022,Gunther Jacobi,1695,1695,150.0,150.0
+pabst-2022,Peter Armstrong,1929,1789,92.89,74.29
+pabst-2022,Sandy Nang,1456,1458,118.74,85.61
+slingerlands-2022,BJ Premore,1431,1498,105.07,77.32
+slingerlands-2022,Ben Schoenbrun,1980,2054,105.3,77.41
+slingerlands-2022,Brad Whitmarsh,1743,1560,150.0,90.76
+slingerlands-2022,Chris Lipe,1832,1889,127.79,85.11
+slingerlands-2022,Dan Blake,1449,1395,150.0,90.76
+slingerlands-2022,Emily Brodeur,1322,1307,150.0,90.76
+slingerlands-2022,Heidi Robertson,1204,1316,150.0,90.76
+slingerlands-2022,Jason Keller,1871,1888,129.9,85.72
+slingerlands-2022,Jeremy Khoo,1872,1815,150.0,90.76
+slingerlands-2022,Jim Brennan,1566,1732,150.0,90.76
+slingerlands-2022,Kaia,1318,1311,150.0,90.76
+slingerlands-2022,Karl Higby,1880,1845,150.0,90.76
+slingerlands-2022,Mark Francillon,1722,1654,96.44,73.68
+slingerlands-2022,Scott Appel,1673,1673,150.0,150.0
+slingerlands-2022,Terry Kang,1537,1446,110.38,79.35
+slingerlands-2022,Vera Bigall,1114,1207,150.0,90.76
+slingerlands-2022,Will Anderson,2038,2004,134.0,86.86
+slingerlands-2022,Yukiko Loritz,1583,1551,134.15,86.9
+bend-2022,0003,2026,2032,104.77,78.98
+bend-2022,0010,2106,2099,105.69,79.36
+bend-2022,0117,2041,2005,108.81,80.65
+bend-2022,0206,1724,1583,150.0,99.94
+bend-2022,David Brown,1652,1675,150.0,93.59
+bend-2022,David Whitley,1905,1945,104.42,78.89
+bend-2022,Peter Armstrong,1789,1840,105.45,79.38
+la-2022,0003,2032,1990,95.07,75.59
+la-2022,0213,1849,1884,121.28,86.84
+la-2022,Becky Dyer,1677,1609,124.73,88.07
+la-2022,David Whitley,1945,1865,94.99,75.55
+la-2022,Mark Milan,1301,1476,150.0,95.62
+la-2022,Peter Armstrong,1840,1907,95.4,75.76
+la-2022,Yukiko Loritz,1551,1553,111.59,83.09
+la-2022,Zachary Ansell,1813,1813,150.0,150.0
+nola-d1-2023,0003,1990,1987,84.34,65.79
+nola-d1-2023,0010,2099,2108,102.46,73.39
+nola-d1-2023,Austin Shin,1925,1913,150.0,85.84
+nola-d1-2023,Bharath Balakrishnan,1567,1433,150.0,86.11
+nola-d1-2023,Brad Whitmarsh,1560,1676,120.57,79.3
+nola-d1-2023,Chris Lipe,1889,1874,116.38,77.97
+nola-d1-2023,Erickson Smith,1736,1774,150.0,86.06
+nola-d1-2023,Evan Berofsky,1957,1933,150.0,85.8
+nola-d1-2023,Jason Keller,1888,1851,116.82,78.1
+nola-d1-2023,Jason Ubeika,1593,1618,150.0,86.24
+nola-d1-2023,Joshua Castellano,1942,1923,144.03,84.94
+nola-d1-2023,Mohammad Sulaiman,1615,1811,150.0,86.1
+nola-d1-2023,Puneet Sharma,1713,1782,150.0,86.11
+nola-d1-2023,Randi Goldberg,1538,1444,150.0,86.35
+nola-d1-2023,Rasheed Balogun,1835,1759,150.0,86.14
+nola-d1-2023,Rob Robinsky,1924,1967,135.75,83.02
+nola-d1-2023,Robert Linn,1725,1609,150.0,86.21
+nola-d1-2023,Sandy Nang,1458,1499,130.88,82.1
+nola-d1-2023,Terry Kang,1446,1460,112.23,76.75
+nola-d1-2023,Winter,1728,1670,144.54,84.99
+nola-d2-2023,0017,1403,1308,122.63,80.01
+nola-d2-2023,Andrea Hatch,878,1097,150.0,86.21
+nola-d2-2023,Ayotunde Adeyeri,1520,1413,150.0,86.36
+nola-d2-2023,Cheryl Melvin,1093,1109,150.0,86.3
+nola-d2-2023,Emily Brodeur,1307,1357,120.57,79.49
+nola-d2-2023,Guy Ingram,1189,1228,150.0,86.29
+nola-d2-2023,Jeannie Wilson,1109,1145,150.0,86.28
+nola-d2-2023,Jeremy Jeffers,1253,1376,150.0,86.25
+nola-d2-2023,Kaia,1311,1248,120.57,79.48
+nola-d2-2023,Lila Crotty,1274,1290,150.0,86.26
+nola-d2-2023,Lola McKissen,1389,1257,136.0,83.44
+nola-d2-2023,Nitya Chagti,1332,1220,144.39,85.26
+nola-d2-2023,Paula Catanese,1309,1246,150.0,86.4
+nola-d2-2023,Wajid Iqbal,1338,1464,150.0,86.36
+hood-river-2023,0003,1987,1965,88.48,67.48
+hood-river-2023,0010,2108,2089,94.27,69.96
+hood-river-2023,0018,1270,1300,137.16,82.98
+hood-river-2023,0021,1837,1891,150.0,85.64
+hood-river-2023,0117,2005,2073,119.18,78.47
+hood-river-2023,0213,1884,1856,111.54,76.19
+hood-river-2023,Becky Dyer,1609,1801,112.5,76.49
+hood-river-2023,Cecilia Le,1738,1812,150.0,85.56
+hood-river-2023,Chris Lipe,1874,1913,97.87,71.43
+hood-river-2023,Chris Tallman,1651,1754,150.0,85.64
+hood-river-2023,Christopher Grubb,1795,1759,150.0,85.57
+hood-river-2023,David Whitley,1865,1818,102.99,73.29
+hood-river-2023,Gunther Jacobi,1695,1616,150.0,85.64
+hood-river-2023,Kate Fukawa-Connelly,1839,1882,150.0,85.64
+hood-river-2023,Peter Armstrong,1907,1852,103.15,73.35
+hood-river-2023,Puneet Sharma,1782,1723,104.47,73.87
+hood-river-2023,Rachel Grubb,1286,1243,150.0,85.57
+hood-river-2023,Randi Goldberg,1444,1478,104.67,73.94
+hood-river-2023,Rob Robinsky,1967,1936,101.94,72.9
+hood-river-2023,Sandy Nang,1499,1401,101.19,72.67
+austin-2023,0001,1881,1855,150.0,95.88
+austin-2023,0010,2089,2101,95.36,75.78
+austin-2023,Ben Weaver,1304,1304,150.0,150.0
+austin-2023,Chris Lipe,1913,1967,96.45,76.32
+austin-2023,David Whitley,1818,1778,97.83,77.03
+austin-2023,James Curley,1656,1673,150.0,95.77
+austin-2023,Jesse Day,2043,1988,150.0,95.88
+austin-2023,Prashant Murti,1366,1201,150.0,95.95
+austin-2023,Randi Goldberg,1478,1520,98.32,77.3
+austin-2023,Rasheed Balogun,1759,1786,122.96,87.6
+austin-2023,Sandy Nang,1401,1420,97.37,76.78
+austin-2023,Winter,1670,1710,122.16,87.4
+silver-spring-2023,Ben Schoenbrun,2054,1980,146.26,95.37
+silver-spring-2023,Daniel Milton,1257,1337,150.0,96.36
+silver-spring-2023,Joshua Castellano,1923,2017,127.73,89.7
+silver-spring-2023,Matthew O'Connor,1910,1838,150.0,96.36
+silver-spring-2023,Rob Robinsky,1936,1861,104.47,80.48
+silver-spring-2023,Robert Linn,1609,1644,128.58,89.99
+silver-spring-2023,Sammy Okosagah,1905,1909,150.0,96.36
+silver-spring-2023,Tim Weiss,1705,1730,150.0,96.36
+slingerlands-2023,0001,1855,1806,109.51,78.72
+slingerlands-2023,0003,1965,1997,107.49,77.96
+slingerlands-2023,Ben Schoenbrun,1980,2016,102.45,75.97
+slingerlands-2023,Brad Whitmarsh,1676,1782,129.57,85.23
+slingerlands-2023,Brian Bowman,1926,1926,150.0,90.29
+slingerlands-2023,Chris Lipe,1967,1901,92.87,71.82
+slingerlands-2023,Erickson Smith,1774,1756,133.81,86.39
+slingerlands-2023,Jason Keller,1851,1831,128.84,85.02
+slingerlands-2023,Jeremy Khoo,1815,1757,150.0,90.29
+slingerlands-2023,Josh Sokol,1815,1898,150.0,90.29
+slingerlands-2023,Joshua Castellano,2017,1911,97.19,73.76
+slingerlands-2023,Matthew O'Connor,1838,1762,103.37,76.35
+slingerlands-2023,Matthew Tunnicliffe,1912,1981,150.0,90.29
+slingerlands-2023,Rasheed Balogun,1786,1757,102.34,75.93
+slingerlands-2023,Rob Robinsky,1861,1950,88.75,69.87
+slingerlands-2023,Robert Linn,1644,1735,97.46,73.87
+slingerlands-2023,Stefan Rau,1837,1827,150.0,90.29
+slingerlands-2023,Wolfram Poh,1767,1712,150.0,90.29
+austin-may-2023,Becky Dyer,1801,1668,116.41,99.47
+austin-may-2023,Ben Weaver,1304,1291,150.0,118.1
+austin-may-2023,Chris Canik,1758,1758,150.0,150.0
+austin-may-2023,James Curley,1673,1694,112.57,97.14
+austin-may-2023,Jesse Day,1988,2133,112.66,97.12
+austin-may-2023,Matt Canik,1812,1764,150.0,117.93
+moco-2023,0003,1997,1973,94.22,70.03
+moco-2023,0010,2101,2111,106.5,74.54
+moco-2023,0017,1308,1384,140.36,83.81
+moco-2023,0018,1300,1143,129.17,81.25
+moco-2023,0117,2073,2050,126.32,80.43
+moco-2023,0213,1856,1951,124.92,79.96
+moco-2023,Bharath Balakrishnan,1433,1564,143.93,84.43
+moco-2023,Cecilia Le,1812,1705,130.85,81.55
+moco-2023,Christopher Grubb,1759,1826,130.85,81.56
+moco-2023,David Whitley,1778,1779,107.39,74.83
+moco-2023,Peter Armstrong,1852,1848,123.21,79.54
+moco-2023,Puneet Sharma,1723,1670,123.52,79.88
+austin-jun-2023,Becky Dyer,1668,1695,115.73,99.1
+austin-jun-2023,Ben Weaver,1291,1227,132.09,108.74
+austin-jun-2023,Chris Canik,1758,1924,150.0,117.87
+austin-jun-2023,James Curley,1694,1685,113.74,97.75
+austin-jun-2023,Jesse Day,2133,2040,113.72,97.74
+austin-jun-2023,Michael Donegan,1038,1064,150.0,117.94
+stlouis-jun2023,Brian Bowman,1926,1901,111.14,82.62
+stlouis-jun2023,Chris Lipe,1901,1873,96.74,76.24
+stlouis-jun2023,Jason Keller,1831,1962,106.9,80.88
+stlouis-jun2023,Randi Goldberg,1520,1450,113.91,83.72
+seattle-jul2023,0001,1806,1803,117.88,89.03
+seattle-jul2023,Chris Tallman,1754,1774,148.44,100.04
+seattle-jul2023,Christopher Grubb,1826,1769,107.48,84.32
+seattle-jul2023,Isaac Lipnick,669,669,150.0,150.0
+seattle-jul2023,Jesse Day,2040,1948,114.25,87.45
+seattle-jul2023,Tara Hurley,938,1139,150.0,100.51
+seattle-jul2023,Walker Willingham,1329,1325,150.0,100.51
+vancouver-aug2023,0001,1803,1852,100.63,86.08
+vancouver-aug2023,0002,1518,1597,150.0,111.32
+vancouver-aug2023,0117,2050,2005,116.49,95.45
+vancouver-aug2023,Chris Tallman,1774,1795,110.49,91.97
+vancouver-aug2023,Chris Williams,1849,1849,150.0,150.0
+vancouver-aug2023,Dielle Pinto,1700,1682,150.0,111.19
+vancouver-aug2023,John O'Laughlin,1796,1704,150.0,111.29
+vancouver-aug2023,Winter,1710,1660,142.61,108.22
+austin-aug2023,Anuj Shetty,1367,1396,150.0,118.04
+austin-aug2023,Becky Dyer,1695,1752,126.97,105.75
+austin-aug2023,Chris Canik,1924,1756,142.1,114.05
+austin-aug2023,James Curley,1685,1698,125.92,105.26
+austin-aug2023,Jesse Day,1948,1953,102.21,90.21
+austin-aug2023,Michael Donegan,1064,1113,142.16,114.18
+portland-aug2023,0001,1852,1902,89.5,80.96
+portland-aug2023,0003,1973,1898,112.27,96.83
+portland-aug2023,0010,2111,2080,115.14,98.34
+portland-aug2023,0017,1384,1403,121.34,102.37
+portland-aug2023,0018,1143,1215,119.59,101.19
+portland-aug2023,0117,2005,1978,98.54,87.35
+portland-aug2023,0206,1583,1619,150.0,118.0
+portland-aug2023,0213,1951,1898,118.72,100.63
+portland-aug2023,Chris Tallman,1795,1755,95.18,85.11
+portland-aug2023,Keith Valentine,969,969,150.0,150.0
+portland-aug2023,Mike Johnson,1837,1884,150.0,117.88
+portland-aug2023,Peter Armstrong,1848,1897,118.43,100.67
+columbia-2023,0055,2056,1825,150.0,111.7
+columbia-2023,Ayotunde Adeyeri,1413,1601,150.0,111.7
+columbia-2023,Joshua Castellano,1911,1917,136.9,106.01
+columbia-2023,Marty Gold,1602,1608,150.0,111.75
+columbia-2023,Nitya Chagti,1220,1136,150.0,111.65
+columbia-2023,Robert Linn,1735,1741,136.96,106.03
+columbia-2023,Sammy Okosagah,1909,2039,150.0,111.75
+columbia-2023,Tijan Jeng,1340,1340,150.0,150.0
+columbia-2023,Tim Weiss,1730,1720,150.0,111.7
+columbia-2023,Wale Fashina,1909,1896,150.0,111.7
+austin-sep2023,Becky Dyer,1752,1764,121.17,100.07
+austin-sep2023,Ben Weaver,1227,1229,147.05,116.58
+austin-sep2023,Chris Canik,1756,1670,128.48,106.75
+austin-sep2023,Emmanuel King,1547,1610,150.0,114.53
+austin-sep2023,James Curley,1698,1711,120.75,102.12
+austin-sep2023,Jesse Day,1953,1966,107.88,93.98
+austin-sep2023,Matt Canik,1764,1616,150.0,118.24
+austin-sep2023,Michael Donegan,1113,1123,128.6,106.94
+austin-sep2023,Prashant Murti,1201,1315,150.0,118.15
+seattle-sept2023,0001,1902,1898,107.03,93.48
+seattle-sept2023,0002,1597,1498,133.76,109.89
+seattle-sept2023,0017,1403,1447,124.01,104.29
+seattle-sept2023,0099,1438,1438,150.0,150.0
+seattle-sept2023,0117,1978,2013,111.94,96.69
+seattle-sept2023,Bharath Balakrishnan,1564,1594,140.46,112.98
+seattle-sept2023,Christopher Grubb,1769,1784,121.7,102.87
+seattle-sept2023,Gunther Jacobi,1616,1583,150.0,117.78
+seattle-sept2023,Peter Armstrong,1897,1860,122.62,105.66
+seattle-sept2023,Rob Robinsky,1950,1997,142.41,117.56
+riorancho-oct2023,Becky Dyer,1764,1780,110.06,84.42
+riorancho-oct2023,Gary Smart,1508,1467,150.0,98.7
+riorancho-oct2023,Joel Wapnick,1751,1746,150.0,100.91
+riorancho-oct2023,John Karris,1585,1585,150.0,150.0
+riorancho-oct2023,Laurie Cohen,1804,1804,150.0,150.0
+riorancho-oct2023,Terry Kang,1460,1484,150.0,100.91
+riorancho-oct2023,Yukiko Loritz,1553,1550,150.0,98.7
+potomac-oct2023,0055,1825,1764,129.14,91.75
+potomac-oct2023,Ben Schoenbrun,2016,1933,150.0,98.34
+potomac-oct2023,Erickson Smith,1756,1657,150.0,100.47
+potomac-oct2023,Joshua Castellano,1917,1945,124.25,91.72
+potomac-oct2023,Matthew O'Connor,1762,1890,150.0,98.34
+potomac-oct2023,Nitya Chagti,1136,1394,129.1,93.49
+potomac-oct2023,Rob Robinsky,1997,1941,126.18,90.69
+potomac-oct2023,Robert Linn,1741,1660,124.27,91.64
+potomac-oct2023,Tim Weiss,1720,1685,129.14,93.51
+texasstate-2023,Austin Shin,1913,2036,150.0,98.32
+texasstate-2023,Becky Dyer,1780,1713,96.06,77.35
+texasstate-2023,David Whitley,1779,1749,144.91,96.61
+texasstate-2023,Emmanuel King,1610,1739,131.59,92.44
+texasstate-2023,Jesse Day,1966,1839,114.16,85.83
+texasstate-2023,Rasheed Balogun,1757,1829,150.0,98.32
+portland-nov2023,0003,1898,1871,133.33,109.59
+portland-nov2023,0010,2080,2092,134.43,109.98
+portland-nov2023,0018,1215,1223,136.53,111.34
+portland-nov2023,0206,1619,1526,149.41,117.92
+portland-nov2023,0213,1898,1868,136.11,111.05
+portland-nov2023,Gunther Jacobi,1583,1634,131.8,108.7
+portland-nov2023,Keith Valentine,969,1101,150.0,118.22
+portland-nov2023,Peter Armstrong,1860,1828,121.1,102.38
+nacc2023-d1,0010,2092,2121,112.67,72.7
+nacc2023-d1,0117,2013,1960,115.97,73.69
+nacc2023-d1,0206,1526,1496,120.44,75.0
+nacc2023-d1,0213,1868,2008,113.72,73.11
+nacc2023-d1,Austin Shin,2036,1929,104.72,70.5
+nacc2023-d1,Becky Dyer,1713,1684,85.34,63.75
+nacc2023-d1,Brad Whitmarsh,1782,1855,150.0,80.5
+nacc2023-d1,Chris Lipe,1873,1850,145.3,79.79
+nacc2023-d1,Christopher Grubb,1784,1858,121.17,75.09
+nacc2023-d1,David Whitley,1749,1716,103.12,70.16
+nacc2023-d1,Joel Wapnick,1746,1668,116.55,73.93
+nacc2023-d1,John O'Laughlin,1704,1812,148.27,80.19
+nacc2023-d1,Kevin Fraley,1915,1987,150.0,80.4
+nacc2023-d1,Mohammad Sulaiman,1811,1628,150.0,80.61
+nacc2023-d1,Peter Armstrong,1828,1858,105.27,70.78
+nacc2023-d1,Puneet Sharma,1670,1765,150.0,80.49
+nacc2023-d1,Quinn James,1969,1889,150.0,80.48
+nacc2023-d1,Randi Goldberg,1450,1453,149.36,80.53
+nacc2023-d1,Rasheed Balogun,1829,1749,104.72,70.62
+nacc2023-d1,Rob Robinsky,1941,1957,101.12,69.46
+nacc2023-d1,Sandy Nang,1420,1557,150.0,80.6
+nacc2023-d1,Scott Jackson,1815,1758,150.0,80.59
+nacc2023-d1p,0010,2121,2126,72.7,69.27
+nacc2023-d1p,0213,2008,1987,73.11,68.04
+nacc2023-d1p,Austin Shin,1929,1923,70.5,66.64
+nacc2023-d1p,Kevin Fraley,1987,2010,80.4,76.89
+nacc2023-d2,0017,1447,1417,122.38,76.68
+nacc2023-d2,0018,1223,1193,114.0,73.61
+nacc2023-d2,0099,1438,1229,150.0,81.01
+nacc2023-d2,Andrea Hatch,1097,1097,150.0,81.01
+nacc2023-d2,Ayotunde Adeyeri,1601,1554,136.66,78.67
+nacc2023-d2,Bharath Balakrishnan,1594,1517,129.86,78.44
+nacc2023-d2,Chris Sjöholm,1083,1288,150.0,81.08
+nacc2023-d2,Gary Smart,1467,1385,114.64,73.78
+nacc2023-d2,John Karris,1585,1487,150.0,81.08
+nacc2023-d2,Kevin Schutz,1335,1573,150.0,81.12
+nacc2023-d2,Lindsay Shin,1397,1550,150.0,82.29
+nacc2023-d2,Lola McKissen,1257,1166,150.0,82.29
+nacc2023-d2,Noel Livermore,1545,1499,150.0,81.1
+nacc2023-d2,Rachel Grubb,1243,1233,150.0,82.27
+nacc2023-d2,Robin Cole,929,929,150.0,150.0
+nacc2023-d2,Rod Weis,1219,1219,150.0,150.0
+nacc2023-d2,Vera Bigall,1207,1397,150.0,82.26
+nacc2023-d2p,Ayotunde Adeyeri,1554,1533,78.67,72.5
+nacc2023-d2p,Kevin Schutz,1573,1573,81.12,74.4
+nacc2023-d2p,Lindsay Shin,1550,1568,82.29,76.34
+nacc2023-d2p,Vera Bigall,1397,1403,82.26,76.32
+nacc2023-afterword,0017,1417,1410,79.25,73.01
+nacc2023-afterword,0018,1193,1158,76.28,70.66
+nacc2023-afterword,0099,1229,1226,83.44,76.24
+nacc2023-afterword,0117,1960,1982,76.36,70.66
+nacc2023-afterword,0206,1496,1506,77.62,71.67
+nacc2023-afterword,Andrea Hatch,1097,1101,83.44,76.23
+nacc2023-afterword,Chris Lipe,1850,1881,82.26,75.26
+nacc2023-afterword,Chris Sjöholm,1288,1300,83.51,76.21
+nacc2023-afterword,Christopher Grubb,1858,1859,77.71,71.79
+nacc2023-afterword,Gary Smart,1385,1396,76.44,70.74
+nacc2023-afterword,Joel Wapnick,1668,1695,76.59,70.84
+nacc2023-afterword,John Karris,1487,1499,83.51,76.22
+nacc2023-afterword,Noel Livermore,1499,1533,83.53,76.3
+nacc2023-afterword,Peter Armstrong,1858,1810,73.55,68.43
+nacc2023-afterword,Randi Goldberg,1453,1454,82.98,75.81
+nacc2023-afterword,Rasheed Balogun,1749,1768,73.4,68.31
+nacc2023-afterword,Rob Robinsky,1957,1914,72.28,67.4
+nacc2023-afterword,Walker Willingham,1325,1280,149.34,116.61
+palmsprings-dec2023,Andrea Hatch,1101,1149,90.61,70.95
+palmsprings-dec2023,Bruce Ward,1531,1548,150.0,90.33
+palmsprings-dec2023,David Whitley,1716,1658,87.88,69.59
+palmsprings-dec2023,Paula Catanese,1246,1236,150.0,90.4
+palmsprings-dec2023,Robin Levin,1240,1240,150.0,150.0
+palmsprings-dec2023,Yukiko Loritz,1550,1583,126.26,84.38
+nola-lite-2024,Andrea Hatch,1149,1103,92.92,69.62
+nola-lite-2024,Bharath Balakrishnan,1517,1528,112.04,76.62
+nola-lite-2024,Cheryl Melvin,1109,1066,150.0,85.88
+nola-lite-2024,Emily Brodeur,1357,1332,150.0,85.99
+nola-lite-2024,Guy Ingram,1228,1414,150.0,85.82
+nola-lite-2024,Jeannie Wilson,1145,1072,150.0,85.97
+nola-lite-2024,Jeremy Jeffers,1376,1415,150.0,85.91
+nola-lite-2024,John Karris,1499,1496,108.67,75.49
+nola-lite-2024,Kaia,1248,1327,150.0,85.83
+nola-lite-2024,Lila Crotty,1290,1276,150.0,85.97
+nola-lite-2024,Noel Livermore,1533,1463,108.73,75.4
+nola-lite-2024,Paula Catanese,1236,1202,108.5,75.4
+nola-lite-2024,Terry Kang,1484,1489,141.36,84.14
+nola-lite-2024,Yukiko Loritz,1583,1619,103.54,73.69
+nola-open-2024,0001,1898,1923,138.7,83.46
+nola-open-2024,0002,1498,1483,150.0,85.85
+nola-open-2024,0010,2126,2125,105.82,74.32
+nola-open-2024,0055,1764,1968,129.68,81.29
+nola-open-2024,0070,1756,1654,150.0,85.8
+nola-open-2024,0169,1854,1704,150.0,85.83
+nola-open-2024,Austin Shin,1923,2003,104.12,73.72
+nola-open-2024,Becky Dyer,1684,1679,102.29,73.11
+nola-open-2024,Ben Schoenbrun,1933,1852,134.43,82.48
+nola-open-2024,Brad Whitmarsh,1855,1739,113.49,77.02
+nola-open-2024,Chris Lipe,1881,1959,108.0,75.08
+nola-open-2024,David Brown,1675,1612,150.0,85.77
+nola-open-2024,Erickson Smith,1657,1788,135.99,83.04
+nola-open-2024,Evan Berofsky,1933,1805,150.0,85.87
+nola-open-2024,Jason Ubeika,1618,1568,150.0,85.92
+nola-open-2024,Joshua Castellano,1945,2002,129.66,81.31
+nola-open-2024,Kevin Fraley,2010,1939,110.96,75.99
+nola-open-2024,Matthew O'Connor,1890,1818,134.43,82.72
+nola-open-2024,Mohammad Sulaiman,1628,1666,113.57,76.95
+nola-open-2024,Puneet Sharma,1765,1711,113.48,77.0
+nola-open-2024,Randi Goldberg,1454,1470,108.38,75.42
+nola-open-2024,Rob Robinsky,1914,1899,102.68,73.19
+nola-open-2024,Robert Linn,1660,1826,129.61,81.43
+nola-open-2024,Tim Weiss,1685,1728,130.94,81.69
+portland-pub-jan2024,0003,1871,1902,140.39,112.96
+portland-pub-jan2024,0017,1410,1351,109.68,95.21
+portland-pub-jan2024,0018,1158,1147,108.13,94.11
+portland-pub-jan2024,0206,1506,1527,108.8,94.51
+portland-pub-jan2024,0213,1987,1920,108.3,94.27
+portland-pub-jan2024,Anne Hopkins,875,875,150.0,150.0
+portland-pub-jan2024,Gunther Jacobi,1634,1667,139.7,112.77
+portland-pub-jan2024,Keith Valentine,1101,1225,147.23,116.58
+hood-river-2024,0003,1902,1921,124.74,79.83
+hood-river-2024,0010,2125,2132,94.99,70.14
+hood-river-2024,0099,1226,1267,123.74,79.61
+hood-river-2024,0117,1982,1895,120.39,78.66
+hood-river-2024,0206,1527,1589,108.32,75.02
+hood-river-2024,0213,1920,1832,108.11,74.92
+hood-river-2024,Anuj Shetty,1396,1400,150.0,85.41
+hood-river-2024,Bharath Balakrishnan,1528,1557,96.8,70.9
+hood-river-2024,Chris Lipe,1959,1907,95.59,70.39
+hood-river-2024,Christopher Grubb,1859,1724,121.05,78.86
+hood-river-2024,David Whitley,1658,1708,109.28,75.31
+hood-river-2024,Gunther Jacobi,1667,1647,124.57,79.79
+hood-river-2024,Lola McKissen,1166,1343,129.12,81.01
+hood-river-2024,Mark Francillon,1654,1617,150.0,85.36
+hood-river-2024,Nitya Chagti,1394,1393,143.67,84.15
+hood-river-2024,Puneet Sharma,1711,1729,97.1,70.98
+hood-river-2024,Rachel Grubb,1233,1168,129.11,80.97
+hood-river-2024,Randi Goldberg,1470,1458,95.85,70.52
+hood-river-2024,Rob Robinsky,1899,1888,94.11,69.8
+hood-river-2024,Terry Kang,1489,1558,102.86,73.14
+portland-pub-mar2024,0010,2132,2122,79.5,73.23
+portland-pub-mar2024,0017,1351,1392,115.17,98.38
+portland-pub-mar2024,0018,1147,1108,114.27,97.96
+portland-pub-mar2024,0206,1589,1556,83.83,76.62
+portland-pub-mar2024,0213,1832,1826,83.74,76.58
+portland-pub-mar2024,Gunther Jacobi,1647,1686,88.13,79.79
+portland-pub-mar2024,Kaleb Lybecker,1030,1030,150.0,150.0
+portland-pub-mar2024,Keith Valentine,1225,1275,133.38,108.95
+austin-atx2024,0001,1923,1872,123.96,88.11
+austin-atx2024,0002,1483,1459,125.58,88.8
+austin-atx2024,0010,2122,2100,94.14,76.16
+austin-atx2024,0070,1654,1705,125.55,88.61
+austin-atx2024,Becky Dyer,1679,1724,117.24,85.36
+austin-atx2024,Ben Weaver,1229,1319,150.0,96.1
+austin-atx2024,Chris Lipe,1907,1935,99.27,77.74
+austin-atx2024,Courtney Paley,948,948,150.0,150.0
+austin-atx2024,David Whitley,1708,1619,102.82,79.58
+austin-atx2024,Emily Brodeur,1332,1416,125.68,88.85
+austin-atx2024,Gary Smart,1396,1384,139.3,93.09
+austin-atx2024,James Curley,1711,1560,150.0,98.17
+austin-atx2024,Jesse Day,1839,1945,150.0,95.76
+austin-atx2024,Kaia,1327,1388,125.57,88.75
+austin-atx2024,Mark Francillon,1617,1664,110.39,84.19
+austin-atx2024,Matt Canik,1616,1659,150.0,95.99
+austin-atx2024,Prashant Murti,1315,1311,150.0,96.1
+austin-atx2024,Puneet Sharma,1729,1706,99.69,77.89
+austin-atx2024,Randi Goldberg,1458,1436,99.36,81.41
+austin-atx2024,Rasheed Balogun,1768,1765,138.08,92.6
+austin-atx2024,Tony Boyle,626,626,150.0,150.0
+austin-atx2024,Walker Willingham,1280,1280,150.0,111.35
+austin-atx2024,Winter,1660,1594,150.0,96.25
+portland-pub-apr132024,0001,1872,1849,92.0,82.72
+portland-pub-apr132024,0003,1921,1885,109.42,94.69
+portland-pub-apr132024,0010,2100,2092,80.62,74.16
+portland-pub-apr132024,0017,1392,1345,117.81,100.1
+portland-pub-apr132024,0117,1895,1988,108.57,94.11
+portland-pub-apr132024,0206,1556,1566,100.35,88.68
+portland-pub-apr132024,0213,1826,1787,100.32,88.62
+portland-pub-apr132024,Gunther Jacobi,1686,1740,102.79,90.29
+portland-pub-apr132024,Joe Roberdeau,1307,1375,150.0,117.55
+portland-pub-apr132024,Keith Valentine,1275,1279,126.77,105.28
+portland-pub-apr142024,0001,1849,1850,83.32,76.18
+portland-pub-apr142024,0003,1885,1890,95.22,85.0
+portland-pub-apr142024,0010,2092,2094,74.83,69.54
+portland-pub-apr142024,0017,1345,1389,100.6,88.69
+portland-pub-apr142024,0018,1108,1211,117.88,99.85
+portland-pub-apr142024,0117,1988,2017,94.64,84.57
+portland-pub-apr142024,0206,1566,1572,89.24,80.68
+portland-pub-apr142024,0213,1787,1804,89.18,80.57
+portland-pub-apr142024,Gunther Jacobi,1740,1697,90.84,81.85
+portland-pub-apr142024,Joe Roberdeau,1375,1223,117.97,100.01
+portland-pub-apr142024,Keith Valentine,1279,1253,105.75,92.27
+portland-pub-apr142024,Vera Bigall,1403,1339,146.37,115.53
+championscup-2024,Ben Schoenbrun,1852,1916,131.54,86.08
+championscup-2024,Brad Whitmarsh,1739,1752,128.19,85.22
+championscup-2024,Brian Bowman,1901,1926,150.0,90.6
+championscup-2024,Chris Lipe,1935,1872,90.24,70.79
+championscup-2024,Jason Keller,1962,2016,150.0,90.61
+championscup-2024,Josh Sokol,1898,1833,150.0,90.6
+championscup-2024,Joshua Castellano,2002,2067,130.81,85.94
+championscup-2024,Matthew Tunnicliffe,1981,2119,150.0,90.72
+championscup-2024,Moiz Ullah Baig,1844,1706,150.0,90.79
+championscup-2024,Rob Robinsky,1888,1905,108.96,78.72
+championscup-2024,Robert Linn,1826,1671,130.88,85.99
+championscup-2024,Tim Weiss,1728,1765,131.05,85.94
+portlandpub-may2024,0003,1890,1899,96.05,85.51
+portlandpub-may2024,0010,2094,2088,82.68,75.68
+portlandpub-may2024,0017,1389,1361,99.33,87.8
+portlandpub-may2024,0018,1211,1214,109.41,94.51
+portlandpub-may2024,0206,1572,1507,92.25,82.8
+portlandpub-may2024,0213,1804,1863,92.15,82.73
+portlandpub-may2024,Gunther Jacobi,1697,1712,93.27,83.54
+potomac-may2024,0055,1968,1899,141.1,86.38
+potomac-may2024,Ben Schoenbrun,1916,1933,101.04,74.35
+potomac-may2024,Joshua Castellano,2067,2083,100.92,74.26
+potomac-may2024,Matthew O'Connor,1818,1823,141.92,86.57
+potomac-may2024,Nitya Chagti,1393,1486,129.93,83.59
+potomac-may2024,Rob Robinsky,1905,1859,94.85,71.74
+potomac-may2024,Robert Linn,1671,1679,100.97,74.25
+potomac-may2024,Tim Weiss,1765,1747,100.92,74.2
+seattle-may2024,0001,1850,1823,99.52,72.68
+seattle-may2024,0002,1459,1373,113.07,77.71
+seattle-may2024,0003,1899,1895,97.02,78.65
+seattle-may2024,0010,2088,2033,88.47,68.07
+seattle-may2024,0099,1267,1188,127.03,81.83
+seattle-may2024,0117,2017,2052,106.08,75.2
+seattle-may2024,0213,1863,1933,94.57,70.82
+seattle-may2024,Bharath Balakrishnan,1557,1686,121.77,80.28
+seattle-may2024,Cecilia Le,1705,1614,150.0,86.94
+seattle-may2024,Christopher Grubb,1724,1855,126.57,81.44
+seattle-may2024,David Whitley,1619,1657,105.99,75.2
+seattle-may2024,John O'Laughlin,1812,1716,150.0,86.93
+seattle-may2024,Lola McKissen,1343,1371,127.92,82.0
+portlandpub-jun2024,0003,1895,1909,91.03,82.03
+portlandpub-jun2024,0010,2033,2062,82.06,76.34
+portlandpub-jun2024,0018,1214,1218,114.6,100.3
+portlandpub-jun2024,0021,1891,1869,150.0,117.19
+portlandpub-jun2024,0117,2052,2062,88.06,79.79
+portlandpub-jun2024,0206,1507,1546,105.15,93.68
+portlandpub-jun2024,0213,1933,1914,84.35,78.07
+portlandpub-jun2024,Gunther Jacobi,1712,1628,105.73,94.22
+portlandpub-jun2024,Keith Valentine,1253,1190,121.3,104.6
+portlandpub-jul2024,0010,2062,2043,96.58,86.01
+portlandpub-jul2024,0017,1361,1406,124.13,103.74
+portlandpub-jul2024,0018,1218,1191,116.45,99.14
+portlandpub-jul2024,0206,1546,1514,110.8,95.61
+portlandpub-jul2024,0213,1914,1927,97.95,86.98
+portlandpub-jul2024,Gunther Jacobi,1628,1671,111.25,95.92
+wordcup-2024-eb,0017,1406,1429,106.59,95.16
+wordcup-2024-eb,0018,1191,1253,102.12,91.99
+wordcup-2024-eb,0070,1705,1653,137.67,115.05
+wordcup-2024-eb,Becky Dyer,1724,1711,135.6,113.95
+wordcup-2024-eb,Cheryl Melvin,1066,985,150.0,121.86
+wordcup-2024-eb,David Whitley,1657,1715,108.88,96.72
+wordcup-2024-eb,Eta Karo,1939,1963,150.0,122.18
+wordcup-2024-eb,Fidelis Olotu,1688,1618,150.0,122.17
+wordcup-2024-eb,Jeannie Wilson,1072,1145,150.0,122.27
+wordcup-2024-eb,Josh Sokol,1833,1792,131.18,111.2
+wordcup-2024-eb,Karl Higby,1845,1781,150.0,121.97
+wordcup-2024-eb,Maureen Morris,1121,1086,150.0,122.07
+wordcup-2024-eb,Mike Johnson,1884,1708,150.0,122.26
+wordcup-2024-eb,Paula Catanese,1202,1371,150.0,121.97
+wordcup-2024-eb,Peter Armstrong,1810,1875,150.0,122.27
+wordcup-2024-eb,Robert Linn,1679,1616,108.23,96.27
+wordcup-2024-d1,0001,1823,1849,107.62,67.08
+wordcup-2024-d1,0010,2043,1973,89.99,62.03
+wordcup-2024-d1,0206,1514,1643,99.2,64.81
+wordcup-2024-d1,Anand Bharadwaj,1883,1878,150.0,74.5
+wordcup-2024-d1,Austin Shin,2003,1867,150.0,74.35
+wordcup-2024-d1,BJ Premore,1498,1555,150.0,74.35
+wordcup-2024-d1,Becky Dyer,1711,1715,114.39,68.55
+wordcup-2024-d1,David Whitley,1715,1702,97.24,64.24
+wordcup-2024-d1,Eta Karo,1963,2089,122.59,71.96
+wordcup-2024-d1,Fidelis Olotu,1618,1510,122.58,70.98
+wordcup-2024-d1,Geoff Thevenot,2004,1967,150.0,74.54
+wordcup-2024-d1,Jesse Day,1945,1935,142.72,73.53
+wordcup-2024-d1,Joel Wapnick,1695,1872,150.0,74.5
+wordcup-2024-d1,Josh Sokol,1792,1829,111.65,68.1
+wordcup-2024-d1,Karl Higby,1781,1746,122.38,70.22
+wordcup-2024-d1,Kevin Fraley,1939,1875,150.0,74.41
+wordcup-2024-d1,Leslie Charles,1693,1631,150.0,74.28
+wordcup-2024-d1,Mark Francillon,1664,1673,135.23,73.16
+wordcup-2024-d1,Mohammad Sulaiman,1666,1710,150.0,74.39
+wordcup-2024-d1,Nsikak Etim,1926,1886,150.0,74.34
+wordcup-2024-d1,Puneet Sharma,1706,1636,131.4,71.73
+wordcup-2024-d1,Rasheed Balogun,1765,1828,140.62,73.22
+wordcup-2024-d1,Robert Linn,1616,1730,96.79,64.18
+wordcup-2024-d1,Sammy Okosagah,2039,1769,150.0,74.42
+wordcup-2024-d1,Waseem Khatri,1833,1865,150.0,74.34
+wordcup-2024-d1,Wellington Jighere,2006,2029,150.0,74.5
+wordcup-2024-d1,Winter,1594,1713,143.05,73.61
+wordcup-2024-d2,0017,1429,1404,95.68,63.38
+wordcup-2024-d2,0018,1253,1200,92.53,62.45
+wordcup-2024-d2,0099,1188,1354,114.0,67.93
+wordcup-2024-d2,Abdul Khan,1242,1225,150.0,73.65
+wordcup-2024-d2,Adebola Sanya,1570,1530,150.0,73.85
+wordcup-2024-d2,Ayotunde Adeyeri,1533,1515,150.0,73.68
+wordcup-2024-d2,Bharath Balakrishnan,1686,1573,112.89,67.8
+wordcup-2024-d2,Caroline Polak Scowcroft,1199,1078,150.0,73.48
+wordcup-2024-d2,Cheryl Melvin,985,1116,122.27,69.45
+wordcup-2024-d2,Emmanuel Egbele,1444,1545,150.0,73.75
+wordcup-2024-d2,Ethan Joseph,1460,1460,150.0,150.0
+wordcup-2024-d2,Gary Smart,1384,1488,140.95,72.6
+wordcup-2024-d2,Guy Ingram,1414,1369,150.0,73.63
+wordcup-2024-d2,Jeannie Wilson,1145,1097,122.68,69.58
+wordcup-2024-d2,KC Frodyma,1367,1296,150.0,73.59
+wordcup-2024-d2,Lindsay Shin,1568,1469,150.0,73.54
+wordcup-2024-d2,Maureen Morris,1086,1089,122.48,69.56
+wordcup-2024-d2,Melissa Routzahn,1461,1470,150.0,73.71
+wordcup-2024-d2,Mpakaboari Jack,1597,1748,150.0,73.63
+wordcup-2024-d2,Nancee Mancel,1189,1189,150.0,150.0
+wordcup-2024-d2,Paula Catanese,1371,1302,122.38,69.52
+wordcup-2024-d2,Terry Kang,1558,1468,146.46,73.31
+wordcup-2024-d2,Tobey Roland,1275,1182,150.0,73.57
+wordcup-2024-d2,Tony Boyle,626,918,150.0,73.51
+glenhaven-2024,0010,1973,2016,66.69,55.23
+glenhaven-2024,0206,1643,1660,69.28,57.57
+glenhaven-2024,David Brown,1612,1588,150.0,84.71
+glenhaven-2024,David Whitley,1702,1690,68.75,56.38
+glenhaven-2024,Ethan Joseph,1460,1518,150.0,84.71
+glenhaven-2024,Gary Smart,1488,1397,76.62,61.57
+portlandpub-aug2024,0010,2016,2003,73.15,68.14
+portlandpub-aug2024,0017,1404,1390,83.17,76.01
+portlandpub-aug2024,0206,1660,1672,74.93,69.58
+portlandpub-aug2024,Gunther Jacobi,1671,1729,113.14,96.72
+pdxwords-eb-2024,0017,1390,1403,79.23,71.28
+pdxwords-eb-2024,0018,1200,1163,85.44,75.72
+pdxwords-eb-2024,0117,2062,1981,118.18,95.64
+pdxwords-eb-2024,Caroline Polak Scowcroft,1078,1082,93.8,81.3
+pdxwords-eb-2024,Cheryl Melvin,1116,1142,90.68,79.33
+pdxwords-eb-2024,Jeannie Wilson,1097,1204,90.78,79.32
+pdxwords-eb-2024,Joe Roberdeau,1223,1273,150.0,110.21
+pdxwords-eb-2024,Paula Catanese,1302,1279,90.74,79.29
+lewes-2024,Becky Dyer,1715,1693,90.55,70.03
+lewes-2024,Ben Schoenbrun,1933,1994,123.81,82.34
+lewes-2024,Erickson Smith,1788,1707,150.0,88.74
+lewes-2024,Joshua Castellano,2083,1977,123.75,82.32
+lewes-2024,Kaia,1388,1367,150.0,88.74
+lewes-2024,Matthew O'Connor,1823,1877,131.51,84.47
+lewes-2024,Niel Gan,1143,1383,150.0,88.74
+lewes-2024,Nitya Chagti,1486,1456,129.57,83.95
+lewes-2024,Robert Linn,1730,1719,87.29,68.49
+lewes-2024,Tim Weiss,1747,1797,123.72,82.31
+pdxwords-2024,0003,1909,1926,120.12,78.04
+pdxwords-2024,0010,2003,2027,72.41,59.28
+pdxwords-2024,0017,1403,1374,71.98,59.01
+pdxwords-2024,0018,1163,1152,76.38,61.43
+pdxwords-2024,0099,1354,1340,90.08,67.78
+pdxwords-2024,0117,1981,1986,96.16,70.32
+pdxwords-2024,0206,1672,1713,73.77,59.96
+pdxwords-2024,0213,1927,1860,108.47,74.61
+pdxwords-2024,Andrea Hatch,1103,1092,150.0,84.83
+pdxwords-2024,Ather Sharif,1038,1038,150.0,150.0
+pdxwords-2024,Caroline Polak Scowcroft,1082,1096,81.91,64.14
+pdxwords-2024,Cheryl Melvin,1142,1172,79.96,63.16
+pdxwords-2024,Gunther Jacobi,1729,1702,99.77,71.59
+pdxwords-2024,Jeannie Wilson,1204,1147,79.95,63.26
+pdxwords-2024,Joe Roberdeau,1273,1306,110.66,75.31
+pdxwords-2024,Paula Catanese,1279,1337,79.92,63.2
+pdxwords-2024,Puneet Sharma,1636,1596,92.98,68.94
+pdxwords-2024,Winter,1713,1728,94.44,69.57
+portlandpub-oct2024,0003,1926,1884,97.93,86.87
+portlandpub-oct2024,0010,2027,2040,83.75,77.62
+portlandpub-oct2024,0017,1374,1406,83.56,77.47
+portlandpub-oct2024,0018,1152,1134,85.29,78.85
+portlandpub-oct2024,0117,1986,1924,91.9,83.85
+portlandpub-oct2024,0206,1713,1745,84.23,76.89
+portlandpub-oct2024,0213,1860,1886,95.22,86.48
+portlandpub-oct2024,Carson Ip,1374,1468,150.0,117.06
+portlandpub-oct2024,Gunther Jacobi,1702,1662,92.87,84.59
+seattle-oct262024,0001,1849,1825,116.62,97.14
+seattle-oct262024,0002,1373,1274,146.42,112.71
+seattle-oct262024,0017,1406,1366,90.01,80.28
+seattle-oct262024,0018,1134,1164,91.2,80.98
+seattle-oct262024,0070,1653,1513,149.79,113.85
+seattle-oct262024,0099,1340,1339,100.97,87.67
+seattle-oct262024,0117,1924,1928,95.56,83.9
+seattle-oct262024,0206,1745,1715,89.51,79.84
+seattle-oct262024,0213,1886,1934,97.87,85.74
+seattle-oct262024,Ather Sharif,1038,1223,150.0,113.92
+seattle-oct262024,Carson Ip,1468,1477,125.71,102.29
+seattle-oct262024,Christopher Grubb,1855,1883,148.43,113.11
+seattle-oct262024,Gunther Jacobi,1662,1669,96.21,84.27
+seattle-oct262024,Josh Sokol,1829,1905,117.21,97.72
+seattle-oct262024,Lola McKissen,1371,1317,148.74,113.81
+seattle-oct262024,Rob Robinsky,1859,1849,143.34,111.3
+seattle-oct272024,0001,1825,1800,97.65,85.16
+seattle-oct272024,0002,1274,1353,113.15,94.76
+seattle-oct272024,0017,1366,1352,80.9,73.38
+seattle-oct272024,0018,1164,1184,81.6,73.9
+seattle-oct272024,0070,1513,1490,114.29,95.51
+seattle-oct272024,0099,1339,1316,88.24,78.7
+seattle-oct272024,0117,1928,1931,84.49,76.01
+seattle-oct272024,0206,1715,1667,80.46,73.08
+seattle-oct272024,0213,1934,1962,86.32,77.41
+seattle-oct272024,Bharath Balakrishnan,1573,1440,117.46,97.37
+seattle-oct272024,Carson Ip,1477,1513,102.78,88.55
+seattle-oct272024,Christopher Grubb,1883,1958,113.55,95.06
+seattle-oct272024,Gunther Jacobi,1669,1608,84.86,76.25
+seattle-oct272024,Josh Sokol,1905,1951,98.23,85.63
+seattle-oct272024,Lola McKissen,1317,1324,114.25,95.49
+seattle-oct272024,Rob Robinsky,1849,1882,111.75,94.04
+columbia-2024,Dennis Ikekeregor,1847,1860,150.0,107.91
+columbia-2024,Joshua Castellano,1977,2030,114.35,92.17
+columbia-2024,Nsikak Etim,1886,1921,123.8,96.84
+columbia-2024,Rob Robinsky,1882,1825,97.18,82.48
+columbia-2024,Robert Linn,1719,1704,104.84,86.94
+columbia-2024,Sammy Okosagah,1769,1808,123.85,96.93
+columbia-2024,Wale Fashina,1896,1850,150.0,107.83
+columbia-2024,Wellington Jighere,2029,2032,123.9,97.06
+portlandpub-nov2024,0003,1884,1903,102.21,89.67
+portlandpub-nov2024,0017,1352,1353,78.0,71.99
+portlandpub-nov2024,0206,1667,1670,77.72,71.77
+portlandpub-nov2024,0213,1962,1939,81.81,74.94
+portlandpub-nov2024,Gunther Jacobi,1608,1617,80.71,74.1
+portlandpub-nov2024,Josh Sokol,1951,1949,89.62,80.83
+sanfrancisco-dec2024,0002,1353,1383,113.93,78.15
+sanfrancisco-dec2024,Andrea Hatch,1092,1063,129.99,82.81
+sanfrancisco-dec2024,Anuj Shetty,1400,1442,150.0,86.12
+sanfrancisco-dec2024,Ather Sharif,1223,1135,130.68,83.01
+sanfrancisco-dec2024,Becky Dyer,1693,1633,120.85,79.29
+sanfrancisco-dec2024,Bharath Balakrishnan,1440,1558,116.11,78.0
+sanfrancisco-dec2024,Brad Whitmarsh,1752,1851,150.0,85.97
+sanfrancisco-dec2024,Bruce Ward,1548,1454,150.0,87.31
+sanfrancisco-dec2024,Carson Ip,1513,1465,108.82,75.65
+sanfrancisco-dec2024,Cheryl Melvin,1172,1111,117.0,79.04
+sanfrancisco-dec2024,Chris Lipe,1872,1799,150.0,85.87
+sanfrancisco-dec2024,David Whitley,1690,1712,125.61,80.5
+sanfrancisco-dec2024,Ethan Joseph,1518,1524,140.63,84.06
+sanfrancisco-dec2024,Gary Smart,1397,1439,128.03,82.44
+sanfrancisco-dec2024,Jeannie Wilson,1147,1161,117.05,79.26
+sanfrancisco-dec2024,Jesse Day,1935,1857,136.41,83.11
+sanfrancisco-dec2024,Joe Roberdeau,1306,1284,123.98,81.38
+sanfrancisco-dec2024,John O'Laughlin,1716,1934,150.0,85.85
+sanfrancisco-dec2024,Josh Sokol,1949,1867,99.16,72.07
+sanfrancisco-dec2024,KC Frodyma,1296,1186,136.44,84.41
+sanfrancisco-dec2024,Kevin Fraley,1875,1877,136.88,83.21
+sanfrancisco-dec2024,Martin DeMello,1436,1556,150.0,87.57
+sanfrancisco-dec2024,Mohammad Sulaiman,1710,1730,136.87,83.31
+sanfrancisco-dec2024,Paula Catanese,1337,1196,117.02,79.19
+sanfrancisco-dec2024,Peter Dolgenos,1267,1239,150.0,87.58
+sanfrancisco-dec2024,Randi Goldberg,1436,1470,150.0,87.5
+sanfrancisco-dec2024,Rasheed Balogun,1828,1808,136.24,84.55
+sanfrancisco-dec2024,Rob Robinsky,1825,1892,101.01,73.71
+sanfrancisco-dec2024,Robin Levin,1240,1290,150.0,89.08
+sanfrancisco-dec2024,Sridhar Paidikondala,1108,1326,150.0,87.53
+sanfrancisco-dec2024,Terry Kang,1468,1473,136.29,84.52
+sanfrancisco-dec2024,Wellington Jighere,2032,1974,113.23,77.0
+sanfrancisco-dec2024,Yukiko Loritz,1619,1600,150.0,87.42
+portlandpub-dec2024,0003,1903,1875,106.96,92.96
+portlandpub-dec2024,0010,2040,2056,111.02,95.58
+portlandpub-dec2024,0017,1353,1349,92.64,83.12
+portlandpub-dec2024,0018,1184,1192,97.78,86.76
+portlandpub-dec2024,0206,1670,1677,92.47,83.01
+portlandpub-dec2024,0213,1939,1934,94.95,84.79
+vancouver-dec2024,0001,1800,1922,109.78,81.08
+vancouver-dec2024,0099,1316,1427,104.85,79.32
+vancouver-dec2024,0117,1931,1934,102.85,78.12
+vancouver-dec2024,0169,1704,1732,150.0,94.24
+vancouver-dec2024,Cam Lawrence,748,748,150.0,150.0
+vancouver-dec2024,Cheryl Melvin,1111,1143,83.95,69.02
+vancouver-dec2024,Chris Cheng,1602,1602,150.0,150.0
+vancouver-dec2024,Christopher Grubb,1958,1953,117.63,84.1
+vancouver-dec2024,George MacAulay,1536,1507,150.0,94.31
+vancouver-dec2024,Henry Gould,742,742,150.0,150.0
+vancouver-dec2024,Josh Sokol,1867,1826,77.42,65.12
+vancouver-dec2024,Maureen Morris,1089,1172,137.25,90.97
+vancouver-dec2024,Noella Ward,1170,1204,150.0,94.37
+vancouver-dec2024,Olanma Cheche,511,511,150.0,150.0
+vancouver-dec2024,Rachel Grubb,1168,1148,150.0,94.42
+vancouver-dec2024,Tara Hurley,1139,1067,150.0,94.25
+nola-lite-2025,0002,1383,1379,102.02,73.1
+nola-lite-2025,0099,1427,1489,98.95,71.99
+nola-lite-2025,Andrea Hatch,1063,1179,105.63,74.48
+nola-lite-2025,Ather Sharif,1135,1206,105.79,74.59
+nola-lite-2025,Ayotunde Adeyeri,1515,1621,150.0,85.8
+nola-lite-2025,Beth Leech,1221,1221,150.0,150.0
+nola-lite-2025,Betsey Wood,1370,1092,150.0,86.03
+nola-lite-2025,Carolyn Atchison,1196,1196,150.0,150.0
+nola-lite-2025,Carson Ip,1465,1590,100.11,72.47
+nola-lite-2025,Cheryl Melvin,1143,1180,90.91,68.82
+nola-lite-2025,Cornelia Guest,1251,1217,150.0,87.56
+nola-lite-2025,Elise Bickford,1516,1303,150.0,85.98
+nola-lite-2025,Emily Brodeur,1416,1355,150.0,85.89
+nola-lite-2025,Emmanuel Egbele,1545,1616,150.0,85.72
+nola-lite-2025,Ethan Joseph,1524,1449,106.61,74.77
+nola-lite-2025,Gary Smart,1439,1456,105.34,74.28
+nola-lite-2025,Gerianne Abriano,1392,1137,150.0,85.95
+nola-lite-2025,Guy Ingram,1369,1323,150.0,86.06
+nola-lite-2025,Jane Geary,1555,1440,150.0,85.87
+nola-lite-2025,Jeannie Wilson,1161,1236,102.87,73.39
+nola-lite-2025,Jeremy Jeffers,1415,1354,150.0,86.13
+nola-lite-2025,Julia Swaney,1150,1150,150.0,150.0
+nola-lite-2025,Lila Crotty,1276,1393,150.0,85.96
+nola-lite-2025,Mary Pastore,1122,1122,150.0,150.0
+nola-lite-2025,Nancy Bowen,1347,1398,150.0,85.65
+nola-lite-2025,Paula Catanese,1196,1209,102.82,73.47
+nola-lite-2025,Terry Kang,1473,1521,106.97,74.95
+nola-lite-2025,Wajid Iqbal,1464,1458,150.0,85.88
+nola-open-2025,0001,1922,1922,100.37,72.42
+nola-open-2025,0010,2056,2045,115.48,77.42
+nola-open-2025,0169,1732,1804,111.27,76.15
+nola-open-2025,Austin Shin,1867,1917,150.0,85.68
+nola-open-2025,Becky Dyer,1633,1624,102.89,73.34
+nola-open-2025,Ben Schoenbrun,1994,1954,144.15,84.43
+nola-open-2025,Brad Whitmarsh,1851,1829,108.12,75.15
+nola-open-2025,Chris Cheng,1602,1529,150.0,85.82
+nola-open-2025,Chris Lipe,1799,1899,108.04,75.04
+nola-open-2025,Cooper Komatsu,1847,1847,150.0,150.0
+nola-open-2025,Jason Ubeika,1568,1600,150.0,85.77
+nola-open-2025,Joel Wapnick,1872,1870,150.0,85.72
+nola-open-2025,Josh Sokol,1826,1907,87.98,67.32
+nola-open-2025,Joshua Castellano,2030,2036,127.26,80.63
+nola-open-2025,Kevin Fraley,1877,1833,105.94,74.41
+nola-open-2025,Kyle Fellahi,1590,1513,150.0,85.95
+nola-open-2025,Mohammad Sulaiman,1730,1680,106.02,74.69
+nola-open-2025,Niel Gan,1383,1621,147.9,85.25
+nola-open-2025,Peter Armstrong,1875,1805,150.0,85.87
+nola-open-2025,Puneet Sharma,1596,1594,136.94,83.21
+nola-open-2025,Randi Goldberg,1470,1445,109.34,75.72
+nola-open-2025,Rasheed Balogun,1808,1817,107.0,74.65
+nola-open-2025,Rob Robinsky,1892,1780,98.66,71.83
+nola-open-2025,Robert Linn,1704,1841,123.53,79.65
+nola-open-2025,Sammy Okosagah,1808,1810,130.75,81.49
+nola-open-2025,Tim Weiss,1797,1696,144.14,84.81
+nola-open-2025,Winter,1728,1662,137.26,83.1
+nola-open-2025,Yukiko Loritz,1600,1600,109.28,75.61
+hood-river-2025,0003,1875,1880,125.07,79.91
+hood-river-2025,0010,2045,2021,93.78,69.65
+hood-river-2025,0018,1192,1148,120.53,78.75
+hood-river-2025,0099,1489,1472,89.35,67.78
+hood-river-2025,0117,1934,1971,111.37,76.0
+hood-river-2025,0206,1677,1699,117.86,78.0
+hood-river-2025,0213,1934,1982,119.12,78.31
+hood-river-2025,Bharath Balakrishnan,1558,1524,114.82,77.04
+hood-river-2025,Chris Lipe,1899,1845,91.82,68.82
+hood-river-2025,Christopher Grubb,1953,1940,115.64,77.29
+hood-river-2025,David Whitley,1712,1718,116.53,77.55
+hood-river-2025,Joe Roberdeau,1284,1363,117.14,77.72
+hood-river-2025,Lola McKissen,1324,1304,142.19,83.88
+hood-river-2025,Mark Francillon,1673,1470,150.0,85.44
+hood-river-2025,Nitya Chagti,1456,1445,150.0,85.38
+hood-river-2025,Peter Armstrong,1805,1848,100.86,72.4
+hood-river-2025,Puneet Sharma,1594,1642,98.61,71.56
+hood-river-2025,Randi Goldberg,1445,1463,92.38,69.07
+hood-river-2025,Terry Kang,1521,1548,91.75,68.79
+hood-river-2025,Walker Willingham,1280,1355,150.0,85.44
+providence-mar2025,Justin Morris,1524,1465,150.0,118.21
+providence-mar2025,Matt Zeleznik,1709,1554,150.0,118.21
+providence-mar2025,Matthew O'Connor,1877,2038,150.0,118.21
+providence-mar2025,Niel Gan,1621,1653,107.55,94.02
+providence-apr2025,Amy Kasprzycki,300,300,150.0,150.0
+providence-apr2025,Chloe Fatsis,1723,1784,150.0,118.18
+providence-apr2025,Kyle Fellahi,1513,1483,121.6,102.8
+providence-apr2025,Matt Zeleznik,1554,1687,130.67,108.05
+providence-apr2025,Matthew O'Connor,2038,2024,130.67,108.14
+providence-apr2025,Richard Buck,1706,1562,150.0,118.27
+portland-pub-12apr2025,0002,1379,1393,117.23,99.79
+portland-pub-12apr2025,0003,1880,1924,109.48,95.0
+portland-pub-12apr2025,0010,2021,1993,102.23,90.08
+portland-pub-12apr2025,0017,1349,1407,139.67,112.65
+portland-pub-12apr2025,0018,1148,1120,108.63,94.47
+portland-pub-12apr2025,0117,1971,1974,106.66,92.94
+portland-pub-12apr2025,0206,1699,1709,108.09,94.01
+portland-pub-12apr2025,0213,1982,1990,108.32,94.03
+portland-pub-12apr2025,Gunther Jacobi,1617,1534,146.6,115.97
+portland-pub-12apr2025,Mia Yamamoto,351,351,150.0,150.0
+portland-pub-13apr2025,0001,1922,1921,117.24,99.58
+portland-pub-13apr2025,0003,1924,1946,95.52,85.31
+portland-pub-13apr2025,0010,1993,1999,90.63,81.67
+portland-pub-13apr2025,0017,1407,1446,113.09,99.09
+portland-pub-13apr2025,0018,1120,1131,95.0,86.26
+portland-pub-13apr2025,0117,1974,1941,93.48,83.8
+portland-pub-13apr2025,0206,1709,1627,94.54,86.11
+portland-pub-13apr2025,0213,1990,1981,94.56,84.65
+portland-pub-13apr2025,Keith Valentine,1190,1308,150.0,117.41
+portland-pub-13apr2025,Mia Yamamoto,351,360,150.0,131.03
+championscup-2025,Ben Schoenbrun,1954,2025,127.39,85.18
+championscup-2025,Chris Lipe,1845,1827,105.05,77.45
+championscup-2025,Dennis Ikekeregor,1860,1939,150.0,90.93
+championscup-2025,Jason Keller,2016,1954,150.0,90.9
+championscup-2025,Laurie Cohen,1804,1962,150.0,90.86
+championscup-2025,Nsikak Etim,1921,1892,150.0,90.79
+championscup-2025,Quinn James,1889,1878,150.0,90.76
+championscup-2025,Robert Linn,1841,1750,124.27,84.19
+championscup-2025,Stefan Rau,1827,1753,150.0,90.88
+championscup-2025,Wellington Jighere,1974,1983,139.03,88.33
+rome-may2025,Adelaide Drennen,920,920,150.0,150.0
+rome-may2025,Brett Haughney,1942,1942,150.0,150.0
+rome-may2025,Emily Brodeur,1355,1365,133.71,95.38
+rome-may2025,Guy Ingram,1323,1297,133.81,95.5
+rome-may2025,Jeremy Jeffers,1354,1370,133.86,95.48
+rome-may2025,Richard Ganguet,1271,1271,150.0,150.0
+bellingham-may2025,0001,1921,1850,112.32,96.56
+bellingham-may2025,0002,1393,1470,112.95,96.95
+bellingham-may2025,0099,1472,1423,113.99,97.6
+bellingham-may2025,0117,1941,1976,98.6,87.46
+seattle-may2025,0002,1470,1437,103.92,73.54
+seattle-may2025,0010,1999,1955,103.78,73.59
+seattle-may2025,0017,1446,1461,117.98,78.0
+seattle-may2025,0018,1131,1137,107.43,74.76
+seattle-may2025,0099,1423,1517,104.53,73.81
+seattle-may2025,0117,1976,2072,95.13,70.36
+seattle-may2025,0206,1627,1610,107.31,74.7
+seattle-may2025,Bharath Balakrishnan,1524,1554,125.44,80.07
+seattle-may2025,Carson Ip,1590,1616,133.61,82.0
+seattle-may2025,Christopher Grubb,1940,1822,125.59,80.16
+seattle-may2025,Jane Geary,1440,1329,141.33,83.68
+seattle-may2025,John O'Laughlin,1934,1956,150.0,85.3
+austin-atx2025,0001,1850,1857,110.11,83.08
+austin-atx2025,Becky Dyer,1624,1653,139.21,93.47
+austin-atx2025,Ben Weaver,1319,1250,150.0,96.48
+austin-atx2025,James Curley,1560,1559,150.0,96.52
+austin-atx2025,Jesse Day,1857,1837,150.0,96.38
+austin-atx2025,Prashant Murti,1311,1353,150.0,96.55
+denver-21jun2025,David Brown,1588,1660,150.0,115.04
+denver-21jun2025,Emily Cookson,785,785,150.0,150.0
+denver-21jun2025,Julia Swaney,1150,988,150.0,115.04
+denver-21jun2025,Solomon Smilack,603,603,150.0,150.0
+denver-21jun2025,Theresa Lean,731,731,150.0,150.0
+denver-21jun2025,Tony Boyle,918,909,150.0,115.04
+nova-jun2025,0033,1365,1382,150.0,118.2
+nova-jun2025,0055,1899,1875,150.0,118.31
+nova-jun2025,0218,788,788,150.0,150.0
+nova-jun2025,Ather Sharif,1206,1190,145.13,115.94
+nova-jun2025,Joshua Castellano,2036,2072,148.33,117.52
+nova-jun2025,Nitya Chagti,1445,1341,141.39,114.14
+nova-jun2025,Rob Robinsky,1780,1765,143.73,115.22
+nova-jun2025,Robert Linn,1750,1799,116.14,99.56
+portlandpub-jun2025,0010,1955,1977,94.95,84.93
+portlandpub-jun2025,0206,1610,1639,95.81,85.55
+portlandpub-jun2025,John O'Laughlin,1956,1896,104.29,91.39
+portlandpub-jun2025,Will Anderson,2004,1975,150.0,117.27
+bend-jun2025,0003,1946,1959,127.98,100.76
+bend-jun2025,0010,1977,1970,92.81,80.77
+bend-jun2025,0117,2072,2065,99.75,85.23
+bend-jun2025,0206,1639,1666,93.37,81.14
+bend-jun2025,0213,1981,1977,127.54,100.55
+bend-jun2025,Christopher Grubb,1822,1806,106.89,89.43
+wordcup-2025-eb,0017,1461,1429,113.95,100.15
+wordcup-2025-eb,0117,2065,2091,95.73,87.13
+wordcup-2025-eb,Cheryl Melvin,1180,1154,150.0,121.88
+wordcup-2025-eb,Jeannie Wilson,1236,1211,150.0,121.88
+wordcup-2025-eb,Paula Catanese,1209,1290,150.0,121.88
+wordcup-2025-eb,Robert Linn,1799,1751,117.95,102.83
+wordcup-2025-d1,0010,1970,2010,92.32,62.45
+wordcup-2025-d1,0117,2091,2059,87.7,60.97
+wordcup-2025-d1,Akeem Adekunle,1616,1630,150.0,76.65
+wordcup-2025-d1,Austin Shin,1917,2028,150.0,73.57
+wordcup-2025-d1,Becky Dyer,1653,1713,119.74,69.88
+wordcup-2025-d1,Ben Schoenbrun,2025,1929,133.25,72.5
+wordcup-2025-d1,Brad Whitmarsh,1829,1852,150.0,74.61
+wordcup-2025-d1,Brian Bowman,1926,1820,150.0,74.75
+wordcup-2025-d1,Chris Lipe,1827,1825,128.45,71.57
+wordcup-2025-d1,David Whitley,1718,1820,150.0,74.56
+wordcup-2025-d1,Dennis Ikekeregor,1939,1884,137.0,72.98
+wordcup-2025-d1,Emmanuel Egbele,1616,1588,150.0,75.64
+wordcup-2025-d1,Enoch Nwali,1978,1946,150.0,73.61
+wordcup-2025-d1,Eta Karo,2089,1988,150.0,74.68
+wordcup-2025-d1,Geoff Thevenot,1967,1902,150.0,74.81
+wordcup-2025-d1,Joel Wapnick,1870,1759,150.0,74.66
+wordcup-2025-d1,Josh Sokol,1907,1885,150.0,74.57
+wordcup-2025-d1,Joshua Castellano,2072,2033,133.83,71.45
+wordcup-2025-d1,Kevin Fraley,1833,1896,150.0,74.7
+wordcup-2025-d1,Laurie Cohen,1962,1806,136.95,72.88
+wordcup-2025-d1,Mark Kenas,1576,1701,150.0,74.6
+wordcup-2025-d1,Mpakaboari Jack,1748,1675,150.0,75.69
+wordcup-2025-d1,Peter Armstrong,1848,1894,148.46,74.47
+wordcup-2025-d1,Puneet Sharma,1642,1716,148.06,75.48
+wordcup-2025-d1,Rasheed Balogun,1817,1803,150.0,74.67
+wordcup-2025-d1,Rob Robinsky,1765,1773,131.82,72.1
+wordcup-2025-d1,Robert Linn,1751,1723,103.32,66.28
+wordcup-2025-d1,Sammy Okosagah,1810,1970,150.0,74.71
+wordcup-2025-d1,Scott Jackson,1758,1763,150.0,74.6
+wordcup-2025-d1,Tim Weiss,1696,1710,150.0,74.74
+wordcup-2025-d1,Waseem Khatri,1865,1881,150.0,74.52
+wordcup-2025-d1,Wellington Jighere,1983,2061,135.29,72.62
+wordcup-2025-d1,Winter,1662,1760,150.0,74.6
+wordcup-2025-d2,0017,1429,1421,100.65,65.4
+wordcup-2025-d2,0018,1137,1177,112.2,68.29
+wordcup-2025-d2,0033,1382,1297,134.43,72.45
+wordcup-2025-d2,0099,1517,1545,111.57,67.44
+wordcup-2025-d2,Ather Sharif,1190,1369,132.45,71.23
+wordcup-2025-d2,Ayodele Odekunle,1338,1338,150.0,150.0
+wordcup-2025-d2,Barbara Van Alen,928,928,150.0,150.0
+wordcup-2025-d2,Bharath Balakrishnan,1554,1590,115.81,68.42
+wordcup-2025-d2,Cheryl Melvin,1154,1126,122.29,71.21
+wordcup-2025-d2,Elise Bickford,1303,1352,150.0,74.58
+wordcup-2025-d2,Emily Brodeur,1365,1356,134.9,72.6
+wordcup-2025-d2,Fidelis Olotu,1510,1405,150.0,74.58
+wordcup-2025-d2,Gary Smart,1456,1449,150.0,74.52
+wordcup-2025-d2,Jeannie Wilson,1211,1108,122.29,71.18
+wordcup-2025-d2,Jeffrey Muwarure,800,734,150.0,143.02
+wordcup-2025-d2,Joe Roberdeau,1363,1334,150.0,74.54
+wordcup-2025-d2,Julia Swaney,988,1086,132.04,72.85
+wordcup-2025-d2,Kaia,1367,1378,150.0,73.65
+wordcup-2025-d2,Lindsay Shin,1469,1344,150.0,75.58
+wordcup-2025-d2,Lola McKissen,1304,1359,150.0,75.51
+wordcup-2025-d2,Mark Francillon,1470,1550,150.0,73.54
+wordcup-2025-d2,Melissa Routzahn,1470,1407,150.0,74.54
+wordcup-2025-d2,Nicholas Tam,1538,1526,150.0,73.66
+wordcup-2025-d2,Paula Catanese,1290,1224,122.29,71.14
+wordcup-2025-d2,Priya Fernando,1281,1410,150.0,73.66
+wordcup-2025-d2,Randi Goldberg,1463,1357,146.87,75.14
+wordcup-2025-d2,Terry Kang,1548,1472,146.74,74.18
+wordcup-2025-d2,Yvonne Lobo,1332,1444,150.0,74.54
+pdxwords-eb-2025,0017,1421,1426,83.53,74.37
+pdxwords-eb-2025,0117,2059,2066,80.11,71.93
+pdxwords-eb-2025,Andrea Hatch,1179,1282,150.0,110.48
+pdxwords-eb-2025,Cheryl Melvin,1126,1055,88.15,77.57
+pdxwords-eb-2025,Greg Harper,1478,1478,150.0,150.0
+pdxwords-eb-2025,Jeannie Wilson,1108,1067,88.13,77.56
+pdxwords-eb-2025,Paula Catanese,1224,1290,88.1,77.53
+pdxwords-eb-2025,Robert Linn,1723,1703,84.22,74.86
+pdxwords-2025,0010,2010,1996,81.85,64.08
+pdxwords-2025,0017,1426,1442,75.04,60.73
+pdxwords-2025,0099,1545,1572,85.72,65.94
+pdxwords-2025,0117,2066,2067,72.62,59.38
+pdxwords-2025,0206,1666,1642,106.69,74.09
+pdxwords-2025,Andrea Hatch,1282,1164,110.93,75.55
+pdxwords-2025,Cheryl Melvin,1055,1128,78.21,62.41
+pdxwords-2025,Chris Cheng,1529,1480,150.0,85.04
+pdxwords-2025,Greg Harper,1478,1430,150.0,85.09
+pdxwords-2025,Jane Geary,1329,1317,129.62,80.68
+pdxwords-2025,Jeannie Wilson,1067,1143,78.2,62.37
+pdxwords-2025,Joe Roberdeau,1334,1263,91.41,68.47
+pdxwords-2025,Mark Peltier,1362,1362,150.0,150.0
+pdxwords-2025,Paula Catanese,1290,1313,78.17,62.39
+pdxwords-2025,Peter Armstrong,1894,1877,91.36,68.36
+pdxwords-2025,Robert Linn,1703,1707,75.52,60.94
+slingerlands-series1-2025,Brad Whitmarsh,1852,1843,91.47,79.76
+slingerlands-series1-2025,Iliana Filby,1085,1080,150.0,110.16
+slingerlands-series1-2025,Laurie Cohen,1806,1789,90.06,78.9
+slingerlands-series1-2025,Mark Francillon,1550,1563,90.6,79.19
+slingerlands-series1-2025,Terry Kang,1472,1495,91.12,79.61
+slingerlands-series1-2025,Winter,1760,1747,91.46,79.83
+slingerlands-series2-2025,Brad Whitmarsh,1843,1846,80.38,73.17
+slingerlands-series2-2025,Iliana Filby,1080,1109,110.61,93.71
+slingerlands-series2-2025,Karl Higby,1746,1696,150.0,114.1
+slingerlands-series2-2025,Kevin Gauthier,1312,1312,150.0,150.0
+slingerlands-series2-2025,Matthew O'Connor,2024,1955,150.0,114.1
+slingerlands-series2-2025,Stefan Rau,1753,1960,147.17,112.85
+slingerlands-series2-2025,Terry Kang,1495,1451,80.24,73.06
+slingerlands-series2-2025,Winter,1747,1743,80.45,73.22
+charlottesville-2025,0001,1857,1875,137.12,92.26
+charlottesville-2025,0002,1437,1507,136.78,92.16
+charlottesville-2025,0033,1297,1338,107.47,81.47
+charlottesville-2025,0228,1501,1540,150.0,95.8
+charlottesville-2025,Ather Sharif,1369,1374,106.65,81.06
+charlottesville-2025,Becky Dyer,1713,1687,105.75,80.72
+charlottesville-2025,Erickson Smith,1707,1831,150.0,95.8
+charlottesville-2025,Joshua Castellano,2033,2004,106.79,81.09
+charlottesville-2025,Marty Gold,1608,1456,150.0,95.8
+charlottesville-2025,Nitya Chagti,1341,1379,150.0,95.8
+charlottesville-2025,Randi Goldberg,1357,1333,109.3,82.2
+charlottesville-2025,Rob Robinsky,1773,1750,107.23,81.37
+charlottesville-2025,Robert Linn,1707,1723,84.93,70.22
+charlottesville-2025,Tim Weiss,1710,1678,109.02,82.14
+seattle-oct252025,0001,1875,1848,103.01,89.08
+seattle-oct252025,0010,1996,2036,98.52,86.0
+seattle-oct252025,0117,2067,2083,95.53,83.88
+seattle-oct252025,Carson Ip,1616,1708,148.74,113.47
+seattle-oct252025,Chris Wiegand,880,880,150.0,150.0
+seattle-oct252025,Christopher Grubb,1806,1913,135.64,107.54
+seattle-oct252025,David Whitley,1820,1768,118.15,98.23
+seattle-oct252025,John O'Laughlin,1896,1786,141.96,110.49
+seattle-oct252025,Norman Lemoine,878,878,150.0,150.0
+seattle-oct252025,Rob Robinsky,1750,1690,93.39,82.66
+seattle-oct262025,0002,1507,1482,103.41,89.16
+seattle-oct262025,0010,2036,2060,86.58,77.53
+seattle-oct262025,0099,1572,1619,100.24,86.93
+seattle-oct262025,0117,2083,2070,84.47,76.08
+seattle-oct262025,Carson Ip,1708,1598,113.91,95.42
+seattle-oct262025,Christopher Grubb,1913,1900,108.0,91.77
+seattle-oct262025,David Whitley,1768,1781,98.74,85.92
+seattle-oct262025,John O'Laughlin,1786,1788,110.94,93.63
+seattle-oct262025,Rob Robinsky,1690,1700,83.26,75.18
+seattle-oct262025,Walker Willingham,1355,1380,150.0,113.69
+sanfrancisco-dec2025,0001,1848,1916,113.73,77.29
+sanfrancisco-dec2025,0003,1959,1871,150.0,86.0
+sanfrancisco-dec2025,0033,1338,1599,117.21,78.22
+sanfrancisco-dec2025,Andrea Hatch,1164,1211,127.7,81.28
+sanfrancisco-dec2025,Anuj Shetty,1442,1466,150.0,86.13
+sanfrancisco-dec2025,Ben Schoenbrun,1929,1955,136.59,83.12
+sanfrancisco-dec2025,Bharath Balakrishnan,1590,1766,134.47,82.75
+sanfrancisco-dec2025,Bruce Baginski,1287,1232,150.0,86.2
+sanfrancisco-dec2025,Bruce Ward,1454,1450,150.0,86.15
+sanfrancisco-dec2025,Buffy Hogan,1175,1024,150.0,86.33
+sanfrancisco-dec2025,Caroline Polak Scowcroft,1096,1125,150.0,85.9
+sanfrancisco-dec2025,Carson Ip,1598,1462,118.34,78.54
+sanfrancisco-dec2025,Cheryl Melvin,1128,1194,120.4,79.45
+sanfrancisco-dec2025,Chris Lipe,1825,1830,136.1,83.27
+sanfrancisco-dec2025,Edgar Odongkara,1927,1912,150.0,86.1
+sanfrancisco-dec2025,Enoch Nwali,1946,1876,137.18,83.29
+sanfrancisco-dec2025,Gary Smart,1449,1397,137.67,83.65
+sanfrancisco-dec2025,Jane Geary,1317,1232,130.8,82.0
+sanfrancisco-dec2025,Jeannie Wilson,1143,1157,120.37,79.24
+sanfrancisco-dec2025,Joel Wapnick,1759,1796,137.75,83.55
+sanfrancisco-dec2025,John O'Laughlin,1788,1750,116.9,78.18
+sanfrancisco-dec2025,Kevin Fraley,1896,1768,137.77,83.57
+sanfrancisco-dec2025,Loreta Paelmo,1272,1282,150.0,86.28
+sanfrancisco-dec2025,Martin DeMello,1556,1569,150.0,86.09
+sanfrancisco-dec2025,Mary Stevens,1457,1261,150.0,86.19
+sanfrancisco-dec2025,Mehul Arora,1677,1582,150.0,86.12
+sanfrancisco-dec2025,Pamina Deutsch,1410,1296,150.0,86.25
+sanfrancisco-dec2025,Paula Catanese,1313,1337,120.38,79.16
+sanfrancisco-dec2025,Randi Goldberg,1333,1373,117.72,78.4
+sanfrancisco-dec2025,Rasheed Balogun,1803,1759,137.75,83.41
+sanfrancisco-dec2025,Rob Robinsky,1700,1730,102.72,73.47
+sanfrancisco-dec2025,Robin Levin,1290,1353,150.0,86.14
+sanfrancisco-dec2025,Sridhar Paidikondala,1326,1458,150.0,86.02
+sanfrancisco-dec2025,Tim Weiss,1678,1706,117.67,78.49
+sanfrancisco-dec2025,Wellington Jighere,2061,2040,136.65,83.26
+sanfrancisco-dec2025,Yukiko Loritz,1600,1625,150.0,86.05
+nola-lite-2026,0002,1482,1359,127.87,80.97
+nola-lite-2026,Adebola Sanya,1530,1680,150.0,85.97
+nola-lite-2026,Andrea Hatch,1211,1117,100.53,72.57
+nola-lite-2026,Ayodele Odekunle,1338,1442,150.0,86.0
+nola-lite-2026,Carolyn Atchison,1196,994,150.0,85.94
+nola-lite-2026,Jane Geary,1232,1237,101.11,72.74
+nola-lite-2026,Jeannie Wilson,1157,1154,98.89,71.99
+nola-lite-2026,Jemmy Pierre-Louis,595,595,150.0,150.0
+nola-lite-2026,Jeremy Jeffers,1370,1324,150.0,85.91
+nola-lite-2026,Joe Roberdeau,1263,1324,137.07,83.37
+nola-lite-2026,Lila Crotty,1393,1366,150.0,86.02
+nola-lite-2026,Mary Stevens,1261,1214,104.54,74.03
+nola-lite-2026,Melissa Routzahn,1407,1556,149.85,85.98
+nola-lite-2026,Nancy Bowen,1398,1338,150.0,85.85
+nola-lite-2026,Nitya Chagti,1379,1666,140.63,84.15
+nola-lite-2026,Pamina Deutsch,1296,1234,104.59,74.02
+nola-lite-2026,Paula Catanese,1337,1308,98.82,71.97
+nola-lite-2026,Walker Willingham,1380,1433,146.03,85.24
+nola-open-2026,0001,1916,1908,97.85,71.55
+nola-open-2026,0010,2060,2061,120.46,79.15
+nola-open-2026,Austin Shin,2028,1988,149.71,86.13
+nola-open-2026,Ben Schoenbrun,1955,1903,102.51,73.35
+nola-open-2026,Charles Reinke,1872,1817,150.0,85.96
+nola-open-2026,Chris Lipe,1830,1816,102.63,73.37
+nola-open-2026,Ekansh Arora,1681,1574,150.0,86.14
+nola-open-2026,Erickson Smith,1831,1811,140.99,84.2
+nola-open-2026,Eta Karo,1988,1968,150.0,86.09
+nola-open-2026,Geoff Thevenot,1902,1811,150.0,85.94
+nola-open-2026,Greg Harper,1430,1556,146.43,85.31
+nola-open-2026,Jason Ubeika,1600,1695,150.0,85.98
+nola-open-2026,Josh Sokol,1885,2081,150.0,85.98
+nola-open-2026,Joshua Castellano,2004,2007,131.44,82.0
+nola-open-2026,Kevin Fraley,1768,1884,102.88,73.39
+nola-open-2026,Matthew O'Connor,1955,1874,150.0,85.99
+nola-open-2026,Mohammad Sulaiman,1680,1708,150.0,85.92
+nola-open-2026,Puneet Sharma,1716,1707,150.0,86.06
+nola-open-2026,Randi Goldberg,1373,1437,98.72,72.02
+nola-open-2026,Rob Robinsky,1730,1808,94.86,70.33
+nola-open-2026,Sandy Nang,1557,1402,150.0,86.09
+nola-open-2026,Scott Jackson,1763,1702,150.0,86.07
+nola-open-2026,Thomas Reinke,2052,1961,150.0,86.03
+nola-open-2026,Tim Weiss,1706,1710,98.8,71.99
+providence-jan2026,Justin Morris,1465,1508,150.0,118.07
+providence-jan2026,Matt Zeleznik,1687,1566,150.0,118.07
+providence-jan2026,Matthew O'Connor,1874,1892,88.85,80.76
+providence-jan2026,Niel Gan,1653,1690,150.0,118.07
+nova-feb2026,0033,1599,1649,107.79,90.06
+nova-feb2026,0218,788,1091,150.0,111.09
+nova-feb2026,Ather Sharif,1374,1332,138.46,105.88
+nova-feb2026,Joshua Castellano,2007,1949,92.87,80.99
+nova-feb2026,Marty Gold,1456,1357,147.57,109.97
+nova-feb2026,Rob Robinsky,1808,1808,82.74,73.98
+hood-river-2026,0001,1908,1827,88.99,67.7
+hood-river-2026,0003,1871,1913,117.46,78.01
+hood-river-2026,0010,2061,1996,95.21,70.33
+hood-river-2026,0033,1649,1610,94.93,70.24
+hood-river-2026,0099,1619,1659,137.32,83.06
+hood-river-2026,0117,2070,2050,130.72,81.46
+hood-river-2026,0206,1642,1698,149.96,85.52
+hood-river-2026,0213,1977,1907,150.0,85.55
+hood-river-2026,Bharath Balakrishnan,1766,1757,115.1,77.25
+hood-river-2026,Carson Ip,1462,1580,112.11,76.32
+hood-river-2026,Chris Cheng,1480,1416,150.0,85.51
+hood-river-2026,Chris Lipe,1816,1813,90.46,68.34
+hood-river-2026,Christopher Grubb,1900,1942,140.43,83.7
+hood-river-2026,David Whitley,1781,1828,136.68,82.9
+hood-river-2026,Erickson Smith,1811,1835,99.45,71.97
+hood-river-2026,Gunther Jacobi,1534,1539,150.0,85.59
+hood-river-2026,John O'Laughlin,1750,1781,111.86,76.24
+hood-river-2026,Peter Armstrong,1877,1910,147.22,85.0
+hood-river-2026,Puneet Sharma,1707,1694,101.03,72.6
+hood-river-2026,Randi Goldberg,1437,1480,89.37,67.9
+somerville-feb2026,Brad Whitmarsh,1846,1832,150.0,118.17
+somerville-feb2026,Justin Morris,1508,1470,129.77,107.39
+somerville-feb2026,Matthew O'Connor,1892,1874,97.07,86.66
+somerville-feb2026,Niel Gan,1690,1667,129.77,107.56
+somerville-feb2026,Richard Buck,1562,1692,150.0,118.07
+somerville-feb2026,Shannon Constantine,698,698,150.0,150.0
+nova-mar2026,0033,1610,1562,82.67,72.82
+nova-mar2026,Ather Sharif,1332,1312,118.37,93.62
+nova-mar2026,Joshua Castellano,1949,1934,96.74,81.85
+nova-mar2026,Rob Robinsky,1808,1874,90.96,78.27
+providence-mar2026,Brad Whitmarsh,1832,1872,126.74,105.36
+providence-mar2026,Matthew O'Connor,1874,1888,98.03,87.17
+providence-mar2026,Niel Gan,1667,1616,116.92,99.56
+providence-mar2026,Richard Buck,1692,1676,126.65,105.31
+nova-apr2026,0033,1562,1631,93.82,81.67
+nova-apr2026,0055,1875,1909,150.0,110.9
+nova-apr2026,0218,1091,1165,136.53,105.53
+nova-apr2026,0228,1540,1565,150.0,111.2
+nova-apr2026,Carson Ip,1580,1609,105.95,89.21
+nova-apr2026,Joshua Castellano,1934,1963,100.99,86.19
+nova-apr2026,Kaia,1378,1367,150.0,111.15
+nova-apr2026,Nitya Chagti,1666,1651,124.02,99.05
+nova-apr2026,Osikhena Ojior,1790,1489,150.0,111.34
+nova-apr2026,Rob Robinsky,1874,1853,98.11,84.44
+nova-apr2026,Sammy Okosagah,1970,1843,150.0,111.01
+nova-apr2026,Tim Weiss,1710,1781,115.68,94.73
+somerville-apr2026,Brad Whitmarsh,1872,1857,117.9,100.34
+somerville-apr2026,Easton Singer,1236,1236,150.0,150.0
+somerville-apr2026,Jamie Ryan,1783,1783,150.0,150.0
+somerville-apr2026,Matt Zeleznik,1566,1523,147.45,116.81
+somerville-apr2026,Matthew O'Connor,1888,1821,101.97,90.02
+somerville-apr2026,Niel Gan,1616,1742,112.75,97.23
+portland-pub-18apr2026,0001,1827,1765,103.36,90.8
+portland-pub-18apr2026,0003,1913,1921,110.39,97.63
+portland-pub-18apr2026,0010,1996,2018,105.1,93.84
+portland-pub-18apr2026,0017,1442,1356,150.0,121.67
+portland-pub-18apr2026,0018,1177,1272,150.0,117.78
+portland-pub-18apr2026,0099,1659,1668,114.01,100.01
+portland-pub-18apr2026,0206,1698,1750,115.82,101.1
+portland-pub-18apr2026,0213,1907,1845,115.84,99.09
+portland-pub-18apr2026,Christopher Grubb,1942,1983,114.48,100.31
+portland-pub-19apr2026,0001,1765,1800,91.35,83.54
+portland-pub-19apr2026,0003,1921,1972,98.14,87.0
+portland-pub-19apr2026,0010,2018,1993,94.37,84.35
+portland-pub-19apr2026,0017,1356,1353,122.08,105.15
+portland-pub-19apr2026,0018,1272,1285,118.2,102.64
+portland-pub-19apr2026,0099,1668,1656,100.51,90.39
+portland-pub-19apr2026,0206,1750,1709,101.59,91.19
+portland-pub-19apr2026,0213,1845,1861,99.59,89.66
+portland-pub-19apr2026,Christopher Grubb,1983,1952,100.81,88.87
+vancouver-may2026,0001,1800,1842,98.89,77.76
+vancouver-may2026,0021,1869,1853,150.0,95.84
+vancouver-may2026,0099,1656,1647,104.74,80.53
+vancouver-may2026,0117,2050,2115,125.04,88.58
+vancouver-may2026,Abayomi Brown,1519,1359,150.0,95.92
+vancouver-may2026,Chris Williams,1849,1788,150.0,96.0
+seattle-jul2026,0001,1842,1789,104.63,74.12
+seattle-jul2026,0002,1359,1636,150.0,85.93
+seattle-jul2026,0099,1647,1656,106.7,74.86
+seattle-jul2026,0117,2115,2093,112.9,76.92
+seattle-jul2026,0206,1709,1674,126.55,80.8
+seattle-jul2026,Alex Chew,1402,1402,150.0,150.0
+seattle-jul2026,Carson Ip,1609,1571,128.29,81.23
+seattle-jul2026,David Whitley,1828,1762,144.13,84.79
+seattle-jul2026,Joe Thorngren,611,611,150.0,150.0
+seattle-jul2026,Luke Yu,1593,1593,150.0,150.0
+wordcup-2026-eb,0033,1631,1654,133.3,112.55
+wordcup-2026-eb,Caroline Polak Scowcroft,1125,1140,150.0,122.07
+wordcup-2026-eb,David Whitley,1762,1738,98.94,89.6
+wordcup-2026-eb,Joshua Castellano,1963,1992,136.12,114.22
+wordcup-2026-eb,Matthew O'Connor,1821,1777,138.22,115.64
+wordcup-2026-eb,Nitya Chagti,1651,1642,144.61,119.28
+wordcup-2026-eb,Pamina Deutsch,1234,1148,150.0,122.14
+wordcup-2026-eb,Tony Boyle,909,1037,150.0,122.14
+wordcup-2026-aa1,0001,1789,1786,90.52,84.52
+wordcup-2026-aa1,0070,1490,1524,150.0,126.01
+wordcup-2026-aa1,Terry Kang,1451,1469,150.0,126.16
+wordcup-2026-aa1,Tony Boyle,1037,1006,122.55,108.68
+wordcup-2026-aa2,0070,1524,1568,126.8,111.82
+wordcup-2026-aa2,Josh Sokol,2081,2041,150.0,126.64
+wordcup-2026-aa2,Marlon Hill,1815,1796,150.0,126.51
+wordcup-2026-aa2,Peter Schwartzman,1935,1935,150.0,150.0
+wordcup-2026-aa3,Dan Blake,1395,1547,150.0,126.17
+wordcup-2026-aa3,David Whitley,1738,1727,91.81,85.51
+wordcup-2026-aa3,Gary Smart,1397,1338,150.0,126.21
+wordcup-2026-aa3,Marlon Hill,1796,1794,126.9,111.69
+wordcup-2026-aa3,Peter Schwartzman,1935,1815,150.0,126.29
+wordcup-2026-aa3,Tony Boyle,1006,1051,110.05,99.68
+wordcup-2026-d1,0033,1654,1666,114.75,68.02
+wordcup-2026-d1,0056,1876,1924,150.0,73.61
+wordcup-2026-d1,0070,1568,1536,112.71,67.54
+wordcup-2026-d1,0099,1656,1646,93.3,62.56
+wordcup-2026-d1,Adam Logan,2089,1958,150.0,73.69
+wordcup-2026-d1,Ben Schoenbrun,1903,1939,150.0,73.68
+wordcup-2026-d1,Bharath Balakrishnan,1757,1700,150.0,73.39
+wordcup-2026-d1,Brian Bowman,1820,1823,150.0,73.68
+wordcup-2026-d1,Dan Blake,1547,1464,126.57,70.11
+wordcup-2026-d1,David Whitley,1727,1719,86.09,60.28
+wordcup-2026-d1,Dennis Ikekeregor,1884,1805,150.0,73.71
+wordcup-2026-d1,Edgar Odongkara,1912,1957,150.0,73.64
+wordcup-2026-d1,Enoch Nwali,1876,1963,150.0,73.66
+wordcup-2026-d1,Erickson Smith,1835,1719,148.93,73.38
+wordcup-2026-d1,Josh Sokol,2041,1973,127.43,70.38
+wordcup-2026-d1,Joshua Castellano,1992,2001,116.39,68.48
+wordcup-2026-d1,Matthew O'Connor,1777,1892,117.78,68.7
+wordcup-2026-d1,Mohammad Sulaiman,1708,1864,150.0,73.65
+wordcup-2026-d1,Nitya Chagti,1642,1721,121.36,69.35
+wordcup-2026-d1,Olatunde Oduwole,1924,1949,150.0,73.63
+wordcup-2026-d1,Rob Robinsky,1853,1932,136.86,72.0
+wordcup-2026-d1,Robert Linn,1723,1700,150.0,73.54
+wordcup-2026-d1,Sammy Okosagah,1843,1847,150.0,73.59
+wordcup-2026-d1,Terry Kang,1469,1429,127.74,70.29
+wordcup-2026-d1,Wellington Jighere,2040,1896,150.0,73.61
+wordcup-2026-d1,Will Anderson,1975,2078,150.0,73.65
+wordcup-2026-d2,Ayodele Odekunle,1442,1455,150.0,73.8
+wordcup-2026-d2,Beth Leech,1221,1085,150.0,73.75
+wordcup-2026-d2,Caroline Polak Scowcroft,1140,1076,124.1,70.05
+wordcup-2026-d2,Cheryl Melvin,1194,1121,150.0,73.8
+wordcup-2026-d2,Donna Staley,454,454,150.0,150.0
+wordcup-2026-d2,Fidelis Olotu,1405,1407,150.0,73.8
+wordcup-2026-d2,Gary Smart,1338,1313,126.61,70.46
+wordcup-2026-d2,Gerianne Abriano,1137,1081,150.0,73.8
+wordcup-2026-d2,Kaia,1367,1345,150.0,73.8
+wordcup-2026-d2,Mark Francillon,1563,1596,150.0,73.8
+wordcup-2026-d2,Noel Livermore,1463,1482,150.0,73.8
+wordcup-2026-d2,Osikhena Ojior,1489,1582,150.0,73.8
+wordcup-2026-d2,Pamina Deutsch,1148,1257,124.17,70.04
+wordcup-2026-d2,Tobey Roland,1182,1338,150.0,73.8
+wordcup-2026-d2,Tony Boyle,1051,1132,100.18,64.79
+wordcup-2026-d2,Yvonne Lobo,1444,1291,150.0,73.8
+providence-sept2026,Adam Logan,1958,1950,100.15,88.76
+providence-sept2026,Jamie Ryan,1783,1726,150.0,117.7
+providence-sept2026,Matthew O'Connor,1892,1915,96.54,86.23
+providence-sept2026,Niel Gan,1742,1752,150.0,117.7
+vancouver-sept2026,0021,1853,1752,147.6,97.62
+vancouver-sept2026,0099,1646,1623,92.27,76.43
+vancouver-sept2026,0117,2093,2093,116.69,85.66
+vancouver-sept2026,0169,1804,2008,150.0,98.1
+vancouver-sept2026,0251,1300,1300,150.0,150.0
+vancouver-sept2026,0252,300,300,150.0,150.0
+vancouver-sept2026,0253,376,376,150.0,150.0
+vancouver-sept2026,0254,1417,1417,150.0,150.0
+pdx2032-sept2026,0001,1786,1821,113.33,79.38
+pdx2032-sept2026,0003,1972,1992,150.0,89.13
+pdx2032-sept2026,0010,1993,1987,150.0,89.2
+pdx2032-sept2026,0017,1353,1329,150.0,89.14
+pdx2032-sept2026,0018,1285,1177,150.0,90.82
+pdx2032-sept2026,0070,1536,1473,99.31,75.02
+pdx2032-sept2026,0206,1674,1663,122.18,82.22
+pdx2032-sept2026,0213,1861,2011,150.0,89.13
+pdx2032-sept2026,0255,1561,1561,150.0,150.0
+charlottesville-2026,0001,1821,1850,91.66,82.7
+charlottesville-2026,0002,1636,1563,133.73,109.57
+charlottesville-2026,0033,1666,1693,109.67,95.17
+charlottesville-2026,0055,1909,1842,150.0,117.92
+charlottesville-2026,0056,1924,1883,113.22,97.46
+charlottesville-2026,0218,1165,1209,150.0,117.92
+charlottesville-2026,0228,1565,1622,150.0,117.92

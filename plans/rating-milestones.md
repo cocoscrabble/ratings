@@ -1,6 +1,28 @@
 # Plan: rating milestones (freeze published ratings; change only the future)
 
-**Status: proposed** — drafted 2026-10-20; open questions settled the same day. Code references pinned at ratings
+**Status: phases 0–2 implemented** (2026-10-20); phase 3 in progress.
+The first milestone froze 132 tournaments through `charlottesville-2026`.
+
+What differed from the design below, found while building it:
+
+- **Frozen tournaments are re-read, not skipped.** The record pass is
+  `process_one_tournament` with the rating step replaced by the history
+  (`RatingsDB.process_frozen_tournament`). Identity and game counts are then
+  derived exactly as a full replay derives them, and only ratings come from
+  the milestone. `state.csv` is authoritative for `last_played`. Rating and
+  deviation are checked against it rather than read from it, since they
+  already follow from the history.
+- **History is keyed by a replay's final keys.** A player filed by name in
+  early files and by number later has all their rows moved onto the number,
+  so the record pass finds an early row through `aliases.csv`. An equivalence
+  test cut only inside the golden prefix missed this, because the
+  number-keyed files are all from September 2026 on. It now also cuts at the
+  end of the history.
+- **Phase 0** compared a replay at `origin/main` with every rating on the
+  public site (249 current ratings, 1,595 tournament rows): 0 differences.
+  SSH to production was not used.
+- The enforcing test is `tests/test_pending.py`, with `milestone/pending.csv`.
+ Code references pinned at ratings
 `f93cbdf`. Related: `../baxter/plans/PLAN_UNPLAYED_GAMES.md`, whose
 rating-changing phase this plan turns into a future-only change.
 
