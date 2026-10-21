@@ -53,7 +53,13 @@ class CurrentRating(models.Model):
     )
     rating = models.IntegerField()
     deviation = models.FloatField()
+    # Every game in the player's record, byes and forfeits included: the count
+    # people are shown.
     career_games = models.IntegerField()
+    # Played games only: the count the rating formula reads (its multiplier),
+    # and what Baxter's live projection needs. See ../baxter/plans/
+    # PLAN_UNPLAYED_GAMES.md decision 4.
+    rated_games = models.IntegerField(default=0)
     last_played = models.DateField()
 
     class Meta:

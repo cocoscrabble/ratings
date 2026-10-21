@@ -68,6 +68,7 @@ class BuildDbTest(TestCase):
             self.assertEqual(cr.rating, rec.rating, rec.name)
             self.assertAlmostEqual(cr.deviation, rec.deviation, msg=rec.name)
             self.assertEqual(cr.career_games, rec.games, rec.name)
+            self.assertEqual(cr.rated_games, rec.rated_games, rec.name)
             self.assertEqual(cr.last_played, rec.last_played.date(), rec.name)
 
     def test_tournament_results_match_engine(self):

@@ -188,6 +188,11 @@ classes selected by file extension:
   forfeit a loss) and never in the rating formula (`GameResult.is_rated`, which
   also treats a zero score as a forfeit, as the corpus records forfeits
   between real players that way). See `../baxter/plans/PLAN_UNPLAYED_GAMES.md`.
+- **Two game counts.** `career_games` is every game in the record, byes and
+  forfeits included — what the site and the roster show. `rated_games` is
+  played games only, and is the **only** count the formula reads
+  (`_player_multiplier`). The roster carries both; Baxter's live projection
+  uses `rated_games`.
 - **Ratings-file readers** (`CSVRatingsFileReader`, `RTFileReader`) load the
   pre-tournament rating list into a dict of `Player`s.
 - **Writers** (`TabularResultWriter` → `.txt`, `CSVResultWriter` → `.csv`,

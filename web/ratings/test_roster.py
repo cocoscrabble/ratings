@@ -35,6 +35,7 @@ class RosterDocumentTests(TestCase):
             rating=2093,
             deviation=76.92,
             career_games=489,
+            rated_games=480,
             last_played=date(2026, 3, 14),
         )
         cls.unrated = Player.objects.create(player_number="7", name="New Nellie")
@@ -60,6 +61,7 @@ class RosterDocumentTests(TestCase):
                 "rating": 2093,
                 "deviation": 76.92,
                 "career_games": 489,
+                "rated_games": 480,
                 "last_played": "2026-03-14",
             },
         )
@@ -71,6 +73,7 @@ class RosterDocumentTests(TestCase):
         self.assertIsNone(row["last_played"])
         # Zero games is a fact, not an absence — they have played none.
         self.assertEqual(row["career_games"], 0)
+        self.assertEqual(row["rated_games"], 0)
 
     def test_numbers_are_canonical(self):
         """Baxter keys on this, and 7 and 0007 must not be two people."""
@@ -141,7 +144,7 @@ class RosterPrivacyTests(TestCase):
             set(row),
             {
                 "player_number", "name", "rating", "deviation",
-                "career_games", "last_played",
+                "career_games", "rated_games", "last_played",
             },
         )
 

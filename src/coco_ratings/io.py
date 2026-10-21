@@ -569,10 +569,12 @@ class RTFileWriter:
     def write(self, f, players):
         f.write(self._header())
         for p in players:
+            # An .RT file is a ratings list another rating run reads back as
+            # its seed, so its games column is the formula's count.
             out = self.col_fmt.format(
                 "-",
                 p.name,
-                p.career_games,
+                p.rated_games,
                 p.new_rating,
                 p.last_played.strftime("%Y%m%d"),
                 p.new_rating_deviation,

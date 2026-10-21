@@ -96,6 +96,7 @@ class Player:
         init_rating=0,
         init_rating_deviation=0.0,
         career_games=0,
+        rated_games=None,
         is_unrated=False,
         last_played=None,
     ):
@@ -103,7 +104,13 @@ class Player:
         # The CoCo player number, when the source file carried one. None for
         # everything the Google Form produces, which is most of the corpus.
         self.number = canonical_player_number(number) if number else None
+        # Two counts, deliberately different (PLAN_UNPLAYED_GAMES decision 4):
+        # career_games is every game in the record, byes and forfeits
+        # included, and is what people are shown; rated_games counts only
+        # games the formula saw, and is the only count the formula reads (the
+        # multiplier). A ratings file carries one number, so it seeds both.
         self.career_games = career_games
+        self.rated_games = career_games if rated_games is None else rated_games
         self.is_unrated = is_unrated
         self.set_init_rating(init_rating, init_rating_deviation)
         self.last_played = last_played or datetime(1999, 12, 31)
@@ -143,7 +150,7 @@ class Player:
         return self.name
 
     def tally_results(self):
-        self.update_career_games()
+        self.update_game_counts()
         for g in self.games:
             self.add_game_result(g.spread)
 
@@ -176,10 +183,19 @@ class Player:
         else:
             self.losses += 1
 
-    def update_career_games(self):
+    def update_game_counts(self):
+        """Add this tournament's games to both counts.
+
+        This used to skip byes by comparing the opponent to the string
+        "Zz Bye", which no Player ever equals, so every bye and forfeit was
+        counted towards the multiplier. rated_games now leaves them out.
+        """
         for game in self.games:
-            if game.opponent != self and game.opponent != "Zz Bye":
-                self.career_games += 1
+            if game.opponent is self:
+                continue
+            self.career_games += 1
+            if game.is_rated:
+                self.rated_games += 1
 
     def get_score_by_round(self, r):
         return self.games[r].score

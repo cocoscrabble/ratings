@@ -28,6 +28,9 @@ class PlayerRecord:
     games: int
     last_played: datetime
     number: str | None = None
+    # Played games only, for the multiplier; ``games`` is every game in the
+    # record. See core.types.Player.
+    rated_games: int = 0
 
     @classmethod
     def from_tournament_player(cls, p):
@@ -38,6 +41,7 @@ class PlayerRecord:
             p.career_games,
             p.last_played,
             p.number,
+            p.rated_games,
         )
 
 
@@ -186,6 +190,7 @@ class RatingsDB:
                 p.init_rating = dbp.rating
                 p.init_rating_deviation = dbp.deviation
                 p.career_games += dbp.games
+                p.rated_games += dbp.rated_games
                 p.is_unrated = False
                 p.last_played = dbp.last_played
                 p.adjust_initial_deviation(tournament.date)

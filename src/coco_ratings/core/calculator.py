@@ -94,12 +94,14 @@ class RatingsCalculator:
         else:
             multiplier = 1.0
 
-        if player.career_games < 200:
+        # Played games only: a bye or forfeit is no evidence of experience.
+        games = player.rated_games
+        if games < 200:
             multiplier = 1.0
-        elif player.career_games > 1000:
+        elif games > 1000:
             multiplier = 0.5
-        elif player.career_games > 100:
-            multiplier = min(multiplier, 1.0 - (player.career_games / 1800))
+        elif games > 100:
+            multiplier = min(multiplier, 1.0 - (games / 1800))
 
         return multiplier
 

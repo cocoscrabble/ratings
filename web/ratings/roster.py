@@ -36,6 +36,7 @@ FIELDS = (
     "rating",
     "deviation",
     "career_games",
+    "rated_games",
     "last_played",
 )
 
@@ -45,8 +46,14 @@ def _player_row(player, rating):
 
     A player with no ``CurrentRating`` has never appeared in a rated result.
     Their rating, deviation and last-played date are genuinely *unknown*, so
-    they are null; ``career_games`` is 0, which is a fact rather than an
-    absence. Baxter reads the nulls as unrated and lets the calculator seed them
+    they are null; the game counts are 0, which is a fact rather than an
+    absence.
+
+    ``career_games`` counts every game in the record, byes and forfeits
+    included. ``rated_games`` counts played games only, and is the one a rating
+    calculation must use (the multiplier). It was added after
+    ``coco.roster/1`` shipped; a reader that predates it keeps using
+    ``career_games``, which is what it always did. Baxter reads the nulls as unrated and lets the calculator seed them
     (1500 / deviation 150), which is the same thing this engine does.
     """
     return {
@@ -58,6 +65,7 @@ def _player_row(player, rating):
         "rating": rating.rating if rating else None,
         "deviation": rating.deviation if rating else None,
         "career_games": rating.career_games if rating else 0,
+        "rated_games": rating.rated_games if rating else 0,
         "last_played": rating.last_played.isoformat() if rating else None,
     }
 

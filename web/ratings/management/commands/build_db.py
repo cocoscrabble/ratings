@@ -125,6 +125,7 @@ class Command(BaseCommand):
                 rating=rec.rating,
                 deviation=rec.deviation,
                 career_games=rec.games,
+                rated_games=rec.rated_games,
                 last_played=rec.last_played.date(),
             )
             for key, rec in ratingsdb.players.items()

@@ -65,9 +65,12 @@ def generate_snapshot():
         until=GOLDEN_CUTOFF, quiet=True, milestone=None
     )
 
-    lines = ["=== COMPLETE RATINGS LIST ===", _row("Name", "Rating", "Deviation", "Games")]
+    lines = [
+        "=== COMPLETE RATINGS LIST ===",
+        _row("Name", "Rating", "Deviation", "Games", "RatedGames"),
+    ]
     for p in sorted(ratingsdb.players.values(), key=lambda p: (-p.rating, p.name)):
-        lines.append(_row(p.name, p.rating, p.deviation, p.games))
+        lines.append(_row(p.name, p.rating, p.deviation, p.games, p.rated_games))
 
     lines += [
         "",
