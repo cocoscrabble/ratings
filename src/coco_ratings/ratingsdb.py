@@ -191,6 +191,20 @@ class RatingsDB:
                 p.adjust_initial_deviation(tournament.date)
                 p.last_played = tournament.date
 
+    def process_frozen_tournament(self, rat_file, res_file, name, date, milestone):
+        """Read a tournament the milestone froze: its record, never its ratings.
+
+        Exactly ``process_one_tournament`` with the rating step replaced by the
+        milestone's history, so identity and game counts are derived the way a
+        full replay derives them, and the ratings are the ones published.
+        """
+        t = Tournament(rat_file, res_file, name, date)
+        self.keyed_by[t.keyed_by] += 1
+        self.adjust_tournament(t)
+        milestone.apply(self, t)
+        self.update(t)
+        return t
+
     def process_one_tournament(self, rat_file, res_file, name, date):
         t = Tournament(rat_file, res_file, name, date)
         self.keyed_by[t.keyed_by] += 1

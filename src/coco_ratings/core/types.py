@@ -194,7 +194,10 @@ class Player:
     def adjust_initial_deviation(self, tournament_date):
         try:
             c = 10
-            inactive_days = int((tournament_date - self.last_played).days)
+            # Never negative: a tournament dated before the player's last one
+            # (a late addition to a milestone) would otherwise shrink their
+            # deviation, or take the square root of a negative number.
+            inactive_days = max(0, int((tournament_date - self.last_played).days))
             init = self.init_rating_deviation
             new = math.sqrt((init * init) + (c * c * inactive_days))
             self.init_rating_deviation = min(new, MAX_DEVIATION)

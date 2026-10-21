@@ -1,7 +1,9 @@
 """Command-line / GUI entry point.
 
-``coco-rate <output.txt>`` replays the whole tournament history and writes the
-current combined ratings list; with no argument it launches the Tk GUI.
+``coco-rate <output.txt>`` replays the tournament history (from the committed
+milestone) and writes the current combined ratings list.
+``coco-rate milestone [FILENAME]`` cuts a new rating milestone through that
+tournament (default: the latest). With no argument it launches the Tk GUI.
 """
 
 import sys
@@ -22,7 +24,15 @@ def main(argv=None):
     # touch it (see coco_ratings.logging_setup).
     configure_file_logging()
     argv = sys.argv[1:] if argv is None else argv
-    if argv:
+    if argv and argv[0] == "milestone":
+        from coco_ratings.pipeline import cut_milestone
+
+        manifest = cut_milestone(argv[1] if len(argv) > 1 else None)
+        print(
+            f"Cut a milestone through {manifest['through']}: "
+            f"{len(manifest['frozen'])} tournaments frozen."
+        )
+    elif argv:
         write_current_ratings(argv[0])
     else:
         run_gui()

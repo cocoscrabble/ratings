@@ -20,3 +20,7 @@ RESULTS_DIR = Path(os.environ.get("COCO_RESULTS_DIR") or PROJECT_ROOT / "results
 
 PLAYERS_CSV = DATA_DIR / "players.csv"
 TOURNAMENTS_CSV = DATA_DIR / "tournaments.csv"
+
+# The committed rating milestone (see coco_ratings.milestone). Beside results/
+# because it is the same kind of thing: source data the replay starts from.
+MILESTONE_DIR = Path(os.environ.get("COCO_MILESTONE_DIR") or PROJECT_ROOT / "milestone")
