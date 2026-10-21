@@ -28,7 +28,8 @@ Current documents:
   manual `LogEntry` database step it required are not visible in a diff.
 - `rating-milestones.md` — freeze published ratings at a committed milestone
   (`milestone/`: frozen per-tournament ratings + carried state) and seed the
-  replay from it, so math changes only affect future tournaments. **Proposed.**
+  replay from it, so math changes only affect future tournaments.
+  **Implemented**; first milestone cut 2026-10-20 (132 tournaments).
 - Unplayed games (byes/forfeits): the cross-repo plan is
   `../baxter/plans/PLAN_UNPLAYED_GAMES.md`. Most of its code changes land here
   (`core/types.py`, `io.py`, `calculator.py`), plus a backfill of `results/`.
