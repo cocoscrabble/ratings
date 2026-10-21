@@ -535,6 +535,25 @@
    "results_sha256": "425300acde0b1119acd87d45af67a17ffcf6352570e1a4e111a7140c4f6a0d84"
   }
  ],
- "amendments": [],
+ "amendments": [
+  {
+   "filename": "pdx2032-sept2026",
+   "results_sha256": "d96c83c89e4c334e904f47f612f026720b92eca71cd5f5f88091b6dd318411a7",
+   "date": "2026-10-21",
+   "reason": "Add the 20 byes (50-0) Baxter recorded but its old export omitted. Checked against the production Baxter database (export 559c4f96, 2026-10-21): every played game already matched."
+  },
+  {
+   "filename": "vancouver-sept2026",
+   "results_sha256": "72daa7c58f505f1d8738e4e38b1f2e90c59c6cd5c1f6142cfdc641f8972a30d2",
+   "date": "2026-10-21",
+   "reason": "Add the 6 byes and 22 forfeits (100-0, the division's bye spread; Brandi Garden and Desiree Caruso withdrew after round 3) Baxter recorded but its old export omitted. Checked against the production Baxter database (export 559c4f96, 2026-10-21): every played game already matched."
+  },
+  {
+   "filename": "charlottesville-2026",
+   "results_sha256": "a7aaf2c99c20b5600906a6b182e2977222c6df89bb5fc09d84a99d90ba0be4d9",
+   "date": "2026-10-21",
+   "reason": "Add the 7 byes (50-0) Baxter recorded but its old export omitted. Checked against the production Baxter database (export 559c4f96, 2026-10-21): every played game already matched."
+  }
+ ],
  "late_additions": []
 }
