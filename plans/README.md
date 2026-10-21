@@ -26,6 +26,9 @@ Current documents:
   (`accounts.User`) and gating `/manage` on `is_staff`. **Complete** (August
   2026, `b8e45dc`); kept because the reason for the `accounts` app and the
   manual `LogEntry` database step it required are not visible in a diff.
+- `rating-milestones.md` — freeze published ratings at a committed milestone
+  (`milestone/`: frozen per-tournament ratings + carried state) and seed the
+  replay from it, so math changes only affect future tournaments. **Proposed.**
 - Unplayed games (byes/forfeits): the cross-repo plan is
   `../baxter/plans/PLAN_UNPLAYED_GAMES.md`. Most of its code changes land here
   (`core/types.py`, `io.py`, `calculator.py`), plus a backfill of `results/`.
