@@ -27,9 +27,6 @@ class PlayerNumberFormTest(unittest.TestCase):
         db = PlayerDB([["alice", "nonsense"]])
         self.assertEqual(db.get_id("alice"), "nonsense")
 
-    def test_bye_is_zero(self):
-        self.assertEqual(PlayerDB([]).get_id("Bye"), "0000")
-
     def test_reads_the_checked_in_file(self):
         db = PlayerDB.read_csv()
         self.assertGreater(len(db.name_to_id), 200)

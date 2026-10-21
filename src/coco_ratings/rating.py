@@ -71,25 +71,9 @@ class Tournament:
                 rc.calc_new_rating_for_player(p)
 
     def output_ratfile(self, out_file):
-        byes = {
-            "Yy bye",
-            "A Bye",
-            "B Bye",
-            "ZZ Bye",
-            "Zz Bye",
-            "Zy bye",
-            "Bye One",
-            "Bye Two",
-            "Bye Three",
-            "Bye Four",
-            "Y Bye",
-            "Z Bye",
-            "Bye",
-        }
-        players = [
-            p for p in self.player_list.get_ranked_players() if p.name not in byes
-        ]
-        RTFileWriter().write_file(out_file, players)
+        # The bye is never a player (see io.ResultCSVReader.parse_row), so the
+        # list needs no filtering.
+        RTFileWriter().write_file(out_file, self.player_list.get_ranked_players())
 
     def output_active_ratfile(self, out_file):
         with open("removed_people.txt", "r") as d:

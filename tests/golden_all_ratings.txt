@@ -115,7 +115,6 @@ Adebola Sanya	1530	73.85	31
 Nicholas Tam	1526	73.66	31
 George MacAulay	1507	94.31	15
 Brent Weil	1503	96.47	14
-Bye	1500	150.0	231
 John Karris	1496	75.49	65
 Stefan Kac	1490	95.51	93
 Kyle Fellahi	1483	102.8	26
@@ -455,25 +454,6 @@ Bruce Ward	palmsprings-dec2023	1531	1548	150.0	90.33	17
 Bruce Ward	sanfrancisco-dec2024	1548	1454	150.0	87.31	37
 Bruce Ward	sanfrancisco-dec2025	1454	1450	150.0	86.15	57
 Buffy Hogan	sanfrancisco-dec2025	1175	1024	150.0	86.33	20
-Bye	austin-atx2024	1500	1500	150.0	150.0	145
-Bye	austin-sep2023	1500	1500	150.0	150.0	104
-Bye	bend-2022	1500	1500	150.0	150.0	83
-Bye	mn-2022	1500	1500	150.0	150.0	55
-Bye	nacc2023-d2	1500	1500	150.0	150.0	140
-Bye	portland-pub-13apr2025	1500	1500	150.0	150.0	231
-Bye	portlandpub-jun2024	1500	1500	150.0	150.0	171
-Bye	portlandpub-may2024	1500	1500	150.0	150.0	152
-Bye	portlandpub-oct2024	1500	1500	150.0	150.0	208
-Bye	potomac-2022	1500	1500	150.0	150.0	69
-Bye	potomac-oct2023	1500	1500	150.0	150.0	132
-Bye	riorancho-oct2023	1500	1500	150.0	150.0	118
-Bye	sanfrancisco-dec2024	1500	1500	150.0	150.0	228
-Bye	seattle-jul2023	1500	1500	150.0	150.0	97
-Bye	seattle-may2024	1500	1500	150.0	150.0	165
-Bye	stl-2022	1500	1500	150.0	150.0	14
-Bye	wordcup-2024-d1	1500	1500	150.0	150.0	202
-Bye	wordcup-d1-2022	1500	1500	150.0	150.0	30
-Bye	wordcup-d2-2022	1500	1500	150.0	150.0	40
 Cam Lawrence	vancouver-dec2024	748	748	150.0	150.0	15
 Carl Durdan	boston-2022	1732	1608	150.0	96.52	14
 Carl Durdan	brattleboro-2022	1608	1704	150.0	92.5	30

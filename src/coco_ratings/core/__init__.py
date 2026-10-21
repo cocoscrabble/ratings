@@ -12,20 +12,28 @@ enforces the first mechanically.
 
 from coco_ratings.core.calculator import RatingsCalculator
 from coco_ratings.core.types import (
+    BYE,
+    BYE_NAMES,
+    BYE_NUMBER,
     MAX_DEVIATION,
     UNRATED_INIT_RATING,
     GameResult,
     Player,
     Section,
+    is_bye,
     show_exception,
 )
 
 __all__ = [
+    "BYE",
+    "BYE_NAMES",
+    "BYE_NUMBER",
     "MAX_DEVIATION",
     "UNRATED_INIT_RATING",
     "GameResult",
     "Player",
     "RatingsCalculator",
     "Section",
+    "is_bye",
     "show_exception",
 ]

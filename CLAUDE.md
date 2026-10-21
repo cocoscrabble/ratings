@@ -136,6 +136,13 @@ classes selected by file extension:
   AUPAIR `.tou`) parse game-by-game results into `Player` objects grouped into
   `Section`s. `.csv` results carry no metadata, so name/date must be passed in;
   `.tou` files embed them.
+- **Byes and forfeits** are rows against the bye: number `BYE` (Baxter) or a
+  name in `core.types.BYE_NAMES` (the corpus writes `Bye`). The reader never
+  makes the bye a player: the real side gets a `GameResult` against the
+  `core.types.BYE` sentinel, which counts in the record (a bye is a win, a
+  forfeit a loss) and never in the rating formula (`GameResult.is_rated`, which
+  also treats a zero score as a forfeit, as the corpus records forfeits
+  between real players that way). See `../baxter/plans/PLAN_UNPLAYED_GAMES.md`.
 - **Ratings-file readers** (`CSVRatingsFileReader`, `RTFileReader`) load the
   pre-tournament rating list into a dict of `Player`s.
 - **Writers** (`TabularResultWriter` → `.txt`, `CSVResultWriter` → `.csv`,

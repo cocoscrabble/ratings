@@ -128,9 +128,17 @@ class RatingsCalculator:
         games = []  # games considered for rating
         for g in player.games:
             opponent = g.opponent
-            if opponent == player or g.opp_score == 0 or g.score == 0:
+            # The zero-score test is also inside is_rated; it stays spelled out
+            # here because Baxter builds GameResults itself for its live
+            # projection, and must get this answer whatever it passes in.
+            if (
+                not g.is_rated
+                or opponent == player
+                or g.opp_score == 0
+                or g.score == 0
+            ):
                 logger.debug("  skipping bye / forfeit")
-                continue  # skip byes
+                continue
             opponent_mu = opponent.init_rating
             opponent_sigma = opponent.init_rating_deviation
             g_rho = (beta**2) * (tau**2) + opponent_sigma**2

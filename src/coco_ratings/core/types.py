@@ -20,6 +20,26 @@ logger = logging.getLogger(__name__)
 MAX_DEVIATION = 150.0
 UNRATED_INIT_RATING = 1500
 
+# How results files spell the bye. Baxter writes "Bye" with the reserved number
+# BYE; the hand-kept corpus has only ever used "Bye", but these spellings were
+# recognised by the old ratings-file writer and are kept so an older file still
+# reads correctly. Compared casefolded.
+BYE_NAMES = frozenset(
+    n.casefold()
+    for n in (
+        "Bye", "A Bye", "B Bye", "Y Bye", "Z Bye", "Yy bye", "Zy bye",
+        "Zz Bye", "ZZ Bye", "Bye One", "Bye Two", "Bye Three", "Bye Four",
+    )
+)
+BYE_NUMBER = "BYE"
+
+
+def is_bye(name, number=None):
+    """True if a results-file entry (name, optional number) is the bye."""
+    if number and str(number).strip().casefold() == BYE_NUMBER.casefold():
+        return True
+    return (name or "").strip().casefold() in BYE_NAMES
+
 
 def show_exception(ex):
     raise Exception from ex
@@ -35,6 +55,22 @@ class GameResult:
     @property
     def spread(self):
         return self.score - self.opp_score
+
+    @property
+    def is_rated(self):
+        """Whether this game is evidence for the rating formula.
+
+        A bye or forfeit is a result (it counts in the record) but not a game
+        anybody played, so the formula must never see it. Two shapes reach us:
+        a game against the bye (Baxter, and the corpus's "Bye" rows), and a
+        forfeit between two real players recorded as a 50-0 game, which the
+        corpus marks only by a zero score. A genuine game with a zero score is
+        misread as a forfeit; that has always been so (it is the calculator's
+        old rule) and no such game exists.
+        """
+        if self.opponent is BYE or self.opponent is None:
+            return False
+        return bool(self.score) and bool(self.opp_score)
 
     def __str__(self):
         return f"{self.opponent.name:<24s} {self.score:3d} - {self.opp_score:3d}"
@@ -152,8 +188,8 @@ class Player:
         return self.games[r].opponent
 
     def get_opponents(self):
-        """Returns a list of all opponents."""
-        return [g.opponent for g in self.games]
+        """Every real opponent: the bye is not one."""
+        return [g.opponent for g in self.games if g.opponent is not BYE]
 
     def adjust_initial_deviation(self, tournament_date):
         try:
@@ -171,6 +207,14 @@ class Player:
                 )
         except Exception as ex:
             show_exception(ex)
+
+
+# The opponent in every game against the bye. It is deliberately a Player, so
+# the writers (which print ``g.opponent.name``) need no special case, but it is
+# never added to a Section, a PlayerList or a RatingsDB: the bye is not a
+# player, has no rating, and must not be carried from one tournament to the
+# next. Never mutated.
+BYE = Player("Bye")
 
 
 class Section:

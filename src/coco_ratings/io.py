@@ -14,7 +14,7 @@ import logging
 import re
 import sys
 
-from coco_ratings.types import MAX_DEVIATION, GameResult, Player, Section
+from coco_ratings.types import BYE, MAX_DEVIATION, GameResult, Player, Section, is_bye
 
 # Module logger, not the root one: this is a library, and an application
 # importing it must be able to quiet the engine without silencing itself.
@@ -338,15 +338,36 @@ class ResultCSVReader(ResultsReader):
         return player, player.key
 
     def parse_row(self, row):
+        """One game, or one unplayed game against the bye.
+
+        The bye is never registered as a player: only the real side of a bye
+        row gets a result, against the ``BYE`` sentinel. That result counts in
+        their record (a bye is a win, a forfeit to the bye a loss) and nowhere
+        in the rating formula (``GameResult.is_rated``).
+        """
         _time, round, winner, win_score, opp, opp_score, *rest = row
-        p1, k1 = self.add_player(winner, cell(row, self.winner_col))
-        p2, k2 = self.add_player(opp, cell(row, self.opponent_col))
+        win_number = cell(row, self.winner_col)
+        opp_number = cell(row, self.opponent_col)
         win_score = parse_int(win_score, row)
         opp_score = parse_int(opp_score, row)
-        g1 = GameResult(round=round, opponent=p2, score=win_score, opp_score=opp_score)
-        g2 = GameResult(round=round, opponent=p1, score=opp_score, opp_score=win_score)
-        self.results[k1].append(g1)
-        self.results[k2].append(g2)
+        winner_is_bye = is_bye(winner, win_number)
+        opp_is_bye = is_bye(opp, opp_number)
+        if winner_is_bye and opp_is_bye:
+            raise ParserError(",".join(row), "Both sides of this game are the bye.")
+        if not winner_is_bye:
+            p1, k1 = self.add_player(winner, win_number)
+        if not opp_is_bye:
+            p2, k2 = self.add_player(opp, opp_number)
+        if not winner_is_bye:
+            opponent = BYE if opp_is_bye else p2
+            self.results[k1].append(
+                GameResult(round=round, opponent=opponent, score=win_score, opp_score=opp_score)
+            )
+        if not opp_is_bye:
+            opponent = BYE if winner_is_bye else p1
+            self.results[k2].append(
+                GameResult(round=round, opponent=opponent, score=opp_score, opp_score=win_score)
+            )
 
 
 class ResultWriter:
@@ -446,8 +467,6 @@ class TouResultWriter(ResultWriter):
             numbers[p.name] = i + 1
 
         for p in players:
-            if p.name.lower() == "bye":
-                continue
             row = [self._format_name(p.name)]
             games = {g.round: g for g in p.games}
             for round in range(last_round):
@@ -469,7 +488,7 @@ class TouResultWriter(ResultWriter):
 
     def _format_game(self, p, g, numbers):
         prefix = {"W": "2", "L": " ", "T": "1"}[g.outcome]
-        if g.opponent.name.lower() == "bye":
+        if g.opponent is BYE:
             opp = numbers[p.name]
         else:
             opp = numbers[g.opponent.name]

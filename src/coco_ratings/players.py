@@ -49,8 +49,6 @@ class PlayerDB:
             self.id_to_name[p.coco_id] = p.name
 
     def get_id(self, name):
-        if name.lower() == "bye":
-            return "0000"
         return self.name_to_id[name]
 
 
