@@ -50,6 +50,10 @@ def cut_points():
     return [names[len(names) // 4], names[len(names) // 2], names[-3]]
 
 
+def last_tournament():
+    return [e.filename for e in TournamentDB.read_csv().tournaments if e.filename][-1]
+
+
 class TmpMilestone(unittest.TestCase):
     def setUp(self):
         self._tmp = tempfile.TemporaryDirectory()
@@ -75,6 +79,13 @@ class SeedingEquivalenceTest(TmpMilestone):
                 self.assertEqual(seeded[0], full[0])
                 self.assertEqual(seeded[1], full[1])
                 self.assertEqual(seeded[2], full[2])
+
+    def test_seeding_reproduces_the_whole_history(self):
+        # Through the end, not just the golden prefix: that is where the
+        # number-keyed files are, whose players were filed by name before.
+        full = snapshot(replay(milestone=None))
+        m = self.cut_at(last_tournament())
+        self.assertEqual(snapshot(replay(milestone=m)), full)
 
     def test_cutting_again_keeps_every_frozen_row(self):
         first, second = cut_points()[:2]

@@ -230,6 +230,13 @@ class Milestone:
         for s in tournament.sections:
             for p in s.get_players():
                 key = ratingsdb.key_for(p)
+                if (tournament.name, key) not in self.history:
+                    # The history is filed under the keys the replay *ended*
+                    # with: a player known by name in early files and by number
+                    # in later ones has all their rows moved onto the number
+                    # (RatingsDB.key_for). Reading an early file, the replay
+                    # does not know that number yet; the milestone's aliases do.
+                    key = self.aliases.get(p.name, key)
                 h = self.history.get((tournament.name, key))
                 if h is None:
                     raise MilestoneError(
