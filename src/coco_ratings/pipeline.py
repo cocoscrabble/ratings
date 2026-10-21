@@ -63,6 +63,11 @@ def process_old_results(
 
     if milestone is COMMITTED:
         milestone = Milestone.load(MILESTONE_DIR)
+        if milestone is None and os.environ.get("COCO_MILESTONE_DIR"):
+            # A deployment that names its milestone and cannot find it must not
+            # fall back to a full replay: that is a silent rewrite of every
+            # published rating.
+            raise MilestoneError(f"no milestone at {MILESTONE_DIR}")
 
     d = str(RESULTS_DIR)
     results = glob.glob(f"{d}/*results.?sv")

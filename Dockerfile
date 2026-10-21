@@ -16,7 +16,8 @@ ENV PATH="/app/.venv/bin:$PATH" \
     DJANGO_SETTINGS_MODULE=cocoweb.settings \
     PYTHONUNBUFFERED=1 \
     COCO_DATA_DIR=/app/data \
-    COCO_RESULTS_DIR=/app/results
+    COCO_RESULTS_DIR=/app/results \
+    COCO_MILESTONE_DIR=/app/milestone
 
 # Bake admin/static assets into the image (WhiteNoise serves them). No DB needed.
 # DEBUG=False so this uses the manifest storage backend and writes
