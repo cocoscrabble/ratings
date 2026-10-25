@@ -95,6 +95,19 @@ class SeedingEquivalenceTest(TmpMilestone):
             self.assertEqual(m2.history[k], v)
         self.assertGreater(len(m2.history), len(m1.history))
 
+    def test_a_renumbered_players_rows_are_found_through_the_aliases(self):
+        # Frozen while known by name, met by number since: the replay files
+        # their rows under the number and remembers name -> number.
+        first, second = cut_points()[:2]
+        m1 = self.cut_at(first)
+        t, key = next(iter(m1.history))
+        m1.history[(t, "Old Name")] = m1.history.pop((t, key))
+        db = replay(milestone=None, stop_after=second)
+        with self.assertRaises(MilestoneError):
+            ms.cut(self.dir, db, db.rated, pipeline.results_files(), previous=m1)
+        db.aliases["Old Name"] = key
+        ms.cut(self.dir, db, db.rated, pipeline.results_files(), previous=m1)
+
     def test_cutting_refuses_to_change_frozen_history(self):
         first, second = cut_points()[:2]
         m1 = self.cut_at(first)

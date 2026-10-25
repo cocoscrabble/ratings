@@ -3,7 +3,9 @@
 ``coco-rate <output.txt>`` replays the tournament history (from the committed
 milestone) and writes the current combined ratings list.
 ``coco-rate milestone [FILENAME]`` cuts a new rating milestone through that
-tournament (default: the latest). With no argument it launches the Tk GUI.
+tournament (default: the latest). ``coco-rate check`` checks the tournament
+list and results files, the thing to run after adding a tournament. With no
+argument it launches the Tk GUI.
 """
 
 import sys
@@ -32,6 +34,14 @@ def main(argv=None):
             f"Cut a milestone through {manifest['through']}: "
             f"{len(manifest['frozen'])} tournaments frozen."
         )
+    elif argv and argv[0] == "check":
+        from coco_ratings.validate import check
+
+        problems = check()
+        for p in problems:
+            print(p)
+        print(f"{len(problems)} problem(s) found." if problems else "All good.")
+        sys.exit(1 if problems else 0)
     elif argv:
         write_current_ratings(argv[0])
     else:

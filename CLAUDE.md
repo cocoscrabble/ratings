@@ -30,6 +30,8 @@ src/coco_ratings/       # the importable package
     ratingsdb.py        # RatingsDB (carry-forward replay), PlayerRecord/PlayerReport
     reports.py          # pure output writers (tabular/CSV rating reports)
     pipeline.py         # thin orchestration: process_* drivers over RatingsDB
+    milestone.py        # frozen published ratings + the rating-code fingerprint
+    validate.py         # corpus checks for a new tournament (`coco-rate check`)
     cli.py              # `coco-rate` entry point (main); __main__.py delegates here
     players.py          # PlayerDB   (name <-> CoCo id)
     tournaments.py      # TournamentDB (chronological driver)
@@ -71,11 +73,12 @@ uv run python -m unittest tests.test_golden   # just the golden-master test
 # Regenerate the golden file after an INTENTIONAL behaviour change
 UPDATE_GOLDEN=1 uv run python -m unittest tests.test_golden
 
-# After adding a tournament: record its (now published) ratings
-UPDATE_PENDING=1 uv run python -m unittest tests.test_pending
+# After adding a tournament: check the tournament list and results files
+# (the same checks as tests/test_corpus.py; also `make check`)
+uv run coco-rate check
 
-# Freeze everything rated so far into milestone/ -- BEFORE any change that
-# would move a published rating (test_pending fails until you do)
+# Freeze everything rated so far into milestone/ -- BEFORE any change to the
+# rating code (test_engine_unchanged fails until you do; see below)
 uv run coco-rate milestone
 
 # Lint (config in pyproject.toml [tool.ruff])
@@ -118,7 +121,7 @@ change interpreter. For that reason it is a **local-only** check: CI sets
 Golden is a test of the **engine**, not of the published ratings: it replays
 with `milestone=None`. Regenerating it no longer means anyone's published
 rating moved. What guards published ratings is the milestone (below) and
-**`tests/test_pending.py`**, which runs in CI.
+**`tests/test_engine_unchanged.py`**, which runs in CI.
 
 ## Rating milestones — published ratings never change
 
@@ -134,12 +137,23 @@ rating back to 2021. Now the replay starts from the milestone:
   frozen results file may change only with an entry in `manifest.json`
   `amendments` (filename, new sha256, date, reason); otherwise the build fails.
 - **Tournaments after the milestone are rated by the current code.** Their
-  ratings are published too, and pinned by `milestone/pending.csv`
-  (`tests/test_pending.py`). A code change that would move them must **cut a
-  milestone first, with the old code** (`coco-rate milestone` on main), then
-  land. Cut every time the ratings code changes; a cut costs no accuracy,
-  since seeding from one is bit-identical to replaying through it
-  (`tests/test_milestone.py`).
+  ratings are published too, so the *code* is pinned: `manifest.json`
+  records `engine_sha256` (`milestone.engine_fingerprint`, every package
+  module except output/UI/checks in `NOT_ENGINE`), and
+  `tests/test_engine_unchanged.py` fails when the code differs. Adding a
+  tournament never trips it. Changing the rating code means **cutting with
+  the old code first**, then again to record the new code:
+  `git stash && uv run coco-rate milestone && git stash pop && uv run coco-rate milestone`.
+  `coco-rate milestone` refuses to cut with changed code while tournaments
+  have been rated since the milestone. A cut costs no accuracy, since seeding
+  from one is bit-identical to replaying through it (`tests/test_milestone.py`).
+- **A new tournament is checked as files, not ratings**: `tests/test_corpus.py`
+  (= `coco-rate check`, `coco_ratings/validate.py`) fails on a misnamed or
+  unlisted results file, a bad `tournaments.csv` row, a player missing from
+  `data/players.csv` or a number that names someone else, unparseable scores,
+  a winner who scored less, two opponents in one round, duplicate rows. The
+  per-game checks skip frozen files (pinned by sha256, and several old ones
+  would fail). Then it runs the full build.
 - **A tournament dated before the milestone** must be listed in
   `manifest.json` `late_additions`; it is then rated first, against the
   milestone's ratings.

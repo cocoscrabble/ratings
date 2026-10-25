@@ -21,7 +21,12 @@ What differed from the design below, found while building it:
 - **Phase 0** compared a replay at `origin/main` with every rating on the
   public site (249 current ratings, 1,595 tournament rows): 0 differences.
   SSH to production was not used.
-- The enforcing test is `tests/test_pending.py`, with `milestone/pending.csv`.
+- The enforcing test was `tests/test_pending.py`, with `milestone/pending.csv`.
+  Replaced on 2026-10-25 by a fingerprint of the rating code
+  (`tests/test_engine_unchanged.py`); see "Superseded" under the rule below.
+- Cutting failed once a number-keyed file renumbered players already frozen
+  by name: the "never change frozen history" check compared old name keys.
+  It now looks them up through the aliases.
  Code references pinned at ratings
 `f93cbdf`. Related: `../baxter/plans/PLAN_UNPLAYED_GAMES.md`, whose
 rating-changing phase this plan turns into a future-only change.
@@ -150,6 +155,26 @@ Unlike golden, this test **runs in CI**. It doesn't depend on the CPython
 patch version in the same way, because the pending set is small and is
 regenerated whenever a milestone is cut. If an interpreter upgrade moves a
 pending row, that is also a reason to cut a milestone first.
+
+**Superseded (2026-10-25): pin the code, not the numbers.** `pending.csv`
+made every new tournament fail CI until it was regenerated, although adding
+data cannot move a published rating; only code can. Instead the manifest
+records `engine_sha256`, a hash over every package module except output, UI
+and checks (`milestone.NOT_ENGINE`), and `tests/test_engine_unchanged.py`
+fails when the code no longer matches it. `coco-rate milestone` refuses to cut
+with changed code while tournaments have been rated since the milestone, so
+the frozen numbers are always the published ones. Changing the code is:
+
+    git stash && uv run coco-rate milestone && git stash pop && uv run coco-rate milestone
+
+The second cut freezes nothing new and only records the new fingerprint. A
+new tournament is now checked by `tests/test_corpus.py` (`coco-rate check`),
+which tests the files, not the ratings. Two things `pending.csv` caught are
+no longer caught: a Python upgrade that moves a float (the interpreter is not
+in the fingerprint, since CI and production need not match the cutting
+machine's patch release), and a correction to the results file of a
+tournament after the milestone, which now just re-rates it. That is the
+intended behaviour for a correction.
 
 **Cadence (settled):** cut the first milestone now, then **every time the
 ratings code changes** in a way that moves pending ratings, as enforced above.

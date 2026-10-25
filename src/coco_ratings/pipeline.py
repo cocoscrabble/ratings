@@ -10,7 +10,7 @@ import os
 from io import StringIO
 
 from coco_ratings.io import TabularResultWriter
-from coco_ratings.milestone import Milestone, MilestoneError
+from coco_ratings.milestone import Milestone, MilestoneError, engine_fingerprint
 from coco_ratings.paths import MILESTONE_DIR, RESULTS_DIR
 from coco_ratings.players import PlayerDB
 from coco_ratings.ratingsdb import RatingsDB
@@ -149,10 +149,26 @@ def cut_milestone(through: str | None = None, directory=MILESTONE_DIR):
     Rates with the current code from the committed milestone, then writes the
     new milestone over it. The cut can only add frozen history; see
     ``milestone.cut``.
+
+    Refused when the rating code differs from the code the previous milestone
+    recorded and tournaments have been rated since it: those ratings are
+    published, and freezing them as the new code rates them would change them.
     """
     from coco_ratings import milestone as ms
 
     previous = Milestone.load(directory)
+    if previous is not None:
+        rated_since = unfrozen_tournaments(previous)
+        if rated_since and code_changed(previous):
+            raise MilestoneError(
+                f"The rating code has changed since the milestone, and "
+                f"{len(rated_since)} tournament(s) rated since then "
+                f"({', '.join(rated_since)}) have published ratings it would "
+                f"change. Cut with the code as it was, then re-apply the "
+                f"change and cut again to record it:\n"
+                f"    git stash && uv run coco-rate milestone && "
+                f"git stash pop && uv run coco-rate milestone"
+            )
     ratingsdb, _ = process_old_results(
         quiet=True, milestone=previous, stop_after=through
     )
@@ -160,6 +176,17 @@ def cut_milestone(through: str | None = None, directory=MILESTONE_DIR):
         directory, ratingsdb, ratingsdb.rated, results_files(),
         previous=previous, beta=ratingsdb.beta,
     )
+
+
+def unfrozen_tournaments(milestone):
+    """Filenames the current code rates on top of ``milestone``, in order."""
+    _, to_rate = milestone.plan(TournamentDB.read_csv().tournaments, results_files())
+    return [e.filename for e in to_rate]
+
+
+def code_changed(milestone) -> bool:
+    """Whether the rating code differs from what ``milestone`` recorded."""
+    return milestone.manifest.get("engine_sha256") != engine_fingerprint()
 
 
 def process_all_results(rating_file, result_file, name, tdate):

@@ -14,9 +14,13 @@ and the replay starts from them instead:
 - **Tournaments after the milestone are rated by the current code**, seeded
   from the carried state in ``state.csv``.
 
-A change that would move any already-published rating after the milestone must
-cut a new milestone first (``coco-rate milestone``); ``tests/test_pending.py``
-enforces that. See ``plans/rating-milestones.md``.
+Tournaments after the milestone are published too, so the code that rates
+them must not change under them. The manifest records a fingerprint of that
+code (``engine_sha256``); ``tests/test_engine_unchanged.py`` fails if the code
+no longer matches it, and ``coco-rate milestone`` refuses to freeze those
+tournaments with different code. A change to the rating code therefore cuts a
+milestone with the old code first. Adding a tournament touches none of this.
+See ``plans/rating-milestones.md``.
 
 Files in the milestone directory:
 
@@ -67,6 +71,30 @@ def _number(text):
         return int(text)
     except ValueError:
         return float(text)
+
+
+# Package modules that cannot move a rating: output, UI, entry points and
+# checks. Everything else counts, so a new module is guarded by default.
+NOT_ENGINE = frozenset({
+    "__main__.py", "cli.py", "gui.py", "gui_app.py", "logging_setup.py",
+    "reports.py", "validate.py",
+})
+
+
+def engine_fingerprint(package_dir=None) -> str:
+    """sha256 over the source of every module that takes part in rating.
+
+    Byte-exact on purpose: whether an edit moves a number cannot be read off
+    the diff, and a cut costs no accuracy, so any edit asks for one.
+    """
+    package_dir = Path(package_dir or Path(__file__).parent)
+    h = hashlib.sha256()
+    for path in sorted(package_dir.rglob("*.py")):
+        rel = path.relative_to(package_dir).as_posix()
+        if rel in NOT_ENGINE:
+            continue
+        h.update(rel.encode() + b"\0" + path.read_bytes() + b"\0")
+    return h.hexdigest()
 
 
 def code_revision(root=None) -> str:
@@ -306,7 +334,13 @@ def cut(directory, ratingsdb, rated, results, previous=None, beta=5):
                 "new_deviation": rep.new_deviation,
             }
     if previous is not None:
-        changed = [k for k, v in previous.history.items() if history.get(k) != v]
+        # A player first met by name and later by number has had their rows
+        # moved onto the number (RatingsDB.key_for), so look the old key up
+        # through the aliases: same row, new key.
+        changed = [
+            (t, k) for (t, k), v in previous.history.items()
+            if history.get((t, ratingsdb.aliases.get(k, k))) != v
+        ]
         if changed:
             raise MilestoneError(
                 f"cutting would change {len(changed)} frozen history row(s), "
@@ -341,6 +375,7 @@ def cut(directory, ratingsdb, rated, results, previous=None, beta=5):
         "cut_on": date.today().isoformat(),
         "code_rev": code_revision(directory.parent),
         "python": platform.python_version(),
+        "engine_sha256": engine_fingerprint(),
         "beta": beta,
         "frozen": [
             {"filename": name, "results_sha256": sha256_of(results[name])}
